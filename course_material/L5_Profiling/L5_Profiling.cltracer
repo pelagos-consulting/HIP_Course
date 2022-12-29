@@ -1,0 +1,6 @@
+{
+    "projectName": "L5_Profiling",
+    "projectDir": "/home/toby/Pelagos/Projects/OpenCL_Course/course_material/L5_Profiling",
+    "executable": "/home/toby/Pelagos/Projects/OpenCL_Course/course_material/L5_Profiling/mat_mult_profiling.exe",
+    "workingDir": "/home/toby/Pelagos/Projects/OpenCL_Course/course_material/L5_Profiling"
+}

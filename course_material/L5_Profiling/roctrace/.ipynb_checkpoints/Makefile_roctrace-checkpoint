@@ -1,0 +1,26 @@
+
+# Include general environment variables
+include ../env
+
+# Location of general helper files
+INC_DIR=../include
+
+# List of applications to target
+TARGETS=mat_mult_profiling_roctrace.exe
+
+all: $(TARGETS)
+
+# Roctracer directory
+ROCTC_DIR=/opt/rocm/roctracer
+
+# General compilation step
+%.exe: %.cpp
+	$(CXX) $(CXXFLAGS) -pthread -I$(OPENCL_INC_DIR) -I$(INC_DIR) -I$(ROCTC_DIR)/include -L$(ROCTC_DIR)/lib -L$(OPENCL_LIB_DIR) $<\
+		-o $@ $(OPENCL_LIB_FLAGS) -lroctracer64 
+
+# Clean step
+clean:
+	rm -r *.exe
+
+
+.EXPORT_ALL_VARIABLES:

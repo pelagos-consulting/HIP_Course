@@ -1,0 +1,36 @@
+
+
+# Detect the OS in use
+ifeq ($(OS),Windows_NT) 
+    detected_OS := Windows
+else
+    detected_OS := $(shell sh -c 'uname 2>/dev/null || echo Unknown')
+endif
+
+# Default flags
+
+# Compiler locations
+CXX=g++
+CC=gcc
+
+# Library flags for OpenCL
+OPENCL_LIB_FLAGS="-lOpenCL"
+CXXFLAGS=-g -O2 -fopenmp -std=c++11
+
+# Flags for MacOS
+ifeq ($(detected_OS), Darwin)
+    CXX=clang++
+    CXXFLAGS=-framework OpenCL -std=c++11 -g -O2 -Xclang -fopenmp
+    OPENCL_INC_DIR="./"
+    OPENCL_LIB_DIR="./"
+    OPENCL_LIB_FLAGS=""
+endif
+
+# Flags for Linux
+ifeq ($(detected_OS), Linux)
+    CXX=g++
+    CXXFLAGS=-std=c++11 -g -O2 -fopenmp
+    OPENCL_INC_DIR=/usr/include
+    OPENCL_LIB_DIR=/usr/lib/x86_64-linux-gnu
+    OPENCL_LIB_FLAGS=-lOpenCL
+endif

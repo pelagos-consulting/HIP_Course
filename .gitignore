@@ -1,0 +1,9 @@
+*.exe
+*.dSYM
+*.dat
+*.swp
+**.vs/
+*.obj
+*.trc
+*.edf
+image_deploy/
