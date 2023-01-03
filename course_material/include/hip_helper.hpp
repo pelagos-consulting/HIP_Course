@@ -32,7 +32,6 @@
     }\
 }\
 
-
 size_t h_lcm(size_t n1, size_t n2) {
     // Get the least common multiple of two numbers
     size_t number = std::max(n1, n2);
@@ -117,6 +116,8 @@ hipStream_t* h_create_streams(int nstreams, int blocking) {
     assert(nstreams>0);
 
     unsigned int flag = hipStreamDefault;
+
+    // If blocking is false then set NonBlocking flag
     if (blocking == 0) {
         flag = hipStreamNonBlocking;
     }
@@ -140,60 +141,38 @@ void h_release_streams(int nstreams, hipStream_t* streams) {
     free(streams);
 }
 
-
-cl_double h_get_io_rate_MBs(cl_double time_ms, size_t nbytes) {
+float h_get_io_rate_MBs(float elapsed_ms, size_t nbytes) {
     // Get the IO rate in MB/s for bytes read or written
-    return (cl_double)nbytes * 1.0e-3 / time_ms;
+    return (float)nbytes * 1.0e-3 / elapsed_ms;
 }
 
-/// Got to here ///
-cl_double h_get_event_time_ms(
-        // Assumes start and stop events have been recorder
-
-        cl_event *event, 
+// Get how much time elapsed between two events that were recorded
+float h_get_event_time_ms(
+        // Assumes start and stop events have been recorded
+        // with the hipEventRecord() function
+        hipEvent_t t1,
+        hipEvent_t t2,
         const char* message, 
         size_t* nbytes) {
     
-    // Make sure the event has finished
-    h_errchk(clWaitForEvents(1, event), message);
-    
-    // Start and end times
-    cl_ulong t1, t2;
-        
-    // Fetch the start and end times in nanoseconds
-    h_errchk(
-        clGetEventProfilingInfo(
-            *event,
-            CL_PROFILING_COMMAND_START,
-            sizeof(cl_ulong),
-            &t1,
-            NULL
-        ),
-        "Fetching start time for event"
-    );
+    // Make sure the stop and start events have finished
+    h_errchk(hipEventSynchronize(t2));
+    h_errchk(hipEventSynchronize(t1));
 
-    h_errchk(
-        clGetEventProfilingInfo(
-            *event,
-            CL_PROFILING_COMMAND_END,
-            sizeof(cl_ulong),
-            &t2,
-            NULL
-        ),
-        "Fetching end time for event"
-    );
-    
+    // Elapsed time in milliseconds
+    float elapsed_ms=0;
+
     // Convert the time into milliseconds
-    cl_double elapsed = (cl_double)(t2-t1)*(cl_double)1.0e-6;
+    hipEventElapsedTime(&elapsed_ms, t1, t2);
         
     // Print the timing message if necessary
     if ((message != NULL) && (strlen(message)>0)) {
-        std::printf("Time for event \"%s\": %.3f ms", message, elapsed);
+        std::printf("Time for event \"%s\": %.3f ms", message, elapsed_ms);
         
         // Print transfer rate if nbytes is not NULL
         if (nbytes != NULL) {
             cl_double io_rate_MBs = h_get_io_rate_MBs(
-                elapsed, 
+                elapsed_ms, 
                 *nbytes
             );
             std::printf(" (%.2f MB/s)", io_rate_MBs);
@@ -201,7 +180,7 @@ cl_double h_get_event_time_ms(
         std::printf("\n");
     }
     
-    return elapsed;
+    return elapsed_ms;
 }
 
 void h_fit_global_size(const size_t* global_size, const size_t* local_size, size_t work_dim) {
@@ -280,7 +259,6 @@ void h_write_binary(void* data, const char* filename, size_t nbytes) {
     std::fclose(fp);
 }
 
-
 // Function to report information on a compute device
 void h_report_on_device(int device_id) {
 
@@ -290,8 +268,9 @@ void h_report_on_device(int device_id) {
     // Get the properties of the compute device
     h_errchk(hipGetDeviceProperties(&prop, device_id));
 
-    // Name
+    // Name of the compute device
     std::printf("\t%20s %s \n","name:", prop.name);
+
     // Size of global memory
     std::printf("\t%20s %lu MB\n","global memory size:",prop.totalGlobalMem/(1000000));
 
@@ -320,9 +299,54 @@ void h_report_on_device(int device_id) {
     std::printf("%d)\n", prop.maxGridSize[2]); 
 }
 
-//
-//// Function to run a kernel
-//cl_double h_run_kernel(
+
+// Function to run a kernel
+float h_run_kernel(
+    // Function address
+    const void* function,
+    // Number of blocks to run
+    dim3 num_blocks,
+    // Size of each block
+    dim3 block_size,
+    // Arguments to the kernel function
+    void** args,
+    // Number of shared bytes to use
+    size_t shared_bytes,
+    // Which stream to use
+    hipStream_t stream,
+    // 0 for an ordered kernel launch, 1 for out of order kernel launch
+    int non_ordered_launch) {
+    
+    // Setup flags for ordered or
+    int ordered_flag=0;
+    if (non_ordered_launch) {
+        ordered_flag = hipExtAnyOrderLaunch;
+    }
+
+    // HIP start and stop events
+    hipEvent_t t1, t2;
+
+    // Launch the kernel
+    h_errchk(
+        hipExtLaunchKernel(
+            function,
+            num_blocks,
+            block_size,
+            args,
+            shared_bytes,
+            stream,
+            t1,
+            t2,
+            ordered_flag
+        )
+    );
+
+    // Elapsed milliseconds
+    return h_get_event_time_ms(t1, t2, NULL, NULL);
+}
+
+
+
 //    cl_command_queue command_queue,
 //    cl_kernel kernel,
 //    size_t *local_size,
