@@ -15,6 +15,7 @@
 #include <cmath>
 #include <chrono>
 
+// Import the HIP header
 #include <hip/hip_runtime.h>
 
 // Function to check error code
@@ -46,24 +47,18 @@ size_t h_lcm(size_t n1, size_t n2) {
 void h_show_options(const char* name) {
     // Display a helpful error message
     std::printf("Usage: %s <options> <DEVICE_INDEX>\n", name);
-    std::printf("Options:\n"); 
-    std::printf("\t-gpu,--gpu\t use a GPU\n");
-    std::printf("\t-cpu,--cpu\t use a CPU\n");
+    std::printf("Options:\n");
+    std::printf("\t-h,--help\t print help message\n");
     std::printf("\tDEVICE_INDEX is a number > 0\n"); 
 }
 
-cl_uint h_parse_args(int argc, 
-                     char** argv, 
-                     cl_device_type *device_type) {
+int h_parse_args(int argc, char** argv) {
     
-    // Parse command line arguments to extract -cpu, -gpu, and device indices
+    // Parse command line arguments to extract device index to use
     
     // Default device index
-    cl_uint dev_index = 0;
-    
-    // All devices by default
-    *device_type = CL_DEVICE_TYPE_ALL;
-    
+    int dev_index = 0;
+        
     // Check all other arguments
     for (int i=1; i<argc; i++) {
         const char* arg = (const char*)argv[i];
@@ -72,12 +67,6 @@ cl_uint h_parse_args(int argc,
         if ((std::strcmp(arg, "-h")==0) || (std::strcmp(arg, "--help")==0)) {
             h_show_options(argv[0]);
             exit(0);
-        // Check for GPU args
-        } else if ((std::strcmp(arg, "-gpu")==0) || (std::strcmp(arg, "--gpu")==0)) {
-            *device_type = CL_DEVICE_TYPE_GPU;
-        // Check for CPU args
-        } else if ((std::strcmp(arg, "-cpu")==0) || (std::strcmp(arg, "--cpu")==0)) {
-            *device_type = CL_DEVICE_TYPE_CPU;
         // Check for device index if it is not a flag
         } else if (std::strncmp(arg, "-", 1)!=0) {
             dev_index = (cl_uint)std::atoi(arg);
@@ -85,22 +74,17 @@ cl_uint h_parse_args(int argc,
     }
     
     // Make sure the index is sane
+    int max_devices=0;
+    h_errchk(hipGetDeviceCount(&max_devices));
+
+    assert(dev_index<max_devices);
     assert(dev_index>=0);
     return(dev_index);
 }
 
-
-// Function to create lists of contexts and devices that map to available hardware
-void h_acquire_devices(
-        // Number of devices found [out]
-        int *num_devices_out,
-        // List of devices
-        hipDevice_t **devices_out, 
-        cl_context **contexts_out) {
-
-    // Initialise hip explicitly
-    hipInit(0);
-
+// Function to clean devices before and after runtime
+void h_clean_devices(int* num_devices_out) {
+    
     // Get the number of devices
     int num_devices=0;
     h_errchk(hipGetDeviceCount(&num_devices));
@@ -111,150 +95,61 @@ void h_acquire_devices(
         exit(EXIT_FAILURE);
     }
 
-    // Create the list of devices
-    hipDevice_t* devices = (hipDevice_t*)calloc((size_t)num_devices, sizeof(hipDevice_t));
+    // Reset devices
+    for (int i = 0; i<num_devices; i++) {
+        // Set device
+        h_errchk(hipSetDevice(i));
 
-    // Create the list of contexts
-    hipCtx_t* contexts = (hipCtx_t*)calloc((size_t)num_devices, sizeof(hipCtx_t));
+        // Synchronize device 
+        h_errchk(hipDeviceSynchronize());
 
-    // Fill device ID's and contexts
-    for (int i=0; i<num_devices; i++) {
-        // Get devices
-        h_errchk(hipDeviceGet(&devices[i], i));
-
-        // Create a new context for the device but retain the primary one
-        h_errchk(hipDevicePrimaryCtxRetain(&contexts[i], devices[i]));
+        // Reset device (destroys primary context)
+        h_errchk(hipDeviceReset());
     }
-    
-    // Fill in output information here to 
-    // avoid problems with understanding
+
+    // Set the number of output devices
     *num_devices_out = num_devices;
-    *devices_out = devices;
-    *contexts_out = contexts;
 }
 
+// Create streams
+hipStream_t* h_create_streams(int nstreams, int blocking) {
+    // Blocking is a boolean, 0==no, 
+    assert(nstreams>0);
 
-
-// Function to create command queues
-cl_command_queue* h_create_command_queues(
-        // Create a list of command queues
-        // with selectable properties
-        // Assumes that contexts is as long as devices
-        
-        // Array of OpenCL device id's
-        cl_device_id *devices,
-        // Array of OpenCL contexts
-        cl_context *contexts,
-        // How long is devices and contexts?
-        cl_uint num_devices,
-        // How many command queues should we create?
-        cl_uint num_command_queues,
-        // Do we enable out-of-order execution?
-        cl_bool out_of_order_enable,
-        // Do we enable profiling of commands 
-        // sent to the command queues
-        cl_bool profiling_enable) {
-    
-    // Return code for error checking
-    cl_int errcode;   
-
-    // Manage bit fields for the command queue properties
-    cl_command_queue_properties queue_properties = 0;
-    if (out_of_order_enable == CL_TRUE) {
-        queue_properties = queue_properties | CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE;    
-    }
-    if (profiling_enable == CL_TRUE) {
-        queue_properties = queue_properties | CL_QUEUE_PROFILING_ENABLE;    
+    unsigned int flag = hipStreamDefault;
+    if (blocking == 0) {
+        flag = hipStreamNonBlocking;
     }
 
-    // Allocate memory for the command queues
-    cl_command_queue *command_queues = (cl_command_queue*)calloc(num_command_queues, sizeof(cl_command_queue));
+    // Make the streams
+    hipStream_t* streams = (hipStream_t*)calloc((size_t)nstreams, sizeof(hipStream_t));
 
-    // Fill command queues in a Round-Robin fashion
-    for (cl_uint n=0; n<num_command_queues; n++) {
-        command_queues[n] = clCreateCommandQueue(
-            contexts[n % num_devices],
-            devices[n % num_devices],
-            queue_properties,
-            &errcode    
-        );
-        h_errchk(errcode, "Creating a command queue");        
+    for (int i=0; i<nstreams; i++) {
+        h_errchk(hipStreamCreateWithFlags(&streams[i], flag));
     }
-            
-    return command_queues;
+
+    return streams;
 }
 
-
-// Function to build a program from a single device and context
-cl_program h_build_program(const char* source, 
-                           cl_context context, 
-                           cl_device_id device,
-                           const char* compiler_options) {
-
-    // Error code for checking programs
-    cl_int errcode;
-
-    // Create a program from the source code
-    cl_program program = clCreateProgramWithSource(
-            context,
-            1,
-            (const char**)(&source),
-            NULL,
-            &errcode
-    );
-    h_errchk(errcode, "Creating OpenCL program");
-
-    // Try to compile the program, print a log otherwise
-    errcode = clBuildProgram(program, 
-                1, 
-                &device,
-                compiler_options,
-                NULL,
-                NULL
-    );
-
-    // If the compilation process failed then fetch a build log
-    if (errcode!=CL_SUCCESS) {
-        // Number of characters in the build log
-        size_t nchars;
-        
-        // Query the size of the build log
-        h_errchk(clGetProgramBuildInfo( program,
-                                        device,
-                                        CL_PROGRAM_BUILD_LOG,
-                                        0,
-                                        NULL,
-                                        &nchars),"Checking build log");
-
-        // Make up the build log string
-        char* buildlog=(char*)calloc(nchars+1, sizeof(char));
-
-        // Query the build log 
-        h_errchk(clGetProgramBuildInfo( program,
-                                        device,
-                                        CL_PROGRAM_BUILD_LOG,
-                                        nchars,
-                                        buildlog,
-                                        NULL), "Filling the build log");
-        
-        // Insert a NULL character at the end of the string
-        buildlog[nchars] = '\0';
-        
-        // Print the build log
-        std::printf("Build log is %s\n", buildlog);
-        free(buildlog);
-        exit(OCL_EXIT);
+void h_release_streams(int nstreams, hipStream_t* streams) {
+    for (int i=0; i<nstreams; i++) {
+        hipStreamDestroy(streams[i]);    
     }
 
-    return program;
+    // Free streams array
+    free(streams);
 }
+
 
 cl_double h_get_io_rate_MBs(cl_double time_ms, size_t nbytes) {
     // Get the IO rate in MB/s for bytes read or written
     return (cl_double)nbytes * 1.0e-3 / time_ms;
 }
 
+/// Got to here ///
 cl_double h_get_event_time_ms(
+        // Assumes start and stop events have been recorder
+
         cl_event *event, 
         const char* message, 
         size_t* nbytes) {
@@ -325,28 +220,12 @@ void h_fit_global_size(const size_t* global_size, const size_t* local_size, size
     }
 }
 
-void h_write_binary(void* data, const char* filename, size_t nbytes) {
-    // Write binary data to file
-    std::FILE *fp = std::fopen(filename, "wb");
-    if (fp == NULL) {
-        std::printf("Error in writing file %s", filename);
-        exit(OCL_EXIT);
-    }
-    
-    // Write the data to file
-    std::fwrite(data, nbytes, 1, fp);
-    
-    // Close the file
-    std::fclose(fp);
-}
-
-void* h_alloc(size_t nbytes) {
-    // Allocate aligned memory for potential 
-    // use in OpenCL buffers
+void* h_alloc(size_t nbytes, size_t alignment) {
+    // Allocate aligned memory for use on the host
 #if defined(_WIN32) || defined(_WIN64)
-    void* buffer = _aligned_malloc(nbytes, sizeof(cl_long16));
+    void* buffer = _aligned_malloc(nbytes, alignment);
 #else
-    void* buffer = aligned_alloc(sizeof(cl_long16), nbytes);
+    void* buffer = aligned_alloc(alignment, nbytes);
 #endif
     // Zero out the contents of the allocation for safety
     memset(buffer, '\0', nbytes);
@@ -358,7 +237,7 @@ void* h_read_binary(const char* filename, size_t *nbytes) {
     std::FILE *fp = std::fopen(filename, "rb");
     if (fp == NULL) {
         std::printf("Error in reading file %s", filename);
-        exit(OCL_EXIT);
+        exit(EXIT_FAILURE);
     }
     
     // Seek to the end of the file
@@ -386,397 +265,302 @@ void* h_read_binary(const char* filename, size_t *nbytes) {
     return buffer;
 }
 
+void h_write_binary(void* data, const char* filename, size_t nbytes) {
+    // Write binary data to file
+    std::FILE *fp = std::fopen(filename, "wb");
+    if (fp == NULL) {
+        std::printf("Error in writing file %s", filename);
+        exit(EXIT_FAILURE);
+    }
+    
+    // Write the data to file
+    std::fwrite(data, nbytes, 1, fp);
+    
+    // Close the file
+    std::fclose(fp);
+}
+
+
 // Function to report information on a compute device
-void h_report_on_device(cl_device_id device) {
-    // Report some information on the device
-    
-    // Fetch the name of the compute device
-    size_t nbytes_name;
-    
-    // First call is to fetch 
-    // the number of bytes taken up by the name
-    h_errchk(
-        clGetDeviceInfo(device, 
-                        CL_DEVICE_NAME, 
-                        0, 
-                        NULL, 
-                        &nbytes_name),
-        "Device name bytes"
-    );
-    // Allocate memory for the name
-    char* name=new char[nbytes_name+1];
-    // Don't forget the NULL character terminator
-    name[nbytes_name] = '\0';
-    // Second call is to fill the allocated name
-    h_errchk(
-        clGetDeviceInfo(device, 
-                        CL_DEVICE_NAME, 
-                        nbytes_name, 
-                        name, 
-                        NULL),
-        "Device name"
-    );
-    std::printf("\t%20s %s \n","name:", name);
+void h_report_on_device(int device_id) {
 
-    // Fetch the global memory size
-    cl_ulong mem_size;
-    h_errchk(
-        clGetDeviceInfo(device, 
-                        CL_DEVICE_GLOBAL_MEM_SIZE, 
-                        sizeof(cl_ulong), 
-                        &mem_size, 
-                        NULL),
-        "Global mem size"
-    );
-    std::printf("\t%20s %lu MB\n","global memory size:",mem_size/(1000000));
-    
-    // Fetch the maximum size of a global memory allocation
-    h_errchk(
-        clGetDeviceInfo(device, 
-                        CL_DEVICE_MAX_MEM_ALLOC_SIZE, 
-                        sizeof(cl_ulong), 
-                        &mem_size, 
-                        NULL),
-        "Max mem alloc size"
-    );
-    std::printf("\t%20s %lu MB\n","max buffer size:", mem_size/(1000000));
-    
-    // Get the maximum number of dimensions supported
-    cl_uint max_work_dims;
-    h_errchk(
-        clGetDeviceInfo(device, 
-                        CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS, 
-                        sizeof(cl_uint), 
-                        &max_work_dims, 
-                        NULL),
-        "Max number of dimensions for local size."
-    );
-    
-    // Get the max number of work items along
-    // dimensions of a work group
-    size_t* max_size = new size_t[max_work_dims];
-    h_errchk(
-        clGetDeviceInfo(device, 
-                        CL_DEVICE_MAX_WORK_ITEM_SIZES, 
-                        max_work_dims*sizeof(size_t), 
-                        max_size, 
-                        NULL),
-        "Max size for work items."
-    );
-    
-    // Print out the maximum extent of 
-    // items in a workgroup
-    std::printf("\t%20s (", "max local size:");
-    for (int n=0; n<max_work_dims-1; n++) {
-        std::printf("%zu,", max_size[n]);
+    // Report some information on a compute device
+    hipDeviceProp_t prop;
+
+    // Get the properties of the compute device
+    h_errchk(hipGetDeviceProperties(&prop, device_id));
+
+    // Name
+    std::printf("\t%20s %s \n","name:", prop.name);
+    // Size of global memory
+    std::printf("\t%20s %lu MB\n","global memory size:",prop.totalGlobalMem/(1000000));
+
+    // Maximum number of registers per block
+    std::printf("\t%20s %d \n","available registers per block:",prop.regsPerBlock);
+
+    // Maximum shared memory size per block
+    std::printf("\t%20s %lu KB\n","maximum shared memory size per block:",prop.sharedMemPerBlock/(1000));
+
+    // Maximum pitch size for memory copies (MB)
+    std::printf("\t%20s %lu MB\n","maximum pitch size for memory copies:",prop.memPitch/(1000000));
+
+    // Print out the maximum number of threads along a dimension of a block
+    std::printf("\t%20s (", "max block size:");
+    for (int n=0; n<2; n++) {
+        std::printf("%d,", prop.maxThreadsDim[n]);
     }
-    std::printf("%zu)\n", max_size[max_work_dims-1]);
+    std::printf("%d)\n", prop.maxThreadsDim[2]); 
+    std::printf("\t%20s %d\n", "max threads in a block:", props.maxThreadsPerBlock);
     
-    // Get the maximum number of work items in a work group
-    size_t max_work_group_size;
-    h_errchk(
-        clGetDeviceInfo(device, 
-                        CL_DEVICE_MAX_WORK_GROUP_SIZE, 
-                        sizeof(size_t), 
-                        &max_work_group_size, 
-                        NULL),
-        "Max number of work-items a workgroup."
-    );
-    std::printf("\t%20s %zu\n", "max work-items:", max_work_group_size);
-    
-    // Clean up
-    delete [] max_size;
-    delete [] name;
+    // Print out the maximum size of a Grid
+    std::printf("\t%20s (", "max Grid size:");
+    for (int n=0; n<2; n++) {
+        std::printf("%d,", prop.maxGridSize[n]);
+    }
+    std::printf("%d)\n", prop.maxGridSize[2]); 
 }
 
-// Function to release command queues
-void h_release_command_queues(cl_command_queue *command_queues, cl_uint num_command_queues) {
-    // Finish and Release all command queues
-    for (cl_uint n = 0; n<num_command_queues; n++) {
-        // Wait for all commands in the 
-        // command queues to finish
-        h_errchk(
-            clFinish(command_queues[n]), 
-            "Finishing up command queues"
-        );
-        
-        // Now release the command queue
-        h_errchk(
-            clReleaseCommandQueue(command_queues[n]), 
-            "Releasing command queues"
-        );
-    }
-
-    // Now destroy the command queues
-    free(command_queues);
-}
-
-// Function to release devices and contexts
-void h_release_devices(
-        cl_device_id *devices,
-        cl_uint num_devices,
-        cl_context* contexts,
-        cl_platform_id *platforms) {
-    
-    // Release contexts and devices
-    for (cl_uint n = 0; n<num_devices; n++) {
-        h_errchk(
-            clReleaseContext(contexts[n]), 
-            "Releasing context"
-        );
-
-        h_errchk(
-            clReleaseDevice(devices[n]), 
-            "Releasing device"
-        );
-    }
-
-    // Free all arrays allocated with h_acquire_devices
-    free(contexts);
-    free(devices);
-    free(platforms);
-}
-
-// Function to run a kernel
-cl_double h_run_kernel(
-    cl_command_queue command_queue,
-    cl_kernel kernel,
-    size_t *local_size,
-    size_t *global_size,
-    size_t ndim,
-    cl_bool profiling,
-    // Function for prepping the kernel
-    void (*prep_kernel)(cl_kernel, size_t*, size_t*, size_t, void*),
-    void* prep_data
-    ) {
-    
-    // Sort out the global size
-    size_t *new_global = (size_t*)malloc(ndim*sizeof(size_t));
-    std::memcpy(new_global, global_size, ndim*sizeof(size_t));
-    h_fit_global_size(new_global, local_size, ndim);
-    
-    // Event management
-    cl_event kernel_event;
-    
-    // How much time did the kernel take?
-    cl_double elapsed_msec=0.0;
-    
-    // Prepare the kernel for execution, setting arguments etc
-    if (prep_kernel!=NULL) {
-        prep_kernel(kernel, local_size, new_global, ndim, prep_data);
-    }
-    
-    // Enqueue the kernel
-    cl_int errcode = clEnqueueNDRangeKernel(
-        command_queue,
-        kernel,
-        ndim,
-        NULL,
-        new_global,
-        local_size,
-        0,
-        NULL,
-        &kernel_event);
-    
-    // Profiling information
-    if ((profiling==CL_TRUE) && (errcode==CL_SUCCESS)) {
-        elapsed_msec = h_get_event_time_ms(
-            &kernel_event, 
-            NULL, 
-            NULL);
-    } else {
-        elapsed_msec = nan("");
-    }
-    
-    // Free allocated memory
-    free(new_global);
-    
-    return(elapsed_msec);
-}
-
-// Function to optimise the local size
-// if command line arguments are --local_file or -local_file
-// read an input file called input_local.dat
-// type == cl_uint and size == (nexperiments, ndim)
 //
-// writes to a file called output_local.dat
-// type == cl_double and size == (nexperiments, 2)
-// where each line is (avd, stdev) in milli-seconds
-void h_optimise_local(
-        int argc,
-        char** argv,
-        cl_command_queue command_queue,
-        cl_kernel kernel,
-        cl_device_id device,
-        // Desired global size of the problem
-        size_t *global_size,
-        // Desired local_size of the problem, use NULL for defaults
-        size_t *local_size,
-        // Number of dimensions in the kernel
-        size_t ndim,
-        // Number of times to run the kernel per experiment
-        size_t nstats,
-        double prior_times,
-        void (*prep_kernel)(cl_kernel, size_t*, size_t*, size_t, void*),
-        void* prep_data) {
-    
-    // Maximum number of dimensions permitted
-    const int max_ndim = 3;
-    
-    // Terrible default for local_size
-    size_t temp_local_size[max_ndim] = {16,1,1};
-    if (local_size != NULL) {
-        for (size_t i=0; i<ndim; i++) {
-            temp_local_size[i] = local_size[i];
-        }
-    }
-    
-    // Array of ints for local size (nexperiments, max_dims)
-    // With row_major ordering
-    cl_uint *input_local = NULL;
-    size_t local_bytes = 0;
-
-    // Look for the --local_file in argv, must be integer
-    for (int i=1; i<argc; i++) {   
-        if ((std::strncmp(argv[i], "--local_file", 12)==0) ||
-            (std::strncmp(argv[i], "-local_file", 11)==0)) {
-        
-            // Read the input file
-            input_local=(cl_uint*)h_read_binary("input_local.dat", &local_bytes);
-        }
-    }    
-   
-    // Get the maximum number of work items in a work group
-    size_t max_work_group_size;
-    h_errchk(
-        clGetDeviceInfo(device, 
-                        CL_DEVICE_MAX_WORK_GROUP_SIZE, 
-                        sizeof(size_t), 
-                        &max_work_group_size, 
-                        NULL),
-        "Max number of work-items a workgroup."
-    );
-
-    // Get the maximum number of dimensions supported
-    cl_uint max_work_dims;
-    h_errchk(
-        clGetDeviceInfo(device, 
-                        CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS, 
-                        sizeof(cl_uint), 
-                        &max_work_dims, 
-                        NULL),
-        "Max number of dimensions for local size."
-    );
-    
-    // Make sure dimensions are good
-    assert(ndim<=max_work_dims);
-    
-    // Get the max number of work items along
-    // dimensions of a work group
-    size_t* max_size = new size_t[max_work_dims];
-    h_errchk(
-        clGetDeviceInfo(device, 
-                        CL_DEVICE_MAX_WORK_ITEM_SIZES, 
-                        max_work_dims*sizeof(size_t), 
-                        max_size, 
-                        NULL),
-        "Max size for work items."
-    );
-    
-    if (input_local != NULL) {
-        // Find the optimal local size 
-        
-        // Number of rows to process
-        size_t nexperiments = local_bytes/(max_ndim*sizeof(cl_uint));
-        
-        // Input_local is of size (nexperiments, max_ndim)
-        
-        // Number of data points per experiment
-        size_t npoints = 2; // (avg, stdev)
-        // Output_local is of size (nexperiments, npoints)
-        size_t nbytes_output = nexperiments*npoints*sizeof(cl_double);
-        cl_double* output_local = (cl_double*)malloc(nbytes_output);
-        
-        // Array to store the statistical timings for each experiment
-        cl_double* experiment_msec = new cl_double[nstats];
-        
-        for (int n=0; n<nexperiments; n++) {
-            // Run the application
-            size_t work_group_size = 1;
-            int valid_size = 1;
-            
-            // Fill local size
-            for (int i=0; i<max_ndim; i++) {
-                temp_local_size[i]=(size_t)input_local[n*max_ndim+i];
-                work_group_size*=temp_local_size[i];
-                // Check to make sure we aren't exceeding a limit
-                valid_size*=(temp_local_size[i]<=max_size[i]);
-            }
-            
-            // Average and standard deviation
-            cl_double avg=0.0, stdev=0.0;
-            
-            if ((work_group_size <= max_work_group_size) && (valid_size > 0)) {
-                // Run the experiment nstats times and get statistical information
-                // Command queue must have profiling enabled 
-                
-                // Run function pointer here
-                
-                for (int s=0; s<nstats; s++) {
-                    experiment_msec[s] = h_run_kernel(
-                        command_queue,
-                        kernel,
-                        temp_local_size,
-                        global_size,
-                        ndim,
-                        CL_TRUE,
-                        prep_kernel,
-                        prep_data
-                    );
-                }
-
-                // Calculate the average and standard deviation
-                for (int s=0; s<nstats; s++) {
-                    avg+=experiment_msec[s]+prior_times;
-                }
-                avg/=(cl_double)nstats;
-                
-                for (int s=0; s<nstats; s++) {
-                    stdev+=((experiment_msec[s]-avg)*(experiment_msec[s]-avg));
-                }
-                stdev/=(cl_double)nstats;
-                stdev=sqrt(stdev);
-            } else {
-                // No result
-                avg = nan("");
-                stdev = nan("");
-            }
-                  
-            // Send to output array 
-            output_local[n*npoints+0] = avg;
-            output_local[n*npoints+1] = stdev;
-        }
-                            
-        h_write_binary(output_local, "output_local.dat", nbytes_output); 
-                            
-        delete[] experiment_msec;
-        free(output_local);
-        free(input_local);
-    } else {
-        // Run the kernel with just one experiment
-        cl_double experiment_msec = h_run_kernel(
-                command_queue,
-                kernel,
-                temp_local_size,
-                global_size,
-                ndim,
-                CL_TRUE,
-                prep_kernel,
-                prep_data
-        );
-        
-        std::printf("Time for kernel was %.3f ms\n", experiment_msec);
-    }
-    
-    delete[] max_size;
-}
+//// Function to run a kernel
+//cl_double h_run_kernel(
+//    cl_command_queue command_queue,
+//    cl_kernel kernel,
+//    size_t *local_size,
+//    size_t *global_size,
+//    size_t ndim,
+//    cl_bool profiling,
+//    // Function for prepping the kernel
+//    void (*prep_kernel)(cl_kernel, size_t*, size_t*, size_t, void*),
+//    void* prep_data
+//    ) {
+//    
+//    // Sort out the global size
+//    size_t *new_global = (size_t*)malloc(ndim*sizeof(size_t));
+//    std::memcpy(new_global, global_size, ndim*sizeof(size_t));
+//    h_fit_global_size(new_global, local_size, ndim);
+//    
+//    // Event management
+//    cl_event kernel_event;
+//    
+//    // How much time did the kernel take?
+//    cl_double elapsed_msec=0.0;
+//    
+//    // Prepare the kernel for execution, setting arguments etc
+//    if (prep_kernel!=NULL) {
+//        prep_kernel(kernel, local_size, new_global, ndim, prep_data);
+//    }
+//    
+//    // Enqueue the kernel
+//    cl_int errcode = clEnqueueNDRangeKernel(
+//        command_queue,
+//        kernel,
+//        ndim,
+//        NULL,
+//        new_global,
+//        local_size,
+//        0,
+//        NULL,
+//        &kernel_event);
+//    
+//    // Profiling information
+//    if ((profiling==CL_TRUE) && (errcode==CL_SUCCESS)) {
+//        elapsed_msec = h_get_event_time_ms(
+//            &kernel_event, 
+//            NULL, 
+//            NULL);
+//    } else {
+//        elapsed_msec = nan("");
+//    }
+//    
+//    // Free allocated memory
+//    free(new_global);
+//    
+//    return(elapsed_msec);
+//}
+//
+//// Function to optimise the local size
+//// if command line arguments are --local_file or -local_file
+//// read an input file called input_local.dat
+//// type == cl_uint and size == (nexperiments, ndim)
+////
+//// writes to a file called output_local.dat
+//// type == cl_double and size == (nexperiments, 2)
+//// where each line is (avd, stdev) in milli-seconds
+//void h_optimise_local(
+//        int argc,
+//        char** argv,
+//        cl_command_queue command_queue,
+//        cl_kernel kernel,
+//        cl_device_id device,
+//        // Desired global size of the problem
+//        size_t *global_size,
+//        // Desired local_size of the problem, use NULL for defaults
+//        size_t *local_size,
+//        // Number of dimensions in the kernel
+//        size_t ndim,
+//        // Number of times to run the kernel per experiment
+//        size_t nstats,
+//        double prior_times,
+//        void (*prep_kernel)(cl_kernel, size_t*, size_t*, size_t, void*),
+//        void* prep_data) {
+//    
+//    // Maximum number of dimensions permitted
+//    const int max_ndim = 3;
+//    
+//    // Terrible default for local_size
+//    size_t temp_local_size[max_ndim] = {16,1,1};
+//    if (local_size != NULL) {
+//        for (size_t i=0; i<ndim; i++) {
+//            temp_local_size[i] = local_size[i];
+//        }
+//    }
+//    
+//    // Array of ints for local size (nexperiments, max_dims)
+//    // With row_major ordering
+//    cl_uint *input_local = NULL;
+//    size_t local_bytes = 0;
+//
+//    // Look for the --local_file in argv, must be integer
+//    for (int i=1; i<argc; i++) {   
+//        if ((std::strncmp(argv[i], "--local_file", 12)==0) ||
+//            (std::strncmp(argv[i], "-local_file", 11)==0)) {
+//        
+//            // Read the input file
+//            input_local=(cl_uint*)h_read_binary("input_local.dat", &local_bytes);
+//        }
+//    }    
+//   
+//    // Get the maximum number of work items in a work group
+//    size_t max_work_group_size;
+//    h_errchk(
+//        clGetDeviceInfo(device, 
+//                        CL_DEVICE_MAX_WORK_GROUP_SIZE, 
+//                        sizeof(size_t), 
+//                        &max_work_group_size, 
+//                        NULL),
+//        "Max number of work-items a workgroup."
+//    );
+//
+//    // Get the maximum number of dimensions supported
+//    cl_uint max_work_dims;
+//    h_errchk(
+//        clGetDeviceInfo(device, 
+//                        CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS, 
+//                        sizeof(cl_uint), 
+//                        &max_work_dims, 
+//                        NULL),
+//        "Max number of dimensions for local size."
+//    );
+//    
+//    // Make sure dimensions are good
+//    assert(ndim<=max_work_dims);
+//    
+//    // Get the max number of work items along
+//    // dimensions of a work group
+//    size_t* max_size = new size_t[max_work_dims];
+//    h_errchk(
+//        clGetDeviceInfo(device, 
+//                        CL_DEVICE_MAX_WORK_ITEM_SIZES, 
+//                        max_work_dims*sizeof(size_t), 
+//                        max_size, 
+//                        NULL),
+//        "Max size for work items."
+//    );
+//    
+//    if (input_local != NULL) {
+//        // Find the optimal local size 
+//        
+//        // Number of rows to process
+//        size_t nexperiments = local_bytes/(max_ndim*sizeof(cl_uint));
+//        
+//        // Input_local is of size (nexperiments, max_ndim)
+//        
+//        // Number of data points per experiment
+//        size_t npoints = 2; // (avg, stdev)
+//        // Output_local is of size (nexperiments, npoints)
+//        size_t nbytes_output = nexperiments*npoints*sizeof(cl_double);
+//        cl_double* output_local = (cl_double*)malloc(nbytes_output);
+//        
+//        // Array to store the statistical timings for each experiment
+//        cl_double* experiment_msec = new cl_double[nstats];
+//        
+//        for (int n=0; n<nexperiments; n++) {
+//            // Run the application
+//            size_t work_group_size = 1;
+//            int valid_size = 1;
+//            
+//            // Fill local size
+//            for (int i=0; i<max_ndim; i++) {
+//                temp_local_size[i]=(size_t)input_local[n*max_ndim+i];
+//                work_group_size*=temp_local_size[i];
+//                // Check to make sure we aren't exceeding a limit
+//                valid_size*=(temp_local_size[i]<=max_size[i]);
+//            }
+//            
+//            // Average and standard deviation
+//            cl_double avg=0.0, stdev=0.0;
+//            
+//            if ((work_group_size <= max_work_group_size) && (valid_size > 0)) {
+//                // Run the experiment nstats times and get statistical information
+//                // Command queue must have profiling enabled 
+//                
+//                // Run function pointer here
+//                
+//                for (int s=0; s<nstats; s++) {
+//                    experiment_msec[s] = h_run_kernel(
+//                        command_queue,
+//                        kernel,
+//                        temp_local_size,
+//                        global_size,
+//                        ndim,
+//                        CL_TRUE,
+//                        prep_kernel,
+//                        prep_data
+//                    );
+//                }
+//
+//                // Calculate the average and standard deviation
+//                for (int s=0; s<nstats; s++) {
+//                    avg+=experiment_msec[s]+prior_times;
+//                }
+//                avg/=(cl_double)nstats;
+//                
+//                for (int s=0; s<nstats; s++) {
+//                    stdev+=((experiment_msec[s]-avg)*(experiment_msec[s]-avg));
+//                }
+//                stdev/=(cl_double)nstats;
+//                stdev=sqrt(stdev);
+//            } else {
+//                // No result
+//                avg = nan("");
+//                stdev = nan("");
+//            }
+//                  
+//            // Send to output array 
+//            output_local[n*npoints+0] = avg;
+//            output_local[n*npoints+1] = stdev;
+//        }
+//                            
+//        h_write_binary(output_local, "output_local.dat", nbytes_output); 
+//                            
+//        delete[] experiment_msec;
+//        free(output_local);
+//        free(input_local);
+//    } else {
+//        // Run the kernel with just one experiment
+//        cl_double experiment_msec = h_run_kernel(
+//                command_queue,
+//                kernel,
+//                temp_local_size,
+//                global_size,
+//                ndim,
+//                CL_TRUE,
+//                prep_kernel,
+//                prep_data
+//        );
+//        
+//        std::printf("Time for kernel was %.3f ms\n", experiment_msec);
+//    }
+//    
+//    delete[] max_size;
+//}
