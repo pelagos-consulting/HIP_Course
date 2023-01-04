@@ -14,6 +14,7 @@
 #include <cstring>
 #include <cmath>
 #include <chrono>
+#include <cstdint>
 
 // Import the HIP header
 #include <hip/hip_runtime.h>
@@ -183,22 +184,28 @@ float h_get_event_time_ms(
     return elapsed_ms;
 }
 
-void h_fit_blocks(dim3* grid_nblocks, dim3 desired_size, dim3 block_size) {
-    // Make grid_blocks big enough to fit a grid of at least desired_size
+void h_fit_blocks(dim3* grid_nblocks, dim3 global_size, dim3 block_size) {
+    // Make grid_blocks big enough to fit a grid of at least global_size
     // when blocks are of size block_size     
-    assert ((desired_size.x>0) && (block_size.x>0));
-    assert ((desired_size.y>0) && (block_size.y>0));
-    assert ((desired_size.z>0) && (block_size.z>0));
+    assert ((global_size.x>0) && (block_size.x>0));
+    assert ((global_size.y>0) && (block_size.y>0));
+    assert ((global_size.z>0) && (block_size.z>0));
 
     // Make the number of blocks
-    (*grid_nblocks).x = desired_size.x/block_size.x;
-    if ((desired_size.x % block_size.x)>0) = (*grid_nblocks).x + 1;
+    (*grid_nblocks).x = global_size.x/block_size.x;
+    if ((global_size.x % block_size.x)>0) {
+        (*grid_nblocks).x += 1;
+    }
 
-    (*grid_nblocks).y = desired_size.y/block_size.y;
-    if ((desired_size.y % block_size.y)>0) = (*grid_nblocks).y + 1;
+    (*grid_nblocks).y = global_size.y/block_size.y;
+    if ((global_size.y % block_size.y)>0) { 
+        (*grid_nblocks).y += 1;
+    }
 
-    (*grid_nblocks).z = desired_size.z/block_size.z;
-    if ((desired_size.z % block_size.z)>0) = (*grid_nblocks).z + 1;
+    (*grid_nblocks).z = global_size.z/block_size.z;
+    if ((global_size.z % block_size.z)>0) {
+        (*grid_nblocks).z += 1;
+    }
 }
 
 void* h_alloc(size_t nbytes, size_t alignment) {
@@ -305,7 +312,7 @@ void h_report_on_device(int device_id) {
 // Function to run a kernel
 float h_run_kernel(
     // Function address
-    const void* function,
+    const void* kernel_function,
     // Number of blocks to run
     dim3 num_blocks,
     // Size of each block
@@ -317,8 +324,18 @@ float h_run_kernel(
     // Which stream to use
     hipStream_t stream,
     // 0 for an ordered kernel launch, 1 for out of order kernel launch
-    int non_ordered_launch) {
+    int non_ordered_launch,
+    // Needs flags for prep_kernel_function
     
+    // Function for prepping the kernel
+    void (*prep_kernel_fun)(const void*, dim3, dim3, void*),
+    void* prep_kernel_data) {
+    
+    // Prepare the kernel for execution, setting arguments etc
+    if (prep_kernel_fun!=NULL) {
+        prep_kernel(kernel_function, num_blocks, block_size, prep_kernel_data);
+    }
+
     // Setup flags for ordered or
     int ordered_flag=0;
     if (non_ordered_launch) {
@@ -347,62 +364,6 @@ float h_run_kernel(
     return h_get_event_time_ms(t1, t2, NULL, NULL);
 }
 
-
-
-//    cl_command_queue command_queue,
-//    cl_kernel kernel,
-//    size_t *local_size,
-//    size_t *global_size,
-//    size_t ndim,
-//    cl_bool profiling,
-//    // Function for prepping the kernel
-//    void (*prep_kernel)(cl_kernel, size_t*, size_t*, size_t, void*),
-//    void* prep_data
-//    ) {
-//    
-//    // Sort out the global size
-//    size_t *new_global = (size_t*)malloc(ndim*sizeof(size_t));
-//    std::memcpy(new_global, global_size, ndim*sizeof(size_t));
-//    h_fit_global_size(new_global, local_size, ndim);
-//    
-//    // Event management
-//    cl_event kernel_event;
-//    
-//    // How much time did the kernel take?
-//    cl_double elapsed_msec=0.0;
-//    
-//    // Prepare the kernel for execution, setting arguments etc
-//    if (prep_kernel!=NULL) {
-//        prep_kernel(kernel, local_size, new_global, ndim, prep_data);
-//    }
-//    
-//    // Enqueue the kernel
-//    cl_int errcode = clEnqueueNDRangeKernel(
-//        command_queue,
-//        kernel,
-//        ndim,
-//        NULL,
-//        new_global,
-//        local_size,
-//        0,
-//        NULL,
-//        &kernel_event);
-//    
-//    // Profiling information
-//    if ((profiling==CL_TRUE) && (errcode==CL_SUCCESS)) {
-//        elapsed_msec = h_get_event_time_ms(
-//            &kernel_event, 
-//            NULL, 
-//            NULL);
-//    } else {
-//        elapsed_msec = nan("");
-//    }
-//    
-//    // Free allocated memory
-//    free(new_global);
-//    
-//    return(elapsed_msec);
-//}
 //
 //// Function to optimise the local size
 //// if command line arguments are --local_file or -local_file
@@ -410,140 +371,121 @@ float h_run_kernel(
 //// type == cl_uint and size == (nexperiments, ndim)
 ////
 //// writes to a file called output_local.dat
-//// type == cl_double and size == (nexperiments, 2)
-//// where each line is (avd, stdev) in milli-seconds
-//void h_optimise_local(
-//        int argc,
-//        char** argv,
-//        cl_command_queue command_queue,
-//        cl_kernel kernel,
-//        cl_device_id device,
-//        // Desired global size of the problem
-//        size_t *global_size,
-//        // Desired local_size of the problem, use NULL for defaults
-//        size_t *local_size,
-//        // Number of dimensions in the kernel
-//        size_t ndim,
-//        // Number of times to run the kernel per experiment
-//        size_t nstats,
-//        double prior_times,
-//        void (*prep_kernel)(cl_kernel, size_t*, size_t*, size_t, void*),
-//        void* prep_data) {
-//    
-//    // Maximum number of dimensions permitted
-//    const int max_ndim = 3;
-//    
-//    // Terrible default for local_size
-//    size_t temp_local_size[max_ndim] = {16,1,1};
-//    if (local_size != NULL) {
-//        for (size_t i=0; i<ndim; i++) {
-//            temp_local_size[i] = local_size[i];
-//        }
-//    }
-//    
-//    // Array of ints for local size (nexperiments, max_dims)
-//    // With row_major ordering
-//    cl_uint *input_local = NULL;
-//    size_t local_bytes = 0;
-//
-//    // Look for the --local_file in argv, must be integer
-//    for (int i=1; i<argc; i++) {   
-//        if ((std::strncmp(argv[i], "--local_file", 12)==0) ||
-//            (std::strncmp(argv[i], "-local_file", 11)==0)) {
-//        
-//            // Read the input file
-//            input_local=(cl_uint*)h_read_binary("input_local.dat", &local_bytes);
-//        }
-//    }    
-//   
-//    // Get the maximum number of work items in a work group
-//    size_t max_work_group_size;
-//    h_errchk(
-//        clGetDeviceInfo(device, 
-//                        CL_DEVICE_MAX_WORK_GROUP_SIZE, 
-//                        sizeof(size_t), 
-//                        &max_work_group_size, 
-//                        NULL),
-//        "Max number of work-items a workgroup."
-//    );
-//
-//    // Get the maximum number of dimensions supported
-//    cl_uint max_work_dims;
-//    h_errchk(
-//        clGetDeviceInfo(device, 
-//                        CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS, 
-//                        sizeof(cl_uint), 
-//                        &max_work_dims, 
-//                        NULL),
-//        "Max number of dimensions for local size."
-//    );
-//    
-//    // Make sure dimensions are good
-//    assert(ndim<=max_work_dims);
-//    
-//    // Get the max number of work items along
-//    // dimensions of a work group
-//    size_t* max_size = new size_t[max_work_dims];
-//    h_errchk(
-//        clGetDeviceInfo(device, 
-//                        CL_DEVICE_MAX_WORK_ITEM_SIZES, 
-//                        max_work_dims*sizeof(size_t), 
-//                        max_size, 
-//                        NULL),
-//        "Max size for work items."
-//    );
-//    
-//    if (input_local != NULL) {
-//        // Find the optimal local size 
-//        
-//        // Number of rows to process
-//        size_t nexperiments = local_bytes/(max_ndim*sizeof(cl_uint));
-//        
-//        // Input_local is of size (nexperiments, max_ndim)
-//        
-//        // Number of data points per experiment
-//        size_t npoints = 2; // (avg, stdev)
-//        // Output_local is of size (nexperiments, npoints)
-//        size_t nbytes_output = nexperiments*npoints*sizeof(cl_double);
-//        cl_double* output_local = (cl_double*)malloc(nbytes_output);
-//        
-//        // Array to store the statistical timings for each experiment
-//        cl_double* experiment_msec = new cl_double[nstats];
-//        
-//        for (int n=0; n<nexperiments; n++) {
-//            // Run the application
-//            size_t work_group_size = 1;
-//            int valid_size = 1;
-//            
-//            // Fill local size
-//            for (int i=0; i<max_ndim; i++) {
-//                temp_local_size[i]=(size_t)input_local[n*max_ndim+i];
-//                work_group_size*=temp_local_size[i];
-//                // Check to make sure we aren't exceeding a limit
-//                valid_size*=(temp_local_size[i]<=max_size[i]);
-//            }
-//            
-//            // Average and standard deviation
-//            cl_double avg=0.0, stdev=0.0;
-//            
-//            if ((work_group_size <= max_work_group_size) && (valid_size > 0)) {
-//                // Run the experiment nstats times and get statistical information
-//                // Command queue must have profiling enabled 
-//                
-//                // Run function pointer here
-//                
-//                for (int s=0; s<nstats; s++) {
-//                    experiment_msec[s] = h_run_kernel(
-//                        command_queue,
-//                        kernel,
-//                        temp_local_size,
-//                        global_size,
-//                        ndim,
-//                        CL_TRUE,
-//                        prep_kernel,
-//                        prep_data
-//                    );
-//                }
+//// type == double and size == (nexperiments, 2)
+//// where each line is (avg, stdev) in milli-seconds
+void h_optimise_local(
+        int argc,
+        char** argv,
+        // Desired global size of the problem
+        dim3 global_size,
+        // Number of times to run the kernel per experiment
+        size_t nstats,
+        float prior_times,
+        const void* kernel,
+        void (*prep_kernel_fun)(cl_kernel, size_t*, size_t*, size_t, void*),
+        void** prep_data) {
+
+    // Default local size
+    dim3 temp_block_size = {16,1,1};
+
+    // Maximum number of dimensions
+    const int max_ndim=3;
+
+    // Array of ints for local size (nexperiments, max_dims)
+    // With row_major ordering
+    uint32_t *input_local = NULL;
+    size_t local_bytes = 0;
+
+    // Look for the --local_file in argv, must be integer
+    for (int i=1; i<argc; i++) {   
+        if ((std::strncmp(argv[i], "--local_file", 12)==0) ||
+            (std::strncmp(argv[i], "-local_file", 11)==0)) {
+        
+            // Read the input file as 32-bit integers
+            input_local=(uint32_t*)h_read_binary("input_local.dat", &local_bytes);
+        }
+    }    
+   
+    // Get the device id
+    int device_id=0;
+    h_errchk(hipGetDevice(&device_id));
+
+    // Report some information on a compute device
+    hipDeviceProp_t prop;
+
+    // Get the properties of the compute device
+    h_errchk(hipGetDeviceProperties(&prop, device_id));
+
+    // Number of blocks in each dimension
+    dim3 temp_num_blocks = {1,1,1};
+
+    if (input_local != NULL) {
+        // Find the optimal local size 
+        
+        // Number of rows to process
+        size_t nexperiments = local_bytes/(max_ndim*sizeof(uint32_t));
+        
+        // Input_local is of size (nexperiments, max_ndim)
+        
+        // Number of data points per experiment
+        size_t npoints = 2; // (avg, stdev)
+        // Output_local is of size (nexperiments, npoints)
+        size_t nbytes_output = nexperiments*npoints*sizeof(double);
+        double* output_local = (double*)malloc(nbytes_output);
+        
+        // Array to store the statistical timings for each experiment
+        double* experiment_msec = new double[nstats];
+        
+        for (int n=0; n<nexperiments; n++) {
+            // Run the application
+            int nthreads = 1;
+            int valid_size = 1;
+            
+            // Fill local size
+            temp_block_size.x=(int)input_local[n*max_ndim+0];
+            valid_size*=(temp_block_size.x<=prop.maxThreadsDim[0]);
+
+            temp_block_size.y=(int)input_local[n*max_ndim+1];
+            valid_size*=(temp_block_size.y<=prop.maxThreadsDim[1]);
+            
+            temp_block_size.z=(int)input_local[n*max_ndim+2];
+            valid_size*=(temp_block_size.z<=prop.maxThreadsDim[2]);
+
+            // Size of the block in threads
+            nthreads = temp_block_size.x*temp_block_size.y*temp_block_size.z;
+            
+            // Fit the number of blocks
+            h_fit_blocks(&temp_num_blocks, global_size, temp_block_size);
+
+            // Average and standard deviation
+            cl_double avg=0.0, stdev=0.0;
+            
+            if ((nthreads <= prop.maxThreadsPerBlock) && (valid_size > 0)) {
+                // Run the experiment nstats times and get statistical information
+                // Command queue must have profiling enabled 
+                
+//// Got to here, need to have prep kernel functionality ////
+
+                // Run function pointer here                
+                for (int s=0; s<nstats; s++) {
+                    experiment_msec[s] = (double)h_run_kernel(
+                        kernel,
+                        temp_num_blocks,
+                        temp_block_size,
+                        args,
+                        // shared_bytes, need to have prep_kernel functionality
+                        0
+
+                        command_queue,
+                        kernel,
+                        temp_block_size,
+                        global_size,
+                        ndim,
+                        CL_TRUE,
+                        prep_kernel,
+                        prep_data
+                    );
+                }
 //
 //                // Calculate the average and standard deviation
 //                for (int s=0; s<nstats; s++) {
@@ -577,7 +519,7 @@ float h_run_kernel(
 //        cl_double experiment_msec = h_run_kernel(
 //                command_queue,
 //                kernel,
-//                temp_local_size,
+//                temp_block_size,
 //                global_size,
 //                ndim,
 //                CL_TRUE,
