@@ -183,20 +183,22 @@ float h_get_event_time_ms(
     return elapsed_ms;
 }
 
-void h_fit_global_size(const size_t* global_size, const size_t* local_size, size_t work_dim) {
-    // Fit global size so that an integer number of local sizes fits within it in any dimension
-    
-    // Make a readable pointer out of the constant one
-    size_t* new_global = (size_t*)global_size;
-    
-    // Make sure global size is large enough
-    for (int n=0; n<work_dim; n++) {
-        assert(global_size[n]>0);
-        assert(global_size[n]>=local_size[n]);
-        if ((global_size[n] % local_size[n]) > 0) {
-            new_global[n] = ((global_size[n]/local_size[n])+1)*local_size[n];
-        } 
-    }
+void h_fit_blocks(dim3* grid_nblocks, dim3 desired_size, dim3 block_size) {
+    // Make grid_blocks big enough to fit a grid of at least desired_size
+    // when blocks are of size block_size     
+    assert ((desired_size.x>0) && (block_size.x>0));
+    assert ((desired_size.y>0) && (block_size.y>0));
+    assert ((desired_size.z>0) && (block_size.z>0));
+
+    // Make the number of blocks
+    (*grid_nblocks).x = desired_size.x/block_size.x;
+    if ((desired_size.x % block_size.x)>0) = (*grid_nblocks).x + 1;
+
+    (*grid_nblocks).y = desired_size.y/block_size.y;
+    if ((desired_size.y % block_size.y)>0) = (*grid_nblocks).y + 1;
+
+    (*grid_nblocks).z = desired_size.z/block_size.z;
+    if ((desired_size.z % block_size.z)>0) = (*grid_nblocks).z + 1;
 }
 
 void* h_alloc(size_t nbytes, size_t alignment) {
