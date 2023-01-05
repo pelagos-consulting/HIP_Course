@@ -189,6 +189,7 @@ hipStream_t* h_create_streams(int nstreams, int blocking) {
     return streams;
 }
 
+// Release all created streams
 void h_release_streams(int nstreams, hipStream_t* streams) {
     for (int i=0; i<nstreams; i++) {
         hipStreamDestroy(streams[i]);    
