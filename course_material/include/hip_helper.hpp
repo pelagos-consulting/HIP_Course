@@ -204,7 +204,7 @@ float h_get_io_rate_MBs(float elapsed_ms, size_t nbytes) {
 }
 
 // Get how much time elapsed between two events that were recorded
-float h_get_event_time_ms(
+double h_get_event_time_ms(
         // Assumes start and stop events have been recorded
         // with the hipEventRecord() function
         hipEvent_t t1,
@@ -228,7 +228,7 @@ float h_get_event_time_ms(
         
         // Print transfer rate if nbytes is not NULL
         if (nbytes != NULL) {
-            cl_double io_rate_MBs = h_get_io_rate_MBs(
+            double io_rate_MBs = h_get_io_rate_MBs(
                 elapsed_ms, 
                 *nbytes
             );
@@ -237,7 +237,7 @@ float h_get_event_time_ms(
         std::printf("\n");
     }
     
-    return elapsed_ms;
+    return (double)elapsed_ms;
 }
 
 void h_fit_blocks(dim3* grid_nblocks, dim3 global_size, dim3 block_size) {
@@ -364,32 +364,30 @@ void h_report_on_device(int device_id) {
     std::printf("%d)\n", prop.maxGridSize[2]); 
 }
 
-
 // Function to run a kernel
 float h_run_kernel(
     // Function address
     const void* kernel_function,
+    // Arguments to the kernel function
+    void** kernel_args,
     // Number of blocks to run
     dim3 num_blocks,
     // Size of each block
     dim3 block_size,
-    // Arguments to the kernel function
-    void** args,
     // Number of shared bytes to use
-    size_t shared_bytes,
+    size_t* shared_bytes,
     // Which stream to use
     hipStream_t stream,
-    // 0 for an ordered kernel launch, 1 for out of order kernel launch
+    // 0 for an ordered kernel launch, 1 for an out of order kernel launch
     int non_ordered_launch,
+    // Function to prepare the kernel for launch
     // Needs flags for prep_kernel_function
-    
-    // Function for prepping the kernel
-    void (*prep_kernel_fun)(const void*, dim3, dim3, void*),
-    void* prep_kernel_data) {
-    
+    void (*prep_kernel_function)(const void*, void**, dim3, dim3, size_t*, void**),
+    void** prep_kernel_args) {
+
     // Prepare the kernel for execution, setting arguments etc
-    if (prep_kernel_fun!=NULL) {
-        prep_kernel(kernel_function, num_blocks, block_size, prep_kernel_data);
+    if (prep_kernel_function!=NULL) {
+        prep_kernel_function(kernel_function, kernel_args, num_blocks, block_size, shared_bytes, prep_kernel_args);
     }
 
     // Setup flags for ordered or
@@ -407,8 +405,8 @@ float h_run_kernel(
             function,
             num_blocks,
             block_size,
-            args,
-            shared_bytes,
+            kernel_args,
+            *shared_bytes,
             stream,
             t1,
             t2,
@@ -424,7 +422,7 @@ float h_run_kernel(
 //// Function to optimise the local size
 //// if command line arguments are --local_file or -local_file
 //// read an input file called input_local.dat
-//// type == cl_uint and size == (nexperiments, ndim)
+//// type == uint32_t and size == (nexperiments, ndim)
 ////
 //// writes to a file called output_local.dat
 //// type == double and size == (nexperiments, 2)
@@ -432,17 +430,27 @@ float h_run_kernel(
 void h_optimise_local(
         int argc,
         char** argv,
+        const void* kernel_function,
+        void** kernel_args,
         // Desired global size of the problem
         dim3 global_size,
+        // Default block_size
+        dim3* default_block_size
         // Number of times to run the kernel per experiment
         size_t nstats,
+        // Any prior times we should add to the result
         float prior_times,
-        const void* kernel,
-        void (*prep_kernel_fun)(cl_kernel, size_t*, size_t*, size_t, void*),
-        void** prep_data) {
+        // Function to prepare the kernel arguments and shared memory requirements
+        void (*prep_kernel_function)(const void*, void**, dim3, dim3, size_t*, void**),
+        void** prep_kernel_args) {
 
     // Default local size
     dim3 temp_block_size = {16,1,1};
+    if (initial_block_size!=NULL) {
+        temp_block_size.x = *default_block_size.x;
+        temp_block_size.y = *default_block_size.y;
+        temp_block_size.z = *default_block_size.z;
+    }
 
     // Maximum number of dimensions
     const int max_ndim=3;
@@ -469,11 +477,14 @@ void h_optimise_local(
     // Report some information on a compute device
     hipDeviceProp_t prop;
 
-    // Get the properties of the compute device
+    // Get the properties of the current compute device
     h_errchk(hipGetDeviceProperties(&prop, device_id));
 
     // Number of blocks in each dimension
     dim3 temp_num_blocks = {1,1,1};
+
+    // How many bytes do we use?
+    size_t shared_bytes=0;
 
     if (input_local != NULL) {
         // Find the optimal local size 
@@ -497,7 +508,7 @@ void h_optimise_local(
             int nthreads = 1;
             int valid_size = 1;
             
-            // Fill local size
+            // Fill temp_block_size
             temp_block_size.x=(int)input_local[n*max_ndim+0];
             valid_size*=(temp_block_size.x<=prop.maxThreadsDim[0]);
 
@@ -513,78 +524,76 @@ void h_optimise_local(
             // Fit the number of blocks
             h_fit_blocks(&temp_num_blocks, global_size, temp_block_size);
 
-            // Average and standard deviation
-            cl_double avg=0.0, stdev=0.0;
-            
+            // Average and standard deviation for statistical collection
+            double avg=0.0, stdev=0.0;
+
             if ((nthreads <= prop.maxThreadsPerBlock) && (valid_size > 0)) {
                 // Run the experiment nstats times and get statistical information
                 // Command queue must have profiling enabled 
-                
-//// Got to here, need to have prep kernel functionality ////
 
                 // Run function pointer here                
                 for (int s=0; s<nstats; s++) {
                     experiment_msec[s] = (double)h_run_kernel(
-                        kernel,
+                        kernel_function,
+                        kernel_args,
                         temp_num_blocks,
                         temp_block_size,
-                        args,
-                        // shared_bytes, need to have prep_kernel functionality
-                        0
-
-                        command_queue,
-                        kernel,
-                        temp_block_size,
-                        global_size,
-                        ndim,
-                        CL_TRUE,
-                        prep_kernel,
-                        prep_data
-                    );
+                        &shared_bytes,
+                        // Use the null stream
+                        0,
+                        // Set the flag for an ordered launch
+                        0,
+                        // Function to prepare the data for use
+                        prep_kernel_function,
+                        prep_kernel_args
+                     );
                 }
-//
-//                // Calculate the average and standard deviation
-//                for (int s=0; s<nstats; s++) {
-//                    avg+=experiment_msec[s]+prior_times;
-//                }
-//                avg/=(cl_double)nstats;
-//                
-//                for (int s=0; s<nstats; s++) {
-//                    stdev+=((experiment_msec[s]-avg)*(experiment_msec[s]-avg));
-//                }
-//                stdev/=(cl_double)nstats;
-//                stdev=sqrt(stdev);
-//            } else {
-//                // No result
-//                avg = nan("");
-//                stdev = nan("");
-//            }
-//                  
-//            // Send to output array 
-//            output_local[n*npoints+0] = avg;
-//            output_local[n*npoints+1] = stdev;
-//        }
-//                            
-//        h_write_binary(output_local, "output_local.dat", nbytes_output); 
-//                            
-//        delete[] experiment_msec;
-//        free(output_local);
-//        free(input_local);
-//    } else {
-//        // Run the kernel with just one experiment
-//        cl_double experiment_msec = h_run_kernel(
-//                command_queue,
-//                kernel,
-//                temp_block_size,
-//                global_size,
-//                ndim,
-//                CL_TRUE,
-//                prep_kernel,
-//                prep_data
-//        );
-//        
-//        std::printf("Time for kernel was %.3f ms\n", experiment_msec);
-//    }
-//    
-//    delete[] max_size;
-//}
+
+                // Calculate the average and standard deviation
+                for (int s=0; s<nstats; s++) {
+                    avg+=experiment_msec[s]+prior_times;
+                }
+                avg/=(double)nstats;
+                
+                for (int s=0; s<nstats; s++) {
+                    stdev+=((experiment_msec[s]-avg)*(experiment_msec[s]-avg));
+                }
+                stdev/=(double)nstats;
+                stdev=sqrt(stdev);
+            } else {
+                // No result
+                avg = nan("");
+                stdev = nan("");
+            }
+                  
+            // Send to output array 
+            output_local[n*npoints+0] = avg;
+            output_local[n*npoints+1] = stdev;
+        }
+                            
+        h_write_binary(output_local, "output_local.dat", nbytes_output); 
+                            
+        delete[] experiment_msec;
+        free(output_local);
+        free(input_local);
+        
+    } else {
+        // Run the kernel with just one experiment
+        // Using the default block size
+        h_fit_blocks(&temp_num_blocks, global_size, temp_block_size);
+
+        double experiment_msec = h_run_kernel(
+            kernel_function,
+            kernel_args,
+            temp_num_blocks,
+            temp_block_size,
+            &shared_bytes,
+            0,
+            0,
+            prep_kernel_function,
+            prep_kernel_args,
+        );
+        
+        std::printf("Time for kernel was %.3f ms\n", experiment_msec);
+    }
+}
