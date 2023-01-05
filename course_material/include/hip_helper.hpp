@@ -83,18 +83,77 @@ int h_parse_args(int argc, char** argv) {
 }
 
 // Function to clean devices before and after runtime
-void h_clean_devices(int* num_devices_out) {
-    
+void h_acquire_devices(int* num_devices, 
+        hipDevice_t** devices,
+        hipCtx_t **contexts,
+        // Which device id should we use to begin with?
+        int default_device_id) {
+
     // Get the number of devices
-    int num_devices=0;
-    h_errchk(hipGetDeviceCount(&num_devices));
+    h_errchk(hipGetDeviceCount(num_devices));
 
     // Check to make sure we have one or more suitable devices
-    if (num_devices == 0) {
+    if (*num_devices == 0) {
         std::printf("Failed to find a suitable compute device\n");
         exit(EXIT_FAILURE);
     }
 
+    assert (default_device_id<num_devices);
+
+    // Clean and reset devices
+    h_clean_devices(*num_devices);
+
+    // Allocate memory for devices and contexts
+    hipDevice_t* devices = (hipDevice_t*)calloc(*num_devices, sizeof(hipDevice_t));
+    hipDevice_t* contexts = (hipCtx_t*)calloc(*num_devices, sizeof(hipCtx_t));
+
+    // Reset devices
+    for (int i = 0; i<*num_devices; i++) {
+        // Fetch the device
+        h_errchk(hipDeviceGet(&devices[i], i));
+
+        // Create a context but retain the primary one, 
+        // this creates a separate context that is ready for use
+        h_errchk(hipDevicePrimaryCtxRetain(&contexts[i], devices[i]));
+    }
+
+    // Choose context 0 to start with, you can use this code to
+    // choose another context if you wish
+    h_errchk(hipCtxSetCurrent(contexts[default_device_id]));
+}
+
+// Function to clean devices before and after runtime
+void h_release_devices(int num_devices, 
+        hipDevice_t* devices,
+        hipCtx_t *contexts ) {
+    
+    // Reset contexts
+    for (int i = 0; i<num_devices; i++) {
+
+        // Set the context to the current one
+        h_errchk(hipCtxSetCurrent(contexts[i]));
+
+        // Synchronize on the context
+        h_errchk(hipCtxSynchronize());
+
+        // Destroy the context
+        h_errchk(hipCtxDestroy(contexts[i]));
+
+        // Release the primary context associated with the device
+        h_errchk(hipDevicePrimaryCtxRelease(devices[i]));
+    }
+
+    // Reset all devices
+    h_reset_devices(num_devices);
+
+    // Free memory
+    free(devices);
+    free(contexts);
+}
+
+// Function to reset devices before and after runtime
+void h_reset_devices(int num_devices) {
+    
     // Reset devices
     for (int i = 0; i<num_devices; i++) {
         // Set device
@@ -106,9 +165,6 @@ void h_clean_devices(int* num_devices_out) {
         // Reset device (destroys primary context)
         h_errchk(hipDeviceReset());
     }
-
-    // Set the number of output devices
-    *num_devices_out = num_devices;
 }
 
 // Create streams
