@@ -82,12 +82,56 @@ int h_parse_args(int argc, char** argv) {
     return(dev_index);
 }
 
+// Function to simply acquire devices
+void h_acquire_simple(int* num_devices, int default_device_id) {
+    // Initialise HIP 
+    hipInit(0);
+
+    // Get the number of devices
+    h_errchk(hipGetDeviceCount(num_devices));
+
+    // Check to make sure we have one or more suitable devices
+    if (*num_devices == 0) {
+        std::printf("Failed to find a suitable compute device\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Make sure the default device id is sane
+    assert (default_device_id<num_devices);
+
+    // Clean and reset devices
+    h_reset_devices(*num_devices);
+
+    // Set the device
+    h_errchk(hipSetDevice(default_device_id));
+}
+
+// Simple function to release devices
+void h_release_simple(int num_devices) {
+    h_reset_devices(num_devices);
+}
+
+// Function to select a compute device
+void h_set_device(
+        int num_devices, 
+        hipCtx_t* contexts,
+        int device_id) {
+
+    assert(device_id<num_devices);
+
+    // Choose the context to use
+    h_errchk(hipCtxSetCurrent(contexts[device_id]));
+}
+
 // Function to clean devices before and after runtime
 void h_acquire_devices(int* num_devices, 
         hipDevice_t** devices,
         hipCtx_t **contexts,
         // Which device id should we use to begin with?
         int default_device_id) {
+
+    // Initialise HIP
+    hipInit(0);
 
     // Get the number of devices
     h_errchk(hipGetDeviceCount(num_devices));
@@ -101,7 +145,7 @@ void h_acquire_devices(int* num_devices,
     assert (default_device_id<num_devices);
 
     // Clean and reset devices
-    h_clean_devices(*num_devices);
+    h_reset_devices(*num_devices);
 
     // Allocate memory for devices and contexts
     hipDevice_t* devices = (hipDevice_t*)calloc(*num_devices, sizeof(hipDevice_t));

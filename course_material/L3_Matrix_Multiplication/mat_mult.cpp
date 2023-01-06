@@ -14,6 +14,44 @@ Written by Dr Toby M. Potter
 // Bring in helper header to manage boilerplate code
 #include "hip_helper.hpp"
 
+// standard matrix multiply kernel 
+__global__ void mat_mult (
+        float* A_d, 
+        float* B_d, 
+        float* C_d, 
+        size_t N1_A, 
+        size_t N0_C,
+        size_t N1_C) { 
+            
+    // C is of size (N0_C, N1_C)
+    
+    // i0 and i1 represent the coordinates in Matrix C 
+    // We assume row-major ordering for the matrices
+    
+    size_t i0 = blockIdx.y * blockDim.y + hipThreadIdx.y;
+    size_t i1 = blockIdx.x * blockDim.x + hipThreadIdx.x;
+    
+    // Scratch variable
+    float temp=0.0; 
+
+    // Guard mechanism to make sure we do not go
+    // outside the boundaries of matrix C 
+    if ((i0<N0_C) && (i1<N1_C)) {
+        // Loop over columns of A and rows of B 
+        for (size_t n=0; n<N1_A; n++) {
+            
+            // A is of size (N0_C, N1_A)
+            // B is of size (N1_A, N1_C)
+            
+            // Loop across row i0 of A
+            // and down column i1 of B
+            temp+=A_d[i0*N1_A+n]*B_d[n*N1_C+i1]; 
+        } 
+        // Number of rows in C is same as number of rows in A
+        C_d[i0*N1_C+i1]=temp;
+    }
+} 
+
 int main(int argc, char** argv) {
     
     // Parse arguments and set the target device
@@ -51,7 +89,7 @@ int main(int argc, char** argv) {
     // C is of size (N0_C, N1_C)
     
     //// Step 4. Read in matrices A and B from file ////
-    uint32_t N1_A = NCOLS_A, N0_C = NROWS_C, N1_C = NCOLS_C;
+    size_t N1_A = NCOLS_A, N0_C = NROWS_C, N1_C = NCOLS_C;
     size_t nbytes_A, nbytes_B, nbytes_C;
 
     // Read the input data into arrays and sanity check
@@ -89,31 +127,18 @@ int main(int argc, char** argv) {
     h_fit_blocks(&grid_nblocks, global_size, block_size);
     
     // Got to here, run the kernel
-
-
-    // Event for the kernel
-    cl_event kernel_event;
-    
-    // Now enqueue the kernel
-    h_errchk(
-        clEnqueueNDRangeKernel(command_queue,
-                                kernel,
-                                work_dim,
-                                NULL,
-                                global_size,
-                                local_size,
-                                0,
-                                NULL,
-                                &kernel_event), 
-        "Running the kernel"
+    hipLaunchKernelGGL(mat_mult, 
+            grid_nblocks, 
+            block_size, 0, 0, 
+            A_d, B_d, C_d,
+            N1_A,
+            N0_C,
+            N1_C
     );
     
-    // Wait on the kernel to finish
-    h_errchk(
-        clWaitForEvents(1, &kernel_event),
-        "Waiting on the kernel"
-    );
-    
+    // Wait for any commands to complete on the compute device
+    hipDeviceSynchronize();
+
     //// Step 10. Copy the Buffer for matrix C back to the host ////
     h_errchk(hipMemcpy(C_h, C_d, nbytes_C, hipMemcpyDeviceToHost));
     
