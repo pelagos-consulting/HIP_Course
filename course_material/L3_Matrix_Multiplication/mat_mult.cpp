@@ -28,8 +28,8 @@ __global__ void mat_mult (
     // i0 and i1 represent the coordinates in Matrix C 
     // We assume row-major ordering for the matrices
     
-    size_t i0 = blockIdx.y * blockDim.y + hipThreadIdx.y;
-    size_t i1 = blockIdx.x * blockDim.x + hipThreadIdx.x;
+    size_t i0 = blockIdx.y * blockDim.y + threadIdx.y;
+    size_t i1 = blockIdx.x * blockDim.x + threadIdx.x;
     
     // Scratch variable
     float temp=0.0; 
@@ -57,26 +57,14 @@ int main(int argc, char** argv) {
     // Parse arguments and set the target device
     int dev_index = h_parse_args(argc, argv);
     
-    // Useful for checking HIP errors
-    hipError_t errcode;
-
     // Number of devices discovered
     int num_devices;
-
-    // Pointer to an array of devices
-    hipDevice_t *devices = NULL;
-
-    // Pointer to an array of contexts
-    hipCtx_t *contexts = NULL;
     
     //// Step 2. Discover resources ////
     
     // Helper function to acquire devices
     // This sets the default context 
-    h_acquire_devices(&num_devices,
-        &devices,
-        &contexts,
-        dev_index);
+    h_acquire_devices(&num_devices, dev_index);
         
     // Report on the device in use
     h_report_on_device(dev_index);
@@ -105,10 +93,10 @@ int main(int argc, char** argv) {
     float* C_h = (float*)calloc(nbytes_C, 1);
     
     //// Step 5. Allocate on-device memory for matrices A, B, and C ////
-    float* A_d, B_d, C_d;
-    h_errchk(hipMalloc(A_d, nbytes_A));
-    h_errchk(hipMalloc(B_d, nbytes_B));
-    h_errchk(hipMalloc(C_d, nbytes_C));
+    float *A_d, *B_d, *C_d;
+    h_errchk(hipMalloc((void**)&A_d, nbytes_A));
+    h_errchk(hipMalloc((void**)&B_d, nbytes_B));
+    h_errchk(hipMalloc((void**)&C_d, nbytes_C));
 
     //// Step 8. Upload matrices A and B from the host 
     // to the HIP device allocations ////
@@ -119,7 +107,7 @@ int main(int argc, char** argv) {
         
     // Desired block size
     dim3 block_size = { 8, 8, 1 };
-    dim3 global_size = { (int)N1_C, (int)N0_C, 1 };
+    dim3 global_size = { (uint32_t)N1_C, (uint32_t)N0_C, 1 };
     dim3 grid_nblocks;
     
     // Enlarge the global size so that 
@@ -137,7 +125,7 @@ int main(int argc, char** argv) {
     );
     
     // Wait for any commands to complete on the compute device
-    hipDeviceSynchronize();
+    h_errchk(hipDeviceSynchronize());
 
     //// Step 10. Copy the Buffer for matrix C back to the host ////
     h_errchk(hipMemcpy(C_h, C_d, nbytes_C, hipMemcpyDeviceToHost));
@@ -159,11 +147,7 @@ int main(int argc, char** argv) {
     free(B_h);
     free(C_h);
     
-    // Clean up devices, and contexts
-    h_release_devices(
-        num_devices
-        devices,
-        contexts,
-    );
+    // Clean up devices
+    h_release_devices(num_devices);
 }
 
