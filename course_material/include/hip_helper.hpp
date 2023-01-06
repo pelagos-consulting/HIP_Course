@@ -384,30 +384,30 @@ void h_report_on_device(int device_id) {
     h_errchk(hipGetDeviceProperties(&prop, device_id));
 
     // Name of the compute device
-    std::printf("\t%20s %s \n","name:", prop.name);
+    std::printf("\t%40s %s\n","name:", prop.name);
 
     // Size of global memory
-    std::printf("\t%20s %lu MB\n","global memory size:",prop.totalGlobalMem/(1000000));
+    std::printf("\t%40s %lu MB\n","global memory size:",prop.totalGlobalMem/(1000000));
 
     // Maximum number of registers per block
-    std::printf("\t%20s %d \n","available registers per block:",prop.regsPerBlock);
+    std::printf("\t%40s %d \n","available registers per block:",prop.regsPerBlock);
 
     // Maximum shared memory size per block
-    std::printf("\t%20s %lu KB\n","maximum shared memory size per block:",prop.sharedMemPerBlock/(1000));
+    std::printf("\t%40s %lu KB\n","maximum shared memory size per block:",prop.sharedMemPerBlock/(1000));
 
     // Maximum pitch size for memory copies (MB)
-    std::printf("\t%20s %lu MB\n","maximum pitch size for memory copies:",prop.memPitch/(1000000));
+    std::printf("\t%40s %lu MB\n","maximum pitch size for memory copies:",prop.memPitch/(1000000));
 
     // Print out the maximum number of threads along a dimension of a block
-    std::printf("\t%20s (", "max block size:");
+    std::printf("\t%s (", "max block size:");
     for (int n=0; n<2; n++) {
         std::printf("%d,", prop.maxThreadsDim[n]);
     }
     std::printf("%d)\n", prop.maxThreadsDim[2]); 
-    std::printf("\t%20s %d\n", "max threads in a block:", prop.maxThreadsPerBlock);
+    std::printf("\t%s %d\n", "max threads in a block:", prop.maxThreadsPerBlock);
     
     // Print out the maximum size of a Grid
-    std::printf("\t%20s (", "max Grid size:");
+    std::printf("\t%s (", "max Grid size:");
     for (int n=0; n<2; n++) {
         std::printf("%d,", prop.maxGridSize[n]);
     }
