@@ -22,7 +22,7 @@
 #define BYTE_ALIGNMENT 64
 
 // Function to check error code
-#define h_errchk(cmd) \
+#define H_ERRCHK(cmd) \
 {\
     hipError_t errcode = cmd; \
     if (errcode != hipSuccess) { \

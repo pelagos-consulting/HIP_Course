@@ -95,15 +95,15 @@ int main(int argc, char** argv) {
     //// Step 4. Allocate on-device memory for matrices A, B, and C ////
 
     float *A_d, *B_d, *C_d;
-    h_errchk(hipMalloc((void**)&A_d, nbytes_A));
-    h_errchk(hipMalloc((void**)&B_d, nbytes_B));
-    h_errchk(hipMalloc((void**)&C_d, nbytes_C));
+    H_ERRCHK(hipMalloc((void**)&A_d, nbytes_A));
+    H_ERRCHK(hipMalloc((void**)&B_d, nbytes_B));
+    H_ERRCHK(hipMalloc((void**)&C_d, nbytes_C));
 
     //// Step 5. Upload matrices A and B from the host
 
     // to the HIP device allocations ////
-    h_errchk(hipMemcpy(A_d, A_h, nbytes_A, hipMemcpyHostToDevice));
-    h_errchk(hipMemcpy(B_d, B_h, nbytes_B, hipMemcpyHostToDevice));
+    H_ERRCHK(hipMemcpy(A_d, A_h, nbytes_A, hipMemcpyHostToDevice));
+    H_ERRCHK(hipMemcpy(B_d, B_h, nbytes_B, hipMemcpyHostToDevice));
  
     //// Step 6. Run the kernel to compute C from A and B ////
         
@@ -126,10 +126,10 @@ int main(int argc, char** argv) {
     );
     
     // Wait for any commands to complete on the compute device
-    h_errchk(hipDeviceSynchronize());
+    H_ERRCHK(hipDeviceSynchronize());
 
     //// Step 7. Copy the Buffer for matrix C back to the host ////
-    h_errchk(hipMemcpy(C_h, C_d, nbytes_C, hipMemcpyDeviceToHost));
+    H_ERRCHK(hipMemcpy(C_h, C_d, nbytes_C, hipMemcpyDeviceToHost));
     
     //// Step 8. Write the contents of matrix C to disk
     
@@ -139,9 +139,9 @@ int main(int argc, char** argv) {
     //// Step 9. Clean up arrays and release resources
     
     // Free the HIP buffers
-    h_errchk(hipFree(A_d));
-    h_errchk(hipFree(B_d));
-    h_errchk(hipFree(C_d));
+    H_ERRCHK(hipFree(A_d));
+    H_ERRCHK(hipFree(B_d));
+    H_ERRCHK(hipFree(C_d));
 
     // Clean up memory that was allocated on the read   
     free(A_h);
