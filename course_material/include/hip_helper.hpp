@@ -52,7 +52,7 @@ void h_show_options(const char* name) {
     std::printf("Usage: %s <options> <DEVICE_INDEX>\n", name);
     std::printf("Options:\n");
     std::printf("\t-h,--help\t print help message\n");
-    std::printf("\tDEVICE_INDEX is a number > 0\n"); 
+    std::printf("\tDEVICE_INDEX is a number >= 0\n"); 
 }
 
 int h_parse_args(int argc, char** argv) {
@@ -383,31 +383,34 @@ void h_report_on_device(int device_id) {
     // Get the properties of the compute device
     h_errchk(hipGetDeviceProperties(&prop, device_id));
 
+    // ID of the compute device
+    std::printf("Device id: %d\n", device_id);
+
     // Name of the compute device
-    std::printf("\t%40s %s\n","name:", prop.name);
+    std::printf("\t%-40s %s\n","name:", prop.name);
 
     // Size of global memory
-    std::printf("\t%40s %lu MB\n","global memory size:",prop.totalGlobalMem/(1000000));
+    std::printf("\t%-40s %lu MB\n","global memory size:",prop.totalGlobalMem/(1000000));
 
     // Maximum number of registers per block
-    std::printf("\t%40s %d \n","available registers per block:",prop.regsPerBlock);
+    std::printf("\t%-40s %d \n","available registers per block:",prop.regsPerBlock);
 
     // Maximum shared memory size per block
-    std::printf("\t%40s %lu KB\n","maximum shared memory size per block:",prop.sharedMemPerBlock/(1000));
+    std::printf("\t%-40s %lu KB\n","maximum shared memory size per block:",prop.sharedMemPerBlock/(1000));
 
     // Maximum pitch size for memory copies (MB)
-    std::printf("\t%40s %lu MB\n","maximum pitch size for memory copies:",prop.memPitch/(1000000));
+    std::printf("\t%-40s %lu MB\n","maximum pitch size for memory copies:",prop.memPitch/(1000000));
 
     // Print out the maximum number of threads along a dimension of a block
-    std::printf("\t%s (", "max block size:");
+    std::printf("\t%-40s (", "max block size:");
     for (int n=0; n<2; n++) {
         std::printf("%d,", prop.maxThreadsDim[n]);
     }
     std::printf("%d)\n", prop.maxThreadsDim[2]); 
-    std::printf("\t%s %d\n", "max threads in a block:", prop.maxThreadsPerBlock);
+    std::printf("\t%-40s %d\n", "max threads in a block:", prop.maxThreadsPerBlock);
     
     // Print out the maximum size of a Grid
-    std::printf("\t%s (", "max Grid size:");
+    std::printf("\t%-40s (", "max Grid size:");
     for (int n=0; n<2; n++) {
         std::printf("%d,", prop.maxGridSize[n]);
     }

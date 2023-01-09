@@ -2,8 +2,7 @@
 Written by Dr Toby M. Potter
 */
 
-//// Step 1. Setup headers ////
-
+// Setup headers
 #include <cassert>
 #include <cmath>
 #include <iostream>
@@ -27,7 +26,6 @@ __global__ void mat_mult (
     
     // i0 and i1 represent the coordinates in Matrix C 
     // We assume row-major ordering for the matrices
-    
     size_t i0 = blockIdx.y * blockDim.y + threadIdx.y;
     size_t i1 = blockIdx.x * blockDim.x + threadIdx.x;
     
@@ -54,6 +52,8 @@ __global__ void mat_mult (
 
 int main(int argc, char** argv) {
     
+    //// Step 1. Parse program arguments ////
+
     // Parse arguments and set the target device
     int dev_index = h_parse_args(argc, argv);
     
@@ -75,12 +75,12 @@ int main(int argc, char** argv) {
     // A is of size (N0_C, N1_A)
     // B is of size (N1_A, N1_C)    
     // C is of size (N0_C, N1_C)
-    
-    //// Step 4. Read in matrices A and B from file ////
+
     size_t N1_A = NCOLS_A, N0_C = NROWS_C, N1_C = NCOLS_C;
     size_t nbytes_A, nbytes_B, nbytes_C;
 
-    // Read the input data into arrays and sanity check
+    //// Step 3. Read matrices A and B from file into host memory ////
+    
     float* A_h = (float*)h_read_binary("array_A.dat", &nbytes_A);
     float* B_h = (float*)h_read_binary("array_B.dat", &nbytes_B);
 
@@ -92,29 +92,30 @@ int main(int argc, char** argv) {
     // Make an array on the host to store the result (matrix C)
     float* C_h = (float*)calloc(nbytes_C, 1);
     
-    //// Step 5. Allocate on-device memory for matrices A, B, and C ////
+    //// Step 4. Allocate on-device memory for matrices A, B, and C ////
+
     float *A_d, *B_d, *C_d;
     h_errchk(hipMalloc((void**)&A_d, nbytes_A));
     h_errchk(hipMalloc((void**)&B_d, nbytes_B));
     h_errchk(hipMalloc((void**)&C_d, nbytes_C));
 
-    //// Step 8. Upload matrices A and B from the host 
+    //// Step 5. Upload matrices A and B from the host
+
     // to the HIP device allocations ////
     h_errchk(hipMemcpy(A_d, A_h, nbytes_A, hipMemcpyHostToDevice));
     h_errchk(hipMemcpy(B_d, B_h, nbytes_B, hipMemcpyHostToDevice));
  
-    //// Step 9. Run the kernel to compute C from A and B ////
+    //// Step 6. Run the kernel to compute C from A and B ////
         
     // Desired block size
     dim3 block_size = { 8, 8, 1 };
     dim3 global_size = { (uint32_t)N1_C, (uint32_t)N0_C, 1 };
     dim3 grid_nblocks;
     
-    // Enlarge the global size so that 
-    // an integer number of local sizes fits within it
+    // Choose the number of blocks so that Grid fits within it.
     h_fit_blocks(&grid_nblocks, global_size, block_size);
     
-    // Got to here, run the kernel
+    // Run the kernel
     hipLaunchKernelGGL(mat_mult, 
             grid_nblocks, 
             block_size, 0, 0, 
@@ -127,15 +128,15 @@ int main(int argc, char** argv) {
     // Wait for any commands to complete on the compute device
     h_errchk(hipDeviceSynchronize());
 
-    //// Step 10. Copy the Buffer for matrix C back to the host ////
+    //// Step 7. Copy the Buffer for matrix C back to the host ////
     h_errchk(hipMemcpy(C_h, C_d, nbytes_C, hipMemcpyDeviceToHost));
     
-    //// Step 11. Write the contents of matrix C to disk
+    //// Step 8. Write the contents of matrix C to disk
     
     // Write out the result to file
     h_write_binary(C_h, "array_C.dat", nbytes_C);
 
-    //// Step 12. Clean up arrays and release resources
+    //// Step 9. Clean up arrays and release resources
     
     // Free the HIP buffers
     h_errchk(hipFree(A_d));
