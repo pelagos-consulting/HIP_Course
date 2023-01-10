@@ -63,7 +63,7 @@ int main(int argc, char** argv) {
     //// Step 2. Discover resources ////
     
     // Helper function to acquire devices
-    // This sets the default context 
+    // This sets the default device
     h_acquire_devices(&num_devices, dev_index);
         
     // Report on the device in use

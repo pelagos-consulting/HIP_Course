@@ -98,6 +98,9 @@ void h_reset_devices(int num_devices) {
 
         // Reset device (destroys primary context)
         h_errchk(hipDeviceReset());
+
+        // Set the device to reinitialise it
+        h_errchk(hipSetDevice(i));
     }
 }
 
