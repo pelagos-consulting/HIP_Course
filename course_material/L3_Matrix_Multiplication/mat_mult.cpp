@@ -100,7 +100,6 @@ int main(int argc, char** argv) {
     H_ERRCHK(hipMalloc((void**)&C_d, nbytes_C));
 
     //// Step 5. Upload matrices A and B from the host
-
     // to the HIP device allocations ////
     H_ERRCHK(hipMemcpy(A_d, A_h, nbytes_A, hipMemcpyHostToDevice));
     H_ERRCHK(hipMemcpy(B_d, B_h, nbytes_B, hipMemcpyHostToDevice));
@@ -115,15 +114,18 @@ int main(int argc, char** argv) {
     // Choose the number of blocks so that Grid fits within it.
     h_fit_blocks(&grid_nblocks, global_size, block_size);
     
-    // Run the kernel
-    hipLaunchKernelGGL(mat_mult, 
-            grid_nblocks, 
-            block_size, 0, 0, 
-            A_d, B_d, C_d,
-            N1_A,
-            N0_C,
-            N1_C
-    );
+    // Launch the kernel using hipLaunchKernelGGL
+    //hipLaunchKernelGGL(mat_mult, 
+    //        grid_nblocks, 
+    //        block_size, 0, 0, 
+    //        A_d, B_d, C_d,
+    //        N1_A,
+    //        N0_C,
+    //        N1_C
+    //);
+    //
+    // Launch the kernel the familiar way
+    mat_mult<<<grid_nblocks, block_size, 0, 0>>>(A_d, B_d, C_d, N1_A, N0_C, N1_C);
     
     // Wait for any commands to complete on the compute device
     H_ERRCHK(hipDeviceSynchronize());

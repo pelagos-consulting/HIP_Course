@@ -78,7 +78,7 @@ int h_parse_args(int argc, char** argv) {
     
     // Make sure the index is sane
     int max_devices=0;
-    h_errchk(hipGetDeviceCount(&max_devices));
+    H_ERRCHK(hipGetDeviceCount(&max_devices));
 
     assert(dev_index<max_devices);
     assert(dev_index>=0);
@@ -91,26 +91,26 @@ void h_reset_devices(int num_devices) {
     // Reset devices
     for (int i = 0; i<num_devices; i++) {
         // Set device
-        h_errchk(hipSetDevice(i));
+        H_ERRCHK(hipSetDevice(i));
 
         // Synchronize device 
-        h_errchk(hipDeviceSynchronize());
+        H_ERRCHK(hipDeviceSynchronize());
 
         // Reset device (destroys primary context)
-        h_errchk(hipDeviceReset());
+        H_ERRCHK(hipDeviceReset());
 
         // Set the device to reinitialise it
-        h_errchk(hipSetDevice(i));
+        H_ERRCHK(hipSetDevice(i));
     }
 }
 
 // Function to simply acquire devices
 void h_acquire_devices(int* num_devices, int default_device_id) {
     // Initialise HIP 
-    h_errchk(hipInit(0));
+    H_ERRCHK(hipInit(0));
 
     // Get the number of devices
-    h_errchk(hipGetDeviceCount(num_devices));
+    H_ERRCHK(hipGetDeviceCount(num_devices));
 
     // Check to make sure we have one or more suitable devices
     if (*num_devices == 0) {
@@ -125,7 +125,7 @@ void h_acquire_devices(int* num_devices, int default_device_id) {
     h_reset_devices(*num_devices);
 
     // Set the device
-    h_errchk(hipSetDevice(default_device_id));
+    H_ERRCHK(hipSetDevice(default_device_id));
 }
 
 // Simple function to release devices
@@ -142,7 +142,7 @@ void h_release_devices(int num_devices) {
 //    assert(device_id<num_devices);
 //
 //    // Choose the context to use
-//    h_errchk(hipCtxSetCurrent(contexts[device_id]));
+//    H_ERRCHK(hipCtxSetCurrent(contexts[device_id]));
 //}
 
 //
@@ -157,7 +157,7 @@ void h_release_devices(int num_devices) {
 //    hipInit(0);
 //
 //    // Get the number of devices
-//    h_errchk(hipGetDeviceCount(num_devices));
+//    H_ERRCHK(hipGetDeviceCount(num_devices));
 //
 //    // Check to make sure we have one or more suitable devices
 //    if (*num_devices == 0) {
@@ -177,16 +177,16 @@ void h_release_devices(int num_devices) {
 //    // Reset devices
 //    for (int i = 0; i<*num_devices; i++) {
 //        // Fetch the device
-//        h_errchk(hipDeviceGet(&(*devices[i]), i));
+//        H_ERRCHK(hipDeviceGet(&(*devices[i]), i));
 //
 //        // Create a context but retain the primary one, 
 //        // this creates a separate context that is ready for use
-//        h_errchk(hipDevicePrimaryCtxRetain(&(*contexts[i]), *devices[i]));
+//        H_ERRCHK(hipDevicePrimaryCtxRetain(&(*contexts[i]), *devices[i]));
 //    }
 //
 //    // Choose context 0 to start with, you can use this code to
 //    // choose another context if you wish
-//    h_errchk(hipCtxSetCurrent(*contexts[default_device_id]));
+//    H_ERRCHK(hipCtxSetCurrent(*contexts[default_device_id]));
 //}
 //
 //// Function to clean devices before and after runtime
@@ -198,16 +198,16 @@ void h_release_devices(int num_devices) {
 //    for (int i = 0; i<num_devices; i++) {
 //
 //        // Set the context to the current one
-//        h_errchk(hipCtxSetCurrent(contexts[i]));
+//        H_ERRCHK(hipCtxSetCurrent(contexts[i]));
 //
 //        // Synchronize on the context
-//        h_errchk(hipCtxSynchronize());
+//        H_ERRCHK(hipCtxSynchronize());
 //
 //        // Destroy the context
-//        h_errchk(hipCtxDestroy(contexts[i]));
+//        H_ERRCHK(hipCtxDestroy(contexts[i]));
 //
 //        // Release the primary context associated with the device
-//        h_errchk(hipDevicePrimaryCtxRelease(devices[i]));
+//        H_ERRCHK(hipDevicePrimaryCtxRelease(devices[i]));
 //    }
 //
 //    // Reset all devices
@@ -235,7 +235,7 @@ hipStream_t* h_create_streams(int nstreams, int blocking) {
     hipStream_t* streams = (hipStream_t*)calloc((size_t)nstreams, sizeof(hipStream_t));
 
     for (int i=0; i<nstreams; i++) {
-        h_errchk(hipStreamCreateWithFlags(&streams[i], flag));
+        H_ERRCHK(hipStreamCreateWithFlags(&streams[i], flag));
     }
 
     return streams;
@@ -244,7 +244,7 @@ hipStream_t* h_create_streams(int nstreams, int blocking) {
 // Release all created streams
 void h_release_streams(int nstreams, hipStream_t* streams) {
     for (int i=0; i<nstreams; i++) {
-        h_errchk(hipStreamDestroy(streams[i]));    
+        H_ERRCHK(hipStreamDestroy(streams[i]));    
     }
 
     // Free streams array
@@ -266,14 +266,14 @@ double h_get_event_time_ms(
         size_t* nbytes) {
     
     // Make sure the stop and start events have finished
-    h_errchk(hipEventSynchronize(t2));
-    h_errchk(hipEventSynchronize(t1));
+    H_ERRCHK(hipEventSynchronize(t2));
+    H_ERRCHK(hipEventSynchronize(t1));
 
     // Elapsed time in milliseconds
     float elapsed_ms=0;
 
     // Convert the time into milliseconds
-    h_errchk(hipEventElapsedTime(&elapsed_ms, t1, t2));
+    H_ERRCHK(hipEventElapsedTime(&elapsed_ms, t1, t2));
         
     // Print the timing message if necessary
     if ((message != NULL) && (strlen(message)>0)) {
@@ -384,7 +384,7 @@ void h_report_on_device(int device_id) {
     hipDeviceProp_t prop;
 
     // Get the properties of the compute device
-    h_errchk(hipGetDeviceProperties(&prop, device_id));
+    H_ERRCHK(hipGetDeviceProperties(&prop, device_id));
 
     // ID of the compute device
     std::printf("Device id: %d\n", device_id);
@@ -450,10 +450,10 @@ float h_run_kernel(
     hipEvent_t t1=0, t2=0;
 
     // Start event recording
-    h_errchk(hipEventRecord(t1));
+    H_ERRCHK(hipEventRecord(t1));
 
     // Launch the kernel
-    h_errchk(
+    H_ERRCHK(
         hipLaunchKernel(
             kernel_function,
             num_blocks,
@@ -465,7 +465,7 @@ float h_run_kernel(
     );
 
     // Stop event recording
-    h_errchk(hipEventRecord(t2));
+    H_ERRCHK(hipEventRecord(t2));
 
     // Elapsed milliseconds
     return h_get_event_time_ms(t1, t2, NULL, NULL);
@@ -525,13 +525,13 @@ void h_optimise_local(
    
     // Get the device id
     int device_id=0;
-    h_errchk(hipGetDevice(&device_id));
+    H_ERRCHK(hipGetDevice(&device_id));
 
     // Report some information on a compute device
     hipDeviceProp_t prop;
 
     // Get the properties of the current compute device
-    h_errchk(hipGetDeviceProperties(&prop, device_id));
+    H_ERRCHK(hipGetDeviceProperties(&prop, device_id));
 
     // Number of blocks in each dimension
     dim3 temp_num_blocks = {1,1,1};
