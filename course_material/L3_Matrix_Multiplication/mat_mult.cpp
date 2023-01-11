@@ -153,7 +153,7 @@ int main(int argc, char** argv) {
     free(B_h);
     free(C_h);
     
-    // Clean up devices
-    h_release_devices(num_devices);
+    // Reset compute devices
+    h_reset_devices(num_devices);
 }
 
