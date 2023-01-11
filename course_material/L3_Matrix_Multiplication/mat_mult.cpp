@@ -15,9 +15,9 @@ Written by Dr Toby M. Potter
 
 // standard matrix multiply kernel 
 __global__ void mat_mult (
-        float* A_d, 
-        float* B_d, 
-        float* C_d, 
+        float* A, 
+        float* B, 
+        float* C, 
         size_t N1_A, 
         size_t N0_C,
         size_t N1_C) { 
@@ -43,10 +43,10 @@ __global__ void mat_mult (
             
             // Loop across row i0 of A
             // and down column i1 of B
-            temp+=A_d[i0*N1_A+n]*B_d[n*N1_C+i1]; 
+            temp+=A[i0*N1_A+n]*B[n*N1_C+i1]; 
         } 
         // Number of rows in C is same as number of rows in A
-        C_d[i0*N1_C+i1]=temp;
+        C[i0*N1_C+i1]=temp;
     }
 } 
 
@@ -113,19 +113,22 @@ int main(int argc, char** argv) {
     
     // Choose the number of blocks so that Grid fits within it.
     h_fit_blocks(&grid_nblocks, global_size, block_size);
+
+    // Amount of shared memory to use in the kernel
+    size_t sharedMemBytes=0;
     
-    // Launch the kernel using hipLaunchKernelGGL
-    //hipLaunchKernelGGL(mat_mult, 
-    //        grid_nblocks, 
-    //        block_size, 0, 0, 
-    //        A_d, B_d, C_d,
-    //        N1_A,
-    //        N0_C,
-    //        N1_C
-    //);
-    //
-    // Launch the kernel the familiar way
-    mat_mult<<<grid_nblocks, block_size, 0, 0>>>(A_d, B_d, C_d, N1_A, N0_C, N1_C);
+    // Launch the kernel using hipLaunchKernelGGL method
+    hipLaunchKernelGGL(mat_mult, 
+            grid_nblocks, 
+            block_size, sharedMemBytes, 0, 
+            A_d, B_d, C_d,
+            N1_A,
+            N0_C,
+            N1_C
+    );
+    
+    // Launch the kernel using CUDA triple Chevron syntax
+    //mat_mult<<<grid_nblocks, block_size, 0, 0>>>(A_d, B_d, C_d, N1_A, N0_C, N1_C);
     
     // Wait for any commands to complete on the compute device
     H_ERRCHK(hipDeviceSynchronize());

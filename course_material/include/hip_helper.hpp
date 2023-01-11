@@ -257,7 +257,7 @@ float h_get_io_rate_MBs(float elapsed_ms, size_t nbytes) {
 }
 
 // Get how much time elapsed between two events that were recorded
-double h_get_event_time_ms(
+float h_get_event_time_ms(
         // Assumes start and stop events have been recorded
         // with the hipEventRecord() function
         hipEvent_t t1,
@@ -290,7 +290,7 @@ double h_get_event_time_ms(
         std::printf("\n");
     }
     
-    return (double)elapsed_ms;
+    return elapsed_ms;
 }
 
 void h_fit_blocks(dim3* grid_nblocks, dim3 global_size, dim3 block_size) {
@@ -448,6 +448,9 @@ float h_run_kernel(
 
     // HIP start and stop events
     hipEvent_t t1=0, t2=0;
+    // Create the events
+    H_ERRCHK(hipEventCreate(&t1));
+    H_ERRCHK(hipEventCreate(&t2));
 
     // Start event recording
     H_ERRCHK(hipEventRecord(t1));
@@ -468,7 +471,13 @@ float h_run_kernel(
     H_ERRCHK(hipEventRecord(t2));
 
     // Elapsed milliseconds
-    return h_get_event_time_ms(t1, t2, NULL, NULL);
+    float elapsed = h_get_event_time_ms(t1, t2, NULL, NULL);
+
+    // Destroy events
+    H_ERRCHK(hipEventDestroy(t1));
+    H_ERRCHK(hipEventDestroy(t2));
+
+    return elapsed;
 }
 
 //
