@@ -10,6 +10,9 @@ Written by Dr Toby M. Potter
 // Bring in the size of the matrices
 #include "mat_size.hpp"
 
+// Bring in a library to manage matrices on the CPU
+#include "mat_helper.hpp"
+
 // Bring in helper header to manage boilerplate code
 #include "hip_helper.hpp"
 
