@@ -82,18 +82,24 @@ int main(int argc, char** argv) {
     size_t N1_A = NCOLS_A, N0_C = NROWS_C, N1_C = NCOLS_C;
     size_t nbytes_A, nbytes_B, nbytes_C;
 
-    //// Step 3. Read matrices A and B from file into host memory ////
-    
-    float* A_h = (float*)h_read_binary("array_A.dat", &nbytes_A);
-    float* B_h = (float*)h_read_binary("array_B.dat", &nbytes_B);
+    //// Step 3. Allocate memory for arrays A and B on the host ////
+    //// and fill with random numbers ////
+    nbytes_A = N0_C*N1_A*sizeof(float);
+    nbytes_B = N1_A*N1_C*sizeof(float);
 
-    // Sanity check on incoming data
-    assert(nbytes_A==N0_C*N1_A*sizeof(float));   
-    assert(nbytes_B==N1_A*N1_C*sizeof(float));
-    nbytes_C=N0_C*N1_C*sizeof(float);
-    
-    // Make an array on the host to store the result (matrix C)
-    float* C_h = (float*)calloc(nbytes_C, 1);
+    // Allocate pinned memory for the host arrays
+    float *A_h, *B_h, *C_h;
+    H_ERRCHK(hipHostMalloc((void**)&A_h, nbytes_A));
+    H_ERRCHK(hipHostMalloc((void**)&B_h, nbytes_B));
+    H_ERRCHK(hipHostMalloc((void**)&C_h, nbytes_C));
+
+    // Fill the host arrays with random numbers using the matrix library
+    m_random(A_h, N0_C, N1_A);
+    m_random(B_h, N1_A, N1_C);
+
+    // Write out the input arrays to file
+    h_write_binary(A_h, "array_A.dat", nbytes_A);
+    h_write_binary(B_h, "array_B.dat", nbytes_B);
     
     //// Step 4. Allocate on-device memory for matrices A, B, and C ////
 
@@ -137,13 +143,22 @@ int main(int argc, char** argv) {
     H_ERRCHK(hipDeviceSynchronize());
 
     //// Step 7. Copy the Buffer for matrix C back to the host ////
-    H_ERRCHK(hipMemcpy(C_h, C_d, nbytes_C, hipMemcpyDeviceToHost));
+    H_ERRCHK(hipMemcpy((void*)C_h, (const void*)C_d, nbytes_C, hipMemcpyDeviceToHost));
     
-    //// Step 8. Write the contents of matrix C to disk
+    //// Step 8. Test against a known answer, and write the contents of matrix C to disk
+    
+    // Make an array on the host to store the result (matrix C)
+    float* C_answer_h = (float*)calloc(nbytes_C, 1);
+
+    // Compute the serial solution using the matrix helper library
+    m_mat_mult(A_h, B_h, C_answer_h, N1_A, N0_C, N1_C);
+
+    // Print the maximum error between matrices
+    float max_err = m_max_error(C_h, C_answer_h, N0_C, N1_C);
     
     // Write out the result to file
     h_write_binary(C_h, "array_C.dat", nbytes_C);
-
+    
     //// Step 9. Clean up arrays and release resources
     
     // Free the HIP buffers
@@ -152,9 +167,12 @@ int main(int argc, char** argv) {
     H_ERRCHK(hipFree(C_d));
 
     // Clean up memory that was allocated on the read   
-    free(A_h);
-    free(B_h);
-    free(C_h);
+    H_ERRCHK(hipHostFree(A_h));
+    H_ERRCHK(hipHostFree(B_h));
+    H_ERRCHK(hipHostFree(C_h));
+
+    // Free the answer matrix
+    free(C_answer_h);
     
     // Reset compute devices
     h_reset_devices(num_devices);
