@@ -80,12 +80,12 @@ int main(int argc, char** argv) {
     // C is of size (N0_C, N1_C)
 
     size_t N1_A = NCOLS_A, N0_C = NROWS_C, N1_C = NCOLS_C;
-    size_t nbytes_A, nbytes_B, nbytes_C;
 
     //// Step 3. Allocate memory for arrays A and B on the host ////
     //// and fill with random numbers ////
-    nbytes_A = N0_C*N1_A*sizeof(float);
-    nbytes_B = N1_A*N1_C*sizeof(float);
+    size_t nbytes_A = N0_C*N1_A*sizeof(float);
+    size_t nbytes_B = N1_A*N1_C*sizeof(float);
+    size_t nbytes_C = N0_C*N1_C*sizeof(float);
 
     // Allocate pinned memory for the host arrays
     float *A_h, *B_h, *C_h;
@@ -96,10 +96,6 @@ int main(int argc, char** argv) {
     // Fill the host arrays with random numbers using the matrix library
     m_random(A_h, N0_C, N1_A);
     m_random(B_h, N1_A, N1_C);
-
-    // Write out the input arrays to file
-    h_write_binary(A_h, "array_A.dat", nbytes_A);
-    h_write_binary(B_h, "array_B.dat", nbytes_B);
     
     //// Step 4. Allocate on-device memory for matrices A, B, and C ////
 
@@ -145,7 +141,8 @@ int main(int argc, char** argv) {
     //// Step 7. Copy the Buffer for matrix C back to the host ////
     H_ERRCHK(hipMemcpy((void*)C_h, (const void*)C_d, nbytes_C, hipMemcpyDeviceToHost));
     
-    //// Step 8. Test against a known answer, and write the contents of matrix C to disk
+    //// Step 8. Test against a known answer,
+    //// and write the contents of matrix C to disk
     
     // Make an array on the host to store the result (matrix C)
     float* C_answer_h = (float*)calloc(nbytes_C, 1);
@@ -156,7 +153,9 @@ int main(int argc, char** argv) {
     // Print the maximum error between matrices
     float max_err = m_max_error(C_h, C_answer_h, N0_C, N1_C);
     
-    // Write out the result to file
+    // Write out the host arrays to file
+    h_write_binary(A_h, "array_A.dat", nbytes_A);
+    h_write_binary(B_h, "array_B.dat", nbytes_B);
     h_write_binary(C_h, "array_C.dat", nbytes_C);
     
     //// Step 9. Clean up arrays and release resources
