@@ -27,7 +27,17 @@ class MatMul:
         self.NROWS_C = NROWS_C
         self.NCOLS_C = NCOLS_C
         self.dtype = dtype
-        
+  
+    def run_compute(self):
+        # Run the compute
+        self.C = np.matmul(self.A, self.B, dtype = self.dtype)
+
+    def load_data(self):
+        # Load binary arrays from file if they have already been written
+        self.A = np.fromfile("array_A.dat", dtype=self.dtype).reshape((self.NROWS_C, self.NCOLS_A))
+        self.B = np.fromfile("array_B.dat", dtype=self.dtype).reshape((self.NROWS_A, self.NCOLS_C))
+        self.run_compute()
+
     def make_data(self):
     
         # A is of size (NROWS_C, NCOLS_A)
@@ -35,31 +45,31 @@ class MatMul:
         # C is of size (NROWS_C, NCOLS_C)
 
         # Make up the arrays A, B, and C
-        A = np.random.random(size = (self.NROWS_C, self.NCOLS_A)).astype(self.dtype)
-        B = np.random.random(size = (self.NCOLS_A, self.NCOLS_C)).astype(self.dtype)
+        self.A = np.random.random(size = (self.NROWS_C, self.NCOLS_A)).astype(self.dtype)
+        self.B = np.random.random(size = (self.NCOLS_A, self.NCOLS_C)).astype(self.dtype)
 
         # Make up the answer
-        self.C = np.matmul(A, B, dtype = self.dtype)
+        self.run_compute()
 
         # Write out the arrays as binary files
-        A.tofile("array_A.dat")
-        B.tofile("array_B.dat")
+        self.A.tofile("array_A.dat")
+        self.B.tofile("array_B.dat")
 
     def check_data(self):
         # Make sure we have the solution
         assert hasattr(self, "C"), "Must run make_data() before check_data()."
         
-        # Read in the output from OpenCL
-        C_ocl = np.fromfile("array_C.dat", dtype=self.dtype).reshape((self.NROWS_C, self.NCOLS_C))
+        # Read in the output from file
+        self.C_out = np.fromfile("array_C.dat", dtype=self.dtype).reshape((self.NROWS_C, self.NCOLS_C))
 
         # Make plots
         fig, axes = plt.subplots(3, 1, figsize=(6,8), sharex=True, sharey=True)
 
         # Data to plot
-        data = [self.C, C_ocl, np.abs(self.C-C_ocl)]
+        data = [self.C, self.C_out, np.abs(self.C-self.C_out)]
 
         # Labels to plot
-        labels = ["Numpy", "OpenCL", "Absolute residual"]
+        labels = ["Numpy", "Program", "Absolute residual"]
 
         for n, value in enumerate(data):
             # Plot the graph
@@ -86,6 +96,15 @@ class Hadamard:
         self.NCOLS_F = NCOLS_F
         self.dtype = dtype
         
+    def run_compute(self):
+        # Compute the transformation
+        self.F = self.D*self.E
+
+    def load_data(self):
+        # Read in the output from OpenCL
+        self.D = np.fromfile("array_D.dat", dtype=self.dtype).reshape((self.NROWS_F, self.NCOLS_F))
+        self.E = np.fromfile("array_E.dat", dtype=self.dtype).reshape((self.NROWS_F, self.NCOLS_F))
+
     def make_data(self):
     
         # D is of size (NROWS_F, NCOLS_F)
@@ -93,31 +112,31 @@ class Hadamard:
         # F is of size (NROWS_F, NCOLS_F)
 
         # Make up the arrays A, B, and C
-        D = np.random.random(size = (self.NROWS_F, self.NCOLS_F)).astype(self.dtype)
-        E = np.random.random(size = (self.NROWS_F, self.NCOLS_F)).astype(self.dtype)
+        self.D = np.random.random(size = (self.NROWS_F, self.NCOLS_F)).astype(self.dtype)
+        self.E = np.random.random(size = (self.NROWS_F, self.NCOLS_F)).astype(self.dtype)
 
         # Make up the answer using Hadamard multiplication
-        self.F = D*E
+        self.run_compute()
 
         # Write out the arrays as binary files
-        D.tofile("array_D.dat")
-        E.tofile("array_E.dat")
+        self.D.tofile("array_D.dat")
+        self.E.tofile("array_E.dat")
 
     def check_data(self):
         # Make sure we have the solution
-        assert hasattr(self, "F"), "Must run make_data() before check_data()."
+        assert hasattr(self, "F"), "Must run make_data() or load_data before check_data()."
 
         # Read in the output from OpenCL
-        F_ocl = np.fromfile("array_F.dat", dtype=self.dtype).reshape((self.NROWS_F, self.NCOLS_F))
+        self.F_out = np.fromfile("array_F.dat", dtype=self.dtype).reshape((self.NROWS_F, self.NCOLS_F))
 
         # Make plots
         fig, axes = plt.subplots(3, 1, figsize=(6,8), sharex=True, sharey=True)
 
         # Data to plot
-        data = [self.F, F_ocl, np.abs(self.F-F_ocl)]
+        data = [self.F, self.F_out, np.abs(self.F-self.F_out)]
 
         # Labels to plot
-        labels = ["Numpy", "OpenCL", "Absolute residual"]
+        labels = ["Numpy", "Program", "Absolute residual"]
 
         for n, value in enumerate(data):
             # Plot the graph
