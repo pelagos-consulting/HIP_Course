@@ -93,7 +93,8 @@ int main(int argc, char** argv) {
     H_ERRCHK(hipHostMalloc((void**)&B_h, nbytes_B));
     H_ERRCHK(hipHostMalloc((void**)&C_h, nbytes_C));
 
-    // Fill the host arrays with random numbers using the matrix library
+    // Fill the host arrays with random numbers 
+    // using the matrix helper library
     m_random(A_h, N0_C, N1_A);
     m_random(B_h, N1_A, N1_C);
     
@@ -144,10 +145,8 @@ int main(int argc, char** argv) {
     //// Step 8. Test against a known answer,
     //// and write the contents of matrix C to disk
     
-    // Make an array on the host to store the result (matrix C)
-    float* C_answer_h = (float*)calloc(nbytes_C, 1);
-
     // Compute the serial solution using the matrix helper library
+    float* C_answer_h = (float*)calloc(nbytes_C, 1);
     m_mat_mult(A_h, B_h, C_answer_h, N1_A, N0_C, N1_C);
 
     // Print the maximum error between matrices

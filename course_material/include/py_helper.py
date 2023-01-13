@@ -35,7 +35,7 @@ class MatMul:
     def load_data(self):
         # Load binary arrays from file if they have already been written
         self.A = np.fromfile("array_A.dat", dtype=self.dtype).reshape((self.NROWS_C, self.NCOLS_A))
-        self.B = np.fromfile("array_B.dat", dtype=self.dtype).reshape((self.NROWS_A, self.NCOLS_C))
+        self.B = np.fromfile("array_B.dat", dtype=self.dtype).reshape((self.NCOLS_A, self.NCOLS_C))
         self.run_compute()
 
     def make_data(self):
