@@ -81,13 +81,11 @@ void m_mat_mult(T* A, T* B, T* C, size_t N1_A, size_t N0_C, size_t N1_C) {
 
 // Function to do Hadamard (elementwise) multiplication
 template<typename T>
-void m_hadamard(T* A, T* B, T* C, size_t N1_A, size_t N0_C, size_t N1_C) {
+void m_hadamard(T* A, T* B, T* C, size_t N0_C, size_t N1_C) {
     
     for (size_t i0=0; i0<N0_C; i0++) {
         for (size_t i1=0; i1<N1_C; i1++) {
             // Temporary value
-            T temp=0;
-
             size_t offset = i0*N1_C+i1;
 
             // Set the value in C

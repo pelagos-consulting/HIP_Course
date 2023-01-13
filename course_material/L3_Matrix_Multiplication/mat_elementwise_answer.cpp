@@ -1,4 +1,4 @@
-/* Code to perform Hadamard (elementwise) multiplication using OpenCL
+/* Code to perform Hadamard (elementwise) multiplication using HIP
 Written by Dr Toby M. Potter
 */
 
@@ -8,11 +8,14 @@ Written by Dr Toby M. Potter
 #include <iostream>
 
 // Define the size of the arrays to be computed
-#define NROWS_F 520
-#define NCOLS_F 1032
+#define NROWS_F 8
+#define NCOLS_F 4
 
 // Bring in helper header to manage boilerplate code
 #include "hip_helper.hpp"
+
+// Bring in helper header to work with matrices
+#include "mat_helper.hpp"
 
 // standard matrix multiply kernel 
 __global__ void mat_elementwise (
@@ -54,7 +57,7 @@ int main(int argc, char** argv) {
     // Number of devices discovered
     int num_devices;
     
-    //// Step 2. Discover resources ////
+    //// Discover resources ////
     
     // Helper function to acquire devices
     // This sets the default context 
@@ -63,47 +66,48 @@ int main(int argc, char** argv) {
     // Report on the device in use
     h_report_on_device(dev_index);
         
-    // D, E, F is of size (N0_F, N1_F)
+    // Matrices D, E, and F are of size (N0_F, N1_F)
     size_t N0_F = NROWS_F, N1_F = NCOLS_F;
-    size_t nbytes_D, nbytes_E, nbytes_F;
 
-    // Read the input data into arrays on the host and sanity check
-    float* D_h = (float*)h_read_binary("array_D.dat", &nbytes_D);
-    float* E_h = (float*)h_read_binary("array_E.dat", &nbytes_E);
+    // Number of bytes in each matrix
+    size_t nbytes_D=N0_F*N1_F*sizeof(float);   
+    size_t nbytes_E=N0_F*N1_F*sizeof(float);
+    size_t nbytes_F=N0_F*N1_F*sizeof(float);
+    
+    // Allocate host matrices using pinned memory
+    float *D_h, *E_h, *F_h; 
+    H_ERRCHK(hipHostMalloc((void**)&D_h, nbytes_D));
+    H_ERRCHK(hipHostMalloc((void**)&E_h, nbytes_E));
+    H_ERRCHK(hipHostMalloc((void**)&F_h, nbytes_F));
+ 
+    // Fill host matrices with random numbers in the range 0, 1
+    m_random(D_h, N0_F, N1_F);
+    m_random(E_h, N0_F, N1_F);
 
-    // Sanity check on incoming data
-    assert(nbytes_D==N0_F*N1_F*sizeof(float));   
-    assert(nbytes_E==N0_F*N1_F*sizeof(float));
-    nbytes_F=N0_F*N1_F*sizeof(float);
-    
-    // Make an array to store the result in array_F
-    float* F_h = (float*)calloc(nbytes_F, 1);
-    
     // Allocate memory on device for arrays D, E, and F
     float *D_d, *E_d, *F_d;
-    
-    h_errchk(hipMalloc((void**)&D_d, nbytes_D));
-    h_errchk(hipMalloc((void**)&E_d, nbytes_E));
-    h_errchk(hipMalloc((void**)&F_d, nbytes_F));
+    H_ERRCHK(hipMalloc((void**)&D_d, nbytes_D));
+    H_ERRCHK(hipMalloc((void**)&E_d, nbytes_E));
+    H_ERRCHK(hipMalloc((void**)&F_d, nbytes_F));
     
     //// Insert code here to upload arrays D and E //// 
     //// to the compute device                     ////
     
-    h_errchk(hipMemcpy(D_d, D_h, nbytes_D, hipMemcpyHostToDevice));
-    h_errchk(hipMemcpy(E_d, E_h, nbytes_E, hipMemcpyHostToDevice));
+    H_ERRCHK(hipMemcpy(D_d, D_h, nbytes_D, hipMemcpyHostToDevice));
+    H_ERRCHK(hipMemcpy(E_d, E_h, nbytes_E, hipMemcpyHostToDevice));
 
     //// End insert code                           ////
 
     // Desired block size
-    dim3 block_size = { 8, 8, 1 };
-    dim3 global_size = { (uint32_t)N0_F, (uint32_t)N1_F, 1 };
+    dim3 block_size = { 2, 2, 1 };
+    dim3 global_size = { (uint32_t)N1_F, (uint32_t)N0_F, 1 };
     dim3 grid_nblocks;
  
     // Choose the number of blocks so that Grid fits within it.
     h_fit_blocks(&grid_nblocks, global_size, block_size);
 
     // Run the kernel
-    hipLaunchKernelGGL(mat_mult, 
+    hipLaunchKernelGGL(mat_elementwise, 
             grid_nblocks, 
             block_size, 0, 0, 
             D_d, E_d, F_d,
@@ -112,23 +116,48 @@ int main(int argc, char** argv) {
     );
 
     // Wait for any commands to complete on the compute device
-    h_errchk(hipDeviceSynchronize());
+    H_ERRCHK(hipDeviceSynchronize());
 
-    //// Step 10. Copy the Buffer for matrix C back to the host ////
-    h_errchk(hipMemcpy(F_h, F_d, nbytes_F, hipMemcpyDeviceToHost));
+    //// Copy the Buffer for matrix F back to the host ////
+    H_ERRCHK(hipMemcpy(F_h, F_d, nbytes_F, hipMemcpyDeviceToHost));
     
+    // Check the answer against a known solution
+    float* F_answer_h = (float*)calloc(nbytes_F, 1);
+    m_hadamard(D_h, E_h, F_answer_h, N0_F, N1_F);
+
+    // Print the maximum error between matrices
+    float max_err = m_max_error(F_h, F_answer_h, N0_F, N1_F);
+
+    std::cout << "The output array is\n";
+    m_show_matrix(F_h, N0_F, N1_F);
+
+    std::cout << "The computed solution is\n";
+    m_show_matrix(F_answer_h, N0_F, N1_F);
+
+        std::cout << "The input array D is\n";
+    m_show_matrix(D_h, N0_F, N1_F);
+
+    std::cout << "The input array E is\n";
+    m_show_matrix(E_h, N0_F, N1_F);
+
+
     // Write out the result to file
+    h_write_binary(D_h, "array_D.dat", nbytes_D);
+    h_write_binary(E_h, "array_E.dat", nbytes_E);
     h_write_binary(F_h, "array_F.dat", nbytes_F);
 
     // Free the HIP buffers
-    h_errchk(hipFree(D_d));
-    h_errchk(hipFree(E_d));
-    h_errchk(hipFree(F_d));
+    H_ERRCHK(hipFree(D_d));
+    H_ERRCHK(hipFree(E_d));
+    H_ERRCHK(hipFree(F_d));
 
-    // Clean up memory that was allocated on the read   
-    free(D_h);
-    free(E_h);
-    free(F_h);
+    // Free the HIP buffers
+    H_ERRCHK(hipHostFree(D_h));
+    H_ERRCHK(hipHostFree(E_h));
+    H_ERRCHK(hipHostFree(F_h));
+
+    // Clean up memory that was allocated for the answer 
+    free(F_answer_h);
     
     // Clean up devices
     h_release_devices(num_devices);
