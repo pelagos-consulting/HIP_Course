@@ -3,6 +3,7 @@
 #include <random>
 #include <ctime>
 #include <iostream>
+#include <iomanip>
 
 // Function to generate a matrix
 template<typename T>
@@ -33,6 +34,7 @@ void m_show_matrix(T* src, size_t N0, size_t N1) {
 
     std::cout << "\n";
 
+    // Pretty print the matrix
     for (size_t i0=0; i0<N0; i0++) {
 
         for (size_t i1=0; i1<N1; i1++) {
@@ -42,7 +44,7 @@ void m_show_matrix(T* src, size_t N0, size_t N1) {
                 std::cout << "|";
             }
 
-            std::cout << " " << src[offset];
+            std::cout << " " << std::setw(9) << src[offset];
 
             if (i1 == N1-1) {
                 std::cout << " |\n";
@@ -96,14 +98,14 @@ void m_hadamard(T* A, T* B, T* C, size_t N0_C, size_t N1_C) {
 
 // Function to find the maximum error between two matrices
 template<typename T>
-T m_max_error(T* M0, T* M1, size_t N0_A, size_t N1_A) {
+T m_max_error(T* M0, T* M1, size_t N0, size_t N1) {
     
     // Maximum error in a matrix
     T max_error = 0;
 
-    for (size_t i0=0; i0<N0_A; i0++) {
-        for (size_t i1=0; i1<N1_A; i1++) {
-            size_t offset = i0*N1_A + i1;
+    for (size_t i0=0; i0<N0; i0++) {
+        for (size_t i1=0; i1<N1; i1++) {
+            size_t offset = i0*N1 + i1;
             max_error = std::fmax(max_error, std::fabs(M0[offset]-M1[offset]));
         }
     }
@@ -112,4 +114,13 @@ T m_max_error(T* M0, T* M1, size_t N0_A, size_t N1_A) {
     return max_error;
 }
 
-
+template<typename T>
+void m_residual(T* A, T* B, T* C, size_t N0, size_t N1) {
+    // Function to compute the residual bewteen two matrices
+    for (size_t i0=0; i0<N0; i0++) {
+        for (size_t i1=0; i1<N1; i1++) {
+            size_t offset = i0*N1 + i1;
+            C[offset] = A[offset]-B[offset];
+        }
+    }
+}

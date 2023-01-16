@@ -7,7 +7,7 @@ Written by Dr Toby M. Potter
 #include <sys/stat.h>
 #include <iostream>
 
-// Define the size of the arrays to be computed
+// Define the size of the arrays to be computed - its really small!
 #define NROWS_F 8
 #define NCOLS_F 4
 
@@ -51,7 +51,7 @@ __global__ void mat_elementwise (
 
 int main(int argc, char** argv) {
     
-    // Parse arguments and set the target device
+    // Parse arguments and choose the index of the target device
     int dev_index = h_parse_args(argc, argv);
     
     // Number of devices discovered
@@ -123,23 +123,29 @@ int main(int argc, char** argv) {
     
     // Check the answer against a known solution
     float* F_answer_h = (float*)calloc(nbytes_F, 1);
+    float* F_residual_h = (float*)calloc(nbytes_F, 1);
+
+    // Compute the known solution
     m_hadamard(D_h, E_h, F_answer_h, N0_F, N1_F);
 
-    // Print the maximum error between matrices
-    float max_err = m_max_error(F_h, F_answer_h, N0_F, N1_F);
+    // Compute the residual between F_h and F_answer_h
+    m_residual(F_answer_h, F_h, F_residual_h, N0_F, N1_F);
 
-    std::cout << "The output array is\n";
+    // Pretty print matrices
+    std::cout << "The output array F_h (as computed with HIP) is\n";
     m_show_matrix(F_h, N0_F, N1_F);
 
-    std::cout << "The computed solution is\n";
+    std::cout << "The CPU solution (F_answer_h) is \n";
     m_show_matrix(F_answer_h, N0_F, N1_F);
+    
+    std::cout << "The residual (F_answer_h-F_h) is\n";
+    m_show_matrix(F_residual_h, N0_F, N1_F);
 
-        std::cout << "The input array D is\n";
-    m_show_matrix(D_h, N0_F, N1_F);
+    //std::cout << "The input array (D_h) is\n";
+    //m_show_matrix(D_h, N0_F, N1_F);
 
-    std::cout << "The input array E is\n";
-    m_show_matrix(E_h, N0_F, N1_F);
-
+    //std::cout << "The input array (E_h) is\n";
+    //m_show_matrix(E_h, N0_F, N1_F);
 
     // Write out the result to file
     h_write_binary(D_h, "array_D.dat", nbytes_D);
@@ -156,8 +162,9 @@ int main(int argc, char** argv) {
     H_ERRCHK(hipHostFree(E_h));
     H_ERRCHK(hipHostFree(F_h));
 
-    // Clean up memory that was allocated for the answer 
+    // Clean up memory that was allocated on the host using calloc
     free(F_answer_h);
+    free(F_residual_h);
     
     // Clean up devices
     h_release_devices(num_devices);
