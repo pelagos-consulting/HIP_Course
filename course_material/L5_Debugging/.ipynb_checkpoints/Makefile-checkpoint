@@ -6,11 +6,14 @@ include ../env
 INC_DIR=../include
 
 # List of applications to target
-TARGETS=mat_mult.exe mat_elementwise.exe mat_elementwise_answer.exe
+TARGETS=mat_mult.exe mat_mult_badmem.exe 
 
-all: $(TARGETS)
+# mat_mult_printf.exe mat_mult_badmem_gdb.exe mat_elementwise_buggy.exe # mat_elementwise_answer.exe
 
-# Kernel dependencies
+all: $(TARGETS) 
+
+# Override CXXFLAGS
+CXXFLAGS := $(CXXFLAGS) -ggdb
 
 # General compilation step
 %.exe: %.cpp

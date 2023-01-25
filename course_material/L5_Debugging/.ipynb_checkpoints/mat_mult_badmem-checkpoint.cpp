@@ -16,7 +16,7 @@ Written by Dr Toby M. Potter
 // Bring in helper header to manage boilerplate code
 #include "hip_helper.hpp"
 
-// standard matrix multiply kernel 
+// standard matrix multiply kernel without a guard check
 __global__ void mat_mult (
         float* A, 
         float* B, 
@@ -37,7 +37,7 @@ __global__ void mat_mult (
 
     // Guard mechanism to make sure we do not go
     // outside the boundaries of matrix C 
-    if ((i0<N0_C) && (i1<N1_C)) {
+    //if ((i0<N0_C) && (i1<N1_C)) {
         // Loop over columns of A and rows of B 
         for (size_t n=0; n<N1_A; n++) {
             
@@ -50,7 +50,7 @@ __global__ void mat_mult (
         } 
         // Number of rows in C is same as number of rows in A
         C[i0*N1_C+i1]=temp;
-    }
+    //}
 } 
 
 int main(int argc, char** argv) {
@@ -117,7 +117,7 @@ int main(int argc, char** argv) {
     //// from A_d and B_d on the device ////
         
     // Desired block size
-    dim3 block_size = { 8, 8, 1 };
+    dim3 block_size = { 16, 4, 1 };
     dim3 global_size = { (uint32_t)N1_C, (uint32_t)N0_C, 1 };
     dim3 grid_nblocks;
     
