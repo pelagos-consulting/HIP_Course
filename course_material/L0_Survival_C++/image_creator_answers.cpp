@@ -1,6 +1,12 @@
 #include <cstdio>
 #include <iostream>
 
+// Helper routines to work with matrices
+#include "mat_helper.hpp"
+
+// Get the size of the matrices
+#include "mat_size.hpp"
+
 // Function to compute the square of two numbers
 float square(int x, int y) {
     return (float)x * (float)y;
@@ -25,7 +31,7 @@ int main(int argc, char** argv) {
     std::printf("b interpreted as a character: %c\n", b); // print b with the memory interpreted as a character
 
     // Making a string from characters
-    char str[] = {'a', 'b', 'c', 'd'};
+    char str[] = {'a', 'b', 'c', 'd', '\0'};
     std::printf("%s\n", str);
 
     // Declaring floating point value
@@ -36,9 +42,7 @@ int main(int argc, char** argv) {
     // Printing floats
     std::printf("float representation, x = %f y = %f\n", x, y); // Print x and y to the screen with their memory interpreted as floats
 
-    // Now fill a 2D array with squares
-    int N0=512; // Number of elements in dim 0 
-    int N1=1024; // Number of elements in dim 1
+    // The constants N0 and N1 were defined in the file mat_size.hpp
 
     // Make up strides for multi-dimensional indexing, use row-major ordering
     int s0 = N1;
@@ -47,7 +51,7 @@ int main(int argc, char** argv) {
     // Make up array and fill it using nested for loops
     float *arr = (float*)calloc((size_t)(N0*N1), sizeof(float));
 
-    for (int i0=0; i0 < N1; i0++) {
+    for (int i0=0; i0 < N0; i0++) {
         for (int i1=0; i1 < N1; i1++) {
             // Use the dot product to make up the position in the allocation
             int offset = i0*s0 + i1*s1;
@@ -56,6 +60,9 @@ int main(int argc, char** argv) {
             arr[offset] = square(i0, i1);
         }
     }
+
+    // Print the array
+    m_show_matrix(arr, (size_t)N0, (size_t)N1);
 
     // Write the array to disk
     const char *fname = "image.dat";
