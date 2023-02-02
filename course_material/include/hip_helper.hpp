@@ -19,21 +19,28 @@
 // Import the HIP header
 #include <hip/hip_runtime.h>
 
+// Align all memory allocations to this byte boundary
 #define BYTE_ALIGNMENT 64
 
-// Function to check error code
+// Function to check error codes
+void h_errchk(hipError_t errcode, const char* message) {
+    // Function to check the error code
+    if (errcode != hipSuccess) { 
+        const char* errstring = hipGetErrorString(errcode); 
+        std::fprintf( 
+            stderr, 
+            "Error, HIP call failed at %s, error string is: %s\n", 
+            message, 
+            errstring 
+        ); 
+        exit(EXIT_FAILURE); 
+    }
+}
+
+// Macro to check error codes
 #define H_ERRCHK(cmd) \
 {\
-    hipError_t errcode = cmd; \
-    if (errcode != hipSuccess) { \
-        const char* errstring = hipGetErrorString(errcode); \
-        std::fprintf( \
-            stderr, \
-            "Error, HIP call failed at file %s, line %d\n Error string is: %s\n", \
-            __FILE__, __LINE__, errstring \
-        ); \
-        exit(EXIT_FAILURE); \
-    }\
+    h_errchk(cmd, "__FILE__:__LINE__");\
 }
 
 size_t h_lcm(size_t n1, size_t n2) {
