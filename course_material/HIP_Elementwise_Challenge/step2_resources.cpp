@@ -6,7 +6,7 @@
 
     // Check to make sure we have one or more suitable devices,
     // and we chose a sane index
-    if ((num_devices == 0) || (dev_index>=num_devices)) {
+    if ((num_devices == 0) || (dev_index >= num_devices)) {
         std::printf("Failed to find a suitable compute device\n");
         exit(EXIT_FAILURE);
     }

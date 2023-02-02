@@ -32,7 +32,6 @@ __global__ void mat_elementwise (
     size_t i0 = blockIdx.y * blockDim.y + threadIdx.y;
     size_t i1 = blockIdx.x * blockDim.x + threadIdx.x;
 
-
     //// Step 1. Insert missing kernel code ////
     //// To perform Hadamard matrix multiplication ////
   

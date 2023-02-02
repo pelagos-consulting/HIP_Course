@@ -11,6 +11,3 @@
         // Number of rows in C is same as number of rows in A
         F[offset]=D[offset]*E[offset];
     }
-
-    //// End insert code ////
-

@@ -3,4 +3,3 @@
     H_ERRCHK(hipMalloc((void**)&D_d, nbytes_D));
     H_ERRCHK(hipMalloc((void**)&E_d, nbytes_E));
     H_ERRCHK(hipMalloc((void**)&F_d, nbytes_F));
-
