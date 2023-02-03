@@ -97,7 +97,7 @@ int main(int argc, char** argv) {
     // Make an array to store the result in array_F
     cl_float* array_F = (cl_float*)calloc(nbytes_F, 1);
     
-    // Make Buffers on the compute device for matrices A, B, and C
+    // Make Buffers on the compute device for matrices D, E, and F
     cl_mem buffer_D = clCreateBuffer(context, 
                                      CL_MEM_READ_WRITE, 
                                      nbytes_D, 
@@ -196,7 +196,7 @@ int main(int argc, char** argv) {
     size_t work_dim=2;
     
     // Desired local size
-    const size_t local_size[]={ 4, 16 };
+    const size_t local_size[]={ 16, 16 };
     
     // Desired global_size
     const size_t global_size[]={ N0_F, N1_F };
