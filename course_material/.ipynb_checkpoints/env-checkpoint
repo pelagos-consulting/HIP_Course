@@ -11,12 +11,21 @@ endif
 
 # Compiler locations
 CXX=hipcc
-CXXFLAGS=-std=c++11 -g -O2 -fopenmp
+CXXFLAGS=-O2 -fopenmp
+
+# gfx90a is the architecture for Setonix
+ifeq ($(DEBUG), true)
+    CXXFLAGS=-O0 -ggdb -fopenmp --offload-arch=gfx90a --offload-arch=gfx1035
+endif
+
 BASE_INC_DIR=/usr/include
 BASE_LIB_DIR=/usr/lib/x86_64-linux-gnu
 BASE_LIB_FLAGS=
 
 ifeq ($(HIP_PLATFORM), nvidia)
-    CXXFLAGS=-g -O2 -Xcompiler -fopenmp -Xcompiler -std=c++11
+    CXXFLAGS=-O2 -Xcompiler -fopenmp
+    ifeq ($(DEBUG), true)
+        CXXFLAGS=-g -G -gencode arch=compute_86,code=sm_86 -Xcompiler -fopenmp
+    endif
     BASE_LIB_FLAGS=-lgomp
 endif

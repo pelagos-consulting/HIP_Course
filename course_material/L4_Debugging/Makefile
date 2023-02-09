@@ -1,3 +1,5 @@
+# Set debugging flag
+DEBUG=true
 
 # Include general environment variables
 include ../env
@@ -9,9 +11,6 @@ INC_DIR=../include
 TARGETS=mat_mult.exe mat_mult_bug.exe mat_mult_memcheck.exe mat_mult_printf.exe mat_elementwise_answer.exe mat_elementwise.exe
 
 all: $(TARGETS) 
-
-# Override CXXFLAGS
-CXXFLAGS := $(CXXFLAGS) -ggdb -O0
 
 # General compilation step
 %.exe: %.cpp

@@ -32,9 +32,6 @@ __global__ void mat_hadamard (
     size_t i0 = blockIdx.y * blockDim.y + threadIdx.y;
     size_t i1 = blockIdx.x * blockDim.x + threadIdx.x;
     
-    // Scratch variable
-    float temp=0.0; 
-
     // Guard mechanism to make sure we do not go
     // outside the boundaries of matrix C 
     if ((i0<N0_F) && (i1<N1_F)) {
