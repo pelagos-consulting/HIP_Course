@@ -460,7 +460,7 @@ float h_run_kernel(
     H_ERRCHK(hipEventCreate(&t2));
 
     // Start event recording
-    H_ERRCHK(hipEventRecord(t1));
+    H_ERRCHK(hipEventRecord(t1, stream));
 
     // Launch the kernel
     H_ERRCHK(
@@ -475,7 +475,7 @@ float h_run_kernel(
     );
 
     // Stop event recording
-    H_ERRCHK(hipEventRecord(t2));
+    H_ERRCHK(hipEventRecord(t2, stream));
 
     // Elapsed milliseconds
     float elapsed = h_get_event_time_ms(t1, t2, NULL, NULL);
