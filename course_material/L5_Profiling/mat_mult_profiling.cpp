@@ -117,14 +117,14 @@ int main(int argc, char** argv) {
     //// Step 5. 1. Upload matrices A_h and B_h from the host //// 
     //// to A_d and B_d on the device ////
     
-    // Start the recorder
+    // Record the start event into the default stream
     H_ERRCHK(hipEventRecord(t1,0));
     
     // Peform the memory copies
     H_ERRCHK(hipMemcpy(A_d, A_h, nbytes_A, hipMemcpyHostToDevice));
     H_ERRCHK(hipMemcpy(B_d, B_h, nbytes_B, hipMemcpyHostToDevice));
     
-    // Stop the recorder
+    // Record the stop event into the default stream
     H_ERRCHK(hipEventRecord(t2,0));
 
     // Get the elapsed time in milliseconds
@@ -146,7 +146,7 @@ int main(int argc, char** argv) {
     // Amount of shared memory to use in the kernel
     size_t sharedMemBytes=0;
     
-    // Record the kernel timer
+    // Record the start event into the default stream
     H_ERRCHK(hipEventRecord(t1,0));
 
     // Launch the kernel using hipLaunchKernelGGL method
@@ -159,7 +159,7 @@ int main(int argc, char** argv) {
             N1_C
     );
 
-    // Stop the kernel timer
+    // Record the stop event into the default stream
     H_ERRCHK(hipEventRecord(t2,0));
 
     // Get the elapsed time in milliseconds
