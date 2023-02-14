@@ -1,9 +1,7 @@
-# Perf counters group 1
-pmc : Wavefronts VALUInsts VFetchInsts VWriteInsts VALUUtilization VALUBusy WriteSize
-pmc : SALUInsts SFetchInsts LDSInsts FlatLDSInsts GDSInsts SALUBusy FetchSize
-pmc : L2CacheHit MemUnitBusy MemUnitStalled WriteUnitStalled ALUStalledByLDS LDSBankConflict
-# Filter by dispatches range, GPU index and kernel names
-# supported range formats: "3:9", "3:", "3"
-range: 0:
+# GPUBusy: amount of time the GPU is working
+# Wavefronts: number of wavefronts exectued
+# L2CacheHit: percentage of time the execution found data in the L2 cache
+pmc : GPUBusy Wavefronts L2CacheHit
+range: 0:1
 gpu: 0
 kernel: mat_mult
