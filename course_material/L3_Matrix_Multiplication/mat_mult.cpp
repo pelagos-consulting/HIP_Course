@@ -46,7 +46,7 @@ __global__ void mat_mult (
             
             // Loop across row i0 of A
             // and down column i1 of B
-            temp+=A[i0*N1_A+n]*B[n*N1_C+i1]; 
+            temp+=A[i0*N1_A+n]*B[i1+n*N1_C]; 
         } 
         // Number of rows in C is same as number of rows in A
         C[i0*N1_C+i1]=temp;
