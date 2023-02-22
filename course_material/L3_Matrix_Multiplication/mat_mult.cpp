@@ -25,10 +25,12 @@ __global__ void mat_mult (
         size_t N0_C,
         size_t N1_C) { 
             
-    // C is of size (N0_C, N1_C)
+    // A is of size (N0_C, N1_A)
+    // B is of size (N1_A, N1_C)
+    // C is of size (N0_C, N1_C)    
     
     // i0 and i1 represent the coordinates in Matrix C 
-    // We assume row-major ordering for the matrices
+    // We use row-major ordering for the matrices
     size_t i0 = blockIdx.y * blockDim.y + threadIdx.y;
     size_t i1 = blockIdx.x * blockDim.x + threadIdx.x;
     
@@ -38,7 +40,11 @@ __global__ void mat_mult (
     // Guard mechanism to make sure we do not go
     // outside the boundaries of matrix C 
     if ((i0<N0_C) && (i1<N1_C)) {
-        // Loop over columns of A and rows of B 
+        
+        // Get the offset within the memory allocation of C
+        size_t offset = i0*N1_C+i1;
+        
+        // Loop over columns of A and rows of B
         for (size_t n=0; n<N1_A; n++) {
             
             // A is of size (N0_C, N1_A)
@@ -47,9 +53,13 @@ __global__ void mat_mult (
             // Loop across row i0 of A
             // and down column i1 of B
             temp+=A[i0*N1_A+n]*B[i1+n*N1_C]; 
-        } 
-        // Number of rows in C is same as number of rows in A
-        C[i0*N1_C+i1]=temp;
+        }
+        
+        // Set the value in C at offset
+        C[offset]=temp;
+        
+        // Uncomment this to perform elementwise matrix multiplication instead
+        // C[offset]=A[offset]*B[offset];
     }
 } 
 
@@ -152,6 +162,9 @@ int main(int argc, char** argv) {
     // Compute the serial solution using the matrix helper library
     float* C_answer_h = (float*)calloc(nbytes_C, 1);
     m_mat_mult(A_h, B_h, C_answer_h, N1_A, N0_C, N1_C);
+    
+    // Uncomment this to check against elementwise matrix multiplication
+    // m_hadamard(A_h, B_h, C_answer_h, N0_C, N1_C);
 
     // Print the maximum error between matrices
     float max_err = m_max_error(C_h, C_answer_h, N0_C, N1_C);
