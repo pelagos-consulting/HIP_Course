@@ -1,0 +1,20 @@
+  StartAddress   AddressRange  #Instructions  Ratio Linkage Visibility  Module                           Function                                     FunctionSignature                           
+0x7fca066b6050           5420           1191   4.55   global    default libamdhip64.so.5.4.50401         hipDeviceGetAttribute                        hipDeviceGetAttribute                       
+0x7fca06827f80           5666           1246   4.55   global    default libamdhip64.so.5.4.50401         hipDeviceGetP2PAttribute                     hipDeviceGetP2PAttribute                    
+0x7fca068aa710           5379           1152   4.67   global    default libamdhip64.so.5.4.50401         hipGLGetDevices                              hipGLGetDevices                             
+0x7fca068af640           7261           1566   4.64   global    default libamdhip64.so.5.4.50401         hipGraphicsGLRegisterBuffer                  hipGraphicsGLRegisterBuffer                 
+0x7fca068abc20          14871           3111   4.78   global    default libamdhip64.so.5.4.50401         hipGraphicsGLRegisterImage                   hipGraphicsGLRegisterImage                  
+0x7fca068a7ca0           5863           1273   4.61   global    default libamdhip64.so.5.4.50401         hipGraphicsMapResources                      hipGraphicsMapResources                     
+0x7fca068b12a0           5061           1115   4.54   global    default libamdhip64.so.5.4.50401         hipGraphicsSubResourceGetMappedArray         hipGraphicsSubResourceGetMappedArray        
+0x7fca068a9390           4991           1078   4.63   global    default libamdhip64.so.5.4.50401         hipGraphicsUnmapResources                    hipGraphicsUnmapResources                   
+0x7fca068b9fe0           4567           1056   4.32   global    default libamdhip64.so.5.4.50401         hipMemCreate                                 hipMemCreate                                
+0x7fca067516d0           5099           1108   4.60   global    default libamdhip64.so.5.4.50401         hipMemPrefetchAsync                          hipMemPrefetchAsync                         
+0x7fca080c8310           7920           1782   4.44  unknown    unknown libomp.so                        __kmp_affinity_create_cpuinfo_map            __kmp_affinity_create_cpuinfo_map           
+0x7fca08081d00           5876           1216   4.83    local    default libomp.so                        __kmp_allocate_team                          __kmp_allocate_team                         
+0x7fca080c3de0           5669           1298   4.37  unknown    unknown libomp.so                        __kmp_aux_affinity_initialize                __kmp_aux_affinity_initialize               
+0x7fca080fad10           6568           1507   4.36  unknown    unknown libomp.so                        __kmp_check_deps                             __kmp_check_deps                            
+0x7fca08092d20          15592           3882   4.02  unknown    unknown libomp.so                        __kmp_stg_parse_affinity                     __kmp_stg_parse_affinity                    
+0x7fca0809f8c0          16569           4654   3.56  unknown    unknown libomp.so                        __kmp_stg_parse_allocator                    __kmp_stg_parse_allocator                   
+0x7fca0809ae30           5251           1338   3.92  unknown    unknown libomp.so                        __kmp_stg_parse_omp_schedule                 __kmp_stg_parse_omp_schedule                
+0x7fca08098230           4268           1113   3.83  unknown    unknown libomp.so                        __kmp_stg_parse_places                       __kmp_stg_parse_places                      
+0x7fca080c0940           6659           1490   4.47  unknown    unknown libomp.so                        kmp_topology_t::filter_hw_subset             kmp_topology_t::filter_hw_subset            
