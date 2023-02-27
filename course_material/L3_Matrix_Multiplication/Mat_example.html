@@ -15666,15 +15666,15 @@ Options:
 </pre></div>
 <p>The first five parameters are part of the kernel launch:</p>
 <ul>
-<li>kernel_name (mat_mult)</li>
-<li>number of blocks along each dimension of the grid (grid_nblocks)</li>
-<li>number of threads along each dimension of a block (block_size)</li>
-<li>number of bytes to allocate for shared memory (sharedMemBytes)</li>
-<li>Stream to use (0 is the null or default stream).</li>
+<li><strong>mat_mult</strong>, the name of the kernel.</li>
+<li><strong>grid_nblocks</strong>, the number of blocks along each dimension of the grid.</li>
+<li><strong>block_size</strong>, the number of threads along each dimension of a block.</li>
+<li><strong>sharedMemBytes</strong>, number of bytes to allocate for shared memory.</li>
+<li><strong>0</strong>, the stream to use (0 is the null or default stream).</li>
 </ul>
 <blockquote><p>Note: A stream is a queue where work (such as kernels and copies) is submitted. HIP has the ability to perform work concurrently using multiple streams. The default stream (stream 0) is the stream we use when we aren't trying to perform concurrent operations. Streams and concurrent operations are a topic for the more advanced modules.</p>
 </blockquote>
-<p>The next 6 parameters (A_d...) are for the kernel itself. Kernel launches are asynchronous in the sense that the <strong>hipLaunchKernelGGL</strong> macro returns immmediately. We also could have used the CUDA triple chevron (&lt;&lt;&lt; &gt;&gt;&gt;) syntax to launch kernels, however this is not as capable as <strong>hipLaunchKernelGGL</strong>.</p>
+<p>The next 6 parameters (e.g. A_d...) are for the kernel itself. Kernel launches are asynchronous in the sense that the <strong>hipLaunchKernelGGL</strong> macro returns immmediately. We also could have used the CUDA triple chevron (&lt;&lt;&lt; &gt;&gt;&gt;) syntax to launch kernels, however this is not as capable as <strong>hipLaunchKernelGGL</strong>.</p>
 <div class="highlight"><pre><span></span><span class="n">mat_mult</span><span class="o">&lt;&lt;&lt;</span><span class="n">grid_nblocks</span><span class="p">,</span><span class="w"> </span><span class="n">block_size</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">A_d</span><span class="p">,</span><span class="w"> </span><span class="n">B_d</span><span class="p">,</span><span class="w"> </span><span class="n">C_d</span><span class="p">,</span><span class="w"> </span><span class="n">N1_A</span><span class="p">,</span><span class="w"> </span><span class="n">N0_C</span><span class="p">,</span><span class="w"> </span><span class="n">N1_C</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 <p>Now the kernel is queued to the default stream, we explicitly wait for it to finish using the command:</p>
