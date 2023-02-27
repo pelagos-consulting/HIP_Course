@@ -36,7 +36,6 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .highlight .m { color: var(--jp-mirror-editor-number-color) } /* Literal.Number */
 .highlight .s { color: var(--jp-mirror-editor-string-color) } /* Literal.String */
 .highlight .ow { color: var(--jp-mirror-editor-operator-color); font-weight: bold } /* Operator.Word */
-.highlight .pm { color: var(--jp-mirror-editor-punctuation-color) } /* Punctuation.Marker */
 .highlight .w { color: var(--jp-mirror-editor-variable-color) } /* Text.Whitespace */
 .highlight .mb { color: var(--jp-mirror-editor-number-color) } /* Literal.Number.Bin */
 .highlight .mf { color: var(--jp-mirror-editor-number-color) } /* Literal.Number.Float */
@@ -14465,6 +14464,10 @@ a.anchor-link {
   display: none;
 }
 
+.highlight  {
+  margin: 0.4em;
+}
+
 /* Input area styling */
 .jp-InputArea {
   overflow: hidden;
@@ -14474,26 +14477,9 @@ a.anchor-link {
   overflow: hidden;
 }
 
-.CodeMirror.cm-s-jupyter .highlight pre {
-/* weird, but --jp-code-padding defined to be 5px but 4px horizontal padding is hardcoded for pre.CodeMirror-line */
-  padding: var(--jp-code-padding) 4px;
+.CodeMirror pre {
   margin: 0;
-
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
-  color: inherit;
-
-}
-
-.jp-OutputArea-output pre {
-  line-height: inherit;
-  font-family: inherit;
-}
-
-.jp-RenderedText pre {
-  color: var(--jp-content-font-color1);
-  font-size: var(--jp-code-font-size);
+  padding: 0;
 }
 
 /* Using table instead of flexbox so that we can use break-inside property */
@@ -14573,12 +14559,12 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
                 },
                 displayAlign: 'center',
                 CommonHTML: {
-                    linebreaks: {
-                    automatic: true
+                    linebreaks: { 
+                    automatic: true 
                     }
                 }
             });
-
+        
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
     }
@@ -14594,61 +14580,327 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h1 id="Commonly-used-OpenCL-functions">Commonly used OpenCL functions<a class="anchor-link" href="#Commonly-used-OpenCL-functions">&#182;</a></h1><p>Sometimes it is useful to have a lookup table of OpenCL functions. Here we list the functionality of some commonly used OpenCL functions, what OpenCL types they need and what OpenCL types they produce.</p>
-<h2 id="Platforms">Platforms<a class="anchor-link" href="#Platforms">&#182;</a></h2><p>| <strong>Purpose</strong> | <strong>function name</strong> | depends on | creates or fills |
-| :- | :- | :- | :- |
-| Fetch available platforms | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clGetPlatformIDs.html">clGetPlatformIDs</a> | NA | cl_platform_id[] |</p>
-<h2 id="Devices">Devices<a class="anchor-link" href="#Devices">&#182;</a></h2><p>| <strong>Purpose</strong> | <strong>function name</strong> | depends on | creates or fills |
-| :- | :- | :- | :- |
-| Fetch available devices in a platform | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clGetDeviceIDs.html">clGetDeviceIDs</a> | cl_platform_id, cl_device_type | cl_device_id[] |
-| Release a device | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clReleaseDevice.html">clReleaseDevice</a> | cl_device_id | NA |
-| Fetch information on a compute device | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clGetDeviceInfo.html">clGetDeviceInfo</a> | cl_device_id | varies by information sought |</p>
-<h2 id="Contexts">Contexts<a class="anchor-link" href="#Contexts">&#182;</a></h2><p>| <strong>Purpose</strong> | <strong>function name</strong> | depends on | creates or fills |
-| :- | :- | :- | :- |
-| Create a context | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clCreateContext.html">clCreateContext</a> | cl_context_properties, cl_device_id | cl_context |
-| Release a context | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clReleaseContext.html">clReleaseContext</a> | cl_context | NA |</p>
-<h2 id="Comand-queues">Comand queues<a class="anchor-link" href="#Comand-queues">&#182;</a></h2><p>| <strong>Purpose</strong> | <strong>function name</strong> | depends on | creates or fills |
-| :- | :- | :- | :- |
-| Create a command queue | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clCreateCommandQueue.html">clCreateCommandQueue</a> | cl_command_queue_properties, cl_context | cl_command_queue |
-| Release a command queue | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clReleaseCommandQueue.html">clReleaseCommandQueue</a> | cl_command_queue | NA |
-| Drain a command queue | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clFinish.html">clFinish</a> | cl_command_queue | NA |</p>
-<h2 id="Buffers">Buffers<a class="anchor-link" href="#Buffers">&#182;</a></h2><p>| <strong>Purpose</strong> | <strong>function name</strong> | depends on | creates or fills |
-| :- | :- | :- | :- |
-| Create a buffer | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clCreateBuffer.html">clCreateBuffer</a> | cl_context | cl_mem |
-| Write to a buffer from the host | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueWriteBuffer.html">clEnqueueWriteBuffer</a> | cl_command_queue, void* | cl_mem |
-| Read a buffer to the host | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueReadBuffer.html">clEnqueueReadBuffer</a> | cl_command_queue, cl_mem | void* |
-| Copy between buffers | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueCopyBuffer.html">clEnqueueCopyBuffer</a> | cl_command_queue, cl_mem | NA |
-| Write to a rectangular region in a buffer from the host | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueWriteBufferRect.html">clEnqueueWriteBufferRect</a> | cl_command_queue, void* | cl_mem |
-| Read from a rectangular region in a buffer to the host | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueReadBufferRect.html">clEnqueueReadBufferRect</a> | cl_command_queue, cl_mem | void* |
-| Copy a rectangular region between buffers | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueCopyBufferRect.html">clEnqueueCopyBufferRect</a> | cl_command_queue, cl_mem | NA |
-| Fill a buffer | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueFillBuffer.html">clEnqueueFillBuffer</a> | cl_command_queue, cl_mem, void* | NA |
-| Map a buffer into host memory | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueMapBuffer.html">clEnqueueMapBuffer</a> | cl_command_queue, cl_mem | void* [] |
-| Unmap a memory object (buffer or image) | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueUnmapMemObject.html">clEnqueueUnmapMemObject</a> | cl_command_queue, cl_mem, void* | NA |
-| Release a device buffer | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clReleaseMemObject.html">clReleaseMemObject</a> | cl_mem | NA |</p>
-<h2 id="Shared-memory">Shared memory<a class="anchor-link" href="#Shared-memory">&#182;</a></h2><p>| <strong>Purpose</strong> | <strong>function name</strong> | depends on | creates or fills |
-| :- | :- | :- | :- |
-| Allocate shared virtual memory | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clSVMAlloc.html">clSVMAlloc</a> | cl_context | void* |
-| Map shared virtual memory back to the host | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueSVMMap.html">clEnqueueSVMMap</a> | cl_command_queue, void* | NA |
-| Unmap shared virtual memory from the host | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueSVMUnmap.html">clEnqueueSVMUnmap</a> | cl_command_queue, void* | NA |
-| Free shared virtual memory using a queue | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueSVMFree.html">clEnqueueSVMFree</a> | cl_command_queue, void* [] | NA |
-| Free shared virtual memory | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clSVMFree.html">clSVMFree</a> | cl_context, void* | NA |
-| Set a kernel argument with a shared memory pointer | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clSetKernelArgSVMPointer.html">clSetKernelArgSVMPointer</a> | cl_kernel, void* | NA |</p>
-<h2 id="Programs">Programs<a class="anchor-link" href="#Programs">&#182;</a></h2><p>| <strong>Purpose</strong> | <strong>function name</strong> | depends on | creates or fills |
-| :- | :- | :- | :- |
-| Create a program | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clCreateProgramWithSource.html">clCreateProgramWithSource</a> | char*[] kernel_source, cl_context | cl_program |
-| Compile a program | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clBuildProgram.html">clBuildProgram</a> | cl_program, cl_device_id | NA |
-| Fetch program info | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clGetProgramInfo.html">clGetProgramInfo</a> | cl_program | varies by information sought |
-| Fetch program build log | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clGetProgramInfo.html">clGetProgramBuildInfo</a> | cl_program, cl_device_id | char[] |</p>
-<h2 id="Kernels">Kernels<a class="anchor-link" href="#Kernels">&#182;</a></h2><p>| <strong>Purpose</strong> | <strong>function name</strong> | depends on | creates or fills |
-| :- | :- | :- | :- |
-| Create a kernel | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clCreateKernel.html">clCreateKernel</a> | cl_program | cl_kernel |
-| Set kernel argument | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clSetKernelArg.html">clSetKernelArg</a> | cl_kernel | NA |
-| Set a kernel argument with a shared memory pointer | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clSetKernelArgSVMPointer.html">clSetKernelArgSVMPointer</a> | cl_kernel, void* | NA |
-| Run a kernel | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueNDRangeKernel.html">clEnqueueNDRangeKernel</a> | cl_command_queue, cl_kernel, local_size, global_size, Grid dimensions | cl_event |
-| Fetch kernel workgroup info | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clGetKernelWorkGroupInfo.html">clGetKernelWorkGroupInfo</a> | cl_kernel, cl_device_id | varies by information sought |</p>
-<h2 id="Events">Events<a class="anchor-link" href="#Events">&#182;</a></h2><p>| <strong>Purpose</strong> | <strong>function name</strong> | depends on | creates or fills |
-| :- | :- | :- | :- |
-| Get profiling information from an event | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clGetEventProfilingInfo.html">clGetEventProfilingInfo</a> | cl_event | cl_ulong |
-| Wait on events | <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clWaitForEvents.html">clWaitForEvents</a> | cl_event[] | NA |</p>
+<h2 id="Platforms">Platforms<a class="anchor-link" href="#Platforms">&#182;</a></h2><table>
+<thead><tr>
+<th style="text-align:left"><strong>Purpose</strong></th>
+<th style="text-align:left"><strong>function name</strong></th>
+<th style="text-align:left">depends on</th>
+<th style="text-align:left">creates or fills</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Fetch available platforms</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clGetPlatformIDs.html">clGetPlatformIDs</a></td>
+<td style="text-align:left">NA</td>
+<td style="text-align:left">cl_platform_id[]</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Devices">Devices<a class="anchor-link" href="#Devices">&#182;</a></h2><table>
+<thead><tr>
+<th style="text-align:left"><strong>Purpose</strong></th>
+<th style="text-align:left"><strong>function name</strong></th>
+<th style="text-align:left">depends on</th>
+<th style="text-align:left">creates or fills</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Fetch available devices in a platform</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clGetDeviceIDs.html">clGetDeviceIDs</a></td>
+<td style="text-align:left">cl_platform_id, cl_device_type</td>
+<td style="text-align:left">cl_device_id[]</td>
+</tr>
+<tr>
+<td style="text-align:left">Release a device</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clReleaseDevice.html">clReleaseDevice</a></td>
+<td style="text-align:left">cl_device_id</td>
+<td style="text-align:left">NA</td>
+</tr>
+<tr>
+<td style="text-align:left">Fetch information on a compute device</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clGetDeviceInfo.html">clGetDeviceInfo</a></td>
+<td style="text-align:left">cl_device_id</td>
+<td style="text-align:left">varies by information sought</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Contexts">Contexts<a class="anchor-link" href="#Contexts">&#182;</a></h2><table>
+<thead><tr>
+<th style="text-align:left"><strong>Purpose</strong></th>
+<th style="text-align:left"><strong>function name</strong></th>
+<th style="text-align:left">depends on</th>
+<th style="text-align:left">creates or fills</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Create a context</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clCreateContext.html">clCreateContext</a></td>
+<td style="text-align:left">cl_context_properties, cl_device_id</td>
+<td style="text-align:left">cl_context</td>
+</tr>
+<tr>
+<td style="text-align:left">Release a context</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clReleaseContext.html">clReleaseContext</a></td>
+<td style="text-align:left">cl_context</td>
+<td style="text-align:left">NA</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Comand-queues">Comand queues<a class="anchor-link" href="#Comand-queues">&#182;</a></h2><table>
+<thead><tr>
+<th style="text-align:left"><strong>Purpose</strong></th>
+<th style="text-align:left"><strong>function name</strong></th>
+<th style="text-align:left">depends on</th>
+<th style="text-align:left">creates or fills</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Create a command queue</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clCreateCommandQueue.html">clCreateCommandQueue</a></td>
+<td style="text-align:left">cl_command_queue_properties, cl_context</td>
+<td style="text-align:left">cl_command_queue</td>
+</tr>
+<tr>
+<td style="text-align:left">Release a command queue</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clReleaseCommandQueue.html">clReleaseCommandQueue</a></td>
+<td style="text-align:left">cl_command_queue</td>
+<td style="text-align:left">NA</td>
+</tr>
+<tr>
+<td style="text-align:left">Drain a command queue</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clFinish.html">clFinish</a></td>
+<td style="text-align:left">cl_command_queue</td>
+<td style="text-align:left">NA</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Buffers">Buffers<a class="anchor-link" href="#Buffers">&#182;</a></h2><table>
+<thead><tr>
+<th style="text-align:left"><strong>Purpose</strong></th>
+<th style="text-align:left"><strong>function name</strong></th>
+<th style="text-align:left">depends on</th>
+<th style="text-align:left">creates or fills</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Create a buffer</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clCreateBuffer.html">clCreateBuffer</a></td>
+<td style="text-align:left">cl_context</td>
+<td style="text-align:left">cl_mem</td>
+</tr>
+<tr>
+<td style="text-align:left">Write to a buffer from the host</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueWriteBuffer.html">clEnqueueWriteBuffer</a></td>
+<td style="text-align:left">cl_command_queue, void*</td>
+<td style="text-align:left">cl_mem</td>
+</tr>
+<tr>
+<td style="text-align:left">Read a buffer to the host</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueReadBuffer.html">clEnqueueReadBuffer</a></td>
+<td style="text-align:left">cl_command_queue, cl_mem</td>
+<td style="text-align:left">void*</td>
+</tr>
+<tr>
+<td style="text-align:left">Copy between buffers</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueCopyBuffer.html">clEnqueueCopyBuffer</a></td>
+<td style="text-align:left">cl_command_queue, cl_mem</td>
+<td style="text-align:left">NA</td>
+</tr>
+<tr>
+<td style="text-align:left">Write to a rectangular region in a buffer from the host</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueWriteBufferRect.html">clEnqueueWriteBufferRect</a></td>
+<td style="text-align:left">cl_command_queue, void*</td>
+<td style="text-align:left">cl_mem</td>
+</tr>
+<tr>
+<td style="text-align:left">Read from a rectangular region in a buffer to the host</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueReadBufferRect.html">clEnqueueReadBufferRect</a></td>
+<td style="text-align:left">cl_command_queue, cl_mem</td>
+<td style="text-align:left">void*</td>
+</tr>
+<tr>
+<td style="text-align:left">Copy a rectangular region between buffers</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueCopyBufferRect.html">clEnqueueCopyBufferRect</a></td>
+<td style="text-align:left">cl_command_queue, cl_mem</td>
+<td style="text-align:left">NA</td>
+</tr>
+<tr>
+<td style="text-align:left">Fill a buffer</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueFillBuffer.html">clEnqueueFillBuffer</a></td>
+<td style="text-align:left">cl_command_queue, cl_mem, void*</td>
+<td style="text-align:left">NA</td>
+</tr>
+<tr>
+<td style="text-align:left">Map a buffer into host memory</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueMapBuffer.html">clEnqueueMapBuffer</a></td>
+<td style="text-align:left">cl_command_queue, cl_mem</td>
+<td style="text-align:left">void* []</td>
+</tr>
+<tr>
+<td style="text-align:left">Unmap a memory object (buffer or image)</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueUnmapMemObject.html">clEnqueueUnmapMemObject</a></td>
+<td style="text-align:left">cl_command_queue, cl_mem, void*</td>
+<td style="text-align:left">NA</td>
+</tr>
+<tr>
+<td style="text-align:left">Release a device buffer</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clReleaseMemObject.html">clReleaseMemObject</a></td>
+<td style="text-align:left">cl_mem</td>
+<td style="text-align:left">NA</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Shared-memory">Shared memory<a class="anchor-link" href="#Shared-memory">&#182;</a></h2><table>
+<thead><tr>
+<th style="text-align:left"><strong>Purpose</strong></th>
+<th style="text-align:left"><strong>function name</strong></th>
+<th style="text-align:left">depends on</th>
+<th style="text-align:left">creates or fills</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Allocate shared virtual memory</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clSVMAlloc.html">clSVMAlloc</a></td>
+<td style="text-align:left">cl_context</td>
+<td style="text-align:left">void*</td>
+</tr>
+<tr>
+<td style="text-align:left">Map shared virtual memory back to the host</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueSVMMap.html">clEnqueueSVMMap</a></td>
+<td style="text-align:left">cl_command_queue, void*</td>
+<td style="text-align:left">NA</td>
+</tr>
+<tr>
+<td style="text-align:left">Unmap shared virtual memory from the host</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueSVMUnmap.html">clEnqueueSVMUnmap</a></td>
+<td style="text-align:left">cl_command_queue, void*</td>
+<td style="text-align:left">NA</td>
+</tr>
+<tr>
+<td style="text-align:left">Free shared virtual memory using a queue</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueSVMFree.html">clEnqueueSVMFree</a></td>
+<td style="text-align:left">cl_command_queue, void* []</td>
+<td style="text-align:left">NA</td>
+</tr>
+<tr>
+<td style="text-align:left">Free shared virtual memory</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clSVMFree.html">clSVMFree</a></td>
+<td style="text-align:left">cl_context, void*</td>
+<td style="text-align:left">NA</td>
+</tr>
+<tr>
+<td style="text-align:left">Set a kernel argument with a shared memory pointer</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clSetKernelArgSVMPointer.html">clSetKernelArgSVMPointer</a></td>
+<td style="text-align:left">cl_kernel, void*</td>
+<td style="text-align:left">NA</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Programs">Programs<a class="anchor-link" href="#Programs">&#182;</a></h2><table>
+<thead><tr>
+<th style="text-align:left"><strong>Purpose</strong></th>
+<th style="text-align:left"><strong>function name</strong></th>
+<th style="text-align:left">depends on</th>
+<th style="text-align:left">creates or fills</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Create a program</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clCreateProgramWithSource.html">clCreateProgramWithSource</a></td>
+<td style="text-align:left">char*[] kernel_source, cl_context</td>
+<td style="text-align:left">cl_program</td>
+</tr>
+<tr>
+<td style="text-align:left">Compile a program</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clBuildProgram.html">clBuildProgram</a></td>
+<td style="text-align:left">cl_program, cl_device_id</td>
+<td style="text-align:left">NA</td>
+</tr>
+<tr>
+<td style="text-align:left">Fetch program info</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clGetProgramInfo.html">clGetProgramInfo</a></td>
+<td style="text-align:left">cl_program</td>
+<td style="text-align:left">varies by information sought</td>
+</tr>
+<tr>
+<td style="text-align:left">Fetch program build log</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clGetProgramInfo.html">clGetProgramBuildInfo</a></td>
+<td style="text-align:left">cl_program, cl_device_id</td>
+<td style="text-align:left">char[]</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Kernels">Kernels<a class="anchor-link" href="#Kernels">&#182;</a></h2><table>
+<thead><tr>
+<th style="text-align:left"><strong>Purpose</strong></th>
+<th style="text-align:left"><strong>function name</strong></th>
+<th style="text-align:left">depends on</th>
+<th style="text-align:left">creates or fills</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Create a kernel</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clCreateKernel.html">clCreateKernel</a></td>
+<td style="text-align:left">cl_program</td>
+<td style="text-align:left">cl_kernel</td>
+</tr>
+<tr>
+<td style="text-align:left">Set kernel argument</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clSetKernelArg.html">clSetKernelArg</a></td>
+<td style="text-align:left">cl_kernel</td>
+<td style="text-align:left">NA</td>
+</tr>
+<tr>
+<td style="text-align:left">Set a kernel argument with a shared memory pointer</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clSetKernelArgSVMPointer.html">clSetKernelArgSVMPointer</a></td>
+<td style="text-align:left">cl_kernel, void*</td>
+<td style="text-align:left">NA</td>
+</tr>
+<tr>
+<td style="text-align:left">Run a kernel</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueNDRangeKernel.html">clEnqueueNDRangeKernel</a></td>
+<td style="text-align:left">cl_command_queue, cl_kernel, local_size, global_size, Grid dimensions</td>
+<td style="text-align:left">cl_event</td>
+</tr>
+<tr>
+<td style="text-align:left">Fetch kernel workgroup info</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clGetKernelWorkGroupInfo.html">clGetKernelWorkGroupInfo</a></td>
+<td style="text-align:left">cl_kernel, cl_device_id</td>
+<td style="text-align:left">varies by information sought</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Events">Events<a class="anchor-link" href="#Events">&#182;</a></h2><table>
+<thead><tr>
+<th style="text-align:left"><strong>Purpose</strong></th>
+<th style="text-align:left"><strong>function name</strong></th>
+<th style="text-align:left">depends on</th>
+<th style="text-align:left">creates or fills</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Get profiling information from an event</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clGetEventProfilingInfo.html">clGetEventProfilingInfo</a></td>
+<td style="text-align:left">cl_event</td>
+<td style="text-align:left">cl_ulong</td>
+</tr>
+<tr>
+<td style="text-align:left">Wait on events</td>
+<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clWaitForEvents.html">clWaitForEvents</a></td>
+<td style="text-align:left">cl_event[]</td>
+<td style="text-align:left">NA</td>
+</tr>
+</tbody>
+</table>
 
 </div>
 </div>
@@ -14663,7 +14915,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <address>
 Written by Dr. Toby Potter of <a href="https://www.pelagos-consulting.com">Pelagos Consulting and Education</a> for the Pawsey Supercomputing Centre
 </address>
-
 </div>
 </div>
 </div>

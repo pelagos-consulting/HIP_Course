@@ -36,7 +36,6 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .highlight .m { color: var(--jp-mirror-editor-number-color) } /* Literal.Number */
 .highlight .s { color: var(--jp-mirror-editor-string-color) } /* Literal.String */
 .highlight .ow { color: var(--jp-mirror-editor-operator-color); font-weight: bold } /* Operator.Word */
-.highlight .pm { color: var(--jp-mirror-editor-punctuation-color) } /* Punctuation.Marker */
 .highlight .w { color: var(--jp-mirror-editor-variable-color) } /* Text.Whitespace */
 .highlight .mb { color: var(--jp-mirror-editor-number-color) } /* Literal.Number.Bin */
 .highlight .mf { color: var(--jp-mirror-editor-number-color) } /* Literal.Number.Float */
@@ -14465,6 +14464,10 @@ a.anchor-link {
   display: none;
 }
 
+.highlight  {
+  margin: 0.4em;
+}
+
 /* Input area styling */
 .jp-InputArea {
   overflow: hidden;
@@ -14474,26 +14477,9 @@ a.anchor-link {
   overflow: hidden;
 }
 
-.CodeMirror.cm-s-jupyter .highlight pre {
-/* weird, but --jp-code-padding defined to be 5px but 4px horizontal padding is hardcoded for pre.CodeMirror-line */
-  padding: var(--jp-code-padding) 4px;
+.CodeMirror pre {
   margin: 0;
-
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
-  color: inherit;
-
-}
-
-.jp-OutputArea-output pre {
-  line-height: inherit;
-  font-family: inherit;
-}
-
-.jp-RenderedText pre {
-  color: var(--jp-content-font-color1);
-  font-size: var(--jp-code-font-size);
+  padding: 0;
 }
 
 /* Using table instead of flexbox so that we can use break-inside property */
@@ -14573,12 +14559,12 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
                 },
                 displayAlign: 'center',
                 CommonHTML: {
-                    linebreaks: {
-                    automatic: true
+                    linebreaks: { 
+                    automatic: true 
                     }
                 }
             });
-
+        
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
     }
@@ -14616,25 +14602,101 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>| kernel C type | OpenCL standard type | Description and bits used |<br />
-| :- | :- | :- |
-| bool | NA | undefined |
-| char | cl_char | 8 bits, signed two's complement integer  |
-| unsigned char, uchar | cl_uchar | 8 bits, unsigned integer |
-| short | cl_short | 16 bits, signed two's complement integer |
-| unsigned short, ushort | cl_ushort | 16 bits, unsigned integer |
-| int | cl_int | 32 bits, signed two's complement integer |
-| unsigned int, uint | cl_uint | 32 bits, unsigned integer |
-| long | cl_long | 64 bits, signed two's complement integer |
-| unsigned long, ulong | cl_ulong | 64 bits, unsigned integer |
-| half | cl_half | 16 bits, floating point number |
-| float | cl_float | 32 bits, floating point number |
-| double | cl_double | 64 bits, floating point number |
-| size_t | NA | unknown bits, result of <strong>sizeof</strong> operator |
-| ptrdiff_t | NA | unknown bits, signed integer type from the subtraction of one pointer from another |
-| intptr_t | NA | unknown bits, pointer storage in a signed integer type |
-| uintptr_t | NA | unknown bits, pointer storage in an unsigned integer type |
-| void | void | unknown bits, incomplete type |</p>
+<table>
+<thead><tr>
+<th style="text-align:left">kernel C type</th>
+<th style="text-align:left">OpenCL standard type</th>
+<th style="text-align:left">Description and bits used</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">bool</td>
+<td style="text-align:left">NA</td>
+<td style="text-align:left">undefined</td>
+</tr>
+<tr>
+<td style="text-align:left">char</td>
+<td style="text-align:left">cl_char</td>
+<td style="text-align:left">8 bits, signed two's complement integer</td>
+</tr>
+<tr>
+<td style="text-align:left">unsigned char, uchar</td>
+<td style="text-align:left">cl_uchar</td>
+<td style="text-align:left">8 bits, unsigned integer</td>
+</tr>
+<tr>
+<td style="text-align:left">short</td>
+<td style="text-align:left">cl_short</td>
+<td style="text-align:left">16 bits, signed two's complement integer</td>
+</tr>
+<tr>
+<td style="text-align:left">unsigned short, ushort</td>
+<td style="text-align:left">cl_ushort</td>
+<td style="text-align:left">16 bits, unsigned integer</td>
+</tr>
+<tr>
+<td style="text-align:left">int</td>
+<td style="text-align:left">cl_int</td>
+<td style="text-align:left">32 bits, signed two's complement integer</td>
+</tr>
+<tr>
+<td style="text-align:left">unsigned int, uint</td>
+<td style="text-align:left">cl_uint</td>
+<td style="text-align:left">32 bits, unsigned integer</td>
+</tr>
+<tr>
+<td style="text-align:left">long</td>
+<td style="text-align:left">cl_long</td>
+<td style="text-align:left">64 bits, signed two's complement integer</td>
+</tr>
+<tr>
+<td style="text-align:left">unsigned long, ulong</td>
+<td style="text-align:left">cl_ulong</td>
+<td style="text-align:left">64 bits, unsigned integer</td>
+</tr>
+<tr>
+<td style="text-align:left">half</td>
+<td style="text-align:left">cl_half</td>
+<td style="text-align:left">16 bits, floating point number</td>
+</tr>
+<tr>
+<td style="text-align:left">float</td>
+<td style="text-align:left">cl_float</td>
+<td style="text-align:left">32 bits, floating point number</td>
+</tr>
+<tr>
+<td style="text-align:left">double</td>
+<td style="text-align:left">cl_double</td>
+<td style="text-align:left">64 bits, floating point number</td>
+</tr>
+<tr>
+<td style="text-align:left">size_t</td>
+<td style="text-align:left">NA</td>
+<td style="text-align:left">unknown bits, result of <strong>sizeof</strong> operator</td>
+</tr>
+<tr>
+<td style="text-align:left">ptrdiff_t</td>
+<td style="text-align:left">NA</td>
+<td style="text-align:left">unknown bits, signed integer type from the subtraction of one pointer from another</td>
+</tr>
+<tr>
+<td style="text-align:left">intptr_t</td>
+<td style="text-align:left">NA</td>
+<td style="text-align:left">unknown bits, pointer storage in a signed integer type</td>
+</tr>
+<tr>
+<td style="text-align:left">uintptr_t</td>
+<td style="text-align:left">NA</td>
+<td style="text-align:left">unknown bits, pointer storage in an unsigned integer type</td>
+</tr>
+<tr>
+<td style="text-align:left">void</td>
+<td style="text-align:left">void</td>
+<td style="text-align:left">unknown bits, incomplete type</td>
+</tr>
+</tbody>
+</table>
 
 </div>
 </div>
@@ -14658,18 +14720,66 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>| kernel C type | OpenCL standard type | Description and bits used |<br />
-| :- | :- | :- |
-| char<strong>n</strong> | cl_char<strong>n</strong> | <strong>n</strong> x 8 bits, signed two's complement integers  |
-| uchar<strong>n</strong> | cl_uchar<strong>n</strong> | <strong>n</strong> x 8 bits, unsigned integers |
-| short<strong>n</strong> | cl_short<strong>n</strong> | <strong>n</strong> x 16 bits, signed two's complement integers |
-| ushort<strong>n</strong> | cl_ushort<strong>n</strong> | <strong>n</strong> x 16 bits, unsigned integers |
-| int<strong>n</strong> | cl_int<strong>n</strong> | <strong>n</strong> x 32 bits, signed two's complement integers |
-| uint<strong>n</strong> | cl_uint<strong>n</strong> | <strong>n</strong> x 32 bits, unsigned integers |
-| long<strong>n</strong> | cl_long<strong>n</strong> | <strong>n</strong> x 64 bits, signed two's complement integers |
-| ulong<strong>n</strong> | cl_ulong<strong>n</strong> | <strong>n</strong> x 64 bits, unsigned integers |
-| float<strong>n</strong> | cl_float<strong>n</strong> | <strong>n</strong> x 32 bits, floating point numbers |
-| double<strong>n</strong> | cl_double<strong>n</strong> | <strong>n</strong> x 64 bits, floating point numbers |</p>
+<table>
+<thead><tr>
+<th style="text-align:left">kernel C type</th>
+<th style="text-align:left">OpenCL standard type</th>
+<th style="text-align:left">Description and bits used</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">char<strong>n</strong></td>
+<td style="text-align:left">cl_char<strong>n</strong></td>
+<td style="text-align:left"><strong>n</strong> x 8 bits, signed two's complement integers</td>
+</tr>
+<tr>
+<td style="text-align:left">uchar<strong>n</strong></td>
+<td style="text-align:left">cl_uchar<strong>n</strong></td>
+<td style="text-align:left"><strong>n</strong> x 8 bits, unsigned integers</td>
+</tr>
+<tr>
+<td style="text-align:left">short<strong>n</strong></td>
+<td style="text-align:left">cl_short<strong>n</strong></td>
+<td style="text-align:left"><strong>n</strong> x 16 bits, signed two's complement integers</td>
+</tr>
+<tr>
+<td style="text-align:left">ushort<strong>n</strong></td>
+<td style="text-align:left">cl_ushort<strong>n</strong></td>
+<td style="text-align:left"><strong>n</strong> x 16 bits, unsigned integers</td>
+</tr>
+<tr>
+<td style="text-align:left">int<strong>n</strong></td>
+<td style="text-align:left">cl_int<strong>n</strong></td>
+<td style="text-align:left"><strong>n</strong> x 32 bits, signed two's complement integers</td>
+</tr>
+<tr>
+<td style="text-align:left">uint<strong>n</strong></td>
+<td style="text-align:left">cl_uint<strong>n</strong></td>
+<td style="text-align:left"><strong>n</strong> x 32 bits, unsigned integers</td>
+</tr>
+<tr>
+<td style="text-align:left">long<strong>n</strong></td>
+<td style="text-align:left">cl_long<strong>n</strong></td>
+<td style="text-align:left"><strong>n</strong> x 64 bits, signed two's complement integers</td>
+</tr>
+<tr>
+<td style="text-align:left">ulong<strong>n</strong></td>
+<td style="text-align:left">cl_ulong<strong>n</strong></td>
+<td style="text-align:left"><strong>n</strong> x 64 bits, unsigned integers</td>
+</tr>
+<tr>
+<td style="text-align:left">float<strong>n</strong></td>
+<td style="text-align:left">cl_float<strong>n</strong></td>
+<td style="text-align:left"><strong>n</strong> x 32 bits, floating point numbers</td>
+</tr>
+<tr>
+<td style="text-align:left">double<strong>n</strong></td>
+<td style="text-align:left">cl_double<strong>n</strong></td>
+<td style="text-align:left"><strong>n</strong> x 64 bits, floating point numbers</td>
+</tr>
+</tbody>
+</table>
 
 </div>
 </div>
@@ -14761,7 +14871,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Access to a vector type from within a kernel is done using dot notation. You can use <strong>.x .y .z</strong> and <strong>.w</strong> for the first four elements, or you can use <strong>.s0, .s1, .s2, .s3, .s4, .s5, .s6, .s7, .s8, .s9, .sa, .sb, .sc, .sd, .se, .sf</strong> to access values up to the 16th element. A neat thing about OpenCL vectors is that you can &quot;swizzle&quot;, or permute indices (using either .xyzw or .s* but not both) to mix up the order of the vector.</p>
+<p>Access to a vector type from within a kernel is done using dot notation. You can use <strong>.x .y .z</strong> and <strong>.w</strong> for the first four elements, or you can use <strong>.s0, .s1, .s2, .s3, .s4, .s5, .s6, .s7, .s8, .s9, .sa, .sb, .sc, .sd, .se, .sf</strong> to access values up to the 16th element. A neat thing about OpenCL vectors is that you can "swizzle", or permute indices (using either .xyzw or .s* but not both) to mix up the order of the vector.</p>
 
 </div>
 </div>
@@ -14828,7 +14938,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <address>
 Written by Dr. Toby Potter of <a href="https://www.pelagos-consulting.com">Pelagos Consulting and Education</a> for the Pawsey Supercomputing Centre
 </address>
-
 </div>
 </div>
 </div>
