@@ -15,8 +15,8 @@ all: $(TARGETS)
 
 # General compilation step
 %.exe: %.cpp
-	$(CXX) $(CXXFLAGS) -I$(OPENCL_INC_DIR) -I$(INC_DIR) -L$(OPENCL_LIB_DIR) $<\
-		-o $@ $(OPENCL_LIB_FLAGS)
+	$(CXX) $(CXXFLAGS) -I$(BASE_INC_DIR) -I$(INC_DIR) -L$(BASE_LIB_DIR) $<\
+		-o $@ $(BASE_LIB_FLAGS)
 
 # Clean step
 clean:
