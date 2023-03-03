@@ -11,7 +11,11 @@ void m_random(T* dst, size_t N0, size_t N1) {
 
     // Initialise random number generator
     std::random_device rd;
-    std::mt19937 gen(rd());
+    unsigned int seed = 100;
+    // Non-deterministic random number generation
+    //std::mt19937 gen(rd());
+    // Deterministic random number generation
+    std::mt19937 gen(seed);
     std::uniform_real_distribution<> dist(0,1);
 
     // Fill the array
