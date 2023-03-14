@@ -104,6 +104,7 @@ class Hadamard:
         # Read in the output from OpenCL
         self.D = np.fromfile("array_D.dat", dtype=self.dtype).reshape((self.NROWS_F, self.NCOLS_F))
         self.E = np.fromfile("array_E.dat", dtype=self.dtype).reshape((self.NROWS_F, self.NCOLS_F))
+        self.run_compute()
 
     def make_data(self):
     
@@ -358,11 +359,15 @@ class TimingResults:
             
             for n, data in enumerate([cpu_data, gpu_data]):
                 if data.num_items()>0:
-                    ax[n].barh(data.labels, 
-                               data.speedups, 
+                    
+                    # Sort in descending order
+                    sort_indices = (np.argsort(data.speedups))[::-1]
+                    
+                    ax[n].barh(np.array(data.labels)[sort_indices], 
+                               np.array(data.speedups)[sort_indices], 
                                0.8, 
-                               xerr=data.errors, 
-                               color=data.colours)
+                               xerr=np.array(data.errors)[sort_indices], 
+                               color=np.array(data.colours)[sort_indices])
                     ax[n].set_xlabel("Speedup, more is better")
                     ax[n].set_xlim((0,1.1*np.max(data.speedups)))
     
