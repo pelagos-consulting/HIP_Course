@@ -1,4 +1,4 @@
-// Include the OpenCL helper headers
+// Include the HIP helper headers
 #include "hip_helper.hpp"
 
 // Main program
