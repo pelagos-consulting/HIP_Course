@@ -7,6 +7,8 @@
 // Length of our grid
 #define N 512
 
+__global__ void fill (float*, float, size_t);
+
 // Main program
 int main(int argc, char** argv) {
     
@@ -40,10 +42,10 @@ int main(int argc, char** argv) {
     
     // Allocate memory on the compute device for vector A
     float* A_d;
-    H_ERRCHK(hipMalloc((void**)&A_d), N*sizeof(float));
+    size_t nbytes_A = N*sizeof(float);
+    H_ERRCHK(hipMalloc((void**)&A_d, nbytes_A));
     
     // Allocate memory on the host
-    size_t nbytes_A = N*sizeof(float)
     float* A_h = (float*)calloc(nbytes_A, 1);
     
     // Launch the kernel
@@ -51,7 +53,7 @@ int main(int argc, char** argv) {
     // Size of the block in each dimension
     dim3 block_size = { 64, 1, 1};
     // Number of blocks in each dimension
-    dim3 grid_nblocks = { N/local_size.x, 1, 1 };
+    dim3 grid_nblocks = { N/block_size.x, 1, 1 };
     
     // The value to fill
     float fill_value=1.0;
