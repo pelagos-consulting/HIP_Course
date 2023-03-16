@@ -87,15 +87,7 @@ int main(int argc, char** argv) {
     // Visit every cell in matrix C and execute a kernel to compute a value there
     
     // Loop over the rows (i0) of C
-    for (size_t i0=0; i0<N0_C; i0++) {
-        // At every row i0 loop over the columns (i1) of C 
-        for (size_t i1=0; i1<N1_C; i1++) {
-            // Call a kernel to perform the dot product at coordinates (i0,i1)
-            mat_mult(A_h, B_h, C_h, 
-                    N0_C, N1_C, N1_A, 
-                    i0, i1); 
-        }
-    }
+   
 
     // Compute the serial solution using the matrix helper library
     float* C_answer_h = (float*)calloc(nbytes_C, 1);
