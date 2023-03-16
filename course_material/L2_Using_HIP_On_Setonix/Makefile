@@ -6,7 +6,7 @@ include ../env
 INC_DIR=../include
 
 # List of applications to target
-TARGETS=hello_devices_mpi.exe
+TARGETS=hello_devices_mpi.exe hello_devices_mpi_onefile_hipcc.exe hello_devices_mpi_onefile_CC.exe
 
 all: $(TARGETS)
 
@@ -18,7 +18,7 @@ CC_LDFLAGS=-fopenmp --rocm-path=${ROCM_PATH} -L${ROCM_PATH}/lib -lamdhip64
 
 
 # Compiler flags for hipcc on AMD platform
-HIPCC_CFLAGS=-I$(INC_DIR) --offload-arch=gfx90a -ggdb -fopenmp
+HIPCC_CFLAGS=-I$(INC_DIR) -I${MPICH_DIR}/include --offload-arch=gfx90a -ggdb -fopenmp
 
 # Linker flags for hipcc on AMD platform
 HIPCC_LDFLAGS=-fopenmp -L$(MPICH_DIR)/lib -lmpi $(PE_MPICH_GTL_DIR_amd_gfx90a) $(PE_MPICH_GTL_LIBS_amd_gfx90a)

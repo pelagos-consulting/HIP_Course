@@ -4,8 +4,8 @@
 // Include the HIP helper headers
 #include "hip_helper.hpp"
 
-// Length of our grid
-#define N 512
+// Length of the vector
+#define N0_A 512
 
 // Simple kernel to fill a vector 
 __global__ void fill (float* A, float fill_value, size_t N) { 
@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
     
     // Allocate memory on the compute device for vector A
     float* A_d;
-    size_t nbytes_A = N*sizeof(float);
+    size_t nbytes_A = N0_A*sizeof(float);
     H_ERRCHK(hipMalloc((void**)&A_d, nbytes_A));
     
     // Allocate memory on the host for vector A
@@ -62,7 +62,7 @@ int main(int argc, char** argv) {
     // Size of the block in each dimension
     dim3 block_size = { 64, 1, 1};
     // Number of blocks in each dimension
-    dim3 grid_nblocks = { N/block_size.x, 1, 1 };
+    dim3 grid_nblocks = { N0_A/block_size.x, 1, 1 };
     
     // The value to fill
     float fill_value=1.0;
@@ -76,7 +76,7 @@ int main(int argc, char** argv) {
             block_size, sharedMemBytes, 0, 
             A_d,
             fill_value,
-            (size_t)N
+            (size_t)N0_A
     );
     
     // Wait for any commands to complete on the compute device
@@ -89,7 +89,7 @@ int main(int argc, char** argv) {
     H_ERRCHK(hipFree(A_d));
     
     // Check the memory allocation to see if it was filled correctly
-    for (int i0=0; i0<N; i0++) {
+    for (int i0=0; i0<N0_A; i0++) {
         assert(A_h[i0]==fill_value);
     }
     
