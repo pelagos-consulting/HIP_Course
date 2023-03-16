@@ -14813,7 +14813,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Software-modules-on-Setonix">Software modules on Setonix<a class="anchor-link" href="#Software-modules-on-Setonix">&#182;</a></h2>
+<h2 id="Building-software-for-Setonix">Building software for Setonix<a class="anchor-link" href="#Building-software-for-Setonix">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -14824,7 +14824,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Compiler-and-MPI-environment">Compiler and MPI environment<a class="anchor-link" href="#Compiler-and-MPI-environment">&#182;</a></h3><p>There are three main programming environments available on Setonix. Each provides C/C++ and Fortran compilers that build software with knowledge of of the MPI libraries available on Setonix. The <strong>PrgEnv-GNU</strong> programming environment uses the GNU compilers, <strong>PrgEnv-aocc</strong> uses the AMD aocc optimising compiler to try and get the best performance from the AMD CPU's on Setonix, and the <strong>PrgEnv-cray</strong> compilers use the compilers from Cray. Use these commands to find which module to load.</p>
+<h3 id="Software-modules">Software modules<a class="anchor-link" href="#Software-modules">&#182;</a></h3><p>There are three main programming environments available on Setonix. Each provides C/C++ and Fortran compilers that build software with knowledge of of the MPI libraries available on Setonix. The <strong>PrgEnv-GNU</strong> programming environment uses the GNU compilers, <strong>PrgEnv-aocc</strong> uses the AMD aocc optimising compiler to try and get the best performance from the AMD CPU's on Setonix, and the <strong>PrgEnv-cray</strong> compilers use the compilers from Cray. Use these commands to find which module to load.</p>
 <table>
 <thead><tr>
 <th style="text-align:left">Programming environment</th>
@@ -14871,7 +14871,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </tr>
 </tbody>
 </table>
-<p>In order to use an MPI library that GPU-aware you also need to load the <strong>craype-accel-amd-gfx90a</strong> module, which works in all three programming environments. To see which version to load run this command.</p>
+<p>In order to use the GPU-aware MPI library you also need to load the <strong>craype-accel-amd-gfx90a</strong> module, which works in all three programming environments. To see which version to load run this command.</p>
 <div class="highlight"><pre><span></span>module avail craype-accel-amd-gfx90a
 </pre></div>
 <p>Load the module <strong>craype-accel-amd-gfx90a</strong> then set the environment variable</p>
@@ -14892,7 +14892,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Compiling-software-with-HIP-and-MPI">Compiling software with HIP and MPI<a class="anchor-link" href="#Compiling-software-with-HIP-and-MPI">&#182;</a></h3><p>According to this <a href="https://docs.amd.com/bundle/HIP-Programming-Guide-v5.0/page/Transitioning_from_CUDA_to_HIP.html">documentation</a> the AMD compiler wrapper <strong>hipcc</strong> can be use for compiling HIP source files and is the suggested linker for program objects.</p>
+<h3 id="Compiling-software-with-HIP-and-MPI-support">Compiling software with HIP and MPI support<a class="anchor-link" href="#Compiling-software-with-HIP-and-MPI-support">&#182;</a></h3><p>According to this <a href="https://docs.amd.com/bundle/HIP-Programming-Guide-v5.0/page/Transitioning_from_CUDA_to_HIP.html">documentation</a> the AMD compiler wrapper <strong>hipcc</strong> can be use for compiling HIP source files and is the suggested linker for program objects.</p>
 
 </div>
 </div>
@@ -14948,7 +14948,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Compiling-and-linking-with-the-Cray-CC-compiler-wrapper">Compiling and linking with the Cray <strong>CC</strong> compiler wrapper<a class="anchor-link" href="#Compiling-and-linking-with-the-Cray-CC-compiler-wrapper">&#182;</a></h4><p>If you are using the Cray compiler wrapper <strong>CC</strong> you can add these flags to compile and link HIP code for the MI250X GPU's on Setonix. You also need to have the <strong>rocm</strong> module loaded.</p>
+<h4 id="Compiling-and-linking-with-the-Cray-CC-compiler-wrapper">Compiling and linking with the Cray <strong>CC</strong> compiler wrapper<a class="anchor-link" href="#Compiling-and-linking-with-the-Cray-CC-compiler-wrapper">&#182;</a></h4><p>If you are using the Cray compiler wrapper <strong>CC</strong> you can add these flags to compile and link HIP code for the MI250X GPU's on Setonix. You need to have the <strong>rocm</strong> module loaded.</p>
 <table>
 <thead><tr>
 <th style="text-align:left">Function</th>
