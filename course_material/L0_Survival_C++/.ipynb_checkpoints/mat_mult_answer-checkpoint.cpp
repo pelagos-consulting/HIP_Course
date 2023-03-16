@@ -45,7 +45,7 @@ void mat_mult(
             //// End exercise ////
 
             // Add to the temporary sum
-            temp=temp + A[offset_A]*B[offset_B];
+            temp+=A[offset_A]*B[offset_B];
         }
 
         // Place temp into the matrix at coordinates (i0, i1)

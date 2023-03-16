@@ -15732,7 +15732,7 @@ to start the program. It will execute until it crashes</li>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make image_creator.exe<span class="p">;</span> ./image_creator.exe
@@ -15757,8 +15757,7 @@ to start the program. It will execute until it crashes</li>
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>hipcc -g -std=c++11 -O0 -I/usr/include -I../include -L/usr/lib/x86_64-linux-gnu image_creator.cpp\
-	-o image_creator.exe 
+<pre>make: &#39;image_creator.exe&#39; is up to date.
 b interpreted as an integer: 116
 b interpreted as a character: t
 abcd
@@ -15798,7 +15797,7 @@ malloc(): corrupted top size
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make clean<span class="p">;</span> make image_creator_answer.exe<span class="p">;</span> ./image_creator_answer.exe
@@ -15917,7 +15916,7 @@ The computed solution (arr) is
 <span class="w">            </span><span class="c1">//// End exercise ////</span>
 
 <span class="w">            </span><span class="c1">// Add to the temporary sum</span>
-<span class="w">            </span><span class="n">temp</span><span class="o">=</span><span class="n">temp</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">offset_A</span><span class="p">]</span><span class="o">*</span><span class="n">B</span><span class="p">[</span><span class="n">offset_B</span><span class="p">];</span><span class="w"></span>
+<span class="w">            </span><span class="n">temp</span><span class="o">+=</span><span class="n">A</span><span class="p">[</span><span class="n">offset_A</span><span class="p">]</span><span class="o">*</span><span class="n">B</span><span class="p">[</span><span class="n">offset_B</span><span class="p">];</span><span class="w"></span>
 <span class="w">        </span><span class="p">}</span><span class="w"></span>
 
 <span class="w">        </span><span class="c1">// Place temp into the matrix at coordinates (i0, i1)</span>
@@ -15935,7 +15934,7 @@ The computed solution (arr) is
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make mat_mult.exe<span class="p">;</span> ./mat_mult.exe
@@ -15960,29 +15959,30 @@ The computed solution (arr) is
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>make: &#39;mat_mult.exe&#39; is up to date.
+<pre>hipcc -g -std=c++11 -O0 -I/usr/include -I../include -L/usr/lib/x86_64-linux-gnu mat_mult.cpp\
+	-o mat_mult.exe 
 The computed array (C_h) is
 ------
-|  1.16e-01  1.16e-01  1.16e-01  1.16e-01  1.16e-01  1.16e-01 |
-|  1.16e-01  1.16e-01  1.16e-01  1.16e-01  1.16e-01  1.16e-01 |
-|  1.16e-01  1.16e-01  1.16e-01  1.16e-01  1.16e-01  1.16e-01 |
-|  1.16e-01  1.16e-01  1.16e-01  1.16e-01  1.16e-01  1.16e-01 |
+|  1.35e+00  1.35e+00  1.35e+00  1.35e+00  1.35e+00  1.35e+00 |
+|  1.35e+00  1.35e+00  1.35e+00  1.35e+00  1.35e+00  1.35e+00 |
+|  1.35e+00  1.35e+00  1.35e+00  1.35e+00  1.35e+00  1.35e+00 |
+|  1.35e+00  1.35e+00  1.35e+00  1.35e+00  1.35e+00  1.35e+00 |
 ------
 The solution array (C_answer_h) is 
 ------
-|  9.00e-01  1.41e+00  1.00e+00  2.90e-01  9.31e-01  3.16e-01 |
-|  8.08e-01  1.39e+00  9.87e-01  4.38e-01  8.38e-01  4.05e-01 |
-|  3.61e-01  1.18e+00  7.27e-01  5.79e-01  6.16e-01  4.14e-01 |
-|  5.82e-01  1.39e+00  8.87e-01  5.07e-01  8.10e-01  3.97e-01 |
+|  8.33e-01  4.66e-01  8.74e-01  6.26e-01  4.29e-01  3.82e-01 |
+|  2.38e-01  1.33e-01  2.72e-01  2.09e-01  1.45e-01  1.24e-01 |
+|  7.25e-01  2.97e-01  7.72e-01  8.87e-01  4.26e-01  3.45e-01 |
+|  4.68e-01  3.12e-01  7.38e-01  5.46e-01  4.66e-01  3.80e-01 |
 ------
 The residual (C_answer_h-C_h) is
 ------
-|  7.84e-01  1.29e+00  8.84e-01  1.74e-01  8.16e-01  2.00e-01 |
-|  6.92e-01  1.27e+00  8.71e-01  3.23e-01  7.22e-01  2.90e-01 |
-|  2.45e-01  1.07e+00  6.11e-01  4.64e-01  5.00e-01  2.98e-01 |
-|  4.66e-01  1.27e+00  7.72e-01  3.91e-01  6.94e-01  2.82e-01 |
+| -5.18e-01 -8.85e-01 -4.78e-01 -7.25e-01 -9.22e-01 -9.69e-01 |
+| -1.11e+00 -1.22e+00 -1.08e+00 -1.14e+00 -1.21e+00 -1.23e+00 |
+| -6.26e-01 -1.05e+00 -5.79e-01 -4.64e-01 -9.26e-01 -1.01e+00 |
+| -8.83e-01 -1.04e+00 -6.14e-01 -8.05e-01 -8.85e-01 -9.71e-01 |
 ------
-Maximum error (infinity norm) is: 1.3
+Maximum error (infinity norm) is: 1.2
 </pre>
 </div>
 </div>
@@ -16008,7 +16008,7 @@ Maximum error (infinity norm) is: 1.3
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make mat_mult_answer.exe<span class="p">;</span> ./mat_mult_answer.exe
@@ -16033,20 +16033,21 @@ Maximum error (infinity norm) is: 1.3
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>make: &#39;mat_mult_answer.exe&#39; is up to date.
+<pre>hipcc -g -std=c++11 -O0 -I/usr/include -I../include -L/usr/lib/x86_64-linux-gnu mat_mult_answer.cpp\
+	-o mat_mult_answer.exe 
 The computed array (C_h) is
 ------
-|  7.86e-01  1.20e+00  9.70e-01  1.03e+00  5.47e-01  9.16e-01 |
-|  5.51e-01  1.02e+00  8.51e-01  8.84e-01  6.79e-01  4.35e-01 |
-|  4.11e-01  8.89e-01  6.14e-01  6.61e-01  5.64e-01  4.50e-01 |
-|  7.17e-01  9.25e-01  1.08e+00  1.07e+00  6.04e-01  3.40e-01 |
+|  8.33e-01  4.66e-01  8.74e-01  6.26e-01  4.29e-01  3.82e-01 |
+|  2.38e-01  1.33e-01  2.72e-01  2.09e-01  1.45e-01  1.24e-01 |
+|  7.25e-01  2.97e-01  7.72e-01  8.87e-01  4.26e-01  3.45e-01 |
+|  4.68e-01  3.12e-01  7.38e-01  5.46e-01  4.66e-01  3.80e-01 |
 ------
 The solution array (C_answer_h) is 
 ------
-|  7.86e-01  1.20e+00  9.70e-01  1.03e+00  5.47e-01  9.16e-01 |
-|  5.51e-01  1.02e+00  8.51e-01  8.84e-01  6.79e-01  4.35e-01 |
-|  4.11e-01  8.89e-01  6.14e-01  6.61e-01  5.64e-01  4.50e-01 |
-|  7.17e-01  9.25e-01  1.08e+00  1.07e+00  6.04e-01  3.40e-01 |
+|  8.33e-01  4.66e-01  8.74e-01  6.26e-01  4.29e-01  3.82e-01 |
+|  2.38e-01  1.33e-01  2.72e-01  2.09e-01  1.45e-01  1.24e-01 |
+|  7.25e-01  2.97e-01  7.72e-01  8.87e-01  4.26e-01  3.45e-01 |
+|  4.68e-01  3.12e-01  7.38e-01  5.46e-01  4.66e-01  3.80e-01 |
 ------
 The residual (C_answer_h-C_h) is
 ------
