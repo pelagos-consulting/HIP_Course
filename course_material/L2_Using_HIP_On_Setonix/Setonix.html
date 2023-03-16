@@ -14917,7 +14917,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </tr>
 <tr>
 <td style="text-align:left">Link</td>
-<td style="text-align:left"><code>-L${MPICH_DIR}/lib -lmpi ${PE_MPICH_GTL_DIR_amd_gfx90a} ${PE_MPICH_GTL_LIBS_amd_gfx90a} $(CC --cray-print-opts=libs)</code></td>
+<td style="text-align:left"><code>-L${MPICH_DIR}/lib -lmpi ${PE_MPICH_GTL_DIR_amd_gfx90a} ${PE_MPICH_GTL_LIBS_amd_gfx90a}</code></td>
 </tr>
 <tr>
 <td style="text-align:left">Debug (compile and link)</td>
@@ -14929,33 +14929,17 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </tr>
 </tbody>
 </table>
-<p>If you want <strong>hipcc</strong> to behave like <strong>CC</strong> you can make sure the <strong>PrgEnv-cray</strong> and <strong>craype-accel-amd-gfx90a</strong> modules are loaded. Then you can add the output of this command,</p>
+<p>If you want <strong>hipcc</strong> to behave like Cray <strong>CC</strong>, make sure the <strong>PrgEnv-cray</strong> and <strong>craype-accel-amd-gfx90a</strong> modules are loaded. Then you can add the output of this command,</p>
 <div class="highlight"><pre><span></span><span class="k">$(</span>CC --cray-print-opts<span class="o">=</span>cflags<span class="k">)</span>
 </pre></div>
-<p>to the compile flags, and the output of this command,</p>
+<p>to the hipcc compile flags, and the output of this command,</p>
 <div class="highlight"><pre><span></span><span class="k">$(</span>CC --cray-print-opts<span class="o">=</span>libs<span class="k">)</span>
 </pre></div>
-<p>to the linker flags. I found that <strong>hipcc</strong> from the <strong>rocm</strong> module was the simplest and easiest solution for compiling HIP sources and linking object files.</p>
+<p>to the hipcc linker flags.</p>
 
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
@@ -14963,7 +14947,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Compiling-and-linking-with-the-Cray-CC-compiler-wrapper">Compiling and linking with the Cray <strong>CC</strong> compiler wrapper<a class="anchor-link" href="#Compiling-and-linking-with-the-Cray-CC-compiler-wrapper">&#182;</a></h4><p>If you are using the Cray compiler wrapper <strong>CC</strong> you can use these flags to compile and link HIP code for the MI250X GPU's on Setonix.</p>
+<h4 id="Compiling-and-linking-with-the-Cray-CC-compiler-wrapper">Compiling and linking with the Cray <strong>CC</strong> compiler wrapper<a class="anchor-link" href="#Compiling-and-linking-with-the-Cray-CC-compiler-wrapper">&#182;</a></h4><p>If you are using the Cray compiler wrapper <strong>CC</strong> you can add these flags to compile and link HIP code for the MI250X GPU's on Setonix.</p>
 <table>
 <thead><tr>
 <th style="text-align:left">Function</th>
@@ -14973,11 +14957,11 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <tbody>
 <tr>
 <td style="text-align:left">Compile</td>
-<td style="text-align:left"><code>-std=c++11 -D__HIP_ROCclr__ -D__HIP_ARCH_GFX90A__=1 --rocm-path=${ROCM_PATH} --offload-arch=gfx90a -x hip</code></td>
+<td style="text-align:left"><code>-D__HIP_ROCclr__ -D__HIP_ARCH_GFX90A__=1 --offload-arch=gfx90a -x hip</code></td>
 </tr>
 <tr>
 <td style="text-align:left">Link</td>
-<td style="text-align:left"><code>--rocm-path=${ROCM_PATH} -L${ROCM_PATH}/lib -lamdhip64</code></td>
+<td style="text-align:left"></td>
 </tr>
 <tr>
 <td style="text-align:left">Debug (compile and link)</td>
