@@ -11,11 +11,11 @@ TARGETS=hello_devices_mpi.exe hello_devices_mpi_onefile_hipcc.exe hello_devices_
 all: $(TARGETS)
 
 # Compiler flags for C++ compiler
-CC_CFLAGS=-g -I$(INC_DIR) -std=c++11 -D__HIP_ROCclr__ -D__HIP_ARCH_GFX90A__=1 --rocm-path=$(ROCM_PATH) -fopenmp --offload-arch=gfx90a -x hip
+CC_CFLAGS=-g -fopenmp -I$(INC_DIR) -D__HIP_ROCclr__ -D__HIP_ARCH_GFX90A__=1 --offload-arch=gfx90a -x hip
 
 # Linker flags for C++ compiler
-CC_LDFLAGS=-g --rocm-path=${ROCM_PATH} -L${ROCM_PATH}/lib -lamdhip64
-
+#CC_LDFLAGS=-g --rocm-path=${ROCM_PATH} -L${ROCM_PATH}/lib -lamdhip64
+CC_LDFLAGS=
 
 # Compiler flags for hipcc on AMD platform
 HIPCC_CFLAGS=-ggdb -fopenmp -I$(INC_DIR) -I${MPICH_DIR}/include --offload-arch=gfx90a $(shell CC --cray-print-opts=cflags)
