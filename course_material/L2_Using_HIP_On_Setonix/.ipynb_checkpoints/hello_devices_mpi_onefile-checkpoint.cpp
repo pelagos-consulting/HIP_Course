@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
     size_t nbytes_A = N*sizeof(float);
     H_ERRCHK(hipMalloc((void**)&A_d, nbytes_A));
     
-    // Allocate memory on the host
+    // Allocate memory on the host for vector A
     float* A_h = (float*)calloc(nbytes_A, 1);
     
     // Launch the kernel
@@ -95,6 +95,9 @@ int main(int argc, char** argv) {
     
     // Release devices and contexts
     h_reset_devices(num_devices);
+    
+    // Free host memory
+    free(A_h);
     
     // End the MPI application
     MPI_Finalize();
