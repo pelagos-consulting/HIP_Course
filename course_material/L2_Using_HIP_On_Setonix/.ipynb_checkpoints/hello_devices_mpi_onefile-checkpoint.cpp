@@ -7,8 +7,16 @@
 // Length of our grid
 #define N 512
 
-// Declare the kernel function
-__global__ void fill (float*, float, size_t);
+// Simple kernel to fill a vector 
+__global__ void fill (float* A, float fill_value, size_t N) { 
+            
+    // A is of size (N,)
+    size_t i0 = blockIdx.x * blockDim.x + threadIdx.x;
+    
+    if (i0<N) {
+        A[i0]=fill_value;
+    }
+} 
 
 // Main program
 int main(int argc, char** argv) {
