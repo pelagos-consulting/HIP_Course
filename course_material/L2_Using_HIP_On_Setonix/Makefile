@@ -46,8 +46,8 @@ hello_devices_mpi_onefile_CC.exe : hello_devices_mpi_onefile.cpp
 
 # Clean step
 clean:
-	rm -r *.exe
-	rm -r *.o
+	rm -rf *.exe
+	rm -rf *.o
 
 
 .EXPORT_ALL_VARIABLES:

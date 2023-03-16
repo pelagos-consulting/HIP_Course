@@ -6,4 +6,5 @@
 *.obj
 *.trc
 *.edf
+*.o
 image_deploy/
