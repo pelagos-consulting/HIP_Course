@@ -100,6 +100,9 @@ int main(int argc, char** argv) {
     m_random(A_h, N0_C, N1_A);
     m_random(B_h, N1_A, N1_C);
     
+    // Zero out C_h
+    memset(C_h, '\0', nbytes_C);
+    
     //// Step 4. Allocate memory for arrays //// 
     //// A_d, B_d, and C_d on the compute device ////
 

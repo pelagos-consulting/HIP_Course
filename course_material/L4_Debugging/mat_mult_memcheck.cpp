@@ -95,6 +95,8 @@ int main(int argc, char** argv) {
     H_ERRCHK(hipHostMalloc((void**)&B_h, nbytes_B));
     H_ERRCHK(hipHostMalloc((void**)&C_h, nbytes_C));
 
+    memset(C_h, '\0', nbytes_C);
+    
     // Fill the host arrays with random numbers 
     // using the matrix helper library
     m_random(A_h, N0_C, N1_A);

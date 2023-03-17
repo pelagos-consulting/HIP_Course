@@ -100,6 +100,9 @@ int main(int argc, char** argv) {
     m_random(A_h, N0_C, N1_A);
     m_random(B_h, N1_A, N1_C);
     
+    // Zero out C_h
+    memset(C_h, '\0', nbytes_C);
+    
     //// Step 4. Allocate memory for arrays //// 
     //// A_d, B_d, and C_d on the compute device ////
 
@@ -152,7 +155,7 @@ int main(int argc, char** argv) {
     // Compute the serial solution using the matrix helper library
     float* C_answer_h = (float*)calloc(nbytes_C, 1);
     m_mat_mult(A_h, B_h, C_answer_h, N1_A, N0_C, N1_C);
-    
+
     // Print the maximum error between matrices
     float max_err = m_max_error(C_h, C_answer_h, N0_C, N1_C);
     
