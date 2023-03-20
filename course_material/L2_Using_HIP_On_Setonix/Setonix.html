@@ -14945,20 +14945,6 @@ chmod -R <span class="m">0400</span> <span class="si">${</span><span class="nv">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Batch-jobs-on-GPU-nodes">Batch jobs on GPU nodes<a class="anchor-link" href="#Batch-jobs-on-GPU-nodes">&#182;</a></h2><p>Options</p>
-<p><strong>--distribution=cyclic:cyclic:cyclic</strong></p>
-<p><strong>--gpu-bind=closest</strong></p>
-
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="Exercise:-compile-and-run-your-first-MPI-enabled-HIP-application">Exercise: compile and run your first MPI-enabled HIP application<a class="anchor-link" href="#Exercise:-compile-and-run-your-first-MPI-enabled-HIP-application">&#182;</a></h2><p>In the files <a href="hello_devices_mpi.cpp">hello_devices_mpi.cpp</a> and <a href="hello_devices_mpi_onefile.cpp">hello_devices_mpi_onefile.cpp</a> are files to implement an MPI-enabled HIP application that reports on devices and fills a vector. The difference between the two is that for <a href="hello_devices_mpi.cpp">hello_devices_mpi.cpp</a> has the kernel located in a separate file <a href="kernels.hip.cpp">kernels.hip.cpp</a>. Your task is to compile these files into two executables, <strong>hello_devices_mpi.exe</strong> and <strong>hello_devices_mpi_onefile.exe</strong>.</p>
 <h3 id="Compilation-steps">Compilation steps<a class="anchor-link" href="#Compilation-steps">&#182;</a></h3><ol>
 <li>Log into <strong>setonix.pawsey.org.au</strong>.</li>
@@ -15035,6 +15021,20 @@ chmod -R <span class="m">0400</span> <span class="si">${</span><span class="nv">
 <div class="highlight"><pre><span></span>chmod <span class="m">700</span> run_compile.sh
    ./run_compile.sh
 </pre></div>
+
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Batch-jobs-on-GPU-nodes">Batch jobs on GPU nodes<a class="anchor-link" href="#Batch-jobs-on-GPU-nodes">&#182;</a></h2><p>Options</p>
+<p><strong>--distribution=cyclic:cyclic:cyclic</strong></p>
+<p><strong>--gpu-bind=closest</strong></p>
 
 </div>
 </div>
