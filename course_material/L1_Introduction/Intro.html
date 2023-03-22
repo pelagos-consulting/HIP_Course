@@ -14828,7 +14828,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <ul>
-<li>HIP CPU runtime <a href="https://github.com/ROCm-Developer-Tools/HIP-CPU">https://github.com/ROCm-Developer-Tools/HIP-CPU</a>.</li>
+<li>HIP CPU runtime <a href="https://github.com/ROCm-Developer-Tools/HIP-CPU">https://github.com/ROCm-Developer-Tools/HIP-CPU</a>. This is a header-only library that allows for HIP application development using a CPU backend.</li>
 <li>CHIP-SPV runtime for running HIP over OpenCL and Intel Level Zero backends <a href="https://github.com/CHIP-SPV/chip-spv">https://github.com/CHIP-SPV/chip-spv</a>.</li>
 </ul>
 
@@ -14860,7 +14860,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="Compiling-HIP-programs">Compiling HIP programs<a class="anchor-link" href="#Compiling-HIP-programs">&#182;</a></h2><p>In a similar fashion to CUDA, HIP uses a compiler wrapper script <strong>hipcc</strong> to compile programs in two stages. One stage is for host code and another is for kernel code. The kernel code is either built as a binary or is compiled to an intermediate code for further compilation at runtime. All kernel code is included in the application binary.</p>
-<p>All that a program needs to do is include the file <strong>hip/hip_runtime.h</strong>.</p>
+<p>All that a program needs to do is include the header file <strong>hip/hip_runtime.h</strong>.</p>
 <div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;hip/hip_runtime.h&gt;</span><span class="cp"></span>
 </pre></div>
 <p>and then compile the source code using the <strong>hipcc</strong> compiler wrapper. For example there is a program called <strong>hello_devices.cpp</strong> in this folder. We compile it with the command</p>
