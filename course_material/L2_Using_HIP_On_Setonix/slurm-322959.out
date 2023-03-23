@@ -1,0 +1,124 @@
+
+Lmod is automatically replacing "gcc/12.1.0" with "cce/14.0.3".
+
+
+Due to MODULEPATH changes, the following have been reloaded:
+  1) cray-mpich/8.1.19
+
+slurmstepd: error: Bind request gpu:closest does not specify any devices within the allocation for task 4. Binding to the first device in the allocation instead.
+slurmstepd: error: Bind request gpu:closest does not specify any devices within the allocation for task 5. Binding to the first device in the allocation instead.
+slurmstepd: error: Bind request gpu:closest does not specify any devices within the allocation for task 5. Binding to the first device in the allocation instead.
+slurmstepd: error: Bind request gpu:closest does not specify any devices within the allocation for task 4. Binding to the first device in the allocation instead.
+
+
+======================= ROCm System Management Interface =======================
+================================== PCI Bus ID ==================================
+GPU[0]		: PCI Bus: 0000:C9:00.0
+================================================================================
+============================= End of ROCm SMI Log ==============================
+
+
+======================= ROCm System Management Interface =======================
+================================== PCI Bus ID ==================================
+GPU[0]		: PCI Bus: 0000:C9:00.0
+================================================================================
+============================= End of ROCm SMI Log ==============================
+
+
+======================= ROCm System Management Interface =======================
+================================== PCI Bus ID ==================================
+GPU[0]		: PCI Bus: 0000:D9:00.0
+================================================================================
+============================= End of ROCm SMI Log ==============================
+
+
+======================= ROCm System Management Interface =======================
+================================== PCI Bus ID ==================================
+GPU[0]		: PCI Bus: 0000:DE:00.0
+================================================================================
+============================= End of ROCm SMI Log ==============================
+
+
+======================= ROCm System Management Interface =======================
+================================== PCI Bus ID ==================================
+GPU[0]		: PCI Bus: 0000:CE:00.0
+================================================================================
+============================= End of ROCm SMI Log ==============================
+
+
+======================= ROCm System Management Interface =======================
+================================== PCI Bus ID ==================================
+GPU[0]		: PCI Bus: 0000:D1:00.0
+================================================================================
+============================= End of ROCm SMI Log ==============================
+Number of nodes is 1, number of tasks is 6, number of cores per task is 8
+slurmstepd: error: Bind request gpu:closest does not specify any devices within the allocation for task 4. Binding to the first device in the allocation instead.
+slurmstepd: error: Bind request gpu:closest does not specify any devices within the allocation for task 5. Binding to the first device in the allocation instead.
+slurmstepd: error: Bind request gpu:closest does not specify any devices within the allocation for task 4. Binding to the first device in the allocation instead.
+slurmstepd: error: Bind request gpu:closest does not specify any devices within the allocation for task 5. Binding to the first device in the allocation instead.
+MPI rank 1 of 6
+device 0 of 1
+MPI rank 2 of 6
+device 0 of 1
+MPI rank 3 of 6
+device 0 of 1
+MPI rank 0 of 6
+device 0 of 1
+MPI rank 5 of 6
+device 0 of 1
+MPI rank 4 of 6
+device 0 of 1
+Device id: 0
+	name:                                    
+	global memory size:                      68702 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    65 KB
+	maximum pitch size for memory copies:    68702 MB
+	max block size:                          (1024,1024,1024)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,2147483647,2147483647)
+Device id: 0
+	name:                                    
+	global memory size:                      68702 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    65 KB
+	maximum pitch size for memory copies:    68702 MB
+	max block size:                          (1024,1024,1024)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,2147483647,2147483647)
+Device id: 0
+	name:                                    
+	global memory size:                      68702 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    65 KB
+	maximum pitch size for memory copies:    68702 MB
+	max block size:                          (1024,1024,1024)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,2147483647,2147483647)
+Device id: 0
+	name:                                    
+	global memory size:                      68702 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    65 KB
+	maximum pitch size for memory copies:    68702 MB
+	max block size:                          (1024,1024,1024)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,2147483647,2147483647)
+Device id: 0
+	name:                                    
+	global memory size:                      68702 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    65 KB
+	maximum pitch size for memory copies:    68702 MB
+	max block size:                          (1024,1024,1024)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,2147483647,2147483647)
+Device id: 0
+	name:                                    
+	global memory size:                      68702 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    65 KB
+	maximum pitch size for memory copies:    68702 MB
+	max block size:                          (1024,1024,1024)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,2147483647,2147483647)

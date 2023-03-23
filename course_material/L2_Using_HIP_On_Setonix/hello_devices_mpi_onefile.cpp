@@ -42,7 +42,7 @@ int main(int argc, char** argv) {
 
     // Report on available devices
     for (int n=0; n<num_devices; n++) {
-        std::cout << "device " << n << std::endl;
+        std::cout << "device " << n << " of " << num_devices << std::endl;
         h_report_on_device(n);
     }
     
