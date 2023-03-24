@@ -43,6 +43,7 @@ hello_devices_mpi_onefile_hipcc.exe : hello_devices_mpi_onefile.cpp
 hello_devices_mpi_onefile_CC.exe : hello_devices_mpi_onefile.cpp
 	CC $(CC_CFLAGS) $< -o $@ $(CC_LDFLAGS)
 
+# Compile the hello_jobstep helper application from Thomas Papatheodore
 hello_jobstep.exe : hello_jobstep.cpp
 	hipcc $(HIPCC_CFLAGS) $< -o $@ $(HIPCC_LDFLAGS)
 

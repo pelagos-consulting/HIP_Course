@@ -14685,9 +14685,9 @@ chmod -R <span class="m">0400</span> <span class="si">${</span><span class="nv">
 <th>Socket</th>
 <th>Cores</th>
 <th>processing elements per CPU core</th>
-<th>Host memory (GB)</th>
-<th>Number of GPU's</th>
-<th>Memory per GPU (GB)</th>
+<th>Available memory (GB)</th>
+<th>Number of HIP devices</th>
+<th>Memory per HIP device (GB)</th>
 </tr>
 </thead>
 <tbody>
@@ -14698,7 +14698,7 @@ chmod -R <span class="m">0400</span> <span class="si">${</span><span class="nv">
 <td>2</td>
 <td>64</td>
 <td>2</td>
-<td>256</td>
+<td>230</td>
 <td>0</td>
 <td>0</td>
 </tr>
@@ -14709,7 +14709,7 @@ chmod -R <span class="m">0400</span> <span class="si">${</span><span class="nv">
 <td>2</td>
 <td>64</td>
 <td>2</td>
-<td>256</td>
+<td>230</td>
 <td>0</td>
 <td>0</td>
 </tr>
@@ -14720,18 +14720,29 @@ chmod -R <span class="m">0400</span> <span class="si">${</span><span class="nv">
 <td>2</td>
 <td>64</td>
 <td>2</td>
-<td>256</td>
+<td>230</td>
 <td>0</td>
 <td>0</td>
 </tr>
 <tr>
-<td>himem</td>
+<td>highmem</td>
 <td>24 hours</td>
 <td>256</td>
 <td>2</td>
 <td>64</td>
 <td>2</td>
-<td>1000</td>
+<td>980</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>copy</td>
+<td>24 hours</td>
+<td>32</td>
+<td>1</td>
+<td>64</td>
+<td>2</td>
+<td>118</td>
 <td>0</td>
 <td>0</td>
 </tr>
@@ -14743,8 +14754,8 @@ chmod -R <span class="m">0400</span> <span class="si">${</span><span class="nv">
 <td>64</td>
 <td>2</td>
 <td>128</td>
-<td>4</td>
-<td>128</td>
+<td>8 (4x2)</td>
+<td>64</td>
 </tr>
 </tbody>
 </table>
@@ -15015,7 +15026,7 @@ chmod -R <span class="m">0400</span> <span class="si">${</span><span class="nv">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="The-answer">The answer<a class="anchor-link" href="#The-answer">&#182;</a></h2><p>If you get stuck, the example <a href="Makefile">Makefile</a> contains the above compilation steps. Assumiing you loaded the modules defined above, the make command is run as follows:</p>
+<h3 id="The-answer">The answer<a class="anchor-link" href="#The-answer">&#182;</a></h3><p>If you get stuck, the example <a href="Makefile">Makefile</a> contains the above compilation steps. Assuming you loaded the right modules defined above, the make command is run as follows:</p>
 <p><code>make clean; make</code></p>
 <p>The script <strong>run_compile.sh</strong> contains the necessary commands to load the appropriate modules and run the <strong>make</strong> command.</p>
 <div class="highlight"><pre><span></span>chmod <span class="m">700</span> run_compile.sh
@@ -15032,9 +15043,35 @@ chmod -R <span class="m">0400</span> <span class="si">${</span><span class="nv">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Batch-jobs-on-GPU-nodes">Batch jobs on GPU nodes<a class="anchor-link" href="#Batch-jobs-on-GPU-nodes">&#182;</a></h2><p>Options</p>
-<p><strong>--distribution=cyclic:cyclic:cyclic</strong></p>
-<p><strong>--gpu-bind=closest</strong></p>
+<h2 id="Batch-jobs-on-GPU-nodes">Batch jobs on GPU nodes<a class="anchor-link" href="#Batch-jobs-on-GPU-nodes">&#182;</a></h2><p>Pawsey has extensive documentation available for running jobs, at this <a href="https://support.pawsey.org.au/documentation/display/US/Running+Jobs+in+Setonix">site</a>. The suggested job script below will allocate an MPI task for each compute device on a node of Setonix. Then it will allocate 8 OpenMP threads to each MPI task. We can use the helper program <a href="https://code.ornl.gov/olcf/hello_jobstep">hello_jobstep</a> Written by Thomas Papatheodore from ORNL to show the node hostname</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash -l</span>
+
+<span class="c1">#SBATCH --account=pawsey0007       # your account</span>
+<span class="c1">#SBATCH --partition=gpu            # Using the gpu partition</span>
+<span class="c1">#SBATCH --ntasks=6                 # Total number of tasks</span>
+<span class="c1">#SBATCH --ntasks-per-node=8        # Set this for 1 mpi task per compute device</span>
+<span class="c1">#SBATCH --cpus-per-task=16          # How many OpenMP threads per MPI task </span>
+<span class="c1">#SBATCH --gpus-per-task=1          # How many HIP compute devices to allocate to a task</span>
+<span class="c1">#SBATCH --mem=4000M                #Indicate the amount of memory per node when asking for share resources</span>
+<span class="c1">#SBATCH --time=01:00:00</span>
+
+module swap PrgEnv-gnu PrgEnv-cray
+module load craype-accel-amd-gfx90a
+module load rocm
+
+<span class="nb">export</span> <span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="nv">$SLURM_CPUS_PER_TASK</span>   <span class="c1">#To define the number of OpenMP threads available per MPI task, in this case it will be 8</span>
+<span class="nb">export</span> <span class="nv">OMP_PLACES</span><span class="o">=</span>cores     <span class="c1">#To bind threads to cores</span>
+<span class="nb">export</span> <span class="nv">OMP_PROC_BIND</span><span class="o">=</span>close  <span class="c1">#To bind (fix) threads (allocating them as close as possible). This option works together with the &quot;places&quot; indicated above, then: allocates threads in closest cores.</span>
+
+<span class="c1"># Temporal workaround for avoiding Slingshot issues on shared nodes:</span>
+<span class="nb">export</span> <span class="nv">FI_CXI_DEFAULT_VNI</span><span class="o">=</span><span class="k">$(</span>od -vAn -N4 -tu &lt; /dev/urandom<span class="k">)</span>
+
+<span class="c1"># Bind options to srun plane=4 is the number of NUMA domains per processor (4)</span>
+<span class="nb">export</span> <span class="nv">BIND_OPTIONS</span><span class="o">=</span><span class="s2">&quot;--cpu-bind=ldoms -m plane=4 --gpu-bind=closest&quot;</span>
+
+<span class="c1"># Run a job with task placement and $BIND_OPTIONS</span>
+srun -N <span class="nv">$SLURM_JOB_NUM_NODES</span> -n <span class="nv">$SLURM_NTASKS</span> -c <span class="nv">$OMP_NUM_THREADS</span> <span class="nv">$BIND_OPTIONS</span>  ./hello_jobstep.exe
+</pre></div>
 
 </div>
 </div>
