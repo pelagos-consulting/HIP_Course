@@ -4,8 +4,8 @@
 #SBATCH --partition=gpu            # Using the gpu partition
 #SBATCH --ntasks=8                 # Total number of tasks
 #SBATCH --ntasks-per-node=8        # Set this for 1 mpi task per compute device
-#SBATCH --cpus-per-task=16         # How many OpenMP threads per MPI task 
-#SBATCH --threads-per-core=2	   # How many threads per core
+#SBATCH --cpus-per-task=16          # How many OpenMP threads per MPI task 
+#SBATCH --threads-per-core=2       # How many threads per core
 #SBATCH --gpus-per-task=1          # How many HIP compute devices to allocate to a  task
 #SBATCH --mem=4000M                #Indicate the amount of memory per node when asking for share resources
 #SBATCH --time=01:00:00
