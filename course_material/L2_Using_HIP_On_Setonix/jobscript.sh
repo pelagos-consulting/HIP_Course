@@ -21,7 +21,7 @@ export OMP_PROC_BIND=close  #To bind (fix) threads (allocating them as close as 
 export FI_CXI_DEFAULT_VNI=$(od -vAn -N4 -tu < /dev/urandom)
 
 # Bind options to srun plane=4 is the number of NUMA domains per processor (4)
-export BIND_OPTIONS="--cpu-bind=ldoms -m plane=4 --gpu-bind=closest"
+export BIND_OPTIONS="--cpu-bind=threads -m block:cyclic --gpu-bind=closest"
 
 # Run a job with task placement and $BIND_OPTIONS
 srun -N $SLURM_JOB_NUM_NODES -n $SLURM_NTASKS -c $OMP_NUM_THREADS $BIND_OPTIONS  ./hello_jobstep.exe
