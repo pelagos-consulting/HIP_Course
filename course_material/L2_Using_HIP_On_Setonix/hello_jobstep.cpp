@@ -53,17 +53,18 @@ int main(int argc, char *argv[]){
 	int num_devices = 0;
     hipErrorCheck( hipGetDeviceCount(&num_devices) );
 
-	int hwthread;
+	unsigned int hwthread;
 	int thread_id = 0;
+	unsigned int numa_id = 0;
 
 	if(num_devices == 0){
-		#pragma omp parallel default(shared) private(hwthread, thread_id)
+		#pragma omp parallel default(shared) private(hwthread, thread_id, numa_id)
 		{
 			thread_id = omp_get_thread_num();
-			hwthread = sched_getcpu();
+			getcpu(&hwthread, &numa_id);
 
-            printf("MPI %03d - OMP %03d - HWT %03d - Node %s\n", 
-                    rank, thread_id, hwthread, name);
+            printf("MPI %03d - OMP %03d - HWT %03d - NUMA %03d - Node %s\n", 
+                    rank, thread_id, hwthread, numa_id, name);
 
 		}
 	}
@@ -93,15 +94,15 @@ int main(int argc, char *argv[]){
 
 		}
 
-		#pragma omp parallel default(shared) private(hwthread, thread_id)
+		#pragma omp parallel default(shared) private(hwthread, numa_id, thread_id)
 		{
             #pragma omp critical
             {
 			thread_id = omp_get_thread_num();
-			hwthread = sched_getcpu();
+			getcpu(&hwthread, &numa_id);
 
-            printf("MPI %03d - OMP %03d - HWT %03d - Node %s - RT_GPU_ID %s - GPU_ID %s - Bus_ID %s\n",
-                    rank, thread_id, hwthread, name, rt_gpu_id_list.c_str(), gpu_id_list, busid_list.c_str());
+            printf("MPI %03d - OMP %03d - HWT %03d - NUMA_ID %03d - Node %s - RT_GPU_ID %s - GPU_ID %s - Bus_ID %s\n",
+                    rank, thread_id, hwthread, numa_id, name, rt_gpu_id_list.c_str(), gpu_id_list, busid_list.c_str());
            }
 		}
 	}
