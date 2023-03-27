@@ -3,622 +3,622 @@
 ,{"args":{"name":"COPY"},"ph":"M","pid":1,"name":"process_name","sort_index":1}
 ,{"args":{"name":"GPU0"},"ph":"M","pid":6,"name":"process_name","sort_index":2}
 ,{"args":{"name":"GPU1"},"ph":"M","pid":7,"name":"process_name","sort_index":3}
-,{"ph":"X","name":"CopyHostToDevice","pid":"1","tid":"0","ts":"11072881108","dur":"42",
+,{"ph":"X","name":"CopyHostToDevice","pid":"1","tid":"0","ts":"21073758069","dur":"20",
   "args":{
-    "BeginNs":"11072881108343",
-    "EndNs":"11072881151102",
+    "BeginNs":"21073758069181",
+    "EndNs":"21073758089458",
     "dev-id":"1",
     "queue-id":"0",
     "Name":"CopyHostToDevice",
-    "pid":"34384",
-    "tid":"34384",
+    "pid":"23510",
+    "tid":"23510",
     "stream-id":"0",
     "Data":"",
-    "DurationNs":"42759"
+    "DurationNs":"20277"
   }
 }
-,{"ph":"X","name":"CopyHostToDevice","pid":"1","tid":"0","ts":"11072881177","dur":"72",
+,{"ph":"X","name":"CopyHostToDevice","pid":"1","tid":"0","ts":"21073758100","dur":"38",
   "args":{
-    "BeginNs":"11072881177190",
-    "EndNs":"11072881249805",
+    "BeginNs":"21073758100188",
+    "EndNs":"21073758138299",
     "dev-id":"1",
     "queue-id":"0",
     "Name":"CopyHostToDevice",
-    "pid":"34384",
-    "tid":"34384",
+    "pid":"23510",
+    "tid":"23510",
     "stream-id":"0",
     "Data":"",
-    "DurationNs":"72615"
+    "DurationNs":"38111"
   }
 }
-,{"ph":"X","name":"CopyDeviceToHost","pid":"1","tid":"0","ts":"11072883395","dur":"145",
+,{"ph":"X","name":"CopyDeviceToHost","pid":"1","tid":"0","ts":"21073760152","dur":"139",
   "args":{
-    "BeginNs":"11072883395590",
-    "EndNs":"11072883541380",
+    "BeginNs":"21073760152225",
+    "EndNs":"21073760291284",
     "dev-id":"1",
     "queue-id":"0",
     "Name":"CopyDeviceToHost",
-    "pid":"34384",
-    "tid":"34384",
+    "pid":"23510",
+    "tid":"23510",
     "stream-id":"0",
     "Data":"",
-    "DurationNs":"145790"
+    "DurationNs":"139059"
   }
 }
-,{"ph":"X","name":"hipGetDeviceCount","pid":"2","tid":"34384","ts":"11072706028","dur":"1",
+,{"ph":"X","name":"hipGetDeviceCount","pid":"2","tid":"23510","ts":"21073588963","dur":"1",
   "args":{
-    "BeginNs":"11072706028805",
-    "EndNs":"11072706029216",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073588963364",
+    "EndNs":"21073588963785",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipGetDeviceCount",
     "args":"( count(1))",
     "Data":"",
-    "DurationNs":"411"
+    "DurationNs":"421"
   }
 }
-,{"ph":"X","name":"hipInit","pid":"2","tid":"34384","ts":"11072706043","dur":"1",
+,{"ph":"X","name":"hipInit","pid":"2","tid":"23510","ts":"21073588971","dur":"1",
   "args":{
-    "BeginNs":"11072706043152",
-    "EndNs":"11072706043382",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073588971860",
+    "EndNs":"21073588971930",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipInit",
     "args":"( flags(0))",
-    "Data":"",
-    "DurationNs":"230"
-  }
-}
-,{"ph":"X","name":"hipGetDeviceCount","pid":"2","tid":"34384","ts":"11072706043","dur":"1",
-  "args":{
-    "BeginNs":"11072706043953",
-    "EndNs":"11072706044023",
-    "pid":"34384",
-    "tid":"34384",
-    "Name":"hipGetDeviceCount",
-    "args":"( count(1))",
     "Data":"",
     "DurationNs":"70"
   }
 }
-,{"ph":"X","name":"hipSetDevice","pid":"2","tid":"34384","ts":"11072706046","dur":"1",
+,{"ph":"X","name":"hipGetDeviceCount","pid":"2","tid":"23510","ts":"21073588972","dur":"1",
   "args":{
-    "BeginNs":"11072706046638",
-    "EndNs":"11072706047139",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073588972401",
+    "EndNs":"21073588972461",
+    "pid":"23510",
+    "tid":"23510",
+    "Name":"hipGetDeviceCount",
+    "args":"( count(1))",
+    "Data":"",
+    "DurationNs":"60"
+  }
+}
+,{"ph":"X","name":"hipSetDevice","pid":"2","tid":"23510","ts":"21073588974","dur":"1",
+  "args":{
+    "BeginNs":"21073588974154",
+    "EndNs":"21073588974595",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipSetDevice",
     "args":"( deviceId(0))",
     "Data":"",
-    "DurationNs":"501"
+    "DurationNs":"441"
   }
 }
-,{"ph":"X","name":"hipDeviceSynchronize","pid":"2","tid":"34384","ts":"11072706048","dur":"146398",
+,{"ph":"X","name":"hipDeviceSynchronize","pid":"2","tid":"23510","ts":"21073588975","dur":"140660",
   "args":{
-    "BeginNs":"11072706048482",
-    "EndNs":"11072852447126",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073588975917",
+    "EndNs":"21073729636557",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipDeviceSynchronize",
     "args":"( ))",
     "Data":"",
-    "DurationNs":"146398644"
+    "DurationNs":"140660640"
   }
 }
-,{"ph":"X","name":"hipDeviceReset","pid":"2","tid":"34384","ts":"11072852453","dur":"1",
+,{"ph":"X","name":"hipDeviceReset","pid":"2","tid":"23510","ts":"21073729642","dur":"1",
   "args":{
-    "BeginNs":"11072852453188",
-    "EndNs":"11072852454831",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073729642628",
+    "EndNs":"21073729644402",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipDeviceReset",
     "args":"( ))",
     "Data":"",
-    "DurationNs":"1643"
+    "DurationNs":"1774"
   }
 }
-,{"ph":"X","name":"hipSetDevice","pid":"2","tid":"34384","ts":"11072852455","dur":"1",
+,{"ph":"X","name":"hipSetDevice","pid":"2","tid":"23510","ts":"21073729644","dur":"1",
   "args":{
-    "BeginNs":"11072852455582",
-    "EndNs":"11072852456103",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073729644953",
+    "EndNs":"21073729645163",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipSetDevice",
     "args":"( deviceId(0))",
     "Data":"",
-    "DurationNs":"521"
+    "DurationNs":"210"
   }
 }
-,{"ph":"X","name":"hipSetDevice","pid":"2","tid":"34384","ts":"11072852456","dur":"1",
+,{"ph":"X","name":"hipSetDevice","pid":"2","tid":"23510","ts":"21073729645","dur":"1",
   "args":{
-    "BeginNs":"11072852456303",
-    "EndNs":"11072852456354",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073729645323",
+    "EndNs":"21073729645383",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipSetDevice",
     "args":"( deviceId(0))",
     "Data":"",
-    "DurationNs":"51"
+    "DurationNs":"60"
   }
 }
-,{"ph":"X","name":"hipGetDeviceProperties","pid":"2","tid":"34384","ts":"11072852461","dur":"5",
+,{"ph":"X","name":"hipGetDeviceProperties","pid":"2","tid":"23510","ts":"21073729646","dur":"2",
   "args":{
-    "BeginNs":"11072852461964",
-    "EndNs":"11072852467745",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073729646986",
+    "EndNs":"21073729649371",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipGetDeviceProperties",
-    "args":"( props({pageableMemoryAccessUsesHostPageTables(0) pageableMemoryAccess(0) concurrentManagedAccess(1) directManagedMemAccessFromHost(0) managedMemory(1) asicRevision(2) isLargeBar(1) cooperativeMultiDeviceUnmatchedSharedMem(0) cooperativeMultiDeviceUnmatchedBlockDim(0) cooperativeMultiDeviceUnmatchedGridDim(0) cooperativeMultiDeviceUnmatchedFunc(0) tccDriver(0) ECCEnabled(0) kernelExecTimeoutEnabled(0) texturePitchAlignment(256) textureAlignment(256) memPitch(536870912) hdpRegFlushCntl(0x7fb387c78004) hdpMemFlushCntl(0x7fb387c78000) maxTexture3D(0x7fb1c7ffcf98) maxTexture2D(0x7fb1c7ffcf90) maxTexture1D(16384) maxTexture1DLinear(2147483647) cooperativeMultiDeviceLaunch(0) cooperativeLaunch(0) integrated(0) gcnArchName(\"gfx1035\") gcnArch(1035) canMapHostMemory(1) isMultiGpuBoard(0) maxSharedMemoryPerMultiProcessor(65536) pciDeviceID(0) pciBusID(6) pciDomainID(0) concurrentKernels(1) arch({}) clockInstructionRate(1000000) computeMode(0) maxThreadsPerMultiProcessor(2048) l2CacheSize(2097152) multiProcessorCount(6) minor(3) major(10) totalConstMem(536870912) memoryBusWidth(128) memoryClockRate(2400000) clockRate(2200000) maxGridSize(0x7fb1c7ffce18) maxThreadsDim(0x7fb1c7ffce0c) maxThreadsPerBlock(1024) warpSize(32) regsPerBlock(65536) sharedMemPerBlock(65536) totalGlobalMem(536870912) name(\"\"}) device(0))",
+    "args":"( props({pageableMemoryAccessUsesHostPageTables(0) pageableMemoryAccess(0) concurrentManagedAccess(1) directManagedMemAccessFromHost(0) managedMemory(1) asicRevision(2) isLargeBar(1) cooperativeMultiDeviceUnmatchedSharedMem(0) cooperativeMultiDeviceUnmatchedBlockDim(0) cooperativeMultiDeviceUnmatchedGridDim(0) cooperativeMultiDeviceUnmatchedFunc(0) tccDriver(0) ECCEnabled(0) kernelExecTimeoutEnabled(0) texturePitchAlignment(256) textureAlignment(256) memPitch(536870912) hdpRegFlushCntl(0x7fa5112c6004) hdpMemFlushCntl(0x7fa5112c6000) maxTexture3D(0x7fa34fffcf98) maxTexture2D(0x7fa34fffcf90) maxTexture1D(16384) maxTexture1DLinear(2147483647) cooperativeMultiDeviceLaunch(0) cooperativeLaunch(0) integrated(0) gcnArchName(\"gfx1035\") gcnArch(1035) canMapHostMemory(1) isMultiGpuBoard(0) maxSharedMemoryPerMultiProcessor(65536) pciDeviceID(0) pciBusID(6) pciDomainID(0) concurrentKernels(1) arch({}) clockInstructionRate(1000000) computeMode(0) maxThreadsPerMultiProcessor(2048) l2CacheSize(2097152) multiProcessorCount(6) minor(3) major(10) totalConstMem(536870912) memoryBusWidth(128) memoryClockRate(2400000) clockRate(2200000) maxGridSize(0x7fa34fffce18) maxThreadsDim(0x7fa34fffce0c) maxThreadsPerBlock(1024) warpSize(32) regsPerBlock(65536) sharedMemPerBlock(65536) totalGlobalMem(536870912) name(\"\"}) device(0))",
     "Data":"",
-    "DurationNs":"5781"
+    "DurationNs":"2385"
   }
 }
-,{"ph":"X","name":"hipHostMalloc","pid":"2","tid":"34384","ts":"11072852508","dur":"103",
+,{"ph":"X","name":"hipHostMalloc","pid":"2","tid":"23510","ts":"21073729661","dur":"77",
   "args":{
-    "BeginNs":"11072852508180",
-    "EndNs":"11072852611401",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073729661123",
+    "EndNs":"21073729738397",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipHostMalloc",
-    "args":"( ptr(0x7fb285700000) size(532480) flags(0))",
+    "args":"( ptr(0x7fa510b00000) size(532480) flags(0))",
     "Data":"",
-    "DurationNs":"103221"
+    "DurationNs":"77274"
   }
 }
-,{"ph":"X","name":"hipHostMalloc","pid":"2","tid":"34384","ts":"11072852611","dur":"112",
+,{"ph":"X","name":"hipHostMalloc","pid":"2","tid":"23510","ts":"21073729738","dur":"121",
   "args":{
-    "BeginNs":"11072852611802",
-    "EndNs":"11072852724791",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073729738828",
+    "EndNs":"21073729860775",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipHostMalloc",
-    "args":"( ptr(0x7fb284e00000) size(1056768) flags(0))",
+    "args":"( ptr(0x7fa40d800000) size(1056768) flags(0))",
     "Data":"",
-    "DurationNs":"112989"
+    "DurationNs":"121947"
   }
 }
-,{"ph":"X","name":"hipHostMalloc","pid":"2","tid":"34384","ts":"11072852725","dur":"251",
+,{"ph":"X","name":"hipHostMalloc","pid":"2","tid":"23510","ts":"21073729861","dur":"238",
   "args":{
-    "BeginNs":"11072852725021",
-    "EndNs":"11072852976798",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073729861106",
+    "EndNs":"21073730099470",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipHostMalloc",
-    "args":"( ptr(0x7fb284a00000) size(2146560) flags(0))",
+    "args":"( ptr(0x7fa40d400000) size(2146560) flags(0))",
     "Data":"",
-    "DurationNs":"251777"
+    "DurationNs":"238364"
   }
 }
-,{"ph":"X","name":"hipMalloc","pid":"2","tid":"34384","ts":"11072880314","dur":"53",
+,{"ph":"X","name":"hipMalloc","pid":"2","tid":"23510","ts":"21073757009","dur":"272",
   "args":{
-    "BeginNs":"11072880314332",
-    "EndNs":"11072880367350",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073757009796",
+    "EndNs":"21073757282334",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipMalloc",
-    "args":"( ptr(0x7fb284600000) size(532480))",
+    "args":"( ptr(0x7fa40d000000) size(532480))",
     "Data":"",
-    "DurationNs":"53018"
+    "DurationNs":"272538"
   }
 }
-,{"ph":"X","name":"hipMalloc","pid":"2","tid":"34384","ts":"11072880369","dur":"3",
+,{"ph":"X","name":"hipMalloc","pid":"2","tid":"23510","ts":"21073757284","dur":"6",
   "args":{
-    "BeginNs":"11072880369073",
-    "EndNs":"11072880372980",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073757284378",
+    "EndNs":"21073757290659",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipMalloc",
-    "args":"( ptr(0x7fb284682000) size(1056768))",
+    "args":"( ptr(0x7fa40d082000) size(1056768))",
     "Data":"",
-    "DurationNs":"3907"
+    "DurationNs":"6281"
   }
 }
-,{"ph":"X","name":"hipMalloc","pid":"2","tid":"34384","ts":"11072880375","dur":"425",
+,{"ph":"X","name":"hipMalloc","pid":"2","tid":"23510","ts":"21073757295","dur":"413",
   "args":{
-    "BeginNs":"11072880375134",
-    "EndNs":"11072880800292",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073757295108",
+    "EndNs":"21073757709100",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipMalloc",
-    "args":"( ptr(0x7fb155a00000) size(2146560))",
+    "args":"( ptr(0x7fa40ca00000) size(2146560))",
     "Data":"",
-    "DurationNs":"425158"
+    "DurationNs":"413992"
   }
 }
-,{"ph":"X","name":"hipEventCreate","pid":"2","tid":"34384","ts":"11072880801","dur":"1",
+,{"ph":"X","name":"hipEventCreate","pid":"2","tid":"23510","ts":"21073757711","dur":"1",
   "args":{
-    "BeginNs":"11072880801915",
-    "EndNs":"11072880803157",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073757711514",
+    "EndNs":"21073757713197",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipEventCreate",
-    "args":"( event(0x12c6a80))",
+    "args":"( event(0x1cfdb10))",
     "Data":"",
-    "DurationNs":"1242"
+    "DurationNs":"1683"
   }
 }
-,{"ph":"X","name":"hipEventCreate","pid":"2","tid":"34384","ts":"11072880803","dur":"1",
+,{"ph":"X","name":"hipEventCreate","pid":"2","tid":"23510","ts":"21073757713","dur":"1",
   "args":{
-    "BeginNs":"11072880803398",
-    "EndNs":"11072880803608",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073757713418",
+    "EndNs":"21073757713588",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipEventCreate",
-    "args":"( event(0x135c980))",
+    "args":"( event(0x1cfdbd0))",
     "Data":"",
-    "DurationNs":"210"
+    "DurationNs":"170"
   }
 }
-,{"ph":"X","name":"hipEventRecord","pid":"2","tid":"34384","ts":"11072880804","dur":"34",
+,{"ph":"X","name":"hipEventRecord","pid":"2","tid":"23510","ts":"21073757714","dur":"32",
   "args":{
-    "BeginNs":"11072880804400",
-    "EndNs":"11072880838683",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073757714820",
+    "EndNs":"21073757747151",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipEventRecord",
-    "args":"( event(0x12c6a80) stream(1))",
+    "args":"( event(0x1cfdb10) stream(1))",
     "Data":"",
-    "DurationNs":"34283"
+    "DurationNs":"32331"
   }
 }
-,{"ph":"X","name":"hipMemcpy","pid":"2","tid":"34384","ts":"11072880842","dur":"315",
+,{"ph":"X","name":"hipMemcpy","pid":"2","tid":"23510","ts":"21073757755","dur":"338",
   "args":{
-    "BeginNs":"11072880842901",
-    "EndNs":"11072881158536",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073757755526",
+    "EndNs":"21073758093967",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipMemcpy",
-    "args":"( dst(0x7fb284600000) src(0x7fb285700000) sizeBytes(532480) kind(1))",
+    "args":"( dst(0x7fa40d000000) src(0x7fa510b00000) sizeBytes(532480) kind(1))",
     "Data":"",
-    "DurationNs":"315635"
+    "DurationNs":"338441"
   }
 }
-,{"ph":"X","name":"hipMemcpy","pid":"2","tid":"34384","ts":"11072881159","dur":"93",
+,{"ph":"X","name":"hipMemcpy","pid":"2","tid":"23510","ts":"21073758094","dur":"44",
   "args":{
-    "BeginNs":"11072881159427",
-    "EndNs":"11072881252640",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073758094468",
+    "EndNs":"21073758138841",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipMemcpy",
-    "args":"( dst(0x7fb284682000) src(0x7fb284e00000) sizeBytes(1056768) kind(1))",
+    "args":"( dst(0x7fa40d082000) src(0x7fa40d800000) sizeBytes(1056768) kind(1))",
     "Data":"",
-    "DurationNs":"93213"
+    "DurationNs":"44373"
   }
 }
-,{"ph":"X","name":"hipEventRecord","pid":"2","tid":"34384","ts":"11072881253","dur":"3",
+,{"ph":"X","name":"hipEventRecord","pid":"2","tid":"23510","ts":"21073758139","dur":"3",
   "args":{
-    "BeginNs":"11072881253171",
-    "EndNs":"11072881256207",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073758139081",
+    "EndNs":"21073758142548",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipEventRecord",
-    "args":"( event(0x135c980) stream(1))",
+    "args":"( event(0x1cfdbd0) stream(1))",
     "Data":"",
-    "DurationNs":"3036"
+    "DurationNs":"3467"
   }
 }
-,{"ph":"X","name":"hipEventSynchronize","pid":"2","tid":"34384","ts":"11072881257","dur":"12",
+,{"ph":"X","name":"hipEventSynchronize","pid":"2","tid":"23510","ts":"21073758143","dur":"11",
   "args":{
-    "BeginNs":"11072881257689",
-    "EndNs":"11072881270533",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073758143940",
+    "EndNs":"21073758155692",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipEventSynchronize",
-    "args":"( event(0x135c980))",
+    "args":"( event(0x1cfdbd0))",
     "Data":"",
-    "DurationNs":"12844"
+    "DurationNs":"11752"
   }
 }
-,{"ph":"X","name":"hipEventSynchronize","pid":"2","tid":"34384","ts":"11072881270","dur":"1",
+,{"ph":"X","name":"hipEventSynchronize","pid":"2","tid":"23510","ts":"21073758155","dur":"1",
   "args":{
-    "BeginNs":"11072881270834",
-    "EndNs":"11072881271024",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073758155823",
+    "EndNs":"21073758156083",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipEventSynchronize",
-    "args":"( event(0x12c6a80))",
+    "args":"( event(0x1cfdb10))",
     "Data":"",
-    "DurationNs":"190"
+    "DurationNs":"260"
   }
 }
-,{"ph":"X","name":"hipEventElapsedTime","pid":"2","tid":"34384","ts":"11072881275","dur":"1",
+,{"ph":"X","name":"hipEventElapsedTime","pid":"2","tid":"23510","ts":"21073758159","dur":"1",
   "args":{
-    "BeginNs":"11072881275092",
-    "EndNs":"11072881276304",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073758159369",
+    "EndNs":"21073758160541",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipEventElapsedTime",
-    "args":"( ms(0.406432) start(0x12c6a80) stop(0x135c980))",
+    "args":"( ms(0.384807) start(0x1cfdb10) stop(0x1cfdbd0))",
     "Data":"",
-    "DurationNs":"1212"
+    "DurationNs":"1172"
   }
 }
-,{"ph":"X","name":"hipEventRecord","pid":"2","tid":"34384","ts":"11072881282","dur":"2",
+,{"ph":"X","name":"hipEventRecord","pid":"2","tid":"23510","ts":"21073758167","dur":"3",
   "args":{
-    "BeginNs":"11072881282966",
-    "EndNs":"11072881285661",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073758167094",
+    "EndNs":"21073758170340",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipEventRecord",
-    "args":"( event(0x12c6a80) stream(1))",
-    "Data":"",
-    "DurationNs":"2695"
-  }
-}
-,{"ph":"X","name":"__hipPushCallConfiguration","pid":"2","tid":"34384","ts":"11072881286","dur":"1",
-  "args":{
-    "BeginNs":"11072881286823",
-    "EndNs":"11072881288336",
-    "pid":"34384",
-    "tid":"34384",
-    "Name":"__hipPushCallConfiguration",
-    "args":"( gridDim({z(1) y(65) x(129}) blockDim({z(1) y(8) x(8}) sharedMem(0) stream(1))",
-    "Data":"",
-    "DurationNs":"1513"
-  }
-}
-,{"ph":"X","name":"__hipPopCallConfiguration","pid":"2","tid":"34384","ts":"11072881289","dur":"1",
-  "args":{
-    "BeginNs":"11072881289128",
-    "EndNs":"11072881289338",
-    "pid":"34384",
-    "tid":"34384",
-    "Name":"__hipPopCallConfiguration",
-    "args":"( gridDim({z(1) y(65) x(129}) blockDim({z(1) y(8) x(8}) sharedMem(0) stream(1))",
-    "Data":"",
-    "DurationNs":"210"
-  }
-}
-,{"ph":"X","name":"hipLaunchKernel","pid":"2","tid":"34384","ts":"11072881294","dur":"281",
-  "args":{
-    "BeginNs":"11072881294598",
-    "EndNs":"11072881576570",
-    "pid":"34384",
-    "tid":"34384",
-    "Name":"hipLaunchKernel",
-    "args":"( kernel(mat_mult(float*, float*, float*, unsigned long, unsigned long, unsigned long)) function_address(0x201d08) numBlocks({z(1) y(65) x(129}) dimBlocks({z(1) y(8) x(8}) args(0x7ffc337dc198) sharedMemBytes(0) stream(1))",
-    "Data":"",
-    "DurationNs":"281972"
-  }
-}
-,{"ph":"X","name":"hipEventRecord","pid":"2","tid":"34384","ts":"11072881592","dur":"3",
-  "args":{
-    "BeginNs":"11072881592570",
-    "EndNs":"11072881595816",
-    "pid":"34384",
-    "tid":"34384",
-    "Name":"hipEventRecord",
-    "args":"( event(0x135c980) stream(1))",
+    "args":"( event(0x1cfdb10) stream(1))",
     "Data":"",
     "DurationNs":"3246"
   }
 }
-,{"ph":"X","name":"hipEventSynchronize","pid":"2","tid":"34384","ts":"11072881596","dur":"1541",
+,{"ph":"X","name":"__hipPushCallConfiguration","pid":"2","tid":"23510","ts":"21073758171","dur":"1",
   "args":{
-    "BeginNs":"11072881596257",
-    "EndNs":"11072883137843",
-    "pid":"34384",
-    "tid":"34384",
-    "Name":"hipEventSynchronize",
-    "args":"( event(0x135c980))",
+    "BeginNs":"21073758171482",
+    "EndNs":"21073758173295",
+    "pid":"23510",
+    "tid":"23510",
+    "Name":"__hipPushCallConfiguration",
+    "args":"( gridDim({z(1) y(65) x(129}) blockDim({z(1) y(8) x(8}) sharedMem(0) stream(1))",
     "Data":"",
-    "DurationNs":"1541586"
+    "DurationNs":"1813"
   }
 }
-,{"ph":"X","name":"hipEventSynchronize","pid":"2","tid":"34384","ts":"11072883138","dur":"1",
+,{"ph":"X","name":"__hipPopCallConfiguration","pid":"2","tid":"23510","ts":"21073758174","dur":"1",
   "args":{
-    "BeginNs":"11072883138183",
-    "EndNs":"11072883138394",
-    "pid":"34384",
-    "tid":"34384",
-    "Name":"hipEventSynchronize",
-    "args":"( event(0x12c6a80))",
+    "BeginNs":"21073758174167",
+    "EndNs":"21073758174407",
+    "pid":"23510",
+    "tid":"23510",
+    "Name":"__hipPopCallConfiguration",
+    "args":"( gridDim({z(1) y(65) x(129}) blockDim({z(1) y(8) x(8}) sharedMem(0) stream(1))",
     "Data":"",
-    "DurationNs":"211"
+    "DurationNs":"240"
   }
 }
-,{"ph":"X","name":"hipEventElapsedTime","pid":"2","tid":"34384","ts":"11072883138","dur":"1",
+,{"ph":"X","name":"hipLaunchKernel","pid":"2","tid":"23510","ts":"21073758176","dur":"279",
   "args":{
-    "BeginNs":"11072883138664",
-    "EndNs":"11072883139426",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073758176411",
+    "EndNs":"21073758455782",
+    "pid":"23510",
+    "tid":"23510",
+    "Name":"hipLaunchKernel",
+    "args":"( kernel(mat_mult(float*, float*, float*, unsigned long, unsigned long, unsigned long)) function_address(0x201cb8) numBlocks({z(1) y(65) x(129}) dimBlocks({z(1) y(8) x(8}) args(0x7ffcd5498238) sharedMemBytes(0) stream(1))",
+    "Data":"",
+    "DurationNs":"279371"
+  }
+}
+,{"ph":"X","name":"hipEventRecord","pid":"2","tid":"23510","ts":"21073758473","dur":"4",
+  "args":{
+    "BeginNs":"21073758473174",
+    "EndNs":"21073758477572",
+    "pid":"23510",
+    "tid":"23510",
+    "Name":"hipEventRecord",
+    "args":"( event(0x1cfdbd0) stream(1))",
+    "Data":"",
+    "DurationNs":"4398"
+  }
+}
+,{"ph":"X","name":"hipEventSynchronize","pid":"2","tid":"23510","ts":"21073758478","dur":"1362",
+  "args":{
+    "BeginNs":"21073758478003",
+    "EndNs":"21073759840364",
+    "pid":"23510",
+    "tid":"23510",
+    "Name":"hipEventSynchronize",
+    "args":"( event(0x1cfdbd0))",
+    "Data":"",
+    "DurationNs":"1362361"
+  }
+}
+,{"ph":"X","name":"hipEventSynchronize","pid":"2","tid":"23510","ts":"21073759840","dur":"1",
+  "args":{
+    "BeginNs":"21073759840694",
+    "EndNs":"21073759840955",
+    "pid":"23510",
+    "tid":"23510",
+    "Name":"hipEventSynchronize",
+    "args":"( event(0x1cfdb10))",
+    "Data":"",
+    "DurationNs":"261"
+  }
+}
+,{"ph":"X","name":"hipEventElapsedTime","pid":"2","tid":"23510","ts":"21073759841","dur":"1",
+  "args":{
+    "BeginNs":"21073759841275",
+    "EndNs":"21073759841896",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipEventElapsedTime",
-    "args":"( ms(1.83879) start(0x12c6a80) stop(0x135c980))",
+    "args":"( ms(1.66516) start(0x1cfdb10) stop(0x1cfdbd0))",
     "Data":"",
-    "DurationNs":"762"
+    "DurationNs":"621"
   }
 }
-,{"ph":"X","name":"hipDeviceSynchronize","pid":"2","tid":"34384","ts":"11072883144","dur":"1",
+,{"ph":"X","name":"hipDeviceSynchronize","pid":"2","tid":"23510","ts":"21073759847","dur":"1",
   "args":{
-    "BeginNs":"11072883144234",
-    "EndNs":"11072883145146",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073759847186",
+    "EndNs":"21073759847968",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipDeviceSynchronize",
     "args":"( ))",
     "Data":"",
-    "DurationNs":"912"
+    "DurationNs":"782"
   }
 }
-,{"ph":"X","name":"hipMemcpy","pid":"2","tid":"34384","ts":"11072883145","dur":"400",
+,{"ph":"X","name":"hipMemcpy","pid":"2","tid":"23510","ts":"21073759848","dur":"446",
   "args":{
-    "BeginNs":"11072883145447",
-    "EndNs":"11072883546149",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073759848439",
+    "EndNs":"21073760295402",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipMemcpy",
-    "args":"( dst(0x7fb284a00000) src(0x7fb155a00000) sizeBytes(2146560) kind(2))",
+    "args":"( dst(0x7fa40d400000) src(0x7fa40ca00000) sizeBytes(2146560) kind(2))",
     "Data":"",
-    "DurationNs":"400702"
+    "DurationNs":"446963"
   }
 }
-,{"ph":"X","name":"hipEventDestroy","pid":"2","tid":"34384","ts":"11072971922","dur":"3",
+,{"ph":"X","name":"hipEventDestroy","pid":"2","tid":"23510","ts":"21073846768","dur":"3",
   "args":{
-    "BeginNs":"11072971922394",
-    "EndNs":"11072971925780",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073846768376",
+    "EndNs":"21073846771722",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipEventDestroy",
-    "args":"( event(0x12c6a80))",
+    "args":"( event(0x1cfdb10))",
     "Data":"",
-    "DurationNs":"3386"
+    "DurationNs":"3346"
   }
 }
-,{"ph":"X","name":"hipEventDestroy","pid":"2","tid":"34384","ts":"11072971927","dur":"1",
+,{"ph":"X","name":"hipEventDestroy","pid":"2","tid":"23510","ts":"21073846773","dur":"1",
   "args":{
-    "BeginNs":"11072971927724",
-    "EndNs":"11072971928305",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073846773235",
+    "EndNs":"21073846773946",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipEventDestroy",
-    "args":"( event(0x135c980))",
+    "args":"( event(0x1cfdbd0))",
     "Data":"",
-    "DurationNs":"581"
+    "DurationNs":"711"
   }
 }
-,{"ph":"X","name":"hipFree","pid":"2","tid":"34384","ts":"11072971934","dur":"15",
+,{"ph":"X","name":"hipFree","pid":"2","tid":"23510","ts":"21073846780","dur":"15",
   "args":{
-    "BeginNs":"11072971934667",
-    "EndNs":"11072971949875",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073846780909",
+    "EndNs":"21073846796328",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipFree",
-    "args":"( ptr(0x7fb284600000))",
+    "args":"( ptr(0x7fa40d000000))",
     "Data":"",
-    "DurationNs":"15208"
+    "DurationNs":"15419"
   }
 }
-,{"ph":"X","name":"hipFree","pid":"2","tid":"34384","ts":"11072971950","dur":"2",
+,{"ph":"X","name":"hipFree","pid":"2","tid":"23510","ts":"21073846796","dur":"2",
   "args":{
-    "BeginNs":"11072971950196",
-    "EndNs":"11072971952390",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073846796709",
+    "EndNs":"21073846799043",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipFree",
-    "args":"( ptr(0x7fb284682000))",
+    "args":"( ptr(0x7fa40d082000))",
     "Data":"",
-    "DurationNs":"2194"
+    "DurationNs":"2334"
   }
 }
-,{"ph":"X","name":"hipFree","pid":"2","tid":"34384","ts":"11072971952","dur":"34",
+,{"ph":"X","name":"hipFree","pid":"2","tid":"23510","ts":"21073846799","dur":"36",
   "args":{
-    "BeginNs":"11072971952530",
-    "EndNs":"11072971987365",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073846799193",
+    "EndNs":"21073846835431",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipFree",
-    "args":"( ptr(0x7fb155a00000))",
+    "args":"( ptr(0x7fa40ca00000))",
     "Data":"",
-    "DurationNs":"34835"
+    "DurationNs":"36238"
   }
 }
-,{"ph":"X","name":"hipHostFree","pid":"2","tid":"34384","ts":"11072971988","dur":"30",
+,{"ph":"X","name":"hipHostFree","pid":"2","tid":"23510","ts":"21073846836","dur":"31",
   "args":{
-    "BeginNs":"11072971988567",
-    "EndNs":"11072972018783",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073846836733",
+    "EndNs":"21073846868593",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipHostFree",
-    "args":"( ptr(0x7fb285700000))",
+    "args":"( ptr(0x7fa510b00000))",
     "Data":"",
-    "DurationNs":"30216"
+    "DurationNs":"31860"
   }
 }
-,{"ph":"X","name":"hipHostFree","pid":"2","tid":"34384","ts":"11072972019","dur":"25",
+,{"ph":"X","name":"hipHostFree","pid":"2","tid":"23510","ts":"21073846869","dur":"29",
   "args":{
-    "BeginNs":"11072972019123",
-    "EndNs":"11072972044691",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073846869174",
+    "EndNs":"21073846899009",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipHostFree",
-    "args":"( ptr(0x7fb284e00000))",
+    "args":"( ptr(0x7fa40d800000))",
     "Data":"",
-    "DurationNs":"25568"
+    "DurationNs":"29835"
   }
 }
-,{"ph":"X","name":"hipHostFree","pid":"2","tid":"34384","ts":"11072972046","dur":"50",
+,{"ph":"X","name":"hipHostFree","pid":"2","tid":"23510","ts":"21073846901","dur":"58",
   "args":{
-    "BeginNs":"11072972046214",
-    "EndNs":"11072972097028",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073846901404",
+    "EndNs":"21073846959722",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipHostFree",
-    "args":"( ptr(0x7fb284a00000))",
+    "args":"( ptr(0x7fa40d400000))",
     "Data":"",
-    "DurationNs":"50814"
+    "DurationNs":"58318"
   }
 }
-,{"ph":"X","name":"hipSetDevice","pid":"2","tid":"34384","ts":"11072972101","dur":"1",
+,{"ph":"X","name":"hipSetDevice","pid":"2","tid":"23510","ts":"21073846965","dur":"1",
   "args":{
-    "BeginNs":"11072972101286",
-    "EndNs":"11072972101967",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073846965744",
+    "EndNs":"21073846967267",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipSetDevice",
     "args":"( deviceId(0))",
     "Data":"",
-    "DurationNs":"681"
+    "DurationNs":"1523"
   }
 }
-,{"ph":"X","name":"hipDeviceSynchronize","pid":"2","tid":"34384","ts":"11072972102","dur":"1",
+,{"ph":"X","name":"hipDeviceSynchronize","pid":"2","tid":"23510","ts":"21073846968","dur":"1",
   "args":{
-    "BeginNs":"11072972102748",
-    "EndNs":"11072972103730",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073846968218",
+    "EndNs":"21073846968489",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipDeviceSynchronize",
     "args":"( ))",
     "Data":"",
-    "DurationNs":"982"
+    "DurationNs":"271"
   }
 }
-,{"ph":"X","name":"hipDeviceReset","pid":"2","tid":"34384","ts":"11072972104","dur":"1",
+,{"ph":"X","name":"hipDeviceReset","pid":"2","tid":"23510","ts":"21073846969","dur":"1",
   "args":{
-    "BeginNs":"11072972104732",
-    "EndNs":"11072972105223",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073846969250",
+    "EndNs":"21073846969791",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipDeviceReset",
     "args":"( ))",
     "Data":"",
-    "DurationNs":"491"
+    "DurationNs":"541"
   }
 }
-,{"ph":"X","name":"hipSetDevice","pid":"2","tid":"34384","ts":"11072972106","dur":"1",
+,{"ph":"X","name":"hipSetDevice","pid":"2","tid":"23510","ts":"21073846971","dur":"1",
   "args":{
-    "BeginNs":"11072972106746",
-    "EndNs":"11072972106826",
-    "pid":"34384",
-    "tid":"34384",
+    "BeginNs":"21073846971665",
+    "EndNs":"21073846971735",
+    "pid":"23510",
+    "tid":"23510",
     "Name":"hipSetDevice",
     "args":"( deviceId(0))",
     "Data":"",
-    "DurationNs":"80"
+    "DurationNs":"70"
   }
 }
-,{"ph":"X","name":"mat_mult(float*, float*, float*, unsigned long, unsigned long, unsigned long)","pid":"7","tid":"1","ts":"11072881579","dur":"1535",
+,{"ph":"X","name":"mat_mult(float*, float*, float*, unsigned long, unsigned long, unsigned long)","pid":"7","tid":"1","ts":"21073758458","dur":"1377",
   "args":{
-    "BeginNs":"11072881579736",
-    "EndNs":"11072883115271",
+    "BeginNs":"21073758458967",
+    "EndNs":"21073759836736",
     "dev-id":"1",
     "queue-id":"0",
     "Name":"mat_mult(float*, float*, float*, unsigned long, unsigned long, unsigned long)",
-    "pid":"34384",
-    "tid":"34384",
+    "pid":"23510",
+    "tid":"23510",
     "stream-id":"1",
     "Data":"",
-    "DurationNs":"1535535"
+    "DurationNs":"1377769"
   }
 }
-,{"ts":11072880999,"ph":"s","cat":"DataFlow","id":0,"pid":2,"tid":34384,"name":"dep"}
-,{"ts":11072881108,"ph":"t","cat":"DataFlow","id":0,"pid":1,"tid":0,"name":"dep"}
-,{"ts":11072881177,"ph":"s","cat":"DataFlow","id":1,"pid":2,"tid":34384,"name":"dep"}
-,{"ts":11072881177,"ph":"t","cat":"DataFlow","id":1,"pid":1,"tid":0,"name":"dep"}
-,{"ts":11072883345,"ph":"s","cat":"DataFlow","id":2,"pid":2,"tid":34384,"name":"dep"}
-,{"ts":11072883395,"ph":"t","cat":"DataFlow","id":2,"pid":1,"tid":0,"name":"dep"}
-,{"ts":11072881434,"ph":"s","cat":"DataFlow","id":7,"pid":2,"tid":34384,"name":"dep"}
-,{"ts":11072881579,"ph":"t","cat":"DataFlow","id":7,"pid":7,"tid":1,"name":"dep"}
+,{"ts":21073757924,"ph":"s","cat":"DataFlow","id":0,"pid":2,"tid":23510,"name":"dep"}
+,{"ts":21073758069,"ph":"t","cat":"DataFlow","id":0,"pid":1,"tid":0,"name":"dep"}
+,{"ts":21073758100,"ph":"s","cat":"DataFlow","id":1,"pid":2,"tid":23510,"name":"dep"}
+,{"ts":21073758100,"ph":"t","cat":"DataFlow","id":1,"pid":1,"tid":0,"name":"dep"}
+,{"ts":21073760071,"ph":"s","cat":"DataFlow","id":2,"pid":2,"tid":23510,"name":"dep"}
+,{"ts":21073760152,"ph":"t","cat":"DataFlow","id":2,"pid":1,"tid":0,"name":"dep"}
+,{"ts":21073758315,"ph":"s","cat":"DataFlow","id":7,"pid":2,"tid":23510,"name":"dep"}
+,{"ts":21073758458,"ph":"t","cat":"DataFlow","id":7,"pid":7,"tid":1,"name":"dep"}
 ],
 "otherData": {
     "CMD": "rocminfo",
@@ -655,21 +655,21 @@
     "Agent1.Features": "None",
     "Agent1.PoolInfo.Pool1.Segment": "GLOBAL",
     "Agent1.PoolInfo.Pool1.FLAGS": "FINEGRAINED",
-    "Agent1.PoolInfo.Pool1.Size": "32108344(0x1e9ef38)KB",
+    "Agent1.PoolInfo.Pool1.Size": "32107272(0x1e9eb08)KB",
     "Agent1.PoolInfo.Pool1.Allocatable": "TRUE",
     "Agent1.PoolInfo.Pool1.AllocGranule": "4KB",
     "Agent1.PoolInfo.Pool1.AllocAlignment": "4KB",
     "Agent1.PoolInfo.Pool1.Accessiblebyall": "TRUE",
     "Agent1.PoolInfo.Pool2.Segment": "GLOBAL",
     "Agent1.PoolInfo.Pool2.FLAGS": "KERNARG,FINEGRAINED",
-    "Agent1.PoolInfo.Pool2.Size": "32108344(0x1e9ef38)KB",
+    "Agent1.PoolInfo.Pool2.Size": "32107272(0x1e9eb08)KB",
     "Agent1.PoolInfo.Pool2.Allocatable": "TRUE",
     "Agent1.PoolInfo.Pool2.AllocGranule": "4KB",
     "Agent1.PoolInfo.Pool2.AllocAlignment": "4KB",
     "Agent1.PoolInfo.Pool2.Accessiblebyall": "TRUE",
     "Agent1.PoolInfo.Pool3.Segment": "GLOBAL",
     "Agent1.PoolInfo.Pool3.FLAGS": "COARSEGRAINED",
-    "Agent1.PoolInfo.Pool3.Size": "32108344(0x1e9ef38)KB",
+    "Agent1.PoolInfo.Pool3.Size": "32107272(0x1e9eb08)KB",
     "Agent1.PoolInfo.Pool3.Allocatable": "TRUE",
     "Agent1.PoolInfo.Pool3.AllocGranule": "4KB",
     "Agent1.PoolInfo.Pool3.AllocAlignment": "4KB",

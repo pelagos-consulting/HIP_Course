@@ -1,2 +1,2 @@
 "Name","Calls","TotalDurationNs","AverageNs","Percentage"
-"mat_mult(float*, float*, float*, unsigned long, unsigned long, unsigned long)",1,1535535,1535535,100.0
+"mat_mult(float*, float*, float*, unsigned long, unsigned long, unsigned long)",1,1377769,1377769,100.0

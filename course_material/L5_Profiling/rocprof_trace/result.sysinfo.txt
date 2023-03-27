@@ -45,21 +45,21 @@ Agent 1
   Pool Info:               
     Pool 1                   
       Segment:                 GLOBAL; FLAGS: FINE GRAINED        
-      Size:                    32108344(0x1e9ef38) KB             
+      Size:                    32107272(0x1e9eb08) KB             
       Allocatable:             TRUE                               
       Alloc Granule:           4KB                                
       Alloc Alignment:         4KB                                
       Accessible by all:       TRUE                               
     Pool 2                   
       Segment:                 GLOBAL; FLAGS: KERNARG, FINE GRAINED
-      Size:                    32108344(0x1e9ef38) KB             
+      Size:                    32107272(0x1e9eb08) KB             
       Allocatable:             TRUE                               
       Alloc Granule:           4KB                                
       Alloc Alignment:         4KB                                
       Accessible by all:       TRUE                               
     Pool 3                   
       Segment:                 GLOBAL; FLAGS: COARSE GRAINED      
-      Size:                    32108344(0x1e9ef38) KB             
+      Size:                    32107272(0x1e9eb08) KB             
       Allocatable:             TRUE                               
       Alloc Granule:           4KB                                
       Alloc Alignment:         4KB                                

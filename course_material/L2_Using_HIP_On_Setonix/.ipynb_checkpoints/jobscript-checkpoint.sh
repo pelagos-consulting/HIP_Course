@@ -1,6 +1,6 @@
 #!/bin/bash -l
 
-#SBATCH --account=pawsey0007       # your account
+#SBATCH --account=${PAWSEY_PROJECT}-gpu       # your account
 #SBATCH --partition=gpu            # Using the gpu partition
 #SBATCH --ntasks=8                 # Total number of tasks
 #SBATCH --ntasks-per-node=8        # Set this for 1 mpi task per compute device
