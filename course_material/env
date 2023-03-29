@@ -13,14 +13,15 @@ endif
 CXX=hipcc
 CXXFLAGS=-fopenmp
 
-# gfx90a is the architecture for Setonix
-# gfx1035 is the architecture on my laptop
+# Debugging instructions
 ifeq ($(DEBUG), true)
     CXXFLAGS:=$(CXXFLAGS) -g -ggdb
 endif
 
-BASE_INC_DIR=/usr/include
-BASE_LIB_DIR=/usr/lib/x86_64-linux-gnu
+# Miscellaneous include flags for base compilation 
+BASE_INC_FLAGS=-I../include
+
+# Miscellaneous library flags for base compilation
 BASE_LIB_FLAGS=
 
 ifeq ($(HIP_PLATFORM), nvidia)
