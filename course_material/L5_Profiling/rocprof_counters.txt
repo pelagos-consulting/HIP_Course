@@ -31,7 +31,7 @@ pmc: MemUnitBusy, MemUnitStalled, WriteUnitStalled
 # Percentage of time ALU's are stalled by shared memory access, percentage of GPU time local memory is stalled by bank conflicts
 pmc: ALUStalledByLDS, LDSBankConflict
 
-# Dispatches range 
+# Dispatches range, which work-items to profile 
 range: 0 : 64
 # Which GPU's to profile
 gpu: 0

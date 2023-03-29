@@ -14961,10 +14961,10 @@ File &#39;rocprof_trace/result.json&#39; is generating
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>rocprof --list-basic --list-derived
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>rocprof --list-derived
 </pre></div>
 
      </div>
@@ -14986,134 +14986,113 @@ File &#39;rocprof_trace/result.json&#39; is generating
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>RPL: on &#39;230327_163219&#39; from &#39;/opt/rocm-5.4.1&#39; in &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L5_Profiling&#39;
-Basic HW counters:
+<pre>RPL: on &#39;230329_173950&#39; from &#39;/opt/rocm-5.4.1&#39; in &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L5_Profiling&#39;
+Derived metrics:
 
-  gpu-agent0 : GRBM_COUNT : Tie High - Count Number of Clocks
-      block GRBM has 2 counters
+  gpu-agent0 : GPU_UTIL : Percentage of the time that GUI is active
+      GPU_UTIL = 100*GRBM_GUI_ACTIVE/GRBM_COUNT
 
-  gpu-agent0 : GRBM_GUI_ACTIVE : The GUI is Active
-      block GRBM has 2 counters
+  gpu-agent0 : CP_UTIL : Percentage of the GRBM_GUI_ACTIVE time that any of the Command Processor (CPG/CPC/CPF) blocks are busy
+      CP_UTIL = 100*GRBM_CP_BUSY/GRBM_GUI_ACTIVE
 
-  gpu-agent0 : GRBM_CP_BUSY : Any of the Command Processor (CPG/CPC/CPF) blocks are busy.
-      block GRBM has 2 counters
+  gpu-agent0 : SPI_UTIL : Percentage of the GRBM_GUI_ACTIVE time that any of the Shader Pipe Interpolators (SPI) are busy in the shader engine(s)
+      SPI_UTIL = 100*GRBM_SPI_BUSY/GRBM_GUI_ACTIVE
 
-  gpu-agent0 : GRBM_SPI_BUSY : Any of the Shader Pipe Interpolators (SPI) are busy in the shader engine(s).
-      block GRBM has 2 counters
+  gpu-agent0 : TA_UTIL : Percentage of the GRBM_GUI_ACTIVE time that any of the Texture Pipes (TA) are busy in the shader engine(s).
+      TA_UTIL = 100*GRBM_TA_BUSY/GRBM_GUI_ACTIVE
 
-  gpu-agent0 : GRBM_TA_BUSY : Any of the Texture Pipes (TA) are busy in the shader engine(s).
-      block GRBM has 2 counters
+  gpu-agent0 : GDS_UTIL : Percentage of the GRBM_GUI_ACTIVE time that the Global Data Share (GDS) is busy.
+      GDS_UTIL = 100*GRBM_GDS_BUSY/GRBM_GUI_ACTIVE
 
-  gpu-agent0 : GRBM_GDS_BUSY : The Global Data Share (GDS) is busy.
-      block GRBM has 2 counters
+  gpu-agent0 : EA_UTIL : Percentage of the GRBM_GUI_ACTIVE time that the Efficiency Arbiter (EA) block is busy.
+      EA_UTIL = 100*GRBM_EA_BUSY/GRBM_GUI_ACTIVE
 
-  gpu-agent0 : GRBM_EA_BUSY : The Efficiency Arbiter (EA) block is busy.
-      block GRBM has 2 counters
+  gpu-agent0 : WAVE_DEP_WAIT : Percentage of the SQ_WAVE_CYCLE time spent waiting for anything.
+      WAVE_DEP_WAIT = 100*SQ_WAIT_ANY/SQ_WAVE_CYCLES
 
-  gpu-agent0 : GRBM_GL2CC_BUSY : The GL2CC block is busy.
-      block GRBM has 2 counters
+  gpu-agent0 : WAVE_ISSUE_WAIT : Percentage of the SQ_WAVE_CYCLE time spent waiting for any instruction issue.
+      WAVE_ISSUE_WAIT = 100*SQ_WAIT_INST_ANY/SQ_WAVE_CYCLES
 
-  gpu-agent0 : GL2C_HIT[0-15] : Number of cache hits
-      block GL2C has 4 counters
+  gpu-agent0 : TA_BUSY_avr : TA block is busy. Average over TA instances.
+      TA_BUSY_avr = avr(TA_TA_BUSY,16)
 
-  gpu-agent0 : GL2C_MISS[0-15] : Number of cache misses.  UC reads count as misses.
-      block GL2C has 4 counters
+  gpu-agent0 : TA_BUSY_max : TA block is busy. Max over TA instances.
+      TA_BUSY_max = max(TA_TA_BUSY,16)
 
-  gpu-agent0 : GL2C_MC_WRREQ[0-15] : Number of transactions (either 32-byte or 64-byte) going over the GL2C_EA_wrreq interface. Atomics may travel over the same interface and are generally classified as write requests. This does not include probe commands
-      block GL2C has 4 counters
+  gpu-agent0 : TA_BUSY_min : TA block is busy. Min over TA instances.
+      TA_BUSY_min = min(TA_TA_BUSY,16)
 
-  gpu-agent0 : GL2C_EA_WRREQ_64B[0-15] : Number of 64-byte transactions going (64-byte write or CMPSWAP) over the TC_EA_wrreq interface.
-      block GL2C has 4 counters
+  gpu-agent0 : TA_FLAT_LOAD_WAVEFRONTS_sum : Number of flat load vec32 packets processed by the TA. Sum over TA instances.
+      TA_FLAT_LOAD_WAVEFRONTS_sum = sum(TA_FLAT_LOAD_WAVEFRONTS,16)
 
-  gpu-agent0 : GL2C_MC_WRREQ_STALL[0-15] : Number of cycles a write request was stalled.
-      block GL2C has 4 counters
+  gpu-agent0 : TA_FLAT_STORE_WAVEFRONTS_sum : Number of flat store vec32 packets processed by the TA. Sum over TA instances.
+      TA_FLAT_STORE_WAVEFRONTS_sum = sum(TA_FLAT_STORE_WAVEFRONTS,16)
 
-  gpu-agent0 : GL2C_MC_RDREQ[0-15] : Number of GL2C/EA read requests (either 32-byte or 64-byte or 128-byte).
-      block GL2C has 4 counters
+  gpu-agent0 : GL2C_HIT_sum : Number of cache hits. Sum over GL2C instances.
+      GL2C_HIT_sum = sum(GL2C_HIT,16)
 
-  gpu-agent0 : GL2C_EA_RDREQ_32B[0-15] : Number of 32-byte GL2C/EA read requests
-      block GL2C has 4 counters
+  gpu-agent0 : GL2C_MISS_sum : Number of cache misses. Sum over GL2C instances.
+      GL2C_MISS_sum = sum(GL2C_MISS,16)
 
-  gpu-agent0 : GL2C_EA_RDREQ_64B[0-15] : Number of 64-byte GL2C/EA read requests
-      block GL2C has 4 counters
+  gpu-agent0 : GL2C_EA_RDREQ_32B_sum : Number of 32-byte GL2C/EA read requests. Sum over GL2C instances.
+      GL2C_EA_RDREQ_32B_sum = sum(GL2C_EA_RDREQ_32B,16)
 
-  gpu-agent0 : GL2C_EA_RDREQ_96B[0-15] : Number of 96-byte GL2C/EA read requests
-      block GL2C has 4 counters
+  gpu-agent0 : GL2C_EA_RDREQ_64B_sum : Number of 64-byte GL2C/EA read requests. Sum over GL2C instances.
+      GL2C_EA_RDREQ_64B_sum = sum(GL2C_EA_RDREQ_64B,16)
 
-  gpu-agent0 : GL2C_EA_RDREQ_128B[0-15] : Number of 128-byte GL2C/EA read requests
-      block GL2C has 4 counters
+  gpu-agent0 : GL2C_EA_RDREQ_96B_sum : Number of 96-byte GL2C/EA read requests. Sum over GL2C instances.
+      GL2C_EA_RDREQ_96B_sum = sum(GL2C_EA_RDREQ_96B,16)
 
-  gpu-agent0 : SQ_WAVES : Count number of waves sent to SQs. {emulated, global, C1}
-      block SQ has 8 counters
+  gpu-agent0 : GL2C_EA_RDREQ_128B_sum : Number of 128-byte GL2C/EA read requests. Sum over GL2C instances.
+      GL2C_EA_RDREQ_128B_sum = sum(GL2C_EA_RDREQ_128B,16)
 
-  gpu-agent0 : SQ_WAVE_CYCLES : Number of clock cycles spent by waves in the SQs. Incremented by # of living (valid) waves each cycle. {nondeterministic, C1}
-      block SQ has 8 counters
+  gpu-agent0 : GL2C_MC_RDREQ_sum : Number of GL2C/EA read requests (either 32-byte or 64-byte or 128-byte). Sum over GL2C instances.
+      GL2C_MC_RDREQ_sum = sum(GL2C_MC_RDREQ,16)
 
-  gpu-agent0 : SQ_WAIT_INST_ANY : Number of clock cycles spent waiting for any instruction issue. In units of cycles. {nondeterministic}
-      block SQ has 8 counters
+  gpu-agent0 : GL2C_MC_WRREQ_sum : Number of transactions (either 32-byte or 64-byte) going over the GL2C_MC_wrreq interface. Sum over GL2C instances.
+      GL2C_MC_WRREQ_sum = sum(GL2C_MC_WRREQ,16)
 
-  gpu-agent0 : SQ_WAIT_ANY : Number of clock cycles spent waiting for anything. {nondeterministic, C1}
-      block SQ has 8 counters
+  gpu-agent0 : GL2C_EA_WRREQ_64B_sum : Number of 64-byte transactions going (64-byte write or CMPSWAP) over the GL2C_EA_wrreq interface. Sum over GL2C instances.
+      GL2C_EA_WRREQ_64B_sum = sum(GL2C_EA_WRREQ_64B,16)
 
-  gpu-agent0 : SQ_INSTS_WAVE32 : Number of wave32 instructions issued, for flat, lds, valu, tex. {emulated, C1}
-      block SQ has 8 counters
+  gpu-agent0 : GL2C_WRREQ_STALL_max : Number of cycles a write request was stalled. Max over GL2C instances.
+      GL2C_WRREQ_STALL_max = max(GL2C_MC_WRREQ_STALL,16)
 
-  gpu-agent0 : SQ_INSTS_WAVE32_LDS : Number of wave32 LDS indexed instructions issued. Wave64 may count 1 or 2, depending on what gets issued. {emulated, C1}
-      block SQ has 8 counters
+  gpu-agent0 : L2CacheHit : The percentage of fetch, write, atomic, and other instructions that hit the data in L2 cache. Value range: 0% (no hit) to 100% (optimal).
+      L2CacheHit = 100*sum(GL2C_HIT,16)/(sum(GL2C_HIT,16)+sum(GL2C_MISS,16))
 
-  gpu-agent0 : SQ_INSTS_WAVE32_VALU : Number of wave32 valu instructions issued. Wave64 may count 1 or 2, depending on what gets issued. {emulated, C1}
-      block SQ has 8 counters
+  gpu-agent0 : FETCH_SIZE : The total kilobytes fetched from the video memory. This is measured with all extra fetches and any cache or memory effects taken into account.
+      FETCH_SIZE = (GL2C_EA_RDREQ_32B_sum*32+GL2C_EA_RDREQ_64B_sum*64+GL2C_EA_RDREQ_96B_sum*96+GL2C_EA_RDREQ_128B_sum*128)/1024
 
-  gpu-agent0 : SQ_WAVE32_INSTS : Number of instructions issued by wave32 waves. Skipped instructions are not counted. {emulated}
-      block SQ has 8 counters
+  gpu-agent0 : WriteUnitStalled : The percentage of GPUTime the Write unit is stalled. Value range: 0% to 100% (bad).
+      WriteUnitStalled = 100*GL2C_WRREQ_STALL_max/GRBM_GUI_ACTIVE
 
-  gpu-agent0 : SQ_WAVE64_INSTS : Number of instructions issued by wave64 waves. Skipped instructions are not counted. {emulated}
-      block SQ has 8 counters
+  gpu-agent0 : LDSBankConflict : The percentage of GPUTime LDS is stalled by bank conflicts. Value range: 0% (optimal) to 100% (bad).
+      LDSBankConflict = 100*SQC_LDS_BANK_CONFLICT/SQC_LDS_IDX_ACTIVE
 
-  gpu-agent0 : SQ_INST_LEVEL_GDS : Number of in-flight GDS instructions. Set next counter to ACCUM_PREV and divide by INSTS_GDS for average latency. {level, nondeterministic, C1}
-      block SQ has 8 counters
+  gpu-agent0 : GPUBusy : The percentage of time GPU was busy.
+      GPUBusy = 100*GRBM_GUI_ACTIVE/GRBM_COUNT
 
-  gpu-agent0 : SQ_INST_LEVEL_LDS : Number of in-flight LDS instructions. Set next counter to ACCUM_PREV and divide by INSTS_LDS for average latency. Includes FLAT instructions. {level, nondeterministic, C1}
-      block SQ has 8 counters
+  gpu-agent0 : Wavefronts : Total wavefronts.
+      Wavefronts = SQ_WAVES
 
-  gpu-agent0 : SQ_INST_CYCLES_VMEM : Number of cycles needed to send addr and data for VMEM (lds, buffer, image, flat, scratch, global) instructions, windowed by perf_en. {emulated, C1}
-      block SQ has 8 counters
+  gpu-agent0 : VALUInsts : The average number of vector ALU instructions executed per work-item (affected by flow control).
+      VALUInsts = SQ_INSTS_VALU/SQ_WAVES
 
-  gpu-agent0 : SQC_LDS_BANK_CONFLICT : Number of cycles LDS is stalled by bank conflicts. (emulated, C1)
-      block SQ has 8 counters
+  gpu-agent0 : SALUInsts : The average number of scalar ALU instructions executed per work-item (affected by flow control).
+      SALUInsts = SQ_INSTS_SALU/SQ_WAVES
 
-  gpu-agent0 : SQC_LDS_IDX_ACTIVE : Number of cycles LDS is used for indexed (non-direct,non-interpolation) operations. {per-simd, emulated, C1}
-      block SQ has 8 counters
+  gpu-agent0 : SFetchInsts : The average number of scalar fetch instructions from the video memory executed per work-item (affected by flow control).
+      SFetchInsts = SQ_INSTS_SMEM/SQ_WAVES
 
-  gpu-agent0 : SQ_INSTS_VALU : Number of VALU instructions issued excluding skipped instructions. {emulated, C1}
-      block SQ has 8 counters
+  gpu-agent0 : GDSInsts : The average number of GDS read or GDS write instructions executed per work item (affected by flow control).
+      GDSInsts = SQ_INSTS_GDS/SQ_WAVES
 
-  gpu-agent0 : SQ_INSTS_SALU : Number of SALU instructions issued. {emulated, C1}
-      block SQ has 8 counters
+  gpu-agent0 : MemUnitBusy : The percentage of GPUTime the memory unit is active. The result includes the stall time (MemUnitStalled). This is measured with all extra fetches and writes and any cache or memory effects taken into account. Value range: 0% to 100% (fetch-bound).
+      MemUnitBusy = 100*max(TA_TA_BUSY,16)/GRBM_GUI_ACTIVE/SE_NUM
 
-  gpu-agent0 : SQ_INSTS_SMEM : Number of SMEM instructions issued. {emulated, C1}
-      block SQ has 8 counters
-
-  gpu-agent0 : SQ_INSTS_FLAT : Number of FLAT instructions issued. {emulated, C2}
-      block SQ has 8 counters
-
-  gpu-agent0 : SQ_INSTS_LDS : Number of LDS indexed instructions issued. {emulated, C1}
-      block SQ has 8 counters
-
-  gpu-agent0 : SQ_INSTS_GDS : Number of GDS instructions issued. {emulated, C1}
-      block SQ has 8 counters
-
-  gpu-agent0 : SQ_WAIT_INST_LDS : Number of clock cycles spent waiting for LDS (indexed) instruction issue. In units of cycles. {nondeterministic, C1}
-      block SQ has 8 counters
-
-  gpu-agent0 : TA_TA_BUSY[0-15] : TA block is busy. Perf_Windowing not supported for this counter.
-      block TA has 2 counters
-
-  gpu-agent0 : TA_FLAT_LOAD_WAVEFRONTS[0-15] :  Number of flat load vec32 packets processed by TA, same as flat_read_wavefronts in earlier IP
-      block TA has 2 counters
-
-  gpu-agent0 : TA_FLAT_STORE_WAVEFRONTS[0-15] : Number of flat store vec32 packets processed by TA, same as flat_write_wavefronts in earlier IP
-      block TA has 2 counters
+  gpu-agent0 : ALUStalledByLDS : The percentage of GPUTime ALU units are stalled by the LDS input queue being full or the output queue being not ready. If there are LDS bank conflicts, reduce them. Otherwise, try reducing the number of LDS accesses if possible. Value range: 0% (optimal) to 100% (bad).
+      ALUStalledByLDS = 100*SQ_WAIT_INST_LDS*4/SQ_WAVES/GRBM_GUI_ACTIVE
 
 ROCPRofiler: 0 contexts collected
 </pre>
@@ -15131,15 +15110,47 @@ ROCPRofiler: 0 contexts collected
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>We can collect the total number of times these counters are triggered by specifying them in a file, such as in <a href="rocprof_counters.txt">rocprof_counters.txt</a></p>
+<p>We can specify the counters in a file such as <a href="rocprof_counters.txt">rocprof_counters.txt</a>. Here we specify some commonly used metrics for collection. Each <strong>pmc</strong> line is a unique experiment involving an individual run of the code. In this example we collect stats for the <strong>mat_mult</strong> kernel for the first 64 work-items on GPU 0.</p>
 
 <pre><code>txt
-# GPUBusy: amount of time the GPU is working
-# Wavefronts: number of wavefronts exectued
-# L2CacheHit: percentage of time the execution found data in the L2 cache
-pmc : GPUBusy Wavefronts L2CacheHit
-range: 0:1
+# Cache hits and Cache misses
+pmc: TCC_HIT_sum, TCC_MISS_sum
+
+# Total video memory fetched and written
+pmc: FETCH_SIZE, WRITE_SIZE
+
+# Percentage of time the GPU was busy, total wavefronts executed
+pmc: GPUBusy, Wavefronts
+
+# Average number of vector and scalar instructions executed per work-item
+pmc: VALUInsts, SALUInsts
+
+# Average number of vector and scalar fetch instructions per work-item
+pmc: VFetchInsts, SFetchInsts
+
+# Average number of vector write instructions per work-item
+pmc: VWriteInsts
+
+# Average number of shared and global memory read or write instructions per work item
+pmc: LDSInsts, GDSInsts
+
+# Percentage of active vector ALU threads in a wave, percentage of GPU time vector and scalar instructions are processed
+pmc: VALUUtilization, VALUBusy, SALUBusy, 
+
+# Percentage of fetch, write, atomic, and other instructions that hit the L2 cache
+pmc: L2CacheHit
+
+# Percentage of time the memory unit is active (including stalled), and just stalled, percentage of time the write unit is stalled
+pmc: MemUnitBusy, MemUnitStalled, WriteUnitStalled
+
+# Percentage of time ALU's are stalled by shared memory access, percentage of GPU time local memory is stalled by bank conflicts
+pmc: ALUStalledByLDS, LDSBankConflict
+
+# Dispatches range, which work-items to profile
+range: 0 : 64
+# Which GPU's to profile
 gpu: 0
+# Names of kernels to profile
 kernel: mat_mult</code></pre>
 
 </div>
@@ -15152,7 +15163,7 @@ kernel: mat_mult</code></pre>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Then we can use rocprof to collect the numbers from these counters as follows:</p>
+<p>Then we can use rocprof to collect the data for these counters.</p>
 
 </div>
 </div>
@@ -15162,7 +15173,7 @@ kernel: mat_mult</code></pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>rocprof -i rocprof_counters.txt -o rocprof_counters/result.csv ./mat_mult_profiling.exe
@@ -15187,17 +15198,17 @@ kernel: mat_mult</code></pre>
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>RPL: on &#39;230327_152549&#39; from &#39;/opt/rocm-5.4.1&#39; in &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L5_Profiling&#39;
+<pre>RPL: on &#39;230329_174856&#39; from &#39;/opt/rocm-5.4.1&#39; in &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L5_Profiling&#39;
 RPL: profiling &#39;&#34;./mat_mult_profiling.exe&#34;&#39;
 RPL: input file &#39;rocprof_counters.txt&#39;
-RPL: output dir &#39;/tmp/rpl_data_230327_152549_20270&#39;
-RPL: result dir &#39;/tmp/rpl_data_230327_152549_20270/input0_results_230327_152549&#39;
-ROCProfiler: input from &#34;/tmp/rpl_data_230327_152549_20270/input0.xml&#34;
+RPL: output dir &#39;/tmp/rpl_data_230329_174856_84187&#39;
+RPL: result dir &#39;/tmp/rpl_data_230329_174856_84187/input0_results_230329_174856&#39;
+ROCProfiler: input from &#34;/tmp/rpl_data_230329_174856_84187/input0.xml&#34;
   gpu_index = 0
   kernel = mat_mult
-  range = 0:1
-  3 metrics
-    GPUBusy, Wavefronts, L2CacheHit
+  range = 0:64
+  2 metrics
+    TCC_HIT_sum, TCC_MISS_sum
 Device id: 0
 	name:                                    
 	global memory size:                      536 MB
@@ -15207,11 +15218,221 @@ Device id: 0
 	max block size:                          (1024,1024,1024)
 	max threads in a block:                  1024
 	max Grid size:                           (2147483647,2147483647,2147483647)
-Time for event &#34;memcpy&#34;: 0.718 ms (2214.38 MB/s)
-Time for event &#34;mat_mult kernel&#34;: 4.049 ms
+Time for event &#34;memcpy&#34;: 1.370 ms (1160.10 MB/s)
+Time for event &#34;mat_mult kernel&#34;: 1.554 ms
 Maximum error (infinity norm) is: 2.28882e-05
 
-ROCPRofiler: 0 contexts collected, output directory /tmp/rpl_data_230327_152549_20270/input0_results_230327_152549
+ROCPRofiler: 0 contexts collected, output directory /tmp/rpl_data_230329_174856_84187/input0_results_230329_174856
+RPL: result dir &#39;/tmp/rpl_data_230329_174856_84187/input10_results_230329_174856&#39;
+ROCProfiler: input from &#34;/tmp/rpl_data_230329_174856_84187/input10.xml&#34;
+  gpu_index = 0
+  kernel = mat_mult
+  range = 0:64
+  2 metrics
+    ALUStalledByLDS, LDSBankConflict
+Device id: 0
+	name:                                    
+	global memory size:                      536 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    65 KB
+	maximum pitch size for memory copies:    536 MB
+	max block size:                          (1024,1024,1024)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,2147483647,2147483647)
+Time for event &#34;memcpy&#34;: 0.104 ms (15246.92 MB/s)
+Time for event &#34;mat_mult kernel&#34;: 3.403 ms
+Maximum error (infinity norm) is: 2.28882e-05
+
+ROCPRofiler: 0 contexts collected, output directory /tmp/rpl_data_230329_174856_84187/input10_results_230329_174856
+RPL: result dir &#39;/tmp/rpl_data_230329_174856_84187/input1_results_230329_174856&#39;
+ROCProfiler: input from &#34;/tmp/rpl_data_230329_174856_84187/input1.xml&#34;
+  gpu_index = 0
+  kernel = mat_mult
+  range = 0:64
+  2 metrics
+    FETCH_SIZE, WRITE_SIZE
+Device id: 0
+	name:                                    
+	global memory size:                      536 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    65 KB
+	maximum pitch size for memory copies:    536 MB
+	max block size:                          (1024,1024,1024)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,2147483647,2147483647)
+Time for event &#34;memcpy&#34;: 0.139 ms (11445.05 MB/s)
+Time for event &#34;mat_mult kernel&#34;: 3.062 ms
+Maximum error (infinity norm) is: 2.28882e-05
+
+ROCPRofiler: 0 contexts collected, output directory /tmp/rpl_data_230329_174856_84187/input1_results_230329_174856
+RPL: result dir &#39;/tmp/rpl_data_230329_174856_84187/input2_results_230329_174856&#39;
+ROCProfiler: input from &#34;/tmp/rpl_data_230329_174856_84187/input2.xml&#34;
+  gpu_index = 0
+  kernel = mat_mult
+  range = 0:64
+  2 metrics
+    GPUBusy, Wavefronts
+Device id: 0
+	name:                                    
+	global memory size:                      536 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    65 KB
+	maximum pitch size for memory copies:    536 MB
+	max block size:                          (1024,1024,1024)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,2147483647,2147483647)
+Time for event &#34;memcpy&#34;: 0.106 ms (15055.83 MB/s)
+Time for event &#34;mat_mult kernel&#34;: 3.182 ms
+Maximum error (infinity norm) is: 2.28882e-05
+
+ROCPRofiler: 0 contexts collected, output directory /tmp/rpl_data_230329_174856_84187/input2_results_230329_174856
+RPL: result dir &#39;/tmp/rpl_data_230329_174856_84187/input3_results_230329_174856&#39;
+ROCProfiler: input from &#34;/tmp/rpl_data_230329_174856_84187/input3.xml&#34;
+  gpu_index = 0
+  kernel = mat_mult
+  range = 0:64
+  2 metrics
+    VALUInsts, SALUInsts
+Device id: 0
+	name:                                    
+	global memory size:                      536 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    65 KB
+	maximum pitch size for memory copies:    536 MB
+	max block size:                          (1024,1024,1024)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,2147483647,2147483647)
+Time for event &#34;memcpy&#34;: 0.476 ms (3341.72 MB/s)
+Time for event &#34;mat_mult kernel&#34;: 2.820 ms
+Maximum error (infinity norm) is: 2.28882e-05
+
+ROCPRofiler: 0 contexts collected, output directory /tmp/rpl_data_230329_174856_84187/input3_results_230329_174856
+RPL: result dir &#39;/tmp/rpl_data_230329_174856_84187/input4_results_230329_174856&#39;
+ROCProfiler: input from &#34;/tmp/rpl_data_230329_174856_84187/input4.xml&#34;
+  gpu_index = 0
+  kernel = mat_mult
+  range = 0:64
+  2 metrics
+    VFetchInsts, SFetchInsts
+Device id: 0
+	name:                                    
+	global memory size:                      536 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    65 KB
+	maximum pitch size for memory copies:    536 MB
+	max block size:                          (1024,1024,1024)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,2147483647,2147483647)
+Time for event &#34;memcpy&#34;: 0.354 ms (4486.08 MB/s)
+Time for event &#34;mat_mult kernel&#34;: 1.813 ms
+Maximum error (infinity norm) is: 2.28882e-05
+
+ROCPRofiler: 0 contexts collected, output directory /tmp/rpl_data_230329_174856_84187/input4_results_230329_174856
+RPL: result dir &#39;/tmp/rpl_data_230329_174856_84187/input5_results_230329_174856&#39;
+ROCProfiler: input from &#34;/tmp/rpl_data_230329_174856_84187/input5.xml&#34;
+  gpu_index = 0
+  kernel = mat_mult
+  range = 0:64
+  1 metrics
+    VWriteInsts
+Device id: 0
+	name:                                    
+	global memory size:                      536 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    65 KB
+	maximum pitch size for memory copies:    536 MB
+	max block size:                          (1024,1024,1024)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,2147483647,2147483647)
+Time for event &#34;memcpy&#34;: 0.104 ms (15235.23 MB/s)
+Time for event &#34;mat_mult kernel&#34;: 3.415 ms
+Maximum error (infinity norm) is: 2.28882e-05
+
+ROCPRofiler: 0 contexts collected, output directory /tmp/rpl_data_230329_174856_84187/input5_results_230329_174856
+RPL: result dir &#39;/tmp/rpl_data_230329_174856_84187/input6_results_230329_174856&#39;
+ROCProfiler: input from &#34;/tmp/rpl_data_230329_174856_84187/input6.xml&#34;
+  gpu_index = 0
+  kernel = mat_mult
+  range = 0:64
+  2 metrics
+    LDSInsts, GDSInsts
+Device id: 0
+	name:                                    
+	global memory size:                      536 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    65 KB
+	maximum pitch size for memory copies:    536 MB
+	max block size:                          (1024,1024,1024)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,2147483647,2147483647)
+Time for event &#34;memcpy&#34;: 0.105 ms (15206.08 MB/s)
+Time for event &#34;mat_mult kernel&#34;: 3.415 ms
+Maximum error (infinity norm) is: 2.28882e-05
+
+ROCPRofiler: 0 contexts collected, output directory /tmp/rpl_data_230329_174856_84187/input6_results_230329_174856
+RPL: result dir &#39;/tmp/rpl_data_230329_174856_84187/input7_results_230329_174856&#39;
+ROCProfiler: input from &#34;/tmp/rpl_data_230329_174856_84187/input7.xml&#34;
+  gpu_index = 0
+  kernel = mat_mult
+  range = 0:64
+  3 metrics
+    VALUUtilization, VALUBusy, SALUBusy
+Device id: 0
+	name:                                    
+	global memory size:                      536 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    65 KB
+	maximum pitch size for memory copies:    536 MB
+	max block size:                          (1024,1024,1024)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,2147483647,2147483647)
+Time for event &#34;memcpy&#34;: 0.381 ms (4172.88 MB/s)
+Time for event &#34;mat_mult kernel&#34;: 2.193 ms
+Maximum error (infinity norm) is: 2.28882e-05
+
+ROCPRofiler: 0 contexts collected, output directory /tmp/rpl_data_230329_174856_84187/input7_results_230329_174856
+RPL: result dir &#39;/tmp/rpl_data_230329_174856_84187/input8_results_230329_174856&#39;
+ROCProfiler: input from &#34;/tmp/rpl_data_230329_174856_84187/input8.xml&#34;
+  gpu_index = 0
+  kernel = mat_mult
+  range = 0:64
+  1 metrics
+    L2CacheHit
+Device id: 0
+	name:                                    
+	global memory size:                      536 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    65 KB
+	maximum pitch size for memory copies:    536 MB
+	max block size:                          (1024,1024,1024)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,2147483647,2147483647)
+Time for event &#34;memcpy&#34;: 0.183 ms (8694.82 MB/s)
+Time for event &#34;mat_mult kernel&#34;: 3.127 ms
+Maximum error (infinity norm) is: 2.28882e-05
+
+ROCPRofiler: 0 contexts collected, output directory /tmp/rpl_data_230329_174856_84187/input8_results_230329_174856
+RPL: result dir &#39;/tmp/rpl_data_230329_174856_84187/input9_results_230329_174856&#39;
+ROCProfiler: input from &#34;/tmp/rpl_data_230329_174856_84187/input9.xml&#34;
+  gpu_index = 0
+  kernel = mat_mult
+  range = 0:64
+  3 metrics
+    MemUnitBusy, MemUnitStalled, WriteUnitStalled
+Device id: 0
+	name:                                    
+	global memory size:                      536 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    65 KB
+	maximum pitch size for memory copies:    536 MB
+	max block size:                          (1024,1024,1024)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,2147483647,2147483647)
+Time for event &#34;memcpy&#34;: 0.360 ms (4415.78 MB/s)
+Time for event &#34;mat_mult kernel&#34;: 1.794 ms
+Maximum error (infinity norm) is: 2.28882e-05
+
+ROCPRofiler: 0 contexts collected, output directory /tmp/rpl_data_230329_174856_84187/input9_results_230329_174856
 File &#39;rocprof_counters/result.csv&#39; is generating
 </pre>
 </div>
