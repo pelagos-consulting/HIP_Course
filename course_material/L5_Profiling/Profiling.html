@@ -15110,7 +15110,7 @@ ROCPRofiler: 0 contexts collected
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>We can specify the counters in a file such as <a href="rocprof_counters.txt">rocprof_counters.txt</a>. Here we specify some commonly used metrics for collection. Each <strong>pmc</strong> line is a unique experiment involving an individual run of the code. In this example we collect stats for the <strong>mat_mult</strong> kernel for the first 64 work-items on GPU 0.</p>
+<p>We can specify the counters to collect in a file such as <a href="rocprof_counters.txt">rocprof_counters.txt</a>. Here we specify some commonly used metrics for collection. Each <strong>pmc</strong> line is a unique experiment involving an individual run of the code. In this example we collect stats for the <strong>mat_mult</strong> kernel for the first 64 work-items on GPU 0.</p>
 
 <pre><code>txt
 # Cache hits and Cache misses
@@ -15449,7 +15449,37 @@ File &#39;rocprof_counters/result.csv&#39; is generating
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>If your chosen performance counters are supported, then the file <a href="rocprof_counters/result.csv">rocprof_counters/result.csv</a> should contain a count for every time the counter was triggered.</p>
+<p>If your chosen performance counters are supported, then the file <a href="rocprof_counters/result.csv">rocprof_counters/result.csv</a> should contain a count for every time the counter was triggered. The file <a href="rocprof_counters/example.csv">rocprof_counters/example.csv</a> is an example file collected with rocprof on <strong>mat_mult_profiling.exe</strong>. This <a href="https://docs.amd.com/bundle/ROCProfiler-User-Guide-v5.1/page/rocprof_Command_Line_Tool.html">page</a> has information on what the keys in the CSV file mean.</p>
+
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Rocprof-under-a-job-manager">Rocprof under a job manager<a class="anchor-link" href="#Rocprof-under-a-job-manager">&#182;</a></h3><p>Rocprof runs fine under a job manager like SLURM, you just need to make an output file for each process launched. For example on SLURM the <strong>SLURM_JOBID</strong> and <strong>SLURM_PROCID</strong> environment variables are helpful in separating the output. Put the rocprof commands in a script called <strong>profile.sh</strong>.</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+rocprof -i rocprof_counters.txt -o rocprof_counters/result-<span class="nv">$SLURM_JOBID</span>-<span class="nv">$SLURM_PROCID</span>.csv ./mat_mult_profiling.exe
+</pre></div>
+<p>Then you can run the script from <strong>srun</strong> like this so it picks up the environment variable <strong>$SLURM_PROCID</strong> from within the script.</p>
+<div class="highlight"><pre><span></span>srun -N <span class="nv">$SLURM_JOB_NUM_NODES</span> -n <span class="nv">$SLURM_NTASKS</span> -c <span class="nv">$OMP_NUM_THREADS</span> ./profile.sh
+</pre></div>
+
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Rocprofiler-API">Rocprofiler API<a class="anchor-link" href="#Rocprofiler-API">&#182;</a></h3><p>If you'd like to instrument code with profiling calls the <strong><a href="https://github.com/ROCm-Developer-Tools/rocprofiler/blob/amd-master/doc/rocprofiler_spec.md">rocprofiler API</a></strong> is available.</p>
 
 </div>
 </div>
@@ -15694,22 +15724,6 @@ Written by Dr. Toby Potter of <a href="https://www.pelagos-consulting.com">Pelag
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
 </div>
 </body>
 
