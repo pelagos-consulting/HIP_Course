@@ -1,0 +1,39 @@
+# Cache hits and Cache misses
+pmc: TCC_HIT_sum, TCC_MISS_sum
+
+# Total video memory fetched and written
+pmc: FETCH_SIZE, WRITE_SIZE
+
+# Percentage of time the GPU was busy, total wavefronts executed
+pmc: GPUBusy, Wavefronts
+
+# Average number of vector and scalar instructions executed per work-item
+pmc: VALUInsts, SALUInsts
+
+# Average number of vector and scalar fetch instructions per work-item
+pmc: VFetchInsts, SFetchInsts
+
+# Average number of vector write instructions per work-item
+pmc: VWriteInsts
+
+# Average number of shared and global memory read or write instructions per work item
+pmc: LDSInsts, GDSInsts
+
+# Percentage of active vector ALU threads in a wave, percentage of GPU time vector and scalar instructions are processed
+pmc: VALUUtilization, VALUBusy, SALUBusy, 
+
+# Percentage of fetch, write, atomic, and other instructions that hit the L2 cache
+pmc: L2CacheHit
+
+# Percentage of time the memory unit is active (including stalled), and just stalled, percentage of time the write unit is stalled
+pmc: MemUnitBusy, MemUnitStalled, WriteUnitStalled
+
+# Percentage of time ALU's are stalled by shared memory access, percentage of GPU time local memory is stalled by bank conflicts
+pmc: ALUStalledByLDS, LDSBankConflict
+
+# Dispatches range, which work-items to profile 
+range: 0 : 64
+# Which GPU's to profile
+gpu: 0
+# Names of kernels to profile
+kernel: mat_mult
