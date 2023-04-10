@@ -8,8 +8,8 @@ let count=0
 
 cat ${fname_export} | while read line
 do
-    usr=$(echo $line | cut -d ":", -f1)
-    pass=$(echo $line | cut -d ":", -f2)
+    usr=$(echo $line | cut -d ':' -f 1)
+    pass=$(echo $line | cut -d ':' -f 2)
 
     # Check if user exists
     if id -u "$usr" > /dev/null 1>&1
@@ -27,7 +27,7 @@ do
     if id -u "jupyter-$usr" > /dev/null 1>&1
     then
         userdel -rf jupyter-$usr
-	    groupdel jupyter-$usr
+	groupdel jupyter-$usr
     fi
 
     # Create the jupyter user and add to groups
