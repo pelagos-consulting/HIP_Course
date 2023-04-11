@@ -1,15 +1,14 @@
 #!/bin/bash -l
 
-#SBATCH --account=${PAWSEY_PROJECT}-gpu       # your account
+#SBATCH --account=<account>-gpu       # your account
 #SBATCH --partition=gpu            # Using the gpu partition
 #SBATCH --ntasks=8                 # Total number of tasks
 #SBATCH --ntasks-per-node=8        # Set this for 1 mpi task per compute device
 #SBATCH --cpus-per-task=8          # How many OpenMP threads per MPI task
-#SBATCH --threads-per-core=1       # How many omp threads per core
-#SBATCH --gpus-per-node=8          # How many GPU's per node
+#SBATCH --threads-per-core=1       # How many OpenMP threads per core (1 or 2)
 #SBATCH --gpus-per-task=1          # How many HIP compute devices to allocate to a  task
 #SBATCH --gpu-bind=closest         # Bind each MPI taks to the nearest GPU
-#SBATCH --mem=4000M                #Indicate the amount of memory per node when asking for share resources
+#SBATCH --mem=4000M                #Indicate the amount of memory per node when asking for shared resources
 #SBATCH --time=01:00:00
 
 module swap PrgEnv-gnu PrgEnv-cray
