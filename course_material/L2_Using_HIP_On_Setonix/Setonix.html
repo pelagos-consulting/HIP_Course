@@ -15076,8 +15076,7 @@ chmod -R <span class="m">0400</span> <span class="si">${</span><span class="nv">
 <figcaption style="text-align:lower; margin:1em; float:bottom; vertical-align:bottom;">Overall view of a Setonix GPU node, showing the placement of hardware threads and the closest available compute device.</figcaption>
 </figure><p>Work is still being done on making sure that MPI processes map optimally to available compute devices. These suggestions will help space out the MPI tasks so each task resides on its own chiplet.</p>
 <ul>
-<li>Allocate one compute device per MPI task. </li>
-<li>Use <strong>--ntasks-per-node=8</strong> to allocate up to 8 MPI tasks per node.</li>
+<li>Use <strong>--ntasks-per-node=8</strong> to allocate up to 8 MPI tasks per node, one per compute device.</li>
 <li>Use <strong>--gpus-per-task=1</strong> to allocate 1 compute device per MPI task.</li>
 <li>Use <strong>--cpus-per-task=8</strong> and <strong>--threads-per-core=1</strong> to allocate all available threads in a chiplet to a single MPI process.</li>
 <li>Use the <strong>--gpu-bind=closest</strong> option to bind each compute device to the closest MPI task.</li>
