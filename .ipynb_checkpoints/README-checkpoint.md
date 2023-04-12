@@ -1,4 +1,4 @@
-# The HIP framework for parallel computing
+# Accelerated computing with HIP
 
 The Heterogeneous Interface for Portability (HIP) provides a programming framework for harnessing the compute capabilities of multicore processors such as the AMD MI250X GPU’s on Setonix. In this course we focus on the essentials of developing HIP applications, with a focus on supercomputing.
 
