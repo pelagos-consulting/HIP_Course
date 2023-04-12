@@ -28,16 +28,41 @@ Each lesson is in the form of Jupyter notebooks which can be viewed on the stude
 
 ## Installation
 
+
+### Anaconda Python (optional)
+
+A recent version of [Anaconda Python](https://www.anaconda.com/products/distribution) is helpful for viewing the notebook files. A list of helpful packages for viewing the material may then be installed with this command when run from the **HIP_Course** folder. 
+
+```bash
+pip -r deployment/requirements.txt
+```
+
+then run 
+
+```bash
+jupyter-lab
+```
+
+from the command line to start the Jupyter Lab environment.
+
+### ROCM
+
+In order to use the material in this course a full installation of [ROCM](https://docs.amd.com/) is advised. It is the path of least pain to use a distribution of Linux that ROCM officially supports. The AMD utility **amdgpu-install** can install ROCM packages. This command will install the ROCM tools.
+
+```bash
+sudo amdgpu-install -y --usecase=opencl,hip,rocm,openclsdk,hip,hiplibsdk,rocmdevtools,rocmdev
+```
+
 ### AMD backend
 
-In order to use the material in this course a full installation of ROCM is advised. It is the path of least pain to use a distribution of Linux that ROCM supports, and an AMD graphics card that ROCM supports. 
+It is advisable to use an AMD graphics card that ROCM supports. Other AMD GPU's work unofficially, but you can expect undefined behaviour.
 
 ### NVIDIA backend
 
-Alternatively, the course may be run on a CUDA backened with a recent NVIDIA graphics card. In such instances the environment variable **HIP_PLATFORM** must be set to nvidia.
+HIP can also use a CUDA backend. In that case install both ROCM and CUDA. Then the course may be run on a CUDA backend with a recent NVIDIA graphics card. In such instances the environment variable **HIP_PLATFORM** must be set to nvidia.
 
 ### CPU backend
 
-If either AMD or NVIDIA backend is not available, then the [HIP CPU runtime](https://github.com/ROCm-Developer-Tools/HIP-CPU) is a header-only library that provides a way to develop HIP applications on a CPU. 
+If either and AMD or NVIDIA backend is not available then the [HIP CPU runtime](https://github.com/ROCm-Developer-Tools/HIP-CPU) is a header-only library that provides a way to develop HIP applications on a CPU. 
 
 
