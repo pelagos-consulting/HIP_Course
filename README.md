@@ -17,9 +17,9 @@ In this course we cover the following topics. Each topic is a subfolder in **cou
 * Lesson 3 - A complete example of matrix multiplication, explained line by line
 * Lesson 4 - Debugging HIP applications
 * Lesson 5 - Measuring the performance of HIP applications with profiling and tracing tools
-* Lesson 6 - Memory management
-* Lesson 7 - Strategies for optimising HIP kernels
-* Lesson 8 - Strategies for optimising IO in HIP applications
+* Lesson 6 - Memory management with HIP
+* Lesson 7 - Strategies for improving the performance of HIP kernels
+* Lesson 8 - Strategies for optimising application performance with concurrent IO.
 * Lesson 9 - Porting CUDA applications to HIP
 
 ## Format
