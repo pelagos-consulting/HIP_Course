@@ -55,7 +55,7 @@ sudo amdgpu-install -y --usecase=opencl,hip,rocm,openclsdk,hip,hiplibsdk,rocmdev
 
 ### AMD backend
 
-It is advisable to use an AMD graphics card that ROCM supports. Other AMD GPU's work unofficially, but you can expect undefined behaviour.
+It is advisable to use an AMD graphics card that ROCM supports. Other AMD GPU's work unofficially, but you can expect the occasional undefined behaviour and things not working like they should.
 
 ### NVIDIA backend
 
