@@ -4,13 +4,13 @@ The Heterogeneous Interface for Portability (HIP) provides a programming framewo
 
 ## Folder structure
 
-* **course_material** - contains the material for the course
-* **deployment** - contains tools for deploying the material to Github and managing users
-* **resources** - helpful tools and information for use wi the course
+* **course_material** - contains the course material.
+* **deployment** - contains tools for deploying course material to Github and managing users.
+* **resources** - helpful tools and information for use within the course.
 
 ## Syllabus
 
-In this course we cover the following topics. Each topic is a folder in **course_material**
+In this course we cover the following topics. Each topic is a subfolder in **course_material**.
 
 * Lesson 1 - Introduction to HIP and high level features
 * Lesson 2 - How to build and run applications on Cray AMD systems like Frontier and Setonix
@@ -24,7 +24,7 @@ In this course we cover the following topics. Each topic is a folder in **course
 
 ## Format
 
-Each lesson is in the form of Jupyter notebooks which can be viewed on the student's machine with JupyterLab or with a web browser. All exercises may be performed on the command line using an SSH connection to a remote server that has ROCM installed.
+Lessons are in the form of Jupyter notebooks which can be viewed on the student's machine with JupyterLab or with a web browser. All exercises may be performed on the command line using an SSH connection to a remote server that has ROCM installed.
 
 ## Installation
 
@@ -59,7 +59,11 @@ It is advisable to use an AMD graphics card that ROCM supports. Other AMD GPU's 
 
 ### NVIDIA backend
 
-HIP can also use a CUDA backend. In that case install both ROCM and CUDA. Then the course may be run on a CUDA backend with a recent NVIDIA graphics card. In such instances the environment variable **HIP_PLATFORM** must be set to nvidia.
+HIP can also use a CUDA backend. In that case install both ROCM and a compatible version of [CUDA](https://developer.nvidia.com/cuda-downloads). Usually a safe choice for CUDA is the previous major release. Then the course may be run on a CUDA backend with a recent NVIDIA graphics card. In such instances the environment variable **HIP_PLATFORM** must be set to nvidia.
+
+```bash
+export HIP_PLATFORM=nvidia
+```
 
 ### CPU backend
 
