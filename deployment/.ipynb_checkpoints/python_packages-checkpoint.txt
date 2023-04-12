@@ -1,0 +1,20 @@
+# Packages for Python installation
+scipy
+numpy
+matplotlib
+h5py
+Cython
+scikit-image
+scikit-learn
+pandas
+xarray
+sqlalchemy
+bokeh
+xlrd
+openpyxl
+ipywidgets
+ipympl
+black
+isort
+line_profiler
+
