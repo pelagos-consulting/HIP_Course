@@ -24,10 +24,20 @@ In this course we cover the following topics. Each topic is a folder in **course
 
 ## Format
 
-Each lesson is in the form of Jupyter notebooks which can be viewed on the student's machine with JupyterLab or with a web browser. All exercises may be performed on the command line using an SSH connection to a remote server.
+Each lesson is in the form of Jupyter notebooks which can be viewed on the student's machine with JupyterLab or with a web browser. All exercises may be performed on the command line using an SSH connection to a remote server that has ROCM installed.
 
 ## Installation
 
-In order to use the material in this course a full installation of ROCM is advised, on distribution of Linux that ROCM supports and and AMD graphics card that ROCM supports. Alternatively the course may be run on a CUDA backened with a recent NVIDIA graphics card. In such instances the environment variable **HIP_PLATFORM** must be set to nvidia.
+### AMD backend
+
+In order to use the material in this course a full installation of ROCM is advised. It is the path of least pain to use a distribution of Linux that ROCM supports, and an AMD graphics card that ROCM supports. 
+
+### NVIDIA backend
+
+Alternatively, the course may be run on a CUDA backened with a recent NVIDIA graphics card. In such instances the environment variable **HIP_PLATFORM** must be set to nvidia.
+
+### CPU backend
+
+If either AMD or NVIDIA backend is not available, then the [HIP CPU runtime](https://github.com/ROCm-Developer-Tools/HIP-CPU) is a header-only library that provides a way to develop HIP applications on a CPU. 
 
 
