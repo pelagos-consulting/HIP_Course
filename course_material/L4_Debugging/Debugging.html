@@ -15110,10 +15110,10 @@ Maximum error (infinity norm) is: 2.15512e+38
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="Debugging-HIP-kernels-with-ROCGDB">Debugging HIP kernels with ROCGDB<a class="anchor-link" href="#Debugging-HIP-kernels-with-ROCGDB">&#182;</a></h2><p>On Setonix, AMD has the <strong>rocgdb</strong> debugger available to perform debugging.</p>
-<h3 id="Compiler-options">Compiler options<a class="anchor-link" href="#Compiler-options">&#182;</a></h3><p>In order for debugging information to be included in the application, the compiler needs to have the <strong>-g</strong> compiler argument set and preferaby <strong>-ggdb</strong> if it is supported. Additionally the <strong>--offload-arch</strong> argument tells hipcc to generate code to support a particular device architecture. For example:</p>
+<h3 id="Compiler-options">Compiler options<a class="anchor-link" href="#Compiler-options">&#182;</a></h3><p>In order for debugging information to be included in the application, the compiler needs to have the <strong>-g</strong> compiler argument set and preferaby <strong>-ggdb</strong> if it is supported. This command</p>
 
-<pre><code>hipcc -O0 -g -ggdb mat_mult_bug.cpp --offload-arch=gfx90a -o mat_mult_bug.exe</code></pre>
-<p>will compile the file <a href="mat_mult_bug.cpp">mat_mult_bug.cpp</a> for the <strong>gfx90a</strong> GPU architecture in use on Setonix.</p>
+<pre><code>hipcc -g -ggdb mat_mult_bug.cpp -o mat_mult_bug.exe</code></pre>
+<p>will compile the file <a href="mat_mult_bug.cpp">mat_mult_bug.cpp</a> with debugging support.</p>
 <h3 id="Running-ROCGDB">Running ROCGDB<a class="anchor-link" href="#Running-ROCGDB">&#182;</a></h3><p>Within ROCGDB for GPU archicectures there is the concept of <strong>threads</strong> and <strong>lanes</strong>. A <em>thread</em> is charge of a wavefront, which is executed on a compute unit, and a lane is a shader core core that executes the instructions in parallel as part of a wavefront.</p>
 <p>We execute <strong>rocgdb</strong> for <strong>mat_mult_bug.exe</strong> as follows:</p>
 <div class="highlight"><pre><span></span>rocgdb --args ./mat_mult_bug.exe
@@ -15123,13 +15123,13 @@ Maximum error (infinity norm) is: 2.15512e+38
 <pre><code>gdb
 b mat_mult
 run</code></pre>
-<p>type</p>
+<p>type <code>y</code> to make breakpoint pending on future shared library load then type</p>
 <div class="highlight"><pre><span></span>disable
 </pre></div>
 <p>to disable the breakpoint, otherwise all the other threads will break at this point too. Now type</p>
 <div class="highlight"><pre><span></span>info threads
 </pre></div>
-<p>To see what threads are available. There should be a thread for every block in the grid. Output should look something like this:</p>
+<p>To see what threads are available. Since we have a grid size of (80,72,1) and a block size of (16,4,1) the number of blocks in each dimension should be (5,18,1) and we would  have scheduled 5x18 = 90 wavefronts.</p>
 <div class="highlight"><pre><span></span>* <span class="m">5</span>    AMDGPU Wave <span class="m">6</span>:1:1:1 <span class="o">(</span><span class="m">0</span>,0,0<span class="o">)</span>/0 <span class="s2">&quot;mat_mult_bug.ex&quot;</span>      mat_mult <span class="o">(</span><span class="nv">A</span><span class="o">=</span>&lt;optimized out&gt;, ...
   <span class="m">6</span>    AMDGPU Wave <span class="m">6</span>:1:1:2 <span class="o">(</span><span class="m">1</span>,0,0<span class="o">)</span>/0 <span class="s2">&quot;mat_mult_bug.ex&quot;</span>      mat_mult <span class="o">(</span><span class="nv">A</span><span class="o">=</span>&lt;optimized out&gt;, ...
   <span class="m">7</span>    AMDGPU Wave <span class="m">6</span>:1:1:3 <span class="o">(</span><span class="m">2</span>,0,0<span class="o">)</span>/0 <span class="s2">&quot;mat_mult_bug.ex&quot;</span>      mat_mult <span class="o">(</span><span class="nv">A</span><span class="o">=</span>&lt;optimized out&gt;, ...
@@ -15178,7 +15178,7 @@ run</code></pre>
 </tr>
 </tbody>
 </table>
-<p>We can use the <strong>thread</strong> command to move to the thread id (94) for block (4,17,0) as follows:</p>
+<p>We can use the <strong>thread</strong> command to move to the thread id that corresponds to wave-id == 90. Something like the following:</p>
 <div class="highlight"><pre><span></span>thread <span class="m">94</span>
 </pre></div>
 <p>The command <strong>info lanes</strong> shows all the available lanes for that block</p>
