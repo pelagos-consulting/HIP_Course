@@ -15205,7 +15205,14 @@ run</code></pre>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>At the time of writing ROCGDB doesn't appear to support printing kernel variables from within a lane. According to this <a href="https://github.com/ROCm-Developer-Tools/ROCgdb/issues/14#issuecomment-1423581387">this source on Github</a> printing local/shared variables is hopefully going to be introduced with a future version. The only way I know of to get at values in the kernel is to examine the source code and have a look at the register contents directly. We turn on the view of assembly code to see which registers are being worked with.</p>
+<p>At the time of writing ROCGDB doesn't appear to support printing kernel variables from within a lane. According to this <a href="https://github.com/ROCm-Developer-Tools/ROCgdb/issues/14#issuecomment-1423581387">this source on Github</a> printing local/shared variables is <strong>hopefully</strong> going to be introduced with a future version. We should then be able to walk through a few lines of kernel code with this command</p>
+<div class="highlight"><pre><span></span>n
+</pre></div>
+<p>and print kernel variables like this.</p>
+
+<pre><code>print i0</code></pre>
+<p>Until this feature is available, it is going to be easier just to use <strong>printf</strong> from within a kernel.</p>
+<h4 id="Viewing-register-contents">Viewing register contents<a class="anchor-link" href="#Viewing-register-contents">&#182;</a></h4><p>Alternatively, rocgdb can examine the contents of registers. We turn on the view of assembly code to see which registers are being worked with.</p>
 <div class="highlight"><pre><span></span><span class="nb">set</span>  disassemble-next-line on
 </pre></div>
 
@@ -15219,7 +15226,7 @@ run</code></pre>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Now that the breakpoint is disabled we can type <strong>n</strong> to walk through each line of the kernel. The <strong>info registers</strong> command prints what information is in the available registers.</p>
+<p>Now that the breakpoint is disabled we can type <code>n</code> to walk through each line of the kernel. The <strong>info registers</strong> command prints what information is in the available registers.</p>
 
 </div>
 </div>
