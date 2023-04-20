@@ -9,7 +9,7 @@
 #SBATCH --gpus-per-task=1          # How many HIP compute devices to allocate to a  task
 #SBATCH --gpu-bind=closest         # Bind each MPI taks to the nearest GPU
 #SBATCH --mem=4000M                #Indicate the amount of memory per node when asking for share resources
-#SBATCH --time=01:00:00
+#SBATCH --time=00:05:00
 
 module swap PrgEnv-gnu PrgEnv-cray
 module load craype-accel-amd-gfx90a
