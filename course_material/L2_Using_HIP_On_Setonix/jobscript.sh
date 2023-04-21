@@ -8,7 +8,8 @@
 #SBATCH --threads-per-core=1       # How many OpenMP threads per core
 #SBATCH --gpus-per-task=1          # How many HIP compute devices to allocate to a  task
 #SBATCH --gpu-bind=closest         # Bind each MPI taks to the nearest GPU
-#SBATCH --mem=4000M                #Indicate the amount of memory per node when asking for share resources
+#SBATCH --mem=4000M                #Indicate the amount of memory per node when asking for shared resources
+#SBATCH --exclusive                # Use this to request all the resources on a node
 #SBATCH --time=00:05:00
 
 module swap PrgEnv-gnu PrgEnv-cray
