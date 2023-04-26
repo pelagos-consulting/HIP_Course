@@ -14761,7 +14761,7 @@ Maximum error (infinity norm) is: 2.28882e-05
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="Performance-measurement-with-AMD-tools">Performance measurement with AMD tools<a class="anchor-link" href="#Performance-measurement-with-AMD-tools">&#182;</a></h2><p>The AMD profiler <strong>ROCPROF</strong> has the ability to collect traces and information from hardware performance counters.</p>
-<h4 id="HIP-application-traces-with-rocprof">HIP application traces with rocprof<a class="anchor-link" href="#HIP-application-traces-with-rocprof">&#182;</a></h4><p>An application trace is information on when functions execute and for how long they took to execute. Collecting HIP application traces with <strong>rocprof</strong> is accomplished with the <strong>--hip-trace</strong> flag. Tracing with <strong>rocprof</strong> only seems to work with the <strong>AMD</strong> backend at present.</p>
+<h4 id="HIP-application-traces-with-rocprof">HIP application traces with rocprof<a class="anchor-link" href="#HIP-application-traces-with-rocprof">&#182;</a></h4><p>An application trace is information on when functions execute and for how long they took to execute. Collecting HIP application traces with <strong>rocprof</strong> is accomplished with the <strong>--hip-trace</strong> and <strong>--hsa-trace</strong> flags. Tracing with <strong>rocprof</strong> only seems to work with the <strong>AMD</strong> backend at present.</p>
 
 </div>
 </div>
@@ -14771,10 +14771,10 @@ Maximum error (infinity norm) is: 2.28882e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>rocprof --hip-trace -o rocprof_trace/result.csv ./mat_mult_profiling.exe
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>rocprof --hip-trace --hsa-trace -o rocprof_trace/result.csv ./mat_mult_profiling.exe
 </pre></div>
 
      </div>
@@ -14796,35 +14796,12 @@ Maximum error (infinity norm) is: 2.28882e-05
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>RPL: on &#39;230327_162637&#39; from &#39;/opt/rocm-5.4.1&#39; in &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L5_Profiling&#39;
+<pre>RPL: on &#39;230426_160751&#39; from &#39;/opt/rocm-5.4.3&#39; in &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L5_Profiling&#39;
 RPL: profiling &#39;&#34;./mat_mult_profiling.exe&#34;&#39;
 RPL: input file &#39;&#39;
-RPL: output dir &#39;/tmp/rpl_data_230327_162637_23484&#39;
-RPL: result dir &#39;/tmp/rpl_data_230327_162637_23484/input_results_230327_162637&#39;
-ROCtracer (23510):
-    HIP-trace(*)
-Device id: 0
-	name:                                    
-	global memory size:                      536 MB
-	available registers per block:           65536 
-	maximum shared memory size per block:    65 KB
-	maximum pitch size for memory copies:    536 MB
-	max block size:                          (1024,1024,1024)
-	max threads in a block:                  1024
-	max Grid size:                           (2147483647,2147483647,2147483647)
-Time for event &#34;memcpy&#34;: 0.385 ms (4129.99 MB/s)
-Time for event &#34;mat_mult kernel&#34;: 1.665 ms
-Maximum error (infinity norm) is: 2.28882e-05
-hsa_copy_deps: 0
-scan ops data 3:4                                                                                                    File &#39;rocprof_trace/result.copy_stats.csv&#39; is generating
-dump json 2:3                                                                                                    
-File &#39;rocprof_trace/result.json&#39; is generating
-File &#39;rocprof_trace/result.hip_stats.csv&#39; is generating
-dump json 45:46                                                                                                    
-File &#39;rocprof_trace/result.json&#39; is generating
-File &#39;rocprof_trace/result.stats.csv&#39; is generating
-dump json 0:1                                                                                                    
-File &#39;rocprof_trace/result.json&#39; is generating
+RPL: output dir &#39;/tmp/rpl_data_230426_160751_79044&#39;
+RPL: result dir &#39;/tmp/rpl_data_230426_160751_79044/input_results_230426_160751&#39;
+./mat_mult_profiling.exe: error while loading shared libraries: libomp.so: cannot open shared object file: No such file or directory
 </pre>
 </div>
 </div>

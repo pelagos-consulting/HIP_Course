@@ -1,7 +1,7 @@
 #!/bin/bash -l
 
 #SBATCH --account=<account>-gpu    # your account
-#SBATCH --partition=gpu            # Using the gpu partition
+#SBATCH --partition=gpu-dev        # Using the gpu-dev partition
 #SBATCH --ntasks=8                 # Total number of tasks
 #SBATCH --ntasks-per-node=8        # Set this for 1 mpi task per compute device
 #SBATCH --cpus-per-task=8          # How many OpenMP threads per MPI task
