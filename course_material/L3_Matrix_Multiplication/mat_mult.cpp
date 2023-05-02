@@ -66,7 +66,7 @@ int main(int argc, char** argv) {
     
     //// Step 1. Parse program arguments ////
 
-    // Parse arguments
+    // Parse command line arguments
     int dev_index = h_parse_args(argc, argv);
     
     // Number of devices discovered
@@ -137,6 +137,7 @@ int main(int argc, char** argv) {
     size_t sharedMemBytes=0;
     
     // Launch the kernel using hipLaunchKernelGGL method
+    // Use 0 when choosing the default (null) stream
     hipLaunchKernelGGL(mat_mult, 
             grid_nblocks, 
             block_size, sharedMemBytes, 0, 
@@ -147,6 +148,7 @@ int main(int argc, char** argv) {
     );
     
     // Alternatively, launch the kernel using CUDA triple Chevron syntax
+    // which is not valid ANSI C++ syntax
     //mat_mult<<<grid_nblocks, block_size, 0, 0>>>(A_d, B_d, C_d, N1_A, N0_C, N1_C);
     
     // Wait for any commands to complete on the compute device

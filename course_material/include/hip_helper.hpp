@@ -92,6 +92,30 @@ int h_parse_args(int argc, char** argv) {
     return(dev_index);
 }
 
+// Function to simply acquire devices
+void h_acquire_devices(int* num_devices, int default_device_id) {
+    // Initialise HIP 
+    H_ERRCHK(hipInit(0));
+
+    // Get the number of devices
+    H_ERRCHK(hipGetDeviceCount(num_devices));
+
+    // Check to make sure we have one or more suitable devices
+    if (*num_devices == 0) {
+        std::printf("Failed to find a suitable compute device\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Make sure the default device id is sane
+    assert (default_device_id<*num_devices);
+
+    // Clean and reset devices (optional)
+    h_reset_devices(*num_devices);
+
+    // Set the device
+    H_ERRCHK(hipSetDevice(default_device_id));
+}
+
 // Function to reset devices before and after runtime
 void h_reset_devices(int num_devices) {
     
@@ -111,120 +135,53 @@ void h_reset_devices(int num_devices) {
     }
 }
 
-// Function to simply acquire devices
-void h_acquire_devices(int* num_devices, int default_device_id) {
-    // Initialise HIP 
-    H_ERRCHK(hipInit(0));
+// Function to report information on a compute device
+void h_report_on_device(int device_id) {
 
-    // Get the number of devices
-    H_ERRCHK(hipGetDeviceCount(num_devices));
+    // Report some information on a compute device
+    hipDeviceProp_t prop;
 
-    // Check to make sure we have one or more suitable devices
-    if (*num_devices == 0) {
-        std::printf("Failed to find a suitable compute device\n");
-        exit(EXIT_FAILURE);
+    // Get the properties of the compute device
+    H_ERRCHK(hipGetDeviceProperties(&prop, device_id));
+
+    // ID of the compute device
+    std::printf("Device id: %d\n", device_id);
+
+    // Name of the compute device
+    std::printf("\t%-40s %s\n","name:", prop.name);
+
+    // Size of global memory
+    std::printf("\t%-40s %lu MB\n","global memory size:",prop.totalGlobalMem/(1000000));
+
+    // Maximum number of registers per block
+    std::printf("\t%-40s %d \n","available registers per block:",prop.regsPerBlock);
+
+    // Maximum shared memory size per block
+    std::printf("\t%-40s %lu KB\n","maximum shared memory size per block:",prop.sharedMemPerBlock/(1000));
+
+    // Maximum pitch size for memory copies (MB)
+    std::printf("\t%-40s %lu MB\n","maximum pitch size for memory copies:",prop.memPitch/(1000000));
+
+    // Print out the maximum number of threads along a dimension of a block
+    std::printf("\t%-40s (", "max block size:");
+    for (int n=0; n<2; n++) {
+        std::printf("%d,", prop.maxThreadsDim[n]);
     }
-
-    // Make sure the default device id is sane
-    assert (default_device_id<*num_devices);
-
-    // Clean and reset devices
-    h_reset_devices(*num_devices);
-
-    // Set the device
-    H_ERRCHK(hipSetDevice(default_device_id));
+    std::printf("%d)\n", prop.maxThreadsDim[2]); 
+    std::printf("\t%-40s %d\n", "max threads in a block:", prop.maxThreadsPerBlock);
+    
+    // Print out the maximum size of a Grid
+    std::printf("\t%-40s (", "max Grid size:");
+    for (int n=0; n<2; n++) {
+        std::printf("%d,", prop.maxGridSize[n]);
+    }
+    std::printf("%d)\n", prop.maxGridSize[2]); 
 }
 
 // Simple function to release devices
 void h_release_devices(int num_devices) {
     h_reset_devices(num_devices);
 }
-
-// Function to select a compute device
-//void h_set_device(
-//        int num_devices, 
-//        hipCtx_t* contexts,
-//        int device_id) {
-//
-//    assert(device_id<num_devices);
-//
-//    // Choose the context to use
-//    H_ERRCHK(hipCtxSetCurrent(contexts[device_id]));
-//}
-
-//
-//// Function to clean devices before and after runtime
-//void h_acquire_devices(int* num_devices, 
-//        hipDevice_t** devices,
-//        hipCtx_t **contexts,
-//        // Which device id should we use to begin with?
-//        int default_device_id) {
-//
-//    // Initialise HIP
-//    hipInit(0);
-//
-//    // Get the number of devices
-//    H_ERRCHK(hipGetDeviceCount(num_devices));
-//
-//    // Check to make sure we have one or more suitable devices
-//    if (*num_devices == 0) {
-//        std::printf("Failed to find a suitable compute device\n");
-//        exit(EXIT_FAILURE);
-//    }
-//
-//    assert (default_device_id<*num_devices);
-//
-//    // Clean and reset devices
-//    h_reset_devices(*num_devices);
-//
-//    // Allocate memory for devices and contexts
-//    *devices = (hipDevice_t*)calloc(*num_devices, sizeof(hipDevice_t));
-//    *contexts = (hipCtx_t*)calloc(*num_devices, sizeof(hipCtx_t));
-//
-//    // Reset devices
-//    for (int i = 0; i<*num_devices; i++) {
-//        // Fetch the device
-//        H_ERRCHK(hipDeviceGet(&(*devices[i]), i));
-//
-//        // Create a context but retain the primary one, 
-//        // this creates a separate context that is ready for use
-//        H_ERRCHK(hipDevicePrimaryCtxRetain(&(*contexts[i]), *devices[i]));
-//    }
-//
-//    // Choose context 0 to start with, you can use this code to
-//    // choose another context if you wish
-//    H_ERRCHK(hipCtxSetCurrent(*contexts[default_device_id]));
-//}
-//
-//// Function to clean devices before and after runtime
-//void h_release_devices(int num_devices, 
-//        hipDevice_t* devices,
-//        hipCtx_t *contexts ) {
-//    
-//    // Reset contexts
-//    for (int i = 0; i<num_devices; i++) {
-//
-//        // Set the context to the current one
-//        H_ERRCHK(hipCtxSetCurrent(contexts[i]));
-//
-//        // Synchronize on the context
-//        H_ERRCHK(hipCtxSynchronize());
-//
-//        // Destroy the context
-//        H_ERRCHK(hipCtxDestroy(contexts[i]));
-//
-//        // Release the primary context associated with the device
-//        H_ERRCHK(hipDevicePrimaryCtxRelease(devices[i]));
-//    }
-//
-//    // Reset all devices
-//    h_reset_devices(num_devices);
-//
-//    // Free memory
-//    free(devices);
-//    free(contexts);
-//}
-//
 
 // Create streams
 hipStream_t* h_create_streams(int nstreams, int blocking) {
@@ -384,48 +341,6 @@ void h_write_binary(void* data, const char* filename, size_t nbytes) {
     std::fclose(fp);
 }
 
-// Function to report information on a compute device
-void h_report_on_device(int device_id) {
-
-    // Report some information on a compute device
-    hipDeviceProp_t prop;
-
-    // Get the properties of the compute device
-    H_ERRCHK(hipGetDeviceProperties(&prop, device_id));
-
-    // ID of the compute device
-    std::printf("Device id: %d\n", device_id);
-
-    // Name of the compute device
-    std::printf("\t%-40s %s\n","name:", prop.name);
-
-    // Size of global memory
-    std::printf("\t%-40s %lu MB\n","global memory size:",prop.totalGlobalMem/(1000000));
-
-    // Maximum number of registers per block
-    std::printf("\t%-40s %d \n","available registers per block:",prop.regsPerBlock);
-
-    // Maximum shared memory size per block
-    std::printf("\t%-40s %lu KB\n","maximum shared memory size per block:",prop.sharedMemPerBlock/(1000));
-
-    // Maximum pitch size for memory copies (MB)
-    std::printf("\t%-40s %lu MB\n","maximum pitch size for memory copies:",prop.memPitch/(1000000));
-
-    // Print out the maximum number of threads along a dimension of a block
-    std::printf("\t%-40s (", "max block size:");
-    for (int n=0; n<2; n++) {
-        std::printf("%d,", prop.maxThreadsDim[n]);
-    }
-    std::printf("%d)\n", prop.maxThreadsDim[2]); 
-    std::printf("\t%-40s %d\n", "max threads in a block:", prop.maxThreadsPerBlock);
-    
-    // Print out the maximum size of a Grid
-    std::printf("\t%-40s (", "max Grid size:");
-    for (int n=0; n<2; n++) {
-        std::printf("%d,", prop.maxGridSize[n]);
-    }
-    std::printf("%d)\n", prop.maxGridSize[2]); 
-}
 
 // Function to run a kernel
 float h_run_kernel(

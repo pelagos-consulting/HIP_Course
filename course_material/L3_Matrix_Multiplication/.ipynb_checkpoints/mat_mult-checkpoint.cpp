@@ -27,7 +27,7 @@ __global__ void mat_mult (
             
     // A is of size (N0_C, N1_A)
     // B is of size (N1_A, N1_C)
-    // C is of size (N0_C, N1_C)    
+    // C is of size (N0_C, N1_C)   
     
     // i0 and i1 represent the coordinates in Matrix C 
     // We use row-major ordering for the matrices
@@ -40,7 +40,6 @@ __global__ void mat_mult (
     // Guard mechanism to make sure we do not go
     // outside the boundaries of matrix C 
     if ((i0<N0_C) && (i1<N1_C)) {
-        
         // Get the offset within the memory allocation of C
         size_t offset = i0*N1_C+i1;
         
@@ -60,14 +59,14 @@ __global__ void mat_mult (
         
         // Uncomment this to perform elementwise matrix multiplication instead
         // C[offset]=A[offset]*B[offset];
-    }
+   }
 } 
 
 int main(int argc, char** argv) {
     
     //// Step 1. Parse program arguments ////
 
-    // Parse arguments
+    // Parse command line arguments
     int dev_index = h_parse_args(argc, argv);
     
     // Number of devices discovered
@@ -138,6 +137,7 @@ int main(int argc, char** argv) {
     size_t sharedMemBytes=0;
     
     // Launch the kernel using hipLaunchKernelGGL method
+    // Use 0 when choosing the default (null) stream
     hipLaunchKernelGGL(mat_mult, 
             grid_nblocks, 
             block_size, sharedMemBytes, 0, 
@@ -148,6 +148,7 @@ int main(int argc, char** argv) {
     );
     
     // Alternatively, launch the kernel using CUDA triple Chevron syntax
+    // which is not valid ANSI C++ syntax
     //mat_mult<<<grid_nblocks, block_size, 0, 0>>>(A_d, B_d, C_d, N1_A, N0_C, N1_C);
     
     // Wait for any commands to complete on the compute device
