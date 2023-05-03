@@ -1,3 +1,14 @@
+///
+/// @file  mat_helper.hpp
+/// 
+/// @brief Helper functions for HIP.
+///
+/// Written by Dr. Toby Potter 
+/// for the Commonwealth Scientific and Industrial Research Organisation of Australia (CSIRO).
+///
+
+
+
 #include <cmath>
 #include <cstdlib>
 #include <random>
