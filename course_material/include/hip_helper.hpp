@@ -1,4 +1,4 @@
-
+ 
 // Windows specific header instructions
 #if defined(_WIN32) || defined(_WIN64)
     #define NOMINMAX
