@@ -1,3 +1,11 @@
+"""@package py_helper
+Helper functions to facilitate loading and displaying results.
+ 
+Written by Dr. Toby Potter 
+for the Commonwealth Scientific and Industrial Research Organisation of Australia (CSIRO).
+"""
+
+
 import numpy as np
 import ast
 import math
@@ -11,7 +19,7 @@ from collections.abc import Iterable
 from collections import OrderedDict
 
 def load_defines(fname):
-    '''Load all defines from a header file'''
+    """Load all defines from a header file"""
     defines = {}
     with open(fname, "r") as fd:
         for line in fd:
@@ -21,45 +29,58 @@ def load_defines(fname):
     return defines
 
 class MatMul:
-    '''Implements the means to define and test and run a matrix multiplication'''
+    """Implements the means to define and test and run a matrix multiplication"""
     def __init__(self, NCOLS_A, NROWS_C, NCOLS_C, dtype):
+        """Constructor for the class"""
         self.NCOLS_A = NCOLS_A
         self.NROWS_C = NROWS_C
         self.NCOLS_C = NCOLS_C
         self.dtype = dtype
-        
+  
+    def run_compute(self):
+        """Calculate the solution"""
+        self.C = np.matmul(self.A, self.B, dtype = self.dtype)
+
+    def load_data(self):
+        """Load binary arrays from file"""
+        self.A = np.fromfile("array_A.dat", dtype=self.dtype).reshape((self.NROWS_C, self.NCOLS_A))
+        self.B = np.fromfile("array_B.dat", dtype=self.dtype).reshape((self.NCOLS_A, self.NCOLS_C))
+        self.run_compute()
+
     def make_data(self):
-    
+        """Make up the arrays A, B, and C"""
+        
         # A is of size (NROWS_C, NCOLS_A)
         # B is of size (NCOLS_A, NCOLS_C)    
         # C is of size (NROWS_C, NCOLS_C)
-
-        # Make up the arrays A, B, and C
-        A = np.random.random(size = (self.NROWS_C, self.NCOLS_A)).astype(self.dtype)
-        B = np.random.random(size = (self.NCOLS_A, self.NCOLS_C)).astype(self.dtype)
+        
+        self.A = np.random.random(size = (self.NROWS_C, self.NCOLS_A)).astype(self.dtype)
+        self.B = np.random.random(size = (self.NCOLS_A, self.NCOLS_C)).astype(self.dtype)
 
         # Make up the answer
-        self.C = np.matmul(A, B, dtype = self.dtype)
+        self.run_compute()
 
         # Write out the arrays as binary files
-        A.tofile("array_A.dat")
-        B.tofile("array_B.dat")
+        self.A.tofile("array_A.dat")
+        self.B.tofile("array_B.dat")
 
     def check_data(self):
+        """Load data from file and check against the computed solution"""
+        
         # Make sure we have the solution
         assert hasattr(self, "C"), "Must run make_data() before check_data()."
         
-        # Read in the output from OpenCL
-        C_ocl = np.fromfile("array_C.dat", dtype=self.dtype).reshape((self.NROWS_C, self.NCOLS_C))
+        # Read in the output from file
+        self.C_out = np.fromfile("array_C.dat", dtype=self.dtype).reshape((self.NROWS_C, self.NCOLS_C))
 
         # Make plots
         fig, axes = plt.subplots(3, 1, figsize=(6,8), sharex=True, sharey=True)
 
         # Data to plot
-        data = [self.C, C_ocl, np.abs(self.C-C_ocl)]
+        data = [self.C, self.C_out, np.abs(self.C-self.C_out)]
 
         # Labels to plot
-        labels = ["Numpy", "OpenCL", "Absolute residual"]
+        labels = ["Numpy", "Program", "Absolute residual"]
 
         for n, value in enumerate(data):
             # Plot the graph
@@ -80,44 +101,58 @@ class MatMul:
         plt.show()
         
 class Hadamard:
-    
+    """Implements the means to define, test, and run an elementwise (Hadamard)
+    matrix multiplication."""
     def __init__(self, NROWS_F, NCOLS_F, dtype):
         self.NROWS_F = NROWS_F
         self.NCOLS_F = NCOLS_F
         self.dtype = dtype
         
+    def run_compute(self):
+        """Compute the transformation."""
+        self.F = self.D*self.E
+
+    def load_data(self):
+        """Load the output data from file."""
+        self.D = np.fromfile("array_D.dat", dtype=self.dtype).reshape((self.NROWS_F, self.NCOLS_F))
+        self.E = np.fromfile("array_E.dat", dtype=self.dtype).reshape((self.NROWS_F, self.NCOLS_F))
+        self.run_compute()
+
     def make_data(self):
+        """Make up the solution and write it out to file."""
     
         # D is of size (NROWS_F, NCOLS_F)
         # E is of size (NCOLS_F, NCOLS_F)    
         # F is of size (NROWS_F, NCOLS_F)
 
         # Make up the arrays A, B, and C
-        D = np.random.random(size = (self.NROWS_F, self.NCOLS_F)).astype(self.dtype)
-        E = np.random.random(size = (self.NROWS_F, self.NCOLS_F)).astype(self.dtype)
+        self.D = np.random.random(size = (self.NROWS_F, self.NCOLS_F)).astype(self.dtype)
+        self.E = np.random.random(size = (self.NROWS_F, self.NCOLS_F)).astype(self.dtype)
 
         # Make up the answer using Hadamard multiplication
-        self.F = D*E
+        self.run_compute()
 
         # Write out the arrays as binary files
-        D.tofile("array_D.dat")
-        E.tofile("array_E.dat")
+        self.D.tofile("array_D.dat")
+        self.E.tofile("array_E.dat")
 
     def check_data(self):
+        """Load a binary file and check it against the local solution"""
+        
         # Make sure we have the solution
-        assert hasattr(self, "F"), "Must run make_data() before check_data()."
+        assert hasattr(self, "F"), "Must run make_data() or load_data before check_data()."
 
         # Read in the output from OpenCL
-        F_ocl = np.fromfile("array_F.dat", dtype=self.dtype).reshape((self.NROWS_F, self.NCOLS_F))
+        self.F_out = np.fromfile("array_F.dat", dtype=self.dtype).reshape((self.NROWS_F, self.NCOLS_F))
 
         # Make plots
         fig, axes = plt.subplots(3, 1, figsize=(6,8), sharex=True, sharey=True)
 
         # Data to plot
-        data = [self.F, F_ocl, np.abs(self.F-F_ocl)]
+        data = [self.F, self.F_out, np.abs(self.F-self.F_out)]
 
         # Labels to plot
-        labels = ["Numpy", "OpenCL", "Absolute residual"]
+        labels = ["Numpy", "Program", "Absolute residual"]
 
         for n, value in enumerate(data):
             # Plot the graph
@@ -138,8 +173,11 @@ class Hadamard:
         plt.show()
         
 class LocalOpt():
-
+    """Class to capture and plot the results of an optimisation exercise for different algorithms."""
+    
     def report_timings(self):
+        """Find the minimum and maximum of timing data obtained from an experiement"""
+        
         assert hasattr(self, "timing_data"), "Must execute run_problem() before report_timings()."
         
         print(f"Min time is {self.timing_data['min_ms']:.3f} ms, at the local size of" 
@@ -155,6 +193,8 @@ class LocalOpt():
                     local1=np.uint32(2**np.arange(0,10,1)),
                     local2=np.uint32(2**np.arange(0,1,1)),
                     plot=True):
+        
+        """Prepare the input file for local optimisation and run the problem"""
         
         self.local0 = local0
         self.local1 = local1
@@ -263,6 +303,7 @@ class LocalOpt():
 
         
 class TimingPlotData:
+    """Class to store the optimised timings for a number of algorithms"""
     def __init__(self):
         self.labels=[]
         self.colours=[]
@@ -270,31 +311,38 @@ class TimingPlotData:
         self.errors=[]
         
     def ingest(self, speedup, error, label, colour):
+        """Ingest a single optimised result"""
         self.labels.append(label)
         self.colours.append(colour)
         self.speedups.append(speedup)
         self.errors.append(error)
         
     def num_items(self):
+        """Get the number of results ingested"""
         return len(self.speedups)
         
 class TimingResults:
-    
+    """Class to store and plot collections of timing results"""
     def __init__(self):
+        """Constructor"""
         self.results = OrderedDict()
     
     def add_result(self, result, label, benchmark=False):
+        """Add a result to the dictionary, 
+        label must be unique or else the 
+        result will be overwritten.""" 
         if result is not None:
             if len(self.results)==0 or benchmark:
                 self.benchmark_label = label
             self.results[label] = result
     
     def delete_result(self, label):
+        """Remove a result from the dictionary"""
         if label in self.results:
             del self.results["label"]
     
     def plot_results(self, highlight_key=None):
-        
+        """Plot the collection of results, separate out the CPU and GPU results"""
         if len(self.results)>0:
             
             if highlight_key is None:
@@ -339,11 +387,15 @@ class TimingResults:
             
             for n, data in enumerate([cpu_data, gpu_data]):
                 if data.num_items()>0:
-                    ax[n].barh(data.labels, 
-                               data.speedups, 
+                    
+                    # Sort in descending order
+                    sort_indices = (np.argsort(data.speedups))[::-1]
+                    
+                    ax[n].barh(np.array(data.labels)[sort_indices], 
+                               np.array(data.speedups)[sort_indices], 
                                0.8, 
-                               xerr=data.errors, 
-                               color=data.colours)
+                               xerr=np.array(data.errors)[sort_indices], 
+                               color=np.array(data.colours)[sort_indices])
                     ax[n].set_xlabel("Speedup, more is better")
                     ax[n].set_xlim((0,1.1*np.max(data.speedups)))
     
@@ -351,7 +403,7 @@ class TimingResults:
             plt.show()
             
 def plot_slices(images):
-    
+    """Function to plot a collection of images"""
     # Get the dimensions
     nslices, N0, N1 = images.shape
     

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['timingplotdata_24',['TimingPlotData',['../classpy__helper_1_1TimingPlotData.html',1,'py_helper']]],
-  ['timingresults_25',['TimingResults',['../classpy__helper_1_1TimingResults.html',1,'py_helper']]]
+  ['delete_5fresult_4',['delete_result',['../classpy__helper_1_1TimingResults.html#a4ef9a053b032927906f287eb25526ad5',1,'py_helper::TimingResults']]]
 ];

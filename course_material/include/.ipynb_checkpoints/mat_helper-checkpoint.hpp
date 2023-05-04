@@ -1,3 +1,12 @@
+///
+/// @file  mat_helper.hpp
+/// 
+/// @brief Matrix helper functions.
+///
+/// Written by Dr. Toby Potter 
+/// for the Commonwealth Scientific and Industrial Research Organisation of Australia (CSIRO).
+///
+
 #include <cmath>
 #include <cstdlib>
 #include <random>
@@ -5,13 +14,17 @@
 #include <iostream>
 #include <iomanip>
 
-// Function to generate a matrix
+/// Fill a matrix with random numbers
 template<typename T>
 void m_random(T* dst, size_t N0, size_t N1) {
 
     // Initialise random number generator
     std::random_device rd;
-    std::mt19937 gen(rd());
+    unsigned int seed = 100;
+    // Non-deterministic random number generation
+    //std::mt19937 gen(rd());
+    // Deterministic random number generation
+    std::mt19937 gen(seed);
     std::uniform_real_distribution<> dist(0,1);
 
     // Fill the array
@@ -20,7 +33,7 @@ void m_random(T* dst, size_t N0, size_t N1) {
     }
 }
 
-// Function to print out a matrix
+/// Pretty print out a matrix
 template<typename T>
 void m_show_matrix(T* src, size_t N0, size_t N1) {
 
@@ -61,7 +74,7 @@ void m_show_matrix(T* src, size_t N0, size_t N1) {
     std::cout << "\n";
 }
 
-// Function to do matrix multiplication
+/// Do matrix multiplication on the CPU
 template<typename T>
 void m_mat_mult(T* A, T* B, T* C, size_t N1_A, size_t N0_C, size_t N1_C) {
     
@@ -81,7 +94,7 @@ void m_mat_mult(T* A, T* B, T* C, size_t N1_A, size_t N0_C, size_t N1_C) {
     }
 }
 
-// Function to do Hadamard (elementwise) multiplication
+/// Do Hadamard (elementwise) matrix multiplication
 template<typename T>
 void m_hadamard(T* A, T* B, T* C, size_t N0_C, size_t N1_C) {
     
@@ -96,7 +109,7 @@ void m_hadamard(T* A, T* B, T* C, size_t N0_C, size_t N1_C) {
     }
 }
 
-// Function to find the maximum error between two matrices
+/// Find the maximum absolute difference between two matrices
 template<typename T>
 T m_max_error(T* M0, T* M1, size_t N0, size_t N1) {
     
@@ -114,6 +127,7 @@ T m_max_error(T* M0, T* M1, size_t N0, size_t N1) {
     return max_error;
 }
 
+/// Find the difference between two matrices
 template<typename T>
 void m_residual(T* A, T* B, T* C, size_t N0, size_t N1) {
     // Function to compute the residual bewteen two matrices
