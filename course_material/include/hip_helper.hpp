@@ -100,6 +100,25 @@ int h_parse_args(int argc, char** argv) {
     return(dev_index);
 }
 
+/// Reset primary contexts on all compute devices
+void h_reset_devices(int num_devices) {
+    
+    // Reset devices
+    for (int i = 0; i<num_devices; i++) {
+        // Set device
+        H_ERRCHK(hipSetDevice(i));
+
+        // Synchronize device 
+        H_ERRCHK(hipDeviceSynchronize());
+
+        // Reset device (destroys primary context)
+        H_ERRCHK(hipDeviceReset());
+
+        // Set the device to reinitialise it
+        H_ERRCHK(hipSetDevice(i));
+    }
+}
+
 /// Initialise a primary context for all HIP devices
 void h_acquire_devices(int* num_devices, int default_device_id) {
     
@@ -123,25 +142,6 @@ void h_acquire_devices(int* num_devices, int default_device_id) {
 
     // Set the device
     H_ERRCHK(hipSetDevice(default_device_id));
-}
-
-/// Reset primary contexts on all compute devices
-void h_reset_devices(int num_devices) {
-    
-    // Reset devices
-    for (int i = 0; i<num_devices; i++) {
-        // Set device
-        H_ERRCHK(hipSetDevice(i));
-
-        // Synchronize device 
-        H_ERRCHK(hipDeviceSynchronize());
-
-        // Reset device (destroys primary context)
-        H_ERRCHK(hipDeviceReset());
-
-        // Set the device to reinitialise it
-        H_ERRCHK(hipSetDevice(i));
-    }
 }
 
 /// Function to report information on a compute device

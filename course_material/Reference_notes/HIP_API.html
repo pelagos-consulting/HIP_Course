@@ -3,7 +3,7 @@
 <head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>OpenCL_datatypes</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>HIP_API</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 
 
@@ -14579,368 +14579,77 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="OpenCL-data-types">OpenCL data types<a class="anchor-link" href="#OpenCL-data-types">&#182;</a></h1><p>We saw in the survival C++ notebook that some C datatypes are represented with a nominal number of bits depending on the platform and operating system in use. Within OpenCL kernels, a particular C datatype always uses the same number of bits, however in the main program that same C datatype might use a different number of bits. This is a problem for OpenCL applications, which promise a level of portability across implementations. In order to remedy this, the latest <a href="https://www.khronos.org/registry/OpenCL/specs/3.0-unified/pdf/OpenCL_C.pdf">OpenCL C specification</a> has a number of standard data types for fixing the number of bits used, and maintaining consitency with the number of bits used for types in the kernel. As follows is a number of commonly used OpenCL data types and how many bits they use. It is <strong>good practice</strong> to use these data types wherever practical in OpenCL applications.</p>
+<h1 id="HIP-API">HIP API<a class="anchor-link" href="#HIP-API">&#182;</a></h1><p>This <a href="https://docs.amd.com/bundle/HIP-API-Guide-v5.4/page/modules.html">link</a> provides access to the HIP API for ROCm version 5.4.</p>
 
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Scalar-types">Scalar types<a class="anchor-link" href="#Scalar-types">&#182;</a></h2>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<table>
-<thead><tr>
-<th style="text-align:left">kernel C type</th>
-<th style="text-align:left">OpenCL standard type</th>
-<th style="text-align:left">Description and bits used</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">bool</td>
-<td style="text-align:left">NA</td>
-<td style="text-align:left">undefined</td>
-</tr>
-<tr>
-<td style="text-align:left">char</td>
-<td style="text-align:left">cl_char</td>
-<td style="text-align:left">8 bits, signed two's complement integer</td>
-</tr>
-<tr>
-<td style="text-align:left">unsigned char, uchar</td>
-<td style="text-align:left">cl_uchar</td>
-<td style="text-align:left">8 bits, unsigned integer</td>
-</tr>
-<tr>
-<td style="text-align:left">short</td>
-<td style="text-align:left">cl_short</td>
-<td style="text-align:left">16 bits, signed two's complement integer</td>
-</tr>
-<tr>
-<td style="text-align:left">unsigned short, ushort</td>
-<td style="text-align:left">cl_ushort</td>
-<td style="text-align:left">16 bits, unsigned integer</td>
-</tr>
-<tr>
-<td style="text-align:left">int</td>
-<td style="text-align:left">cl_int</td>
-<td style="text-align:left">32 bits, signed two's complement integer</td>
-</tr>
-<tr>
-<td style="text-align:left">unsigned int, uint</td>
-<td style="text-align:left">cl_uint</td>
-<td style="text-align:left">32 bits, unsigned integer</td>
-</tr>
-<tr>
-<td style="text-align:left">long</td>
-<td style="text-align:left">cl_long</td>
-<td style="text-align:left">64 bits, signed two's complement integer</td>
-</tr>
-<tr>
-<td style="text-align:left">unsigned long, ulong</td>
-<td style="text-align:left">cl_ulong</td>
-<td style="text-align:left">64 bits, unsigned integer</td>
-</tr>
-<tr>
-<td style="text-align:left">half</td>
-<td style="text-align:left">cl_half</td>
-<td style="text-align:left">16 bits, floating point number</td>
-</tr>
-<tr>
-<td style="text-align:left">float</td>
-<td style="text-align:left">cl_float</td>
-<td style="text-align:left">32 bits, floating point number</td>
-</tr>
-<tr>
-<td style="text-align:left">double</td>
-<td style="text-align:left">cl_double</td>
-<td style="text-align:left">64 bits, floating point number</td>
-</tr>
-<tr>
-<td style="text-align:left">size_t</td>
-<td style="text-align:left">NA</td>
-<td style="text-align:left">unknown bits, result of <strong>sizeof</strong> operator</td>
-</tr>
-<tr>
-<td style="text-align:left">ptrdiff_t</td>
-<td style="text-align:left">NA</td>
-<td style="text-align:left">unknown bits, signed integer type from the subtraction of one pointer from another</td>
-</tr>
-<tr>
-<td style="text-align:left">intptr_t</td>
-<td style="text-align:left">NA</td>
-<td style="text-align:left">unknown bits, pointer storage in a signed integer type</td>
-</tr>
-<tr>
-<td style="text-align:left">uintptr_t</td>
-<td style="text-align:left">NA</td>
-<td style="text-align:left">unknown bits, pointer storage in an unsigned integer type</td>
-</tr>
-<tr>
-<td style="text-align:left">void</td>
-<td style="text-align:left">void</td>
-<td style="text-align:left">unknown bits, incomplete type</td>
-</tr>
-</tbody>
-</table>
-
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Vector-types">Vector types<a class="anchor-link" href="#Vector-types">&#182;</a></h2><p>In addition to the standard types above, the OpenCL standard also defines a number of vector types with <strong>n</strong> = 2,3,4,8, and 16 elements. Vectors can unlock performance within an OpenCL application because memory is loaded into caches using cache lines that are typically around 64-128 bytes (or 16-32 floats) wide. Furthermore, CPU's have SIMD units that can process, in one instruction, vectors of floats to 64 bytes long. Here are the vector types as used in both host and kernel code.</p>
-
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<table>
-<thead><tr>
-<th style="text-align:left">kernel C type</th>
-<th style="text-align:left">OpenCL standard type</th>
-<th style="text-align:left">Description and bits used</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">char<strong>n</strong></td>
-<td style="text-align:left">cl_char<strong>n</strong></td>
-<td style="text-align:left"><strong>n</strong> x 8 bits, signed two's complement integers</td>
-</tr>
-<tr>
-<td style="text-align:left">uchar<strong>n</strong></td>
-<td style="text-align:left">cl_uchar<strong>n</strong></td>
-<td style="text-align:left"><strong>n</strong> x 8 bits, unsigned integers</td>
-</tr>
-<tr>
-<td style="text-align:left">short<strong>n</strong></td>
-<td style="text-align:left">cl_short<strong>n</strong></td>
-<td style="text-align:left"><strong>n</strong> x 16 bits, signed two's complement integers</td>
-</tr>
-<tr>
-<td style="text-align:left">ushort<strong>n</strong></td>
-<td style="text-align:left">cl_ushort<strong>n</strong></td>
-<td style="text-align:left"><strong>n</strong> x 16 bits, unsigned integers</td>
-</tr>
-<tr>
-<td style="text-align:left">int<strong>n</strong></td>
-<td style="text-align:left">cl_int<strong>n</strong></td>
-<td style="text-align:left"><strong>n</strong> x 32 bits, signed two's complement integers</td>
-</tr>
-<tr>
-<td style="text-align:left">uint<strong>n</strong></td>
-<td style="text-align:left">cl_uint<strong>n</strong></td>
-<td style="text-align:left"><strong>n</strong> x 32 bits, unsigned integers</td>
-</tr>
-<tr>
-<td style="text-align:left">long<strong>n</strong></td>
-<td style="text-align:left">cl_long<strong>n</strong></td>
-<td style="text-align:left"><strong>n</strong> x 64 bits, signed two's complement integers</td>
-</tr>
-<tr>
-<td style="text-align:left">ulong<strong>n</strong></td>
-<td style="text-align:left">cl_ulong<strong>n</strong></td>
-<td style="text-align:left"><strong>n</strong> x 64 bits, unsigned integers</td>
-</tr>
-<tr>
-<td style="text-align:left">float<strong>n</strong></td>
-<td style="text-align:left">cl_float<strong>n</strong></td>
-<td style="text-align:left"><strong>n</strong> x 32 bits, floating point numbers</td>
-</tr>
-<tr>
-<td style="text-align:left">double<strong>n</strong></td>
-<td style="text-align:left">cl_double<strong>n</strong></td>
-<td style="text-align:left"><strong>n</strong> x 64 bits, floating point numbers</td>
-</tr>
-</tbody>
-</table>
-
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Complex-numbers-in-OpenCL">Complex numbers in OpenCL<a class="anchor-link" href="#Complex-numbers-in-OpenCL">&#182;</a></h3><p>Complex numbers are not implemented in OpenCL, however you can store the real and imaginary components in a <strong>float2</strong> or <strong>double2</strong> vector type for example. One must manually perform the complex math on the individual components.</p>
-
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Vector-access-from-the-host">Vector access from the host<a class="anchor-link" href="#Vector-access-from-the-host">&#182;</a></h3><p>There is a sophisticated means of indexing into a vector type within an OpenCL kernel, however from the host one has to use the <strong>.s[index]</strong> indexing to get at individual elements.</p>
-<div class="highlight"><pre><span></span><span class="c1">// Code from the host</span>
-
-<span class="c1">// Declare an initialised vector</span>
-<span class="n">cl_float4</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">cl_float4</span><span class="p">){</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="mf">3.0</span><span class="p">};</span><span class="w"></span>
-
-<span class="c1">// Could have also been done like this</span>
-<span class="c1">//cl_float4 f = (cl_float4){0.0};</span>
-
-<span class="c1">// Print out the last element</span>
-<span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="p">.</span><span class="n">s</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span><span class="w"></span>
-
-<span class="c1">// Store a value in the last element</span>
-<span class="n">f</span><span class="p">.</span><span class="n">s</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">10.0</span><span class="p">;</span><span class="w"></span>
-
-<span class="c1">// Print out the last element again</span>
-<span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="p">.</span><span class="n">s</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span><span class="w"></span>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">IFrame</span>
+<span class="n">IFrame</span><span class="p">(</span><span class="s2">"https://docs.amd.com/bundle/HIP-API-Guide-v5.4/page/modules.html"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s2">"100%"</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s2">"1024px"</span><span class="p">)</span>
 </pre></div>
 
+     </div>
 </div>
 </div>
 </div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[1]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+
+        <iframe
+            width="100%"
+            height="1024px"
+            src="https://docs.amd.com/bundle/HIP-API-Guide-v5.4/page/modules.html"
+            frameborder="0"
+            allowfullscreen
+            
+        ></iframe>
+        
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Vector-access-from-within-a-kernel">Vector access from within a kernel<a class="anchor-link" href="#Vector-access-from-within-a-kernel">&#182;</a></h3>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Allocations of memory that are passed to a kernel in the <strong>__global</strong> or <strong>__local</strong> address spaces can be interpreted as a vector data type. For example in this kernel definition we interpret the global memory allocations <strong>A_star</strong>, <strong>BT_star</strong> and the local memory allocations <strong>shared_A_star</strong> and <strong>shared_BT_star</strong> as vectors of type <strong>float8</strong>.</p>
-<div class="highlight"><pre><span></span><span class="n">__kernel</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">mat_mult_local_transp_vec</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
-<span class="w">                        </span><span class="n">__global</span><span class="w"> </span><span class="n">float8</span><span class="o">*</span><span class="w"> </span><span class="n">A_star</span><span class="p">,</span><span class="w"> </span>
-<span class="w">                        </span><span class="n">__global</span><span class="w"> </span><span class="n">float8</span><span class="o">*</span><span class="w"> </span><span class="n">BT_star</span><span class="p">,</span><span class="w"> </span>
-<span class="w">                        </span><span class="n">__global</span><span class="w"> </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"></span>
-<span class="w">                        </span><span class="n">__local</span><span class="w">  </span><span class="n">float8</span><span class="o">*</span><span class="w"> </span><span class="n">shared_A_star</span><span class="p">,</span><span class="w"></span>
-<span class="w">                        </span><span class="n">__local</span><span class="w">  </span><span class="n">float8</span><span class="o">*</span><span class="w"> </span><span class="n">shared_BT_star</span><span class="p">,</span><span class="w"></span>
-<span class="w">                        </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">N1_A_v</span><span class="p">,</span><span class="w"> </span>
-<span class="w">                        </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">N0_C</span><span class="p">,</span><span class="w"></span>
-<span class="w">                        </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">N1_C</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-</pre></div>
-<p>One must make sure of two things when using memory in this way:</p>
-<ul>
-<li>The memory allocation is big enough so that the last element in the last vector accessed is backed by memory.</li>
-<li>The memory is byte-aligned so that the starting address of the allocation is a multiple of the vector length.</li>
-</ul>
-<p>If an OpenCL function is performing the memory allocation, such as <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clCreateBuffer.html">clCreateBuffer</a> or <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clSVMAlloc.html">clSVMAlloc</a> then it will usually allocate memory according to the largest OpenCL memory type (<strong>long16</strong>). Otherwise, use the C11 function <strong>aligned_alloc</strong> to allocate memory with the same alignment as there are bytes in the vector type.</p>
-
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Access to a vector type from within a kernel is done using dot notation. You can use <strong>.x .y .z</strong> and <strong>.w</strong> for the first four elements, or you can use <strong>.s0, .s1, .s2, .s3, .s4, .s5, .s6, .s7, .s8, .s9, .sa, .sb, .sc, .sd, .se, .sf</strong> to access values up to the 16th element. A neat thing about OpenCL vectors is that you can "swizzle", or permute indices (using either .xyzw or .s* but not both) to mix up the order of the vector.</p>
-
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<div class="highlight"><pre><span></span><span class="c1">// Code within a kernel</span>
-
-<span class="c1">// Explicit declaration</span>
-<span class="n">float4</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">float4</span><span class="p">)(</span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">3.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">4.0f</span><span class="p">);</span><span class="w"></span>
-
-<span class="c1">// Explicit declaration</span>
-<span class="n">float4</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">float4</span><span class="p">)(</span><span class="mf">1.0f</span><span class="p">);</span><span class="w"></span>
-
-<span class="c1">// Access to element 0 (both expressions are equivalent)</span>
-<span class="n">v</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">;</span><span class="w"></span>
-<span class="n">v</span><span class="p">.</span><span class="n">s0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">;</span><span class="w"></span>
-
-<span class="c1">// Valid examples of swizzling</span>
-<span class="n">v</span><span class="p">.</span><span class="n">xyzw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="p">.</span><span class="n">wzyx</span><span class="p">;</span><span class="w"></span>
-<span class="n">v</span><span class="p">.</span><span class="n">xyzw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="p">.</span><span class="n">s3210</span><span class="p">;</span><span class="w"></span>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
+     </div>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>You can also load and store vectors from a memory allocation using the <strong>vloadn</strong> and <strong>vstoren</strong> functions.</p>
-<div class="highlight"><pre><span></span><span class="c1">// OpenCL kernel code</span>
 
-<span class="c1">// Assuming arr is a memory allocation from global memory</span>
-
-<span class="c1">// Load a float4 vector starting at the</span>
-<span class="c1">// memory location of offset*4 relative to arr</span>
-<span class="n">float4</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vloadn</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span><span class="w"> </span><span class="n">arr</span><span class="p">);</span><span class="w"></span>
-
-<span class="c1">// Store a float4 vector starting at the </span>
-<span class="c1">// memory location of offset*4 relative to arr</span>
-<span class="n">vstore4</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">offset</span><span class="p">,</span><span class="w"> </span><span class="n">arr</span><span class="p">);</span><span class="w"></span>
-</pre></div>
-<p>In order to avoid undefined behaviour, the address <strong>arr</strong> for the allocation needs to be byte-aligned to the data type being used. So as long as you use the allocated (and aligned) address as the address for <strong>vstoren</strong> and <strong>vloadn</strong> functions you will be fine.</p>
-
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<address>
-Written by Dr. Toby Potter of <a href="https://www.pelagos-consulting.com">Pelagos Consulting and Education</a> for the Pawsey Supercomputing Centre
-</address>
-</div>
-</div>
-</div>
 </div>
 </body>
 

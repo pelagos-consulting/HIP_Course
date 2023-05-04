@@ -6,17 +6,13 @@ include ../env
 INC_DIR=../include
 
 # List of applications to target
-TARGETS=opencl_types.exe
-
-# Override some flags
-#CXXFLAGS=-g
+TARGETS=hip_types.exe
 
 all: $(TARGETS)
 
 # General compilation step
 %.exe: %.cpp
-	$(CXX) $(CXXFLAGS) -I$(OPENCL_INC_DIR) -I$(INC_DIR) -L$(OPENCL_LIB_DIR) $<\
-		-o $@ $(OPENCL_LIB_FLAGS)
+	$(CXX) $(CXXFLAGS) $(BASE_INC_FLAGS) $< -o $@ $(BASE_LIB_FLAGS)
 
 # Clean step
 clean:

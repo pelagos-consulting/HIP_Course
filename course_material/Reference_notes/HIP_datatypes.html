@@ -3,7 +3,7 @@
 <head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>OpenCL_function_tables</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>HIP_datatypes</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 
 
@@ -14579,328 +14579,139 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Commonly-used-OpenCL-functions">Commonly used OpenCL functions<a class="anchor-link" href="#Commonly-used-OpenCL-functions">&#182;</a></h1><p>Sometimes it is useful to have a lookup table of OpenCL functions. Here we list the functionality of some commonly used OpenCL functions, what OpenCL types they need and what OpenCL types they produce.</p>
-<h2 id="Platforms">Platforms<a class="anchor-link" href="#Platforms">&#182;</a></h2><table>
+<h1 id="HIP-data-types">HIP data types<a class="anchor-link" href="#HIP-data-types">&#182;</a></h1><p>In addition to the C datatypes mentioned in the survical C++ course, HIP also defines some vector types and structures that are useful in launching and using kernels.</p>
+
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Vector-types-in-HIP">Vector types in HIP<a class="anchor-link" href="#Vector-types-in-HIP">&#182;</a></h2><p>The HIP standard also defines a number of vector types with <strong>n</strong> = 1,2,3, and 4 elements. Vectors can unlock performance within an application because memory is loaded into caches using cache lines that are typically around 64-128 bytes (or 16-32 floats) wide. Here are some vector types as used in both host and kernel code.</p>
+
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<table>
 <thead><tr>
-<th style="text-align:left"><strong>Purpose</strong></th>
-<th style="text-align:left"><strong>function name</strong></th>
-<th style="text-align:left">depends on</th>
-<th style="text-align:left">creates or fills</th>
+<th style="text-align:left">data type</th>
+<th style="text-align:left">Description and number of bits used</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left">Fetch available platforms</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clGetPlatformIDs.html">clGetPlatformIDs</a></td>
-<td style="text-align:left">NA</td>
-<td style="text-align:left">cl_platform_id[]</td>
+<td style="text-align:left">char<strong>n</strong></td>
+<td style="text-align:left"><strong>n</strong> x 8 bits, signed two's complement integers</td>
+</tr>
+<tr>
+<td style="text-align:left">uchar<strong>n</strong></td>
+<td style="text-align:left"><strong>n</strong> x 8 bits, unsigned integers</td>
+</tr>
+<tr>
+<td style="text-align:left">short<strong>n</strong></td>
+<td style="text-align:left"><strong>n</strong> x 16 bits, signed two's complement integers</td>
+</tr>
+<tr>
+<td style="text-align:left">ushort<strong>n</strong></td>
+<td style="text-align:left"><strong>n</strong> x 16 bits, unsigned integers</td>
+</tr>
+<tr>
+<td style="text-align:left">int<strong>n</strong></td>
+<td style="text-align:left"><strong>n</strong> x 32 bits, signed two's complement integers</td>
+</tr>
+<tr>
+<td style="text-align:left">uint<strong>n</strong></td>
+<td style="text-align:left"><strong>n</strong> x 32 bits, unsigned integers</td>
+</tr>
+<tr>
+<td style="text-align:left">long<strong>n</strong></td>
+<td style="text-align:left"><strong>n</strong> x 64 bits, signed two's complement integers</td>
+</tr>
+<tr>
+<td style="text-align:left">ulong<strong>n</strong></td>
+<td style="text-align:left"><strong>n</strong> x 64 bits, unsigned integers</td>
+</tr>
+<tr>
+<td style="text-align:left">longlong<strong>n</strong></td>
+<td style="text-align:left"><strong>n</strong> x 64 bits, signed two's complement integers</td>
+</tr>
+<tr>
+<td style="text-align:left">ulonglong<strong>n</strong></td>
+<td style="text-align:left"><strong>n</strong> x 64 bits, unsigned integers</td>
+</tr>
+<tr>
+<td style="text-align:left">float<strong>n</strong></td>
+<td style="text-align:left"><strong>n</strong> x 32 bits, floating point numbers</td>
+</tr>
+<tr>
+<td style="text-align:left">double<strong>n</strong></td>
+<td style="text-align:left"><strong>n</strong> x 64 bits, floating point numbers</td>
 </tr>
 </tbody>
 </table>
-<h2 id="Devices">Devices<a class="anchor-link" href="#Devices">&#182;</a></h2><table>
-<thead><tr>
-<th style="text-align:left"><strong>Purpose</strong></th>
-<th style="text-align:left"><strong>function name</strong></th>
-<th style="text-align:left">depends on</th>
-<th style="text-align:left">creates or fills</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">Fetch available devices in a platform</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clGetDeviceIDs.html">clGetDeviceIDs</a></td>
-<td style="text-align:left">cl_platform_id, cl_device_type</td>
-<td style="text-align:left">cl_device_id[]</td>
-</tr>
-<tr>
-<td style="text-align:left">Release a device</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clReleaseDevice.html">clReleaseDevice</a></td>
-<td style="text-align:left">cl_device_id</td>
-<td style="text-align:left">NA</td>
-</tr>
-<tr>
-<td style="text-align:left">Fetch information on a compute device</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clGetDeviceInfo.html">clGetDeviceInfo</a></td>
-<td style="text-align:left">cl_device_id</td>
-<td style="text-align:left">varies by information sought</td>
-</tr>
-</tbody>
-</table>
-<h2 id="Contexts">Contexts<a class="anchor-link" href="#Contexts">&#182;</a></h2><table>
-<thead><tr>
-<th style="text-align:left"><strong>Purpose</strong></th>
-<th style="text-align:left"><strong>function name</strong></th>
-<th style="text-align:left">depends on</th>
-<th style="text-align:left">creates or fills</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">Create a context</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clCreateContext.html">clCreateContext</a></td>
-<td style="text-align:left">cl_context_properties, cl_device_id</td>
-<td style="text-align:left">cl_context</td>
-</tr>
-<tr>
-<td style="text-align:left">Release a context</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clReleaseContext.html">clReleaseContext</a></td>
-<td style="text-align:left">cl_context</td>
-<td style="text-align:left">NA</td>
-</tr>
-</tbody>
-</table>
-<h2 id="Comand-queues">Comand queues<a class="anchor-link" href="#Comand-queues">&#182;</a></h2><table>
-<thead><tr>
-<th style="text-align:left"><strong>Purpose</strong></th>
-<th style="text-align:left"><strong>function name</strong></th>
-<th style="text-align:left">depends on</th>
-<th style="text-align:left">creates or fills</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">Create a command queue</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clCreateCommandQueue.html">clCreateCommandQueue</a></td>
-<td style="text-align:left">cl_command_queue_properties, cl_context</td>
-<td style="text-align:left">cl_command_queue</td>
-</tr>
-<tr>
-<td style="text-align:left">Release a command queue</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clReleaseCommandQueue.html">clReleaseCommandQueue</a></td>
-<td style="text-align:left">cl_command_queue</td>
-<td style="text-align:left">NA</td>
-</tr>
-<tr>
-<td style="text-align:left">Drain a command queue</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clFinish.html">clFinish</a></td>
-<td style="text-align:left">cl_command_queue</td>
-<td style="text-align:left">NA</td>
-</tr>
-</tbody>
-</table>
-<h2 id="Buffers">Buffers<a class="anchor-link" href="#Buffers">&#182;</a></h2><table>
-<thead><tr>
-<th style="text-align:left"><strong>Purpose</strong></th>
-<th style="text-align:left"><strong>function name</strong></th>
-<th style="text-align:left">depends on</th>
-<th style="text-align:left">creates or fills</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">Create a buffer</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clCreateBuffer.html">clCreateBuffer</a></td>
-<td style="text-align:left">cl_context</td>
-<td style="text-align:left">cl_mem</td>
-</tr>
-<tr>
-<td style="text-align:left">Write to a buffer from the host</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueWriteBuffer.html">clEnqueueWriteBuffer</a></td>
-<td style="text-align:left">cl_command_queue, void*</td>
-<td style="text-align:left">cl_mem</td>
-</tr>
-<tr>
-<td style="text-align:left">Read a buffer to the host</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueReadBuffer.html">clEnqueueReadBuffer</a></td>
-<td style="text-align:left">cl_command_queue, cl_mem</td>
-<td style="text-align:left">void*</td>
-</tr>
-<tr>
-<td style="text-align:left">Copy between buffers</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueCopyBuffer.html">clEnqueueCopyBuffer</a></td>
-<td style="text-align:left">cl_command_queue, cl_mem</td>
-<td style="text-align:left">NA</td>
-</tr>
-<tr>
-<td style="text-align:left">Write to a rectangular region in a buffer from the host</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueWriteBufferRect.html">clEnqueueWriteBufferRect</a></td>
-<td style="text-align:left">cl_command_queue, void*</td>
-<td style="text-align:left">cl_mem</td>
-</tr>
-<tr>
-<td style="text-align:left">Read from a rectangular region in a buffer to the host</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueReadBufferRect.html">clEnqueueReadBufferRect</a></td>
-<td style="text-align:left">cl_command_queue, cl_mem</td>
-<td style="text-align:left">void*</td>
-</tr>
-<tr>
-<td style="text-align:left">Copy a rectangular region between buffers</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueCopyBufferRect.html">clEnqueueCopyBufferRect</a></td>
-<td style="text-align:left">cl_command_queue, cl_mem</td>
-<td style="text-align:left">NA</td>
-</tr>
-<tr>
-<td style="text-align:left">Fill a buffer</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueFillBuffer.html">clEnqueueFillBuffer</a></td>
-<td style="text-align:left">cl_command_queue, cl_mem, void*</td>
-<td style="text-align:left">NA</td>
-</tr>
-<tr>
-<td style="text-align:left">Map a buffer into host memory</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueMapBuffer.html">clEnqueueMapBuffer</a></td>
-<td style="text-align:left">cl_command_queue, cl_mem</td>
-<td style="text-align:left">void* []</td>
-</tr>
-<tr>
-<td style="text-align:left">Unmap a memory object (buffer or image)</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueUnmapMemObject.html">clEnqueueUnmapMemObject</a></td>
-<td style="text-align:left">cl_command_queue, cl_mem, void*</td>
-<td style="text-align:left">NA</td>
-</tr>
-<tr>
-<td style="text-align:left">Release a device buffer</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clReleaseMemObject.html">clReleaseMemObject</a></td>
-<td style="text-align:left">cl_mem</td>
-<td style="text-align:left">NA</td>
-</tr>
-</tbody>
-</table>
-<h2 id="Shared-memory">Shared memory<a class="anchor-link" href="#Shared-memory">&#182;</a></h2><table>
-<thead><tr>
-<th style="text-align:left"><strong>Purpose</strong></th>
-<th style="text-align:left"><strong>function name</strong></th>
-<th style="text-align:left">depends on</th>
-<th style="text-align:left">creates or fills</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">Allocate shared virtual memory</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clSVMAlloc.html">clSVMAlloc</a></td>
-<td style="text-align:left">cl_context</td>
-<td style="text-align:left">void*</td>
-</tr>
-<tr>
-<td style="text-align:left">Map shared virtual memory back to the host</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueSVMMap.html">clEnqueueSVMMap</a></td>
-<td style="text-align:left">cl_command_queue, void*</td>
-<td style="text-align:left">NA</td>
-</tr>
-<tr>
-<td style="text-align:left">Unmap shared virtual memory from the host</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueSVMUnmap.html">clEnqueueSVMUnmap</a></td>
-<td style="text-align:left">cl_command_queue, void*</td>
-<td style="text-align:left">NA</td>
-</tr>
-<tr>
-<td style="text-align:left">Free shared virtual memory using a queue</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueSVMFree.html">clEnqueueSVMFree</a></td>
-<td style="text-align:left">cl_command_queue, void* []</td>
-<td style="text-align:left">NA</td>
-</tr>
-<tr>
-<td style="text-align:left">Free shared virtual memory</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clSVMFree.html">clSVMFree</a></td>
-<td style="text-align:left">cl_context, void*</td>
-<td style="text-align:left">NA</td>
-</tr>
-<tr>
-<td style="text-align:left">Set a kernel argument with a shared memory pointer</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clSetKernelArgSVMPointer.html">clSetKernelArgSVMPointer</a></td>
-<td style="text-align:left">cl_kernel, void*</td>
-<td style="text-align:left">NA</td>
-</tr>
-</tbody>
-</table>
-<h2 id="Programs">Programs<a class="anchor-link" href="#Programs">&#182;</a></h2><table>
-<thead><tr>
-<th style="text-align:left"><strong>Purpose</strong></th>
-<th style="text-align:left"><strong>function name</strong></th>
-<th style="text-align:left">depends on</th>
-<th style="text-align:left">creates or fills</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">Create a program</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clCreateProgramWithSource.html">clCreateProgramWithSource</a></td>
-<td style="text-align:left">char*[] kernel_source, cl_context</td>
-<td style="text-align:left">cl_program</td>
-</tr>
-<tr>
-<td style="text-align:left">Compile a program</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clBuildProgram.html">clBuildProgram</a></td>
-<td style="text-align:left">cl_program, cl_device_id</td>
-<td style="text-align:left">NA</td>
-</tr>
-<tr>
-<td style="text-align:left">Fetch program info</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clGetProgramInfo.html">clGetProgramInfo</a></td>
-<td style="text-align:left">cl_program</td>
-<td style="text-align:left">varies by information sought</td>
-</tr>
-<tr>
-<td style="text-align:left">Fetch program build log</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clGetProgramInfo.html">clGetProgramBuildInfo</a></td>
-<td style="text-align:left">cl_program, cl_device_id</td>
-<td style="text-align:left">char[]</td>
-</tr>
-</tbody>
-</table>
-<h2 id="Kernels">Kernels<a class="anchor-link" href="#Kernels">&#182;</a></h2><table>
-<thead><tr>
-<th style="text-align:left"><strong>Purpose</strong></th>
-<th style="text-align:left"><strong>function name</strong></th>
-<th style="text-align:left">depends on</th>
-<th style="text-align:left">creates or fills</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">Create a kernel</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clCreateKernel.html">clCreateKernel</a></td>
-<td style="text-align:left">cl_program</td>
-<td style="text-align:left">cl_kernel</td>
-</tr>
-<tr>
-<td style="text-align:left">Set kernel argument</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clSetKernelArg.html">clSetKernelArg</a></td>
-<td style="text-align:left">cl_kernel</td>
-<td style="text-align:left">NA</td>
-</tr>
-<tr>
-<td style="text-align:left">Set a kernel argument with a shared memory pointer</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clSetKernelArgSVMPointer.html">clSetKernelArgSVMPointer</a></td>
-<td style="text-align:left">cl_kernel, void*</td>
-<td style="text-align:left">NA</td>
-</tr>
-<tr>
-<td style="text-align:left">Run a kernel</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueNDRangeKernel.html">clEnqueueNDRangeKernel</a></td>
-<td style="text-align:left">cl_command_queue, cl_kernel, local_size, global_size, Grid dimensions</td>
-<td style="text-align:left">cl_event</td>
-</tr>
-<tr>
-<td style="text-align:left">Fetch kernel workgroup info</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clGetKernelWorkGroupInfo.html">clGetKernelWorkGroupInfo</a></td>
-<td style="text-align:left">cl_kernel, cl_device_id</td>
-<td style="text-align:left">varies by information sought</td>
-</tr>
-</tbody>
-</table>
-<h2 id="Events">Events<a class="anchor-link" href="#Events">&#182;</a></h2><table>
-<thead><tr>
-<th style="text-align:left"><strong>Purpose</strong></th>
-<th style="text-align:left"><strong>function name</strong></th>
-<th style="text-align:left">depends on</th>
-<th style="text-align:left">creates or fills</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">Get profiling information from an event</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clGetEventProfilingInfo.html">clGetEventProfilingInfo</a></td>
-<td style="text-align:left">cl_event</td>
-<td style="text-align:left">cl_ulong</td>
-</tr>
-<tr>
-<td style="text-align:left">Wait on events</td>
-<td style="text-align:left"><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clWaitForEvents.html">clWaitForEvents</a></td>
-<td style="text-align:left">cl_event[]</td>
-<td style="text-align:left">NA</td>
-</tr>
-</tbody>
-</table>
+<p>Each datatype has a <strong>make_\&lt;type&gt;n</strong> constructor function. For example we can create variables of type <strong>float4</strong> using the code below.</p>
+<div class="highlight"><pre><span></span><span class="c1">// Declare an initialised vector</span>
+<span class="w">    </span><span class="n">float4</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">make_float4</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">3.0f</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Could have also been initialised like this</span>
+<span class="w">    </span><span class="n">float4</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">float4</span><span class="p">){</span><span class="mf">0.0</span><span class="p">};</span><span class="w"></span>
+</pre></div>
+<p>Then we access each of the components of the vector using dot notation on the components <strong>x</strong>, <strong>y</strong>, <strong>z</strong>, and <strong>w</strong>. For example we print the last element of <strong>v</strong> using this code.</p>
+<div class="highlight"><pre><span></span><span class="c1">// Print out the last element of v</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="p">.</span><span class="n">w</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Complex-numbers-in-HIP">Complex numbers in HIP<a class="anchor-link" href="#Complex-numbers-in-HIP">&#182;</a></h3><p>Complex numbers are not implemented in HIP, however you can store the real and imaginary components in a <strong>float2</strong> or <strong>double2</strong> vector type for example. One must manually perform the complex math on individual components. Here we perform a multiplication on two complex numbers.</p>
+<div class="highlight"><pre><span></span><span class="c1">// Example of complex numbers</span>
+<span class="w">    </span><span class="n">float2</span><span class="w"> </span><span class="n">num1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">make_float2</span><span class="p">(</span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">3.0f</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">float2</span><span class="w"> </span><span class="n">num2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">make_float2</span><span class="p">(</span><span class="mf">4.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">6.0f</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Do complex arithmetic (1,3i)*(4,6i) = 4 - 18 + 12i + 6i = (-14, 18i)</span>
+<span class="w">    </span><span class="n">float2</span><span class="w"> </span><span class="n">num3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">float2</span><span class="p">){</span><span class="mf">0.0f</span><span class="p">};</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Real part</span>
+<span class="w">    </span><span class="n">num3</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">num1</span><span class="p">.</span><span class="n">x</span><span class="o">*</span><span class="n">num2</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">num1</span><span class="p">.</span><span class="n">y</span><span class="o">*</span><span class="n">num2</span><span class="p">.</span><span class="n">y</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Complex part</span>
+<span class="w">    </span><span class="n">num3</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">num1</span><span class="p">.</span><span class="n">y</span><span class="o">*</span><span class="n">num2</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">num1</span><span class="p">.</span><span class="n">x</span><span class="o">*</span><span class="n">num2</span><span class="p">.</span><span class="n">y</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Print out the result</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">num3</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">num3</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+<h2 id="The-dim3-structure-type">The dim3 structure type<a class="anchor-link" href="#The-dim3-structure-type">&#182;</a></h2><p>The <code>dim3</code> structure is useful for specifying the block size and number of blocks for each dimension at kernel launch. We use this type as follows:</p>
+<div class="highlight"><pre><span></span><span class="c1">// Using the dim3 type</span>
+<span class="w">    </span><span class="n">dim3</span><span class="w"> </span><span class="n">global_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">512</span><span class="p">,</span><span class="w"> </span><span class="mi">512</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">};</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Any unspecified dimensions will be filled with a value of 1</span>
+<span class="w">    </span><span class="n">dim3</span><span class="w"> </span><span class="nf">block_size</span><span class="p">((</span><span class="kt">uint32_t</span><span class="p">)</span><span class="mi">16</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Print out the block size</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Block size</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"> </span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">block_size</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">block_size</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">block_size</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Print out the global size</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Global size</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"> </span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">global_size</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">global_size</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">global_size</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+<p>All of these examples can be found in the file <a href="hip_types.hpp">hip_types.cpp</a>. Use the <code>Makefile</code> to compile the file.</p>
 
 </div>
 </div>
