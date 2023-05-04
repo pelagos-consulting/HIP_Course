@@ -1,0 +1,2 @@
+Index,KernelName,gpu-id,queue-id,queue-index,pid,tid,grd,wgr,lds,scr,vgpr,sgpr,fbar,sig,obj,GRBM_COUNT,GRBM_GUI_ACTIVE,CPC_ME1_BUSY_FOR_PACKET_DECODE,SQ_CYCLES,SQ_WAVES,SQ_WAVE_CYCLES,SQ_BUSY_CYCLES,SQ_LEVEL_WAVES,SQ_ACCUM_PREV_HIRES,DispatchNs,BeginNs,EndNs,CompleteNs
+0,"mat_mult(float*, float*, float*, unsigned long, unsigned long, unsigned long) [clone .kd]",0,0,3,28700,28700,536640,64,0,0,8,32,0,0x0,0x14adce58d940,540310,540310,21653,4322488,8385,377938575,4196940,0,1511983120,1966730202635847,1966729609736340,1966730211459545,1966730211461519

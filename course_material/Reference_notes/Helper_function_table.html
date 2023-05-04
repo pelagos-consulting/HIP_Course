@@ -14559,12 +14559,12 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
                 },
                 displayAlign: 'center',
                 CommonHTML: {
-                    linebreaks: { 
-                    automatic: true 
+                    linebreaks: {
+                    automatic: true
                     }
                 }
             });
-        
+
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
     }
@@ -14579,100 +14579,61 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Helper-functions">Helper functions<a class="anchor-link" href="#Helper-functions">&#182;</a></h1><p>Here is a list of the useful helper functions in <a href="../include/cl_helper.hpp">cl_helper.hpp</a> and what they do.</p>
-<table>
-<thead><tr>
-<th style="text-align:left"><strong>Purpose</strong></th>
-<th style="text-align:left"><strong>function name</strong></th>
-<th style="text-align:left">depends on</th>
-<th style="text-align:left">creates or fills</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">Parse command line arguments</td>
-<td style="text-align:left"><strong>h_parse_args</strong></td>
-<td style="text-align:left">int argc, char** argv</td>
-<td style="text-align:left">cl_device_type, cl_uint</td>
-</tr>
-<tr>
-<td style="text-align:left">Check OpenCL function return codes</td>
-<td style="text-align:left"><strong>h_errchk</strong></td>
-<td style="text-align:left">cl_int, char[]</td>
-<td style="text-align:left">NA</td>
-</tr>
-<tr>
-<td style="text-align:left">Acquire OpenCL resources</td>
-<td style="text-align:left"><strong>h_acquire_devices</strong></td>
-<td style="text-align:left">cl_device_type</td>
-<td style="text-align:left">cl_platform_id[], cl_device_id[], cl_context[]</td>
-</tr>
-<tr>
-<td style="text-align:left">Release OpenCL resources</td>
-<td style="text-align:left"><strong>h_release_devices</strong></td>
-<td style="text-align:left">cl_device_id[], cl_context[], cl_platform_id[]</td>
-<td style="text-align:left">NA</td>
-</tr>
-<tr>
-<td style="text-align:left">Print a summary of compute device capabilities</td>
-<td style="text-align:left"><strong>h_report_on_device</strong></td>
-<td style="text-align:left">cl_device_id</td>
-<td style="text-align:left">NA</td>
-</tr>
-<tr>
-<td style="text-align:left">Create command queues</td>
-<td style="text-align:left"><strong>h_create_command_queues</strong></td>
-<td style="text-align:left">cl_device_id[], cl_context[]</td>
-<td style="text-align:left">cl_command_queue[]</td>
-</tr>
-<tr>
-<td style="text-align:left">Release command queues</td>
-<td style="text-align:left"><strong>h_release_command_queues</strong></td>
-<td style="text-align:left">cl_command_queue[]</td>
-<td style="text-align:left">NA</td>
-</tr>
-<tr>
-<td style="text-align:left">Build and compile a program</td>
-<td style="text-align:left"><strong>h_build_program</strong></td>
-<td style="text-align:left">char[], cl_context, cl_device_id</td>
-<td style="text-align:left">NA</td>
-</tr>
-<tr>
-<td style="text-align:left">Fit global size for an integer number of workgroups</td>
-<td style="text-align:left"><strong>h_fit_global_size</strong></td>
-<td style="text-align:left">size_t global_size[], size_t local_size[], size_t work_dim</td>
-<td style="text-align:left">size_t global_size[]</td>
-</tr>
-<tr>
-<td style="text-align:left">Write a binary file to disk</td>
-<td style="text-align:left"><strong>h_write_binary</strong></td>
-<td style="text-align:left">void* data, char filename[], size_t nbytes</td>
-<td style="text-align:left">NA</td>
-</tr>
-<tr>
-<td style="text-align:left">Read a binary file from disk</td>
-<td style="text-align:left"><strong>h_read_binary</strong></td>
-<td style="text-align:left">const char filename[]</td>
-<td style="text-align:left">void* data, size_t nbytes</td>
-</tr>
-<tr>
-<td style="text-align:left">Extract walltime (in ms) from an event</td>
-<td style="text-align:left"><strong>h_get_event_time_ms</strong></td>
-<td style="text-align:left">cl_event, const char message[], size_t *nbytes (optional)</td>
-<td style="text-align:left">cl_double</td>
-</tr>
-<tr>
-<td style="text-align:left">Create IO rate (MB/s) from time (ms) and nbytes</td>
-<td style="text-align:left"><strong>h_get_io_rate_MBs</strong></td>
-<td style="text-align:left">cl_double, size_t nbytes</td>
-<td style="text-align:left">cl_double</td>
-</tr>
-</tbody>
-</table>
+<h1 id="Helper-functions">Helper functions<a class="anchor-link" href="#Helper-functions">&#182;</a></h1><p>In this course we use helper functions from the files <a href="../include/hip_helper.hpp">hip_helper.hpp</a> and <a href="../include/mat_helper.hpp">mat_helper.hpp</a>. Documentation for each function in the file is available <a href="../include/docs/files.html">here</a>, as well as in the table below.</p>
 
 </div>
 </div>
 </div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">IFrame</span>
+<span class="n">IFrame</span><span class="p">(</span><span class="s2">"../include/docs/files.html"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s2">"100%"</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s2">"1024px"</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[7]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+
+        <iframe
+            width="100%"
+            height="1024px"
+            src="../include/docs/files.html"
+            frameborder="0"
+            allowfullscreen
+            
+        ></iframe>
+        
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">

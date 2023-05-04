@@ -14559,12 +14559,12 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
                 },
                 displayAlign: 'center',
                 CommonHTML: {
-                    linebreaks: { 
-                    automatic: true 
+                    linebreaks: {
+                    automatic: true
                     }
                 }
             });
-        
+
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
     }
@@ -14621,7 +14621,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make mat_elementwise_answer.exe<span class="p">;</span> ./mat_elementwise_answer.exe
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make clean<span class="p">;</span> make mat_elementwise_answer.exe<span class="p">;</span> ./mat_elementwise_answer.exe
 </pre></div>
 
      </div>
@@ -14643,8 +14643,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>hipcc -fopenmp -I/usr/include -I../include -L/usr/lib/x86_64-linux-gnu mat_elementwise_answer.cpp\
-	-o mat_elementwise_answer.exe 
+<pre>rm -r *.exe
+hipcc -g -fopenmp -I../include mat_elementwise_answer.cpp -o mat_elementwise_answer.exe 
 Device id: 0
 	name:                                    
 	global memory size:                      536 MB
@@ -14654,8 +14654,8 @@ Device id: 0
 	max block size:                          (1024,1024,1024)
 	max threads in a block:                  1024
 	max Grid size:                           (2147483647,2147483647,2147483647)
-Time for event &#34;memcpy&#34;: 0.608 ms (6894.44 MB/s)
-Time for event &#34;mat_hadamard&#34;: 0.629 ms
+Time for event &#34;memcpy&#34;: 0.208 ms (20138.69 MB/s)
+Time for event &#34;mat_hadamard&#34;: 0.508 ms
 Maximum error (infinity norm) is: 0
 </pre>
 </div>
@@ -14682,7 +14682,7 @@ Maximum error (infinity norm) is: 0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make mat_elementwise.exe<span class="p">;</span> ./mat_elementwise.exe
@@ -14707,7 +14707,7 @@ Maximum error (infinity norm) is: 0
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>make: &#39;mat_elementwise.exe&#39; is up to date.
+<pre>hipcc -g -fopenmp -I../include mat_elementwise.cpp -o mat_elementwise.exe 
 Device id: 0
 	name:                                    
 	global memory size:                      536 MB

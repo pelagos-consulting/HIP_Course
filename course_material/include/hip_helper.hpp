@@ -1,3 +1,11 @@
+///
+/// @file  hip_helper.hpp
+/// 
+/// @brief Helper functions for HIP.
+///
+/// Written by Dr. Toby Potter 
+/// for the Commonwealth Scientific and Industrial Research Organisation of Australia (CSIRO).
+///
 
 // Windows specific header instructions
 #if defined(_WIN32) || defined(_WIN64)
@@ -19,12 +27,12 @@
 // Import the HIP header
 #include <hip/hip_runtime.h>
 
-// Align all memory allocations to this byte boundary
+/// Align all memory allocations to this byte boundary
 #define BYTE_ALIGNMENT 64
 
-// Function to check error codes
+/// Examine an error code and exit if necessary.
 void h_errchk(hipError_t errcode, const char* message) {
-    // Function to check the error code
+
     if (errcode != hipSuccess) { 
         const char* errstring = hipGetErrorString(errcode); 
         std::fprintf( 
@@ -37,14 +45,14 @@ void h_errchk(hipError_t errcode, const char* message) {
     }
 }
 
-// Macro to check error codes
+/// Macro to check error codes.
 #define H_ERRCHK(cmd) \
 {\
     h_errchk(cmd, "__FILE__:__LINE__");\
 }
 
+/// Get the least common multiple of two numbers.
 size_t h_lcm(size_t n1, size_t n2) {
-    // Get the least common multiple of two numbers
     size_t number = std::max(n1, n2);
     
     while ((number % n1) && (number % n2)) {
@@ -54,6 +62,7 @@ size_t h_lcm(size_t n1, size_t n2) {
     return number;
 }
 
+/// Show command line options
 void h_show_options(const char* name) {
     // Display a helpful error message
     std::printf("Usage: %s <options> <DEVICE_INDEX>\n", name);
@@ -62,9 +71,8 @@ void h_show_options(const char* name) {
     std::printf("\tDEVICE_INDEX is a number >= 0\n"); 
 }
 
+/// Parse command line arguments to extract device index to use
 int h_parse_args(int argc, char** argv) {
-    
-    // Parse command line arguments to extract device index to use
     
     // Default device index
     int dev_index = 0;
@@ -92,7 +100,7 @@ int h_parse_args(int argc, char** argv) {
     return(dev_index);
 }
 
-// Function to reset devices before and after runtime
+/// Reset primary contexts on all compute devices
 void h_reset_devices(int num_devices) {
     
     // Reset devices
@@ -111,8 +119,9 @@ void h_reset_devices(int num_devices) {
     }
 }
 
-// Function to simply acquire devices
+/// Initialise a primary context for all HIP devices
 void h_acquire_devices(int* num_devices, int default_device_id) {
+    
     // Initialise HIP 
     H_ERRCHK(hipInit(0));
 
@@ -128,263 +137,14 @@ void h_acquire_devices(int* num_devices, int default_device_id) {
     // Make sure the default device id is sane
     assert (default_device_id<*num_devices);
 
-    // Clean and reset devices
+    // Clean and reset devices (optional)
     h_reset_devices(*num_devices);
 
     // Set the device
     H_ERRCHK(hipSetDevice(default_device_id));
 }
 
-// Simple function to release devices
-void h_release_devices(int num_devices) {
-    h_reset_devices(num_devices);
-}
-
-// Function to select a compute device
-//void h_set_device(
-//        int num_devices, 
-//        hipCtx_t* contexts,
-//        int device_id) {
-//
-//    assert(device_id<num_devices);
-//
-//    // Choose the context to use
-//    H_ERRCHK(hipCtxSetCurrent(contexts[device_id]));
-//}
-
-//
-//// Function to clean devices before and after runtime
-//void h_acquire_devices(int* num_devices, 
-//        hipDevice_t** devices,
-//        hipCtx_t **contexts,
-//        // Which device id should we use to begin with?
-//        int default_device_id) {
-//
-//    // Initialise HIP
-//    hipInit(0);
-//
-//    // Get the number of devices
-//    H_ERRCHK(hipGetDeviceCount(num_devices));
-//
-//    // Check to make sure we have one or more suitable devices
-//    if (*num_devices == 0) {
-//        std::printf("Failed to find a suitable compute device\n");
-//        exit(EXIT_FAILURE);
-//    }
-//
-//    assert (default_device_id<*num_devices);
-//
-//    // Clean and reset devices
-//    h_reset_devices(*num_devices);
-//
-//    // Allocate memory for devices and contexts
-//    *devices = (hipDevice_t*)calloc(*num_devices, sizeof(hipDevice_t));
-//    *contexts = (hipCtx_t*)calloc(*num_devices, sizeof(hipCtx_t));
-//
-//    // Reset devices
-//    for (int i = 0; i<*num_devices; i++) {
-//        // Fetch the device
-//        H_ERRCHK(hipDeviceGet(&(*devices[i]), i));
-//
-//        // Create a context but retain the primary one, 
-//        // this creates a separate context that is ready for use
-//        H_ERRCHK(hipDevicePrimaryCtxRetain(&(*contexts[i]), *devices[i]));
-//    }
-//
-//    // Choose context 0 to start with, you can use this code to
-//    // choose another context if you wish
-//    H_ERRCHK(hipCtxSetCurrent(*contexts[default_device_id]));
-//}
-//
-//// Function to clean devices before and after runtime
-//void h_release_devices(int num_devices, 
-//        hipDevice_t* devices,
-//        hipCtx_t *contexts ) {
-//    
-//    // Reset contexts
-//    for (int i = 0; i<num_devices; i++) {
-//
-//        // Set the context to the current one
-//        H_ERRCHK(hipCtxSetCurrent(contexts[i]));
-//
-//        // Synchronize on the context
-//        H_ERRCHK(hipCtxSynchronize());
-//
-//        // Destroy the context
-//        H_ERRCHK(hipCtxDestroy(contexts[i]));
-//
-//        // Release the primary context associated with the device
-//        H_ERRCHK(hipDevicePrimaryCtxRelease(devices[i]));
-//    }
-//
-//    // Reset all devices
-//    h_reset_devices(num_devices);
-//
-//    // Free memory
-//    free(devices);
-//    free(contexts);
-//}
-//
-
-// Create streams
-hipStream_t* h_create_streams(int nstreams, int blocking) {
-    // Blocking is a boolean, 0==no, 
-    assert(nstreams>0);
-
-    unsigned int flag = hipStreamDefault;
-
-    // If blocking is false then set NonBlocking flag
-    if (blocking == 0) {
-        flag = hipStreamNonBlocking;
-    }
-
-    // Make the streams
-    hipStream_t* streams = (hipStream_t*)calloc((size_t)nstreams, sizeof(hipStream_t));
-
-    for (int i=0; i<nstreams; i++) {
-        H_ERRCHK(hipStreamCreateWithFlags(&streams[i], flag));
-    }
-
-    return streams;
-}
-
-// Release all created streams
-void h_release_streams(int nstreams, hipStream_t* streams) {
-    for (int i=0; i<nstreams; i++) {
-        H_ERRCHK(hipStreamDestroy(streams[i]));    
-    }
-
-    // Free streams array
-    free(streams);
-}
-
-float h_get_io_rate_MBs(float elapsed_ms, size_t nbytes) {
-    // Get the IO rate in MB/s for bytes read or written
-    return (float)nbytes * 1.0e-3 / elapsed_ms;
-}
-
-// Get how much time elapsed between two events that were recorded
-float h_get_event_time_ms(
-        // Assumes start and stop events have been recorded
-        // with the hipEventRecord() function
-        hipEvent_t t1,
-        hipEvent_t t2,
-        const char* message, 
-        size_t* nbytes) {
-    
-    // Make sure the stop and start events have finished
-    H_ERRCHK(hipEventSynchronize(t2));
-    H_ERRCHK(hipEventSynchronize(t1));
-
-    // Elapsed time in milliseconds
-    float elapsed_ms=0;
-
-    // Convert the time into milliseconds
-    H_ERRCHK(hipEventElapsedTime(&elapsed_ms, t1, t2));
-        
-    // Print the timing message if necessary
-    if ((message != NULL) && (strlen(message)>0)) {
-        std::printf("Time for event \"%s\": %.3f ms", message, elapsed_ms);
-        
-        // Print transfer rate if nbytes is not NULL
-        if (nbytes != NULL) {
-            double io_rate_MBs = h_get_io_rate_MBs(
-                elapsed_ms, 
-                *nbytes
-            );
-            std::printf(" (%.2f MB/s)", io_rate_MBs);
-        }
-        std::printf("\n");
-    }
-    
-    return elapsed_ms;
-}
-
-void h_fit_blocks(dim3* grid_nblocks, dim3 global_size, dim3 block_size) {
-    // Make grid_blocks big enough to fit a grid of at least global_size
-    // when blocks are of size block_size     
-    assert ((global_size.x>0) && (block_size.x>0));
-    assert ((global_size.y>0) && (block_size.y>0));
-    assert ((global_size.z>0) && (block_size.z>0));
-
-    // Make the number of blocks
-    (*grid_nblocks).x = global_size.x/block_size.x;
-    if ((global_size.x % block_size.x)>0) {
-        (*grid_nblocks).x += 1;
-    }
-
-    (*grid_nblocks).y = global_size.y/block_size.y;
-    if ((global_size.y % block_size.y)>0) { 
-        (*grid_nblocks).y += 1;
-    }
-
-    (*grid_nblocks).z = global_size.z/block_size.z;
-    if ((global_size.z % block_size.z)>0) {
-        (*grid_nblocks).z += 1;
-    }
-}
-
-void* h_alloc(size_t nbytes, size_t alignment) {
-    // Allocate aligned memory for use on the host
-#if defined(_WIN32) || defined(_WIN64)
-    void* buffer = _aligned_malloc(nbytes, alignment);
-#else
-    void* buffer = aligned_alloc(alignment, nbytes);
-#endif
-    // Zero out the contents of the allocation for safety
-    memset(buffer, '\0', nbytes);
-    return buffer;
-}
-
-void* h_read_binary(const char* filename, size_t *nbytes) {
-    // Open the file for reading and use std::fread to read in the file
-    std::FILE *fp = std::fopen(filename, "rb");
-    if (fp == NULL) {
-        std::printf("Error in reading file %s", filename);
-        exit(EXIT_FAILURE);
-    }
-    
-    // Seek to the end of the file
-    std::fseek(fp, 0, SEEK_END);
-    
-    // Extract the number of bytes in this file
-    *nbytes = std::ftell(fp);
-
-    // Rewind the file pointer
-    std::rewind(fp);
-
-    // Create a buffer to read into
-    // Add an extra Byte for a null termination character
-    // just in case we are reading to a string
-    void *buffer = h_alloc((*nbytes)+1, BYTE_ALIGNMENT);
-    
-    // Set the NULL termination character for safety
-    char* source = (char*)buffer;
-    source[*nbytes] = '\0';
-    
-    // Read the file into the buffer and close
-    size_t bytes_read = std::fread(buffer, 1, *nbytes, fp);
-    assert(bytes_read == *nbytes);
-    std::fclose(fp);
-    return buffer;
-}
-
-void h_write_binary(void* data, const char* filename, size_t nbytes) {
-    // Write binary data to file
-    std::FILE *fp = std::fopen(filename, "wb");
-    if (fp == NULL) {
-        std::printf("Error in writing file %s", filename);
-        exit(EXIT_FAILURE);
-    }
-    
-    // Write the data to file
-    std::fwrite(data, nbytes, 1, fp);
-    
-    // Close the file
-    std::fclose(fp);
-}
-
-// Function to report information on a compute device
+/// Function to report information on a compute device
 void h_report_on_device(int device_id) {
 
     // Report some information on a compute device
@@ -427,7 +187,171 @@ void h_report_on_device(int device_id) {
     std::printf("%d)\n", prop.maxGridSize[2]); 
 }
 
-// Function to run a kernel
+/// Release compute devices
+void h_release_devices(int num_devices) {
+    h_reset_devices(num_devices);
+}
+
+/// Create a number of streams
+hipStream_t* h_create_streams(int nstreams, int blocking) {
+    // Blocking is a boolean, 0==no, 
+    assert(nstreams>0);
+
+    unsigned int flag = hipStreamDefault;
+
+    // If blocking is false then set NonBlocking flag
+    if (blocking == 0) {
+        flag = hipStreamNonBlocking;
+    }
+
+    // Make the streams
+    hipStream_t* streams = (hipStream_t*)calloc((size_t)nstreams, sizeof(hipStream_t));
+
+    for (int i=0; i<nstreams; i++) {
+        H_ERRCHK(hipStreamCreateWithFlags(&streams[i], flag));
+    }
+
+    return streams;
+}
+
+/// Release streams that were created
+void h_release_streams(int nstreams, hipStream_t* streams) {
+    for (int i=0; i<nstreams; i++) {
+        H_ERRCHK(hipStreamDestroy(streams[i]));    
+    }
+
+    // Free streams array
+    free(streams);
+}
+
+/// Get the IO rate in MB/s for bytes read or written
+float h_get_io_rate_MBs(float elapsed_ms, size_t nbytes) {
+    return (float)nbytes * 1.0e-3 / elapsed_ms;
+}
+
+/// Get how much time elapsed between two events that were recorded
+float h_get_event_time_ms(
+        // Assumes start and stop events have been recorded
+        // with the hipEventRecord() function
+        hipEvent_t t1,
+        hipEvent_t t2,
+        const char* message, 
+        size_t* nbytes) {
+    
+    // Make sure the stop and start events have finished
+    H_ERRCHK(hipEventSynchronize(t2));
+    H_ERRCHK(hipEventSynchronize(t1));
+
+    // Elapsed time in milliseconds
+    float elapsed_ms=0;
+
+    // Convert the time into milliseconds
+    H_ERRCHK(hipEventElapsedTime(&elapsed_ms, t1, t2));
+        
+    // Print the timing message if necessary
+    if ((message != NULL) && (strlen(message)>0)) {
+        std::printf("Time for event \"%s\": %.3f ms", message, elapsed_ms);
+        
+        // Print transfer rate if nbytes is not NULL
+        if (nbytes != NULL) {
+            double io_rate_MBs = h_get_io_rate_MBs(
+                elapsed_ms, 
+                *nbytes
+            );
+            std::printf(" (%.2f MB/s)", io_rate_MBs);
+        }
+        std::printf("\n");
+    }
+    
+    return elapsed_ms;
+}
+
+/// Make grid_nblocks big enough to fit a grid of at least global_size
+void h_fit_blocks(dim3* grid_nblocks, dim3 global_size, dim3 block_size) {
+    
+    // Checks
+    assert ((global_size.x>0) && (block_size.x>0));
+    assert ((global_size.y>0) && (block_size.y>0));
+    assert ((global_size.z>0) && (block_size.z>0));
+
+    // Make the number of blocks
+    (*grid_nblocks).x = global_size.x/block_size.x;
+    if ((global_size.x % block_size.x)>0) {
+        (*grid_nblocks).x += 1;
+    }
+
+    (*grid_nblocks).y = global_size.y/block_size.y;
+    if ((global_size.y % block_size.y)>0) { 
+        (*grid_nblocks).y += 1;
+    }
+
+    (*grid_nblocks).z = global_size.z/block_size.z;
+    if ((global_size.z % block_size.z)>0) {
+        (*grid_nblocks).z += 1;
+    }
+}
+
+/// Allocate aligned memory for use on the host
+void* h_alloc(size_t nbytes, size_t alignment) {
+#if defined(_WIN32) || defined(_WIN64)
+    void* buffer = _aligned_malloc(nbytes, alignment);
+#else
+    void* buffer = aligned_alloc(alignment, nbytes);
+#endif
+    // Zero out the contents of the allocation for safety
+    memset(buffer, '\0', nbytes);
+    return buffer;
+}
+
+/// Open the file for reading and use std::fread to read in the file
+void* h_read_binary(const char* filename, size_t *nbytes) {
+    std::FILE *fp = std::fopen(filename, "rb");
+    if (fp == NULL) {
+        std::printf("Error in reading file %s", filename);
+        exit(EXIT_FAILURE);
+    }
+    
+    // Seek to the end of the file
+    std::fseek(fp, 0, SEEK_END);
+    
+    // Extract the number of bytes in this file
+    *nbytes = std::ftell(fp);
+
+    // Rewind the file pointer
+    std::rewind(fp);
+
+    // Create a buffer to read into
+    // Add an extra Byte for a null termination character
+    // just in case we are reading to a string
+    void *buffer = h_alloc((*nbytes)+1, BYTE_ALIGNMENT);
+    
+    // Set the NULL termination character for safety
+    char* source = (char*)buffer;
+    source[*nbytes] = '\0';
+    
+    // Read the file into the buffer and close
+    size_t bytes_read = std::fread(buffer, 1, *nbytes, fp);
+    assert(bytes_read == *nbytes);
+    std::fclose(fp);
+    return buffer;
+}
+
+/// Write binary data to file
+void h_write_binary(void* data, const char* filename, size_t nbytes) {
+    std::FILE *fp = std::fopen(filename, "wb");
+    if (fp == NULL) {
+        std::printf("Error in writing file %s", filename);
+        exit(EXIT_FAILURE);
+    }
+    
+    // Write the data to file
+    std::fwrite(data, nbytes, 1, fp);
+    
+    // Close the file
+    std::fclose(fp);
+}
+
+/// Function to run a kernel
 float h_run_kernel(
     // Function address
     const void* kernel_function,
@@ -487,15 +411,14 @@ float h_run_kernel(
     return elapsed;
 }
 
-//
-//// Function to optimise the local size
-//// if command line arguments are --local_file or -local_file
-//// read an input file called input_local.dat
-//// type == uint32_t and size == (nexperiments, ndim)
-////
-//// writes to a file called output_local.dat
-//// type == double and size == (nexperiments, 2)
-//// where each line is (avg, stdev) in milli-seconds
+/// Function to optimise the local size
+/// if command line arguments are --local_file or -local_file.
+/// Read an input file called input_local.dat of
+/// type == uint32_t, and dimensions == (nexperiments, ndim) with row major ordering.
+///
+/// Writes to a file called output_local.dat of 
+/// type == double and dimensions == (nexperiments, 2) with row major ordering
+/// and where each line is (avg, stdev) in milliseconds
 void h_optimise_local(
         int argc,
         char** argv,

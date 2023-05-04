@@ -14559,12 +14559,12 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
                 },
                 displayAlign: 'center',
                 CommonHTML: {
-                    linebreaks: { 
-                    automatic: true 
+                    linebreaks: {
+                    automatic: true
                     }
                 }
             });
-        
+
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
     }
@@ -14733,7 +14733,7 @@ Maximum error (infinity norm) is: 1.71217e+38
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s2">&quot;../include&quot;</span><span class="p">))</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s2">"../include"</span><span class="p">))</span>
 
 <span class="kn">import</span> <span class="nn">py_helper</span>
 
@@ -14742,11 +14742,11 @@ Maximum error (infinity norm) is: 1.71217e+38
 <span class="c1"># Data type to use for matrices</span>
 <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span>
 
-<span class="n">defines</span><span class="o">=</span><span class="n">py_helper</span><span class="o">.</span><span class="n">load_defines</span><span class="p">(</span><span class="s2">&quot;mat_size.hpp&quot;</span><span class="p">)</span>
+<span class="n">defines</span><span class="o">=</span><span class="n">py_helper</span><span class="o">.</span><span class="n">load_defines</span><span class="p">(</span><span class="s2">"mat_size.hpp"</span><span class="p">)</span>
 
-<span class="n">NCOLS_A</span><span class="o">=</span><span class="n">defines</span><span class="p">[</span><span class="s2">&quot;NCOLS_A&quot;</span><span class="p">]</span>
-<span class="n">NROWS_C</span><span class="o">=</span><span class="n">defines</span><span class="p">[</span><span class="s2">&quot;NROWS_C&quot;</span><span class="p">]</span>
-<span class="n">NCOLS_C</span><span class="o">=</span><span class="n">defines</span><span class="p">[</span><span class="s2">&quot;NCOLS_C&quot;</span><span class="p">]</span>
+<span class="n">NCOLS_A</span><span class="o">=</span><span class="n">defines</span><span class="p">[</span><span class="s2">"NCOLS_A"</span><span class="p">]</span>
+<span class="n">NROWS_C</span><span class="o">=</span><span class="n">defines</span><span class="p">[</span><span class="s2">"NROWS_C"</span><span class="p">]</span>
+<span class="n">NCOLS_C</span><span class="o">=</span><span class="n">defines</span><span class="p">[</span><span class="s2">"NCOLS_C"</span><span class="p">]</span>
 
 <span class="c1"># A is of size (NROWS_C, NCOLS_A)</span>
 <span class="c1"># B is of size (NCOLS_A, NCOLS_C)    </span>
@@ -15191,7 +15191,7 @@ run</code></pre>
   ...
   <span class="m">63</span>   A     AMDGPU Lane <span class="m">6</span>:1:1:90/63 <span class="o">(</span><span class="m">4</span>,17,0<span class="o">)[</span><span class="m">15</span>,3,0<span class="o">]</span> mat_mult <span class="o">(</span><span class="nv">A</span><span class="o">=</span>&lt;optimized out&gt;, ...
 </pre></div>
-<p>The set of coordinates for each lane is as before, i.e <strong>Lane 6:1:1:90/0 (4,17,0)[0,0,0]</strong> however there is an extra set of coordinates, i,e [0,0,0] for the lanes' [x,y,z] position within the block. We use the <strong>lane</strong> command to change to the last lane</p>
+<p>The set of coordinates for each lane is as before, i.e <strong>Lane 6:1:1:90/0 (4,17,0)[0,0,0]</strong> however there is an extra set of coordinates, i,e [0,0,0] for the lanes' [x,y,z] position within the block. We use the <strong>lane</strong> command to change to the last lane in the wavefront</p>
 <div class="highlight"><pre><span></span>lane <span class="m">63</span>
 </pre></div>
 
@@ -15205,14 +15205,8 @@ run</code></pre>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>At the time of writing ROCGDB doesn't appear to support printing kernel variables from within a lane. According to this <a href="https://github.com/ROCm-Developer-Tools/ROCgdb/issues/14#issuecomment-1423581387">this source on Github</a> printing local/shared variables is <strong>hopefully</strong> going to be introduced with a future version. We should then be able to walk through a few lines of kernel code with this command</p>
-<div class="highlight"><pre><span></span>n
-</pre></div>
-<p>and print kernel variables like this.</p>
-
-<pre><code>print i0</code></pre>
-<p>Until this feature is available, it is going to be easier just to use <strong>printf</strong> from within a kernel.</p>
-<h4 id="Viewing-register-contents">Viewing register contents<a class="anchor-link" href="#Viewing-register-contents">&#182;</a></h4><p>Alternatively, rocgdb can examine the contents of registers. We turn on the view of assembly code to see which registers are being worked with.</p>
+<p>At the time of writing ROCGDB doesn't appear to support printing private kernel variables from within a lane. According to this <a href="https://github.com/ROCm-Developer-Tools/ROCgdb/issues/14#issuecomment-1423581387">this source on Github</a> printing kernel variables is <strong>hopefully</strong> going to be introduced with a future version. Until this feature is available we can either use <strong>printf</strong> from within a kernel or <strong>view variables by examining register contents</strong> directly. Here is how to use registers to see what we need.</p>
+<h4 id="Viewing-register-contents">Viewing register contents<a class="anchor-link" href="#Viewing-register-contents">&#182;</a></h4><p>We turn on the view of assembly code to see which registers are being worked with.</p>
 <div class="highlight"><pre><span></span><span class="nb">set</span>  disassemble-next-line on
 </pre></div>
 
@@ -15226,7 +15220,31 @@ run</code></pre>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Now that the breakpoint is disabled we can type <code>n</code> to walk through each line of the kernel. The <strong>info registers</strong> command prints what information is in the available registers.</p>
+<p>Now we can type <code>step</code> to walk through each line of execution. The command <code>info registers</code> prints all available registers. The registers that start with <strong>s</strong> are scalar registers that are used for the whole wavefront. The registers that start with <strong>v</strong> are vector registers. Each work-item <strong>i</strong> in the wavefront has access to the vector register at index <strong>i</strong>.</p>
+<p>Stepping through the program we are looking for the lines where the value of <strong>i1</strong> is being computed. Something like this:</p>
+<div class="highlight"><pre><span></span><span class="err">33</span><span class="w">      </span><span class="nf">size_t</span><span class="w"> </span><span class="no">i1</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="no">blockIdx.x</span><span class="w"> </span><span class="p">*</span><span class="w"> </span><span class="no">blockDim.x</span><span class="w"> </span><span class="err">+</span><span class="w"> </span><span class="no">threadIdx.x</span><span class="c1">;</span>
+<span class="err">=&gt;</span><span class="w"> </span><span class="err">0</span><span class="nf">x00007ffff632303c</span><span class="w"> </span><span class="err">&lt;</span><span class="no">_Z8mat_multPfS_S_mmm</span><span class="err">+</span><span class="mi">60</span><span class="err">&gt;</span><span class="p">:</span><span class="w">    </span><span class="mi">08</span><span class="w"> </span><span class="mi">00</span><span class="w"> </span><span class="mi">00</span><span class="w"> </span><span class="mi">68</span><span class="w"> </span><span class="no">v_add_u32_e32</span><span class="w"> </span><span class="no">v0</span><span class="p">,</span><span class="w"> </span><span class="no">s8</span><span class="p">,</span><span class="w"> </span><span class="no">v0</span><span class="w"></span>
+<span class="w">   </span><span class="err">0</span><span class="nf">x00007ffff6323040</span><span class="w"> </span><span class="err">&lt;</span><span class="no">_Z8mat_multPfS_S_mmm</span><span class="err">+</span><span class="mi">64</span><span class="err">&gt;</span><span class="p">:</span><span class="w">    </span><span class="mi">22</span><span class="w"> </span><span class="mi">00</span><span class="w"> </span><span class="mi">85</span><span class="w"> </span><span class="no">bf</span><span class="w"> </span><span class="no">s_cbranch_scc1</span><span class="w"> </span><span class="mi">34</span><span class="w">  </span><span class="c1"># 0x7ffff63230cc &lt;_Z8mat_multPfS_S_mmm+204&gt;</span>
+<span class="w">   </span><span class="err">0</span><span class="nf">x00007ffff6323044</span><span class="w"> </span><span class="err">&lt;</span><span class="no">_Z8mat_multPfS_S_mmm</span><span class="err">+</span><span class="mi">68</span><span class="err">&gt;</span><span class="p">:</span><span class="w">    </span><span class="mi">04</span><span class="w"> </span><span class="mi">02</span><span class="w"> </span><span class="no">e8</span><span class="w"> </span><span class="no">d1</span><span class="w"> </span><span class="mi">06</span><span class="w"> </span><span class="mi">25</span><span class="w"> </span><span class="mi">00</span><span class="w"> </span><span class="mi">02</span><span class="w"> </span><span class="no">v_mad_u64_u32</span><span class="w"> </span><span class="no">v</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">5</span><span class="p">],</span><span class="w"> </span><span class="no">s</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="no">v6</span><span class="p">,</span><span class="w"> </span><span class="no">s18</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+</pre></div>
+<p>In this output it appears that the vector register <strong>v0</strong> is populated with the result of the calculation. We can print the contents of vector register <strong>v0</strong> as an unsigned integer, like this.</p>
+
+<pre><code>gdb
+(gdb) print/u $v0
+$6 = {64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 64, 65, 66, 67, 
+  68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79}</code></pre>
+<p>Since we are in lane 63 we will be using the <strong>last</strong> value in the vector register at index 63. The value for <strong>i1</strong> is therefore 79, which is outside the bounds of the matrices. If, for example we know that register <strong>v0</strong> is supposed to be a float we can print it using the <code>/f</code> formatting string to format the result as a float. <a href="https://sourceware.org/gdb/onlinedocs/gdb/Output-Formats.html">This site</a> has all the formatting codes for how to print registers.</p>
+
+<pre><code>gdb
+(gdb) print/f $v0
+$18 = {8.96831017e-44, 9.10844002e-44, 9.24856986e-44, 9.38869971e-44, 9.52882956e-44, 9.6689594e-44, 9.80908925e-44, 9.9492191e-44, 1.00893489e-43, 
+  1.02294788e-43, 1.03696086e-43, 1.05097385e-43, 1.06498683e-43, 1.07899982e-43, 1.0930128e-43, 1.10702579e-43, 8.96831017e-44, 9.10844002e-44, 
+  9.24856986e-44, 9.38869971e-44, 9.52882956e-44, 9.6689594e-44, 9.80908925e-44, 9.9492191e-44, 1.00893489e-43, 1.02294788e-43, 1.03696086e-43, 
+  1.05097385e-43, 1.06498683e-43, 1.07899982e-43, 1.0930128e-43, 1.10702579e-43, 8.96831017e-44, 9.10844002e-44, 9.24856986e-44, 9.38869971e-44, 
+  9.52882956e-44, 9.6689594e-44, 9.80908925e-44, 9.9492191e-44, 1.00893489e-43, 1.02294788e-43, 1.03696086e-43, 1.05097385e-43, 1.06498683e-43, 
+  1.07899982e-43, 1.0930128e-43, 1.10702579e-43, 8.96831017e-44, 9.10844002e-44, 9.24856986e-44, 9.38869971e-44, 9.52882956e-44, 9.6689594e-44, 
+  9.80908925e-44, 9.9492191e-44, 1.00893489e-43, 1.02294788e-43, 1.03696086e-43, 1.05097385e-43, 1.06498683e-43, 1.07899982e-43, 1.0930128e-43, 
+  1.10702579e-43}</code></pre>
 
 </div>
 </div>
