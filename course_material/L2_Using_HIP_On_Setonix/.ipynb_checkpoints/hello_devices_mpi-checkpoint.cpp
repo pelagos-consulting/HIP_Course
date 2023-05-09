@@ -28,25 +28,44 @@ int main(int argc, char** argv) {
     // Print which rank we are using
     std::cout << "MPI rank " << rank << " of " << nranks << "\n";
     
+    // Initialise HIP explicitly
+    H_ERRCHK(hipInit(0));
+    
     // Get the number of HIP devices
     int num_devices=0;
     H_ERRCHK(hipGetDeviceCount(&num_devices));
 
     // Report on available devices
-    for (int n=0; n<num_devices; n++) {
-        std::cout << "device " << n << " of " << num_devices << std::endl;
-        h_report_on_device(n);
+    for (int i=0; i<num_devices; i++) {
+        // Set the compute device to use, 
+        // this also makes sure a primary context is available
+        H_ERRCHK(hipSetDevice(i));
+        
+        // Report some information on a compute device
+        hipDeviceProp_t prop;
+
+        // Get the properties of the compute device
+        H_ERRCHK(hipGetDeviceProperties(&prop, i));
+
+        // ID of the compute device
+        std::printf("Device id: %d\n", i);
+
+        // Name of the compute device
+        std::printf("\t%-19s %s\n","name:", prop.name);
+
+        // Size of global memory
+        std::printf("\t%-19s %lu MB\n","global memory size:",prop.totalGlobalMem/(1000000)); 
     }
     
     // Set the compute device to use
-    H_ERRCHK(hipSetDevice(nranks%num_devices));
+    H_ERRCHK(hipSetDevice(rank%num_devices));
     
     // Allocate memory on the compute device for vector A
     float* A_d;
     size_t nbytes_A = N0_A*sizeof(float);
     H_ERRCHK(hipMalloc((void**)&A_d, nbytes_A));
     
-    // Allocate memory on the host to hold the filled array
+    // Allocate memory on the host for vector A
     float* A_h = (float*)calloc(nbytes_A, 1);
     
     // Launch the kernel
@@ -56,7 +75,7 @@ int main(int argc, char** argv) {
     // Number of blocks in each dimension
     dim3 grid_nblocks = { N0_A/block_size.x, 1, 1 };
     
-    // The value to fill
+    // The value to fill the vector with
     float fill_value=1.0;
     
     // Amount of shared memory to use in the kernel
@@ -85,8 +104,17 @@ int main(int argc, char** argv) {
         assert(A_h[i0]==fill_value);
     }
     
-    // Release devices and contexts
-    h_reset_devices(num_devices);
+    // Reset devices to clean up resources
+    for (int i = 0; i<num_devices; i++) {
+        // Set device
+        H_ERRCHK(hipSetDevice(i));
+
+        // Synchronize device 
+        H_ERRCHK(hipDeviceSynchronize());
+
+        // Reset device (destroys primary context)
+        H_ERRCHK(hipDeviceReset());
+    }
     
     // Free host memory
     free(A_h);
