@@ -14634,7 +14634,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make clean<span class="p">;</span> make<span class="p">;</span> ./mat_mult.exe
@@ -14660,7 +14660,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>rm -r *.exe
-hipcc -g -fopenmp -I../include mat_mult.cpp -o mat_mult.exe 
+hipcc -g -fopenmp -O2 -I../include mat_mult.cpp -o mat_mult.exe 
 Device id: 0
 	name:                                    
 	global memory size:                      536 MB
@@ -14696,7 +14696,7 @@ Maximum error (infinity norm) is: 1.52588e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>ls *.dat
@@ -14747,7 +14747,7 @@ Maximum error (infinity norm) is: 1.52588e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -15023,7 +15023,7 @@ Options:
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="Sanity-checking-HIP-function-calls">Sanity checking HIP function calls<a class="anchor-link" href="#Sanity-checking-HIP-function-calls">&#182;</a></h3><p>Every call to a HIP function has some way of checking how it went, and it is <strong>good practice</strong> to make sure these calls worked properly. The return type is a variable of type <strong>hipError_t</strong>, and there are a number of values that a variable of type <strong>hipError_t</strong> can store, a value of <strong>hipSuccess</strong> means that the function call was successful, and other values can mean something is wrong. The HIP function <strong>hipGetErrorString</strong> is useful for extracting the error string behind an error code and we use a helper function <strong>h_errchk</strong> to check error codes returned from HIP calls.</p>
-<div class="highlight"><pre><span></span><span class="c1">// Function to check error codes</span>
+<div class="highlight"><pre><span></span><span class="c1">/// Function to check error codes</span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">h_errchk</span><span class="p">(</span><span class="n">hipError_t</span><span class="w"> </span><span class="n">errcode</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">message</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="c1">// Function to check the error code</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">errcode</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">hipSuccess</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
@@ -15039,9 +15039,7 @@ Options:
 <span class="p">}</span><span class="w"></span>
 </pre></div>
 <p>The following macro, defined as <strong>H_ERRCHK</strong> in <a href="../include/hip_helper.hpp">hip_helper.hpp</a> just calls <strong>h_errchk</strong> with the file and line number information as the message, as shown below:</p>
-<div class="highlight"><pre><span></span><span class="c1">// hip_helper.hpp source</span>
-
-<span class="cp">#define H_ERRCHK(cmd) \</span>
+<div class="highlight"><pre><span></span><span class="cp">#define H_ERRCHK(cmd) \</span>
 <span class="cp">{\</span>
 <span class="cp">    h_errchk(cmd, &quot;__FILE__:__LINE__&quot;);\</span>
 <span class="cp">}</span>
@@ -15102,7 +15100,7 @@ Options:
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h4 id="Examining-h_acquire_devices-in-depth">Examining <strong>h_acquire_devices</strong> in depth<a class="anchor-link" href="#Examining-h_acquire_devices-in-depth">&#182;</a></h4><p>We now examine the function <strong>h_acquire_devices</strong>, whose source code is in <a href="../include/hip_helper.hpp">hip_helper.hpp</a>.</p>
-<div class="highlight"><pre><span></span><span class="c1">// Function to simply acquire devices</span>
+<div class="highlight"><pre><span></span><span class="c1">/// Function to simply acquire devices</span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">h_acquire_devices</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">num_devices</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">default_device_id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="c1">// Initialise HIP </span>
 <span class="w">    </span><span class="n">h_errchk</span><span class="p">(</span><span class="n">hipInit</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span><span class="w"></span>
@@ -15127,7 +15125,7 @@ Options:
 <span class="p">}</span><span class="w"></span>
 </pre></div>
 <p>We use <strong>hipInit</strong> to initialise the HIP runtime, then we check the number of available devices with <strong>hipGetDeviceCount</strong> and make sure we have least one device. Then we call the helper function <strong>h_reset_devices</strong> to make sure all compute operations have finished, then make sure all contexts are clean. The reset operation deletes <strong>all resources</strong> managed by the primary contexts, and is <strong>not strictly necessary</strong> at program launch, but it might be useful to reset the state of the primary contexts if the function is called again at a later time.</p>
-<div class="highlight"><pre><span></span><span class="c1">// Function to reset devices before and after runtime</span>
+<div class="highlight"><pre><span></span><span class="c1">/// Function to reset devices before and after runtime</span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">h_reset_devices</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">num_devices</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 
 <span class="w">    </span><span class="c1">// Reset devices</span>
@@ -15216,7 +15214,7 @@ Options:
 <h4 id="Examining-h_report_on_device-in-depth">Examining <strong>h_report_on_device</strong> in depth<a class="anchor-link" href="#Examining-h_report_on_device-in-depth">&#182;</a></h4><p>Below is the code for the function <strong>h_report_on_device</strong>. Given a device id the function uses a call to <strong>hipGetDeviceProperties</strong> to fill a structure of type <strong>hipDeviceProp_t</strong> with the properties of the compute device. Then we use dot notation to access the elements of the structure and report back.</p>
 <div class="highlight"><pre><span></span><span class="c1">// hip_helper.hpp source</span>
 
-<span class="c1">// Function to report information on a compute device</span>
+<span class="c1">/// Function to report information on a compute device</span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">h_report_on_device</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">device_id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 
 <span class="w">    </span><span class="c1">// Report some information on a compute device</span>
@@ -15760,6 +15758,7 @@ Options:
 <p>If we look at the source of <strong>h_write_binary</strong> we just use the standard library functions <strong>fopen</strong>, <strong>fwrite</strong>, and <strong>fclose</strong> to write a data allocation to disk.</p>
 <div class="highlight"><pre><span></span><span class="c1">// hip_helper.hpp source</span>
 
+<span class="c1">/// Write binary data to file</span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">h_write_binary</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">filename</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nbytes</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="c1">// Write binary data to file</span>
 <span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">fp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">fopen</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wb&quot;</span><span class="p">);</span><span class="w"></span>
@@ -15859,11 +15858,27 @@ Table of the commonly used OpenCL functions used in this program can be found in
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <address>
-Written by Dr. Toby Potter of <a href="https://www.pelagos-consulting.com">Pelagos Consulting and Education</a> for the Pawsey Supercomputing Centre
+Written by Dr. Toby Potter of <a href="https://www.pelagos-consulting.com">Pelagos Consulting and Education</a> for the Pawsey Supercomputing Centre.
 </address>
 </div>
 </div>
 </div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
 </div>
 </body>
 

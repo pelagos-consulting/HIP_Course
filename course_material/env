@@ -11,7 +11,7 @@ endif
 
 # Compiler locations
 CXX=hipcc
-CXXFLAGS=-g -fopenmp
+CXXFLAGS=-g -fopenmp -O2
 
 # Debugging instructions
 ifeq ($(DEBUG), true)

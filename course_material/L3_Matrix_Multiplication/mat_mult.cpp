@@ -35,7 +35,7 @@ __global__ void mat_mult (
     size_t i1 = blockIdx.x * blockDim.x + threadIdx.x;
     
     // Scratch variable
-    float temp=0.0; 
+    float temp=0.0f; 
 
     // Guard mechanism to make sure we do not go
     // outside the boundaries of matrix C 

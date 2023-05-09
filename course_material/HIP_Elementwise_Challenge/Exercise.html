@@ -14604,7 +14604,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Compile-and-run-the-solution">Compile and run the solution<a class="anchor-link" href="#Compile-and-run-the-solution">&#182;</a></h2><p>We compile and run the solution <a href="mat_elementwise_answer.cpp">mat_elementwise_answer.cpp</a> as shown below. We are using a really small matrix (8,4) so that the exercise may be done from the command line.</p>
+<h2 id="Compile-and-run-the-answer">Compile and run the answer<a class="anchor-link" href="#Compile-and-run-the-answer">&#182;</a></h2><p>We compile and run the solution <a href="mat_elementwise_answer.cpp">mat_elementwise_answer.cpp</a> as shown below. We are using a really small matrix (8,4) so that the exercise may be done from the command line.</p>
 
 </div>
 </div>
@@ -14640,10 +14640,10 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>rm -r *.exe
-hipcc -O2 -fopenmp -I/usr/include -I../include -L/usr/lib/x86_64-linux-gnu mat_elementwise.cpp\
-	-o mat_elementwise.exe 
-hipcc -O2 -fopenmp -I/usr/include -I../include -L/usr/lib/x86_64-linux-gnu mat_elementwise_answer.cpp\
-	-o mat_elementwise_answer.exe 
+rm: cannot remove &#39;*.exe&#39;: No such file or directory
+make: *** [Makefile:18: clean] Error 1
+hipcc -g -fopenmp -O2 -I../include mat_elementwise.cpp -o mat_elementwise.exe 
+hipcc -g -fopenmp -O2 -I../include mat_elementwise_answer.cpp -o mat_elementwise_answer.exe 
 Device id: 0
 	name:                                    
 	global memory size:                      536 MB
@@ -14655,25 +14655,25 @@ Device id: 0
 	max Grid size:                           (2147483647,2147483647,2147483647)
 The output array F_h (as computed with HIP) is
 ----
-|  8.33e-01  7.59e-01  2.37e-01  3.42e-01 |
-|  1.58e-02  3.78e-01  1.60e-01  3.39e-01 |
-|  1.15e-02  5.99e-05  7.34e-02  8.65e-01 |
-|  7.98e-02  4.62e-01  6.40e-01  6.55e-01 |
-|  5.57e-01  1.88e-01  1.85e-01  1.15e-01 |
-|  2.79e-02  2.33e-01  1.23e-01  2.12e-01 |
-|  8.39e-01  1.02e-01  6.00e-01  2.99e-01 |
-|  3.19e-03  1.13e-01  7.04e-02  3.10e-02 |
+|  4.50e-01  1.70e-01  2.77e-01  2.21e-02 |
+|  2.46e-02  3.48e-02  4.41e-02  2.05e-01 |
+|  7.57e-01  4.06e-03  3.90e-01  2.74e-01 |
+|  3.16e-01  3.38e-05  9.45e-02  9.03e-01 |
+|  1.60e-02  6.24e-03  9.69e-02  4.00e-01 |
+|  4.89e-01  4.12e-01  8.46e-01  8.93e-02 |
+|  3.23e-01  3.19e-02  2.84e-01  4.18e-01 |
+|  2.02e-02  3.38e-01  2.30e-01  1.49e-01 |
 ----
 The CPU solution (F_answer_h) is 
 ----
-|  8.33e-01  7.59e-01  2.37e-01  3.42e-01 |
-|  1.58e-02  3.78e-01  1.60e-01  3.39e-01 |
-|  1.15e-02  5.99e-05  7.34e-02  8.65e-01 |
-|  7.98e-02  4.62e-01  6.40e-01  6.55e-01 |
-|  5.57e-01  1.88e-01  1.85e-01  1.15e-01 |
-|  2.79e-02  2.33e-01  1.23e-01  2.12e-01 |
-|  8.39e-01  1.02e-01  6.00e-01  2.99e-01 |
-|  3.19e-03  1.13e-01  7.04e-02  3.10e-02 |
+|  4.50e-01  1.70e-01  2.77e-01  2.21e-02 |
+|  2.46e-02  3.48e-02  4.41e-02  2.05e-01 |
+|  7.57e-01  4.06e-03  3.90e-01  2.74e-01 |
+|  3.16e-01  3.38e-05  9.45e-02  9.03e-01 |
+|  1.60e-02  6.24e-03  9.69e-02  4.00e-01 |
+|  4.89e-01  4.12e-01  8.46e-01  8.93e-02 |
+|  3.23e-01  3.19e-02  2.84e-01  4.18e-01 |
+|  2.02e-02  3.38e-01  2.30e-01  1.49e-01 |
 ----
 The residual (F_answer_h-F_h) is
 ----
@@ -14713,7 +14713,7 @@ The residual (F_answer_h-F_h) is
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Compile-and-run-the-exercise">Compile and run the exercise<a class="anchor-link" href="#Compile-and-run-the-exercise">&#182;</a></h2><p>The exercise <a href="mat_mult_elementwise.cpp">mat_mult_elementwise.cpp</a> is missing a number of crucial pieces of software. If we compile and run we see a non-zero residual. Copy this command to the command line (without the !) and run it as follows:</p>
+<h2 id="Compile-and-run-the-exercise">Compile and run the exercise<a class="anchor-link" href="#Compile-and-run-the-exercise">&#182;</a></h2><p>The exercise <a href="mat_elementwise.cpp">mat_elementwise.cpp</a> is missing a number of crucial pieces of software. If we compile and run we see a non-zero residual. Copy this command to the command line (without the !) and run it as follows:</p>
 
 </div>
 </div>
@@ -14723,7 +14723,7 @@ The residual (F_answer_h-F_h) is
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make<span class="p">;</span> ./mat_elementwise.exe
@@ -14771,25 +14771,25 @@ The output array F_h (as computed with HIP) is
 ----
 The CPU solution (F_answer_h) is 
 ----
-|  8.76e-01  7.29e-01  2.56e-02  3.03e-01 |
-|  4.40e-02  1.07e-02  5.57e-03  3.03e-01 |
-|  7.16e-01  5.75e-01  2.86e-01  7.68e-02 |
-|  8.54e-01  5.58e-01  5.81e-01  2.79e-01 |
-|  4.18e-01  5.55e-01  1.16e-01  6.04e-01 |
-|  1.44e-01  3.76e-01  9.32e-02  4.81e-02 |
-|  6.55e-02  2.77e-01  4.90e-03  3.30e-02 |
-|  3.17e-01  3.35e-01  6.31e-01  3.35e-01 |
+|  4.50e-01  1.70e-01  2.77e-01  2.21e-02 |
+|  2.46e-02  3.48e-02  4.41e-02  2.05e-01 |
+|  7.57e-01  4.06e-03  3.90e-01  2.74e-01 |
+|  3.16e-01  3.38e-05  9.45e-02  9.03e-01 |
+|  1.60e-02  6.24e-03  9.69e-02  4.00e-01 |
+|  4.89e-01  4.12e-01  8.46e-01  8.93e-02 |
+|  3.23e-01  3.19e-02  2.84e-01  4.18e-01 |
+|  2.02e-02  3.38e-01  2.30e-01  1.49e-01 |
 ----
 The residual (F_answer_h-F_h) is
 ----
-|  8.76e-01  7.29e-01  2.56e-02  3.03e-01 |
-|  4.40e-02  1.07e-02  5.57e-03  3.03e-01 |
-|  7.16e-01  5.75e-01  2.86e-01  7.68e-02 |
-|  8.54e-01  5.58e-01  5.81e-01  2.79e-01 |
-|  4.18e-01  5.55e-01  1.16e-01  6.04e-01 |
-|  1.44e-01  3.76e-01  9.32e-02  4.81e-02 |
-|  6.55e-02  2.77e-01  4.90e-03  3.30e-02 |
-|  3.17e-01  3.35e-01  6.31e-01  3.35e-01 |
+|  4.50e-01  1.70e-01  2.77e-01  2.21e-02 |
+|  2.46e-02  3.48e-02  4.41e-02  2.05e-01 |
+|  7.57e-01  4.06e-03  3.90e-01  2.74e-01 |
+|  3.16e-01  3.38e-05  9.45e-02  9.03e-01 |
+|  1.60e-02  6.24e-03  9.69e-02  4.00e-01 |
+|  4.89e-01  4.12e-01  8.46e-01  8.93e-02 |
+|  3.23e-01  3.19e-02  2.84e-01  4.18e-01 |
+|  2.02e-02  3.38e-01  2.30e-01  1.49e-01 |
 ----
 </pre>
 </div>
@@ -14818,12 +14818,16 @@ The residual (F_answer_h-F_h) is
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Choose-your-own-coding-adventure!">Choose your own coding adventure!<a class="anchor-link" href="#Choose-your-own-coding-adventure!">&#182;</a></h2><p>As it stands the exercise <a href="mat_elementwise.cpp">mat_elementwise.cpp</a> is missing a number of <strong>crucial</strong> steps. Each step is clearly marked out in the code using quadruple comments.</p>
+<h2 id="Choose-your-own-coding-adventure!">Choose your own coding adventure!<a class="anchor-link" href="#Choose-your-own-coding-adventure!">&#182;</a></h2><p>As it stands the exercise <a href="mat_elementwise.cpp">mat_elementwise.cpp</a> is missing a number of <strong>crucial</strong> steps. Each step is clearly marked out in the code using quadruple slash <code>////</code> comments.</p>
 <ol>
 <li>Kernel code to perform the actual elementwise multiplication.<ul>
 <li>Make sure you have a guard statement in place so that you don't overrun the bounds of F. </li>
 <li>Use multi-dimensional indexing as shown in the Survival C++ Lesson to index into arrays.</li>
-<li>If you get stuck you can just use the kernel from the answer in <a href="mat_elementwise_answer.cpp">mat_elementwise_answer.cpp</a>.</li>
+<li>If you get stuck you can just uncomment the include statement, similar to the following:
+<br/><br/><div class="highlight"><pre><span></span><span class="c1">// Uncomment for the shortcut answer</span>
+<span class="c1">// #include &quot;step1_kernel.cpp&quot;</span>
+</pre></div>
+<br/></li>
 </ul>
 </li>
 <li>Initialise HIP and set the compute device.<ul>
@@ -14894,7 +14898,7 @@ The residual (F_answer_h-F_h) is
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make<span class="p">;</span> ./mat_elementwise.exe
@@ -14942,25 +14946,25 @@ The output array F_h (as computed with HIP) is
 ----
 The CPU solution (F_answer_h) is 
 ----
-|  1.18e-02  3.13e-01  1.19e-01  1.80e-01 |
-|  4.00e-01  4.19e-01  1.62e-01  1.80e-01 |
-|  3.51e-01  2.33e-01  4.16e-01  2.58e-01 |
-|  2.82e-01  6.09e-01  6.65e-01  1.01e-01 |
-|  2.72e-02  2.19e-02  1.25e-02  4.01e-01 |
-|  5.06e-02  2.47e-01  5.42e-01  1.27e-01 |
-|  5.81e-01  1.67e-01  7.68e-02  5.96e-01 |
-|  4.78e-01  6.68e-01  2.84e-02  4.82e-02 |
+|  4.50e-01  1.70e-01  2.77e-01  2.21e-02 |
+|  2.46e-02  3.48e-02  4.41e-02  2.05e-01 |
+|  7.57e-01  4.06e-03  3.90e-01  2.74e-01 |
+|  3.16e-01  3.38e-05  9.45e-02  9.03e-01 |
+|  1.60e-02  6.24e-03  9.69e-02  4.00e-01 |
+|  4.89e-01  4.12e-01  8.46e-01  8.93e-02 |
+|  3.23e-01  3.19e-02  2.84e-01  4.18e-01 |
+|  2.02e-02  3.38e-01  2.30e-01  1.49e-01 |
 ----
 The residual (F_answer_h-F_h) is
 ----
-|  1.18e-02  3.13e-01  1.19e-01  1.80e-01 |
-|  4.00e-01  4.19e-01  1.62e-01  1.80e-01 |
-|  3.51e-01  2.33e-01  4.16e-01  2.58e-01 |
-|  2.82e-01  6.09e-01  6.65e-01  1.01e-01 |
-|  2.72e-02  2.19e-02  1.25e-02  4.01e-01 |
-|  5.06e-02  2.47e-01  5.42e-01  1.27e-01 |
-|  5.81e-01  1.67e-01  7.68e-02  5.96e-01 |
-|  4.78e-01  6.68e-01  2.84e-02  4.82e-02 |
+|  4.50e-01  1.70e-01  2.77e-01  2.21e-02 |
+|  2.46e-02  3.48e-02  4.41e-02  2.05e-01 |
+|  7.57e-01  4.06e-03  3.90e-01  2.74e-01 |
+|  3.16e-01  3.38e-05  9.45e-02  9.03e-01 |
+|  1.60e-02  6.24e-03  9.69e-02  4.00e-01 |
+|  4.89e-01  4.12e-01  8.46e-01  8.93e-02 |
+|  3.23e-01  3.19e-02  2.84e-01  4.18e-01 |
+|  2.02e-02  3.38e-01  2.30e-01  1.49e-01 |
 ----
 </pre>
 </div>
@@ -14990,7 +14994,7 @@ The residual (F_answer_h-F_h) is
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <address>
-Written by Dr. Toby Potter of <a href="https://www.pelagos-consulting.com">Pelagos Consulting and Education</a> for the Pawsey Supercomputing Centre
+Written by Dr. Toby Potter of <a href="https://www.pelagos-consulting.com">Pelagos Consulting and Education</a> for the Pawsey Supercomputing Centre.
 </address>
 </div>
 </div>
