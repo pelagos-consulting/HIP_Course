@@ -15,7 +15,7 @@ CXXFLAGS=-g -fopenmp
 
 # Debugging instructions
 ifeq ($(DEBUG), true)
-    CXXFLAGS:=$(CXXFLAGS) -ggdb
+    CXXFLAGS:=-O1 -ggdb $(CXXFLAGS)
 else
     CXXFLAGS:=$(CXXFLAGS) -O2
 endif

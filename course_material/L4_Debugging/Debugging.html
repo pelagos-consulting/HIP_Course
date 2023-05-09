@@ -15043,7 +15043,7 @@ Maximum error (infinity norm) is: 65.3094
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make mat_mult_printf.exe<span class="p">;</span> ./mat_mult_printf.exe
@@ -15068,8 +15068,7 @@ Maximum error (infinity norm) is: 65.3094
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>hipcc -fopenmp -g -ggdb -I/usr/include -I../include -L/usr/lib/x86_64-linux-gnu mat_mult_printf.cpp\
-	-o mat_mult_printf.exe 
+<pre>make: &#39;mat_mult_printf.exe&#39; is up to date.
 Device id: 0
 	name:                                    
 	global memory size:                      536 MB
@@ -15079,7 +15078,7 @@ Device id: 0
 	max block size:                          (1024,1024,1024)
 	max threads in a block:                  1024
 	max Grid size:                           (2147483647,2147483647,2147483647)
-Maximum error (infinity norm) is: 2.15512e+38
+Maximum error (infinity norm) is: 3.39863e+38
 </pre>
 </div>
 </div>
@@ -15108,10 +15107,13 @@ Maximum error (infinity norm) is: 2.15512e+38
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="Debugging-HIP-kernels-with-ROCGDB">Debugging HIP kernels with ROCGDB<a class="anchor-link" href="#Debugging-HIP-kernels-with-ROCGDB">&#182;</a></h2><p>On Setonix, AMD has the <strong>rocgdb</strong> debugger available to perform debugging.</p>
-<h3 id="Compiler-options">Compiler options<a class="anchor-link" href="#Compiler-options">&#182;</a></h3><p>In order for debugging information to be included in the application, the compiler needs to have the <strong>-g</strong> compiler argument set and preferaby <strong>-ggdb</strong> if it is supported. This command</p>
+<h3 id="Compiler-options-for-debugging">Compiler options for debugging<a class="anchor-link" href="#Compiler-options-for-debugging">&#182;</a></h3><p>From this <a href="https://docs.amd.com/bundle/ROCDubugger-User-Guide/page/AMD-GPU.html">source</a> AMD recommends setting your code up for debugging by compiling with <code>hipcc</code> and the flags <code>-O0 -ggdb</code> and the appropriate <code>--offload-arch</code> flag for your architecture. For MI250 GPUs it is <code>--offload-arch=gfx90a</code>. On some AMD architectures the <code>-O0</code> flag produces faulty code, see <a href="https://github.com/ROCm-Developer-Tools/HIP/issues/3183">this issue on Github</a> for more information.</p>
+<p>This command</p>
 
-<pre><code>hipcc -g -ggdb mat_mult_bug.cpp -o mat_mult_bug.exe</code></pre>
-<p>will compile the file <a href="mat_mult_bug.cpp">mat_mult_bug.cpp</a> with debugging support.</p>
+<pre><code>hipcc -O0 -ggdb mat_mult_bug.cpp -o mat_mult_bug.exe</code></pre>
+<p>is intended to compile the file <a href="mat_mult_bug.cpp">mat_mult_bug.cpp</a> with debugging support, however we use the <code>-O1</code> flag to avoid the compiler bug.</p>
+
+<pre><code>hipcc -O1 -ggdb mat_mult_bug.cpp -o mat_mult_bug.exe</code></pre>
 <h3 id="Running-ROCGDB">Running ROCGDB<a class="anchor-link" href="#Running-ROCGDB">&#182;</a></h3><p>Within ROCGDB for GPU archicectures there is the concept of <strong>threads</strong> and <strong>lanes</strong>. A <em>thread</em> is charge of a wavefront, which is executed on a compute unit, and a lane is a shader core core that executes the instructions in parallel as part of a wavefront.</p>
 <p>We execute <strong>rocgdb</strong> for <strong>mat_mult_bug.exe</strong> as follows:</p>
 <div class="highlight"><pre><span></span>rocgdb --args ./mat_mult_bug.exe
@@ -15218,7 +15220,7 @@ run</code></pre>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Now we can type <code>step</code> to walk through each line of execution. The command <code>info registers</code> prints all available registers. The registers that start with <strong>s</strong> are scalar registers that are used for the whole wavefront. The registers that start with <strong>v</strong> are vector registers. Each work-item <strong>i</strong> in the wavefront has access to the vector register at index <strong>i</strong>.</p>
+<p>Now we can type <code>step</code> to walk through each line of execution or <code>stepi</code> to step through a single machine instruction. The command <code>info registers</code> prints all available registers. The registers that start with <strong>s</strong> are scalar registers that are used for the whole wavefront. The registers that start with <strong>v</strong> are vector registers. Each work-item <strong>i</strong> in the wavefront has access to the vector register at index <strong>i</strong>.</p>
 <p>Stepping through the program we are looking for the lines where the value of <strong>i1</strong> is being computed. Something like this:</p>
 <div class="highlight"><pre><span></span><span class="err">33</span><span class="w">      </span><span class="nf">size_t</span><span class="w"> </span><span class="no">i1</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="no">blockIdx.x</span><span class="w"> </span><span class="p">*</span><span class="w"> </span><span class="no">blockDim.x</span><span class="w"> </span><span class="err">+</span><span class="w"> </span><span class="no">threadIdx.x</span><span class="c1">;</span>
 <span class="err">=&gt;</span><span class="w"> </span><span class="err">0</span><span class="nf">x00007ffff632303c</span><span class="w"> </span><span class="err">&lt;</span><span class="no">_Z8mat_multPfS_S_mmm</span><span class="err">+</span><span class="mi">60</span><span class="err">&gt;</span><span class="p">:</span><span class="w">    </span><span class="mi">08</span><span class="w"> </span><span class="mi">00</span><span class="w"> </span><span class="mi">00</span><span class="w"> </span><span class="mi">68</span><span class="w"> </span><span class="no">v_add_u32_e32</span><span class="w"> </span><span class="no">v0</span><span class="p">,</span><span class="w"> </span><span class="no">s8</span><span class="p">,</span><span class="w"> </span><span class="no">v0</span><span class="w"></span>
