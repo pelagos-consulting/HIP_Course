@@ -11,11 +11,13 @@ endif
 
 # Compiler locations
 CXX=hipcc
-CXXFLAGS=-g -fopenmp -O2
+CXXFLAGS=-g -fopenmp
 
 # Debugging instructions
 ifeq ($(DEBUG), true)
     CXXFLAGS:=$(CXXFLAGS) -ggdb
+else
+    CXXFLAGS:=$(CXXFLAGS) -O2
 endif
 
 # Miscellaneous include flags for base compilation 
