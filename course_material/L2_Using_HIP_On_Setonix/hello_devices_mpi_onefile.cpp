@@ -1,5 +1,18 @@
-#include <mpi.h>
+///
+/// @file  hello_devices_mpi.cpp
+/// 
+/// @brief Example program for using MPI with HIP
+///
+/// Written by Dr. Toby Potter 
+/// for the Commonwealth Scientific and Industrial Research Organisation of Australia (CSIRO).
+///
+
 #include <cassert>
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
+#include <mpi.h>
 
 // Include the HIP helper headers
 #include <hip/hip_runtime.h>
