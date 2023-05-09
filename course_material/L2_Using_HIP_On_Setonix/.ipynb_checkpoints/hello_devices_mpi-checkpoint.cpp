@@ -2,13 +2,34 @@
 #include <cassert>
 
 // Include the HIP helper headers
-#include "hip_helper.hpp"
+#include <hip/hip_runtime.h>
 
 // Length of our grid
 #define N0_A 512
 
 // Declare the kernel function header
 __global__ void fill (float*, float, size_t);
+
+// Examine an error code and exit if necessary.
+void h_errchk(hipError_t errcode, const char* message) {
+
+    if (errcode != hipSuccess) { 
+        const char* errstring = hipGetErrorString(errcode); 
+        std::fprintf( 
+            stderr, 
+            "Error, HIP call failed at %s, error string is: %s\n", 
+            message, 
+            errstring 
+        ); 
+        exit(EXIT_FAILURE); 
+    }
+}
+
+// Macro to check error codes.
+#define H_ERRCHK(cmd) \
+{\
+    h_errchk(cmd, "__FILE__:__LINE__");\
+}
 
 // Main program
 int main(int argc, char** argv) {
