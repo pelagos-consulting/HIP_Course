@@ -1,7 +1,7 @@
 /**********************************************************
 "Hello World"-type program to test different srun layouts.
 
-Written by Tom Papatheodore
+Written by Tom Papatheodore 
 **********************************************************/
 
 #include <stdlib.h>
