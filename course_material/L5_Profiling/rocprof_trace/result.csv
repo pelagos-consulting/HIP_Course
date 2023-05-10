@@ -1,2 +1,2 @@
 "Index","KernelName","gpu-id","queue-id","queue-index","pid","tid","grd","wgr","lds","scr","arch_vgpr","accum_vgpr","sgpr","wave_size","sig","obj","DispatchNs","BeginNs","EndNs","CompleteNs","DurationNs"
-0,"mat_mult(float*, float*, float*, unsigned long, unsigned long, unsigned long) [clone .kd]",1,0,3,20168,20168,536640,64,0,0,16,0,128,32,"0x0","0x7fca44c2a780",13524913247650,13524914167245,13524916917297,13524916918579,2750052
+0,"mat_mult(float*, float*, float*, unsigned long, unsigned long, unsigned long) [clone .kd]",1,0,3,23655,23655,536640,64,0,0,16,0,128,32,"0x0","0x7fd679ed0780",19998375082205,19998376435040,19998379323695,19998379326098,2888655
