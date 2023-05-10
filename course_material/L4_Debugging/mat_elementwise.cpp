@@ -163,7 +163,7 @@ int main(int argc, char** argv) {
     h_write_binary(E_h, "array_E.dat", nbytes_E);
     h_write_binary(F_h, "array_F.dat", nbytes_F);
     
-    //// Step 10. Clean up memory alllocations and release resources
+    //// Step 10. Clean up memory allocations and release resources
     
     // Free the HIP buffers
     H_ERRCHK(hipFree(D_d));
