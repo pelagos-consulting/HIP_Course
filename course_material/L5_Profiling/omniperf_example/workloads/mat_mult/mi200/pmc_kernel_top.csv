@@ -1,0 +1,2 @@
+KernelName,Count,Sum(ns),Mean(ns),Median(ns),Pct
+"mat_mult(float*, float*, float*, unsigned long, unsigned long, unsigned long) [clone .kd]",1,360800.0,360800.0,360800.0,100.0

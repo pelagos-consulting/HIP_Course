@@ -1,2 +1,0 @@
-Index,KernelName,gpu-id,queue-id,queue-index,pid,tid,grd,wgr,lds,scr,vgpr,sgpr,fbar,sig,obj,DispatchNs,BeginNs,EndNs,CompleteNs
-0,"mat_mult(float*, float*, float*, unsigned long, unsigned long, unsigned long) [clone .kd]",0,0,3,30517,30517,536640,64,0,0,8,32,0,0x0,0x14f010b8d940,1966741104635081,1966741104654854,1966741105013736,1966741105015436

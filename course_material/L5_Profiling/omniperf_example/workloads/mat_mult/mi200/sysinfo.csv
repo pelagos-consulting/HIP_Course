@@ -1,0 +1,2 @@
+workload_name,command,host_name,host_cpu,host_distro,host_kernel,host_rocmver,date,gpu_soc,numSE,numCU,numSIMD,waveSize,maxWavesPerCU,maxWorkgroupSize,L1,L2,sclk,mclk,cur_sclk,cur_mclk,L2Banks,name,numSQC,hbmBW,ip_blocks
+mat_mult,"./mat_mult_profiling.exe -o mat_mult.csv",nid002080,AMD EPYC 7A53 64-Core Processor,SUSE Linux Enterprise Server 15 SP3,5.3.18-150300.59.87_11.0.78-cray_shasta_c,5.0.2-72,Fri May 12 11:50:17 2023 (AWST),gfx90a,8,110,4,64,32,1024,16,8192,1700,1600,800,1600,32,mi200,56,1638.4,roofline|SQ|LDS|SQC|TA|TD|TCP|TCC|SPI|CPC|CPF
