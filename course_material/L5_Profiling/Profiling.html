@@ -15626,7 +15626,7 @@ $$a_{0}=\frac{23.95}{1.6} \approx 15$$<p>Shown below is a roofline plot of <stro
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="Performance-measurement-with-NVIDIA-tools">Performance measurement with NVIDIA tools<a class="anchor-link" href="#Performance-measurement-with-NVIDIA-tools">&#182;</a></h2><p>HIP applications that use the CUDA backend (when CUDA is available and the environment variable <code>HIP_PLATFORM</code> is set to <code>nvidia</code>) have access to the NVIDIA performance measurement tools such as <a href="https://developer.nvidia.com/nsight-systems">NVIDIA Nsight Systems</a> and <a href="https://developer.nvidia.com/nsight-compute">NVIDIA Nsight Compute</a>. Here we briefly cover how to use these tools.</p>
-<h3 id="Tracing-with-Nsight-Systems">Tracing with Nsight Systems<a class="anchor-link" href="#Tracing-with-Nsight-Systems">&#182;</a></h3><p>The command line application <strong>nsys</strong> can collect traces on <strong>mat_mult_profiling.exe</strong>.</p>
+<h3 id="Tracing-with-Nsight-Systems">Tracing with Nsight Systems<a class="anchor-link" href="#Tracing-with-Nsight-Systems">&#182;</a></h3><p>The command line application <strong>nsys</strong> can collect traces on <strong>mat_mult_profiling.exe</strong>. Make sure you have re-compiled <strong>mat_mult_profiling.exe</strong> with the <code>$HIP_PLATFORM</code> environment variable set to <code>nvidia</code>.</p>
 
 </div>
 </div>
@@ -15714,7 +15714,7 @@ Generated:
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>It's important to note that when using the NVIDIA backend it is important to note that HIP is a thin layer over CUDA. NVIDIA performance tools will report usage for the underlying CUDA functions instead of the HIP labelled functions. For example, when using Nsight Systems it will report a call to <strong>cudaDeviceSynchronize</strong> instead of <strong>hipDeviceSynchronize</strong>. One has to make the mental mapping between HIP and CUDA.</p>
+<p>It's important to note that when using the NVIDIA backend it is important to note that HIP is a <strong>thin layer</strong> over CUDA. NVIDIA performance tools will report usage for the underlying CUDA functions instead of the HIP labelled functions. For example, when using Nsight Systems it will report a call to <strong>cudaDeviceSynchronize</strong> instead of <strong>hipDeviceSynchronize</strong>. One has to make the mental mapping between HIP and CUDA API calls.</p>
 
 </div>
 </div>

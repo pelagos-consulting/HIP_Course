@@ -141,7 +141,7 @@ int main(int argc, char** argv) {
 
     // Compute the known solution
     m_hadamard(D_h, E_h, F_answer_h, N0_F, N1_F);
-    
+
     // Print the maximum error between matrices
     float max_err = m_max_error(F_h, F_answer_h, N0_F, N1_F);
 
