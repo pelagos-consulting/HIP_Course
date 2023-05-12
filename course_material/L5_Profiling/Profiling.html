@@ -14693,6 +14693,11 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <span class="w">    </span><span class="c1">// Get the elapsed time in milliseconds</span>
 <span class="w">    </span><span class="n">elapsed_ms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h_get_event_time_ms</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span><span class="w"> </span><span class="n">t2</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;mat_mult kernel&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span><span class="w"></span>
 </pre></div>
+<p>When we are finished with an event we can destroy them with the <strong>hipEventDestroy</strong> function.</p>
+<div class="highlight"><pre><span></span><span class="c1">// Destroy events</span>
+<span class="w">    </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="n">hipEventDestroy</span><span class="p">(</span><span class="n">t1</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="n">hipEventDestroy</span><span class="p">(</span><span class="n">t2</span><span class="p">));</span><span class="w"></span>
+</pre></div>
 
 </div>
 </div>
