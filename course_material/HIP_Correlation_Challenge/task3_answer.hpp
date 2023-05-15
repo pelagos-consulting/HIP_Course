@@ -1,18 +1,12 @@
-            //// Begin Task 3 - Code to upload memory to the compute device buffer ////
+            // Task 3 solution
             
             // Upload memory from images_in at offset
-            // To buffer_srces[tid], using command_queues[tid]
-            h_errchk(clEnqueueWriteBuffer(
-                        command_queues[tid],
-                        buffer_srces[tid],
-                        blocking,
-                        0,
-                        nbytes_image,
-                        &images_in[offset],
-                        0,
-                        NULL,
-                        NULL), 
-                     "Writing to source buffer"
+            // To srces_d[tid]
+            H_ERRCHK(
+                hipMemcpy(
+                    srces_d[tid], 
+                    &images_in[offset], 
+                    nbytes_image, 
+                    hipMemcpyHostToDevice
+                )
             );
-
-            //// End Task 3 ///////////////////////////////////////////////////////////

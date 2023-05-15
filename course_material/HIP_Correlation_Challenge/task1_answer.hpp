@@ -1,71 +1,26 @@
-        //// Begin Task 1 - Code to create the OpenCL buffers for each thread ////
-        
-        // Fill buffer_srces[n], buffer_dests[n], buffer_kerns[n] 
-        // with buffers created by clCreateBuffer 
-        // Use the h_errchk routine to check output
-        
-        // buffer_srces[n] is of size nbytes_image
-        // buffer_dests[n] is of size nbytes_image
-        // buffer_kerns[n] is of size nbytes_image_kernel
-        
-        // the array image_kernel contains the host-allocated 
-        // memory for the image kernel
-        
-        // Create buffers for sources
-        buffer_srces[n] = clCreateBuffer(
-                contexts[n],
-                CL_MEM_READ_WRITE,
-                nbytes_image,
-                NULL,
-                &errcode);
-        h_errchk(errcode, "Creating buffers for sources");
+    // Reconstruct size of the kernel
+    size_t len0_kern = pad0_l + pad0_r + 1;
+    size_t len1_kern = pad1_l + pad1_r + 1;
 
-        // Create buffers for destination
-        buffer_dests[n] = clCreateBuffer(
-                contexts[n],
-                CL_MEM_READ_WRITE,
-                nbytes_image,
-                NULL,
-                &errcode);
-        h_errchk(errcode, "Creating buffers for destinations");
+    // Strides for the source and destination arrays
+    size_t stride0_src = len1_src;
+    size_t stride1_src = 1;
 
-        // Zero out the contents of buffers_dests[n]
-        float_type zero=0.0;
-        h_errchk(clEnqueueFillBuffer(
-                command_queues[n],
-                buffer_dests[n],
-                &zero,
-                sizeof(float_type),
-                0,
-                nbytes_image,
-                0,
-                NULL,
-                NULL
-            ),
-            "Filling buffer with zeros."
-        );
+    // Strides for the cross-correlation kernel
+    size_t stride0_kern = len1_kern;
+    size_t stride1_kern = 1;
 
-        
-            
-cl_int clEnqueueFillBuffer(
-    cl_command_queue command_queue,
-    cl_mem buffer,
-    const void* pattern,
-    size_t pattern_size,
-    size_t offset,
-    size_t size,
-    cl_uint num_events_in_wait_list,
-    const cl_event* event_wait_list,
-    cl_event* event);
+    // Assuming row-major ordering for arrays
+    size_t offset_src = i0 * stride0_src + i1;
+    size_t offset_kern = pad0_l*stride0_kern + pad1_l*stride1_kern; 
 
-
-        // Create buffer for the image kernel, copy from host memory image_kernel to fill this
-        buffer_kerns[n] = clCreateBuffer(
-                contexts[n],
-                CL_MEM_COPY_HOST_PTR,
-                nbytes_image_kernel,
-                (void*)image_kernel,
-                &errcode);
-        h_errchk(errcode, "Creating buffers for image kernel");
-
-        //// End Task 1 //////////////////////////////////////////////////////////
+    if ((i0 >= pad0_l) && (i0 < len0_src-pad0_r) && (i1 >= pad1_l) && (i1 < len1_src-pad1_r)) {
+        float_type sum = 0.0;
+        for (int i = -pad0_l; i<= pad0_r; i++) {
+            for (int j = -pad1_l; j <= pad1_r; j++) {
+                sum += kern[offset_kern + i*stride0_kern + j*stride1_kern] 
+                    * src[offset_src + i*stride0_src + j*stride1_src];
+            }
+        }
+        dst[offset_src] = sum;
+    }
