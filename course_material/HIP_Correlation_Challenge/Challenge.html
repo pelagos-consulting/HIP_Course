@@ -14953,18 +14953,16 @@ $$C(i,j)=(I\star K)(i,j)=\sum_{u}\sum_v I(i+u,j+v)K(u,v)$$
 <li>Program optimisation</li>
 </ul>
 <p>Here are the tasks required to make the code operational.</p>
-<h4 id="Task-1---Code-to-create-the-HIP-buffers-for-each-thread"><strong>Task 1</strong> - Code to create the HIP buffers for each thread<a class="anchor-link" href="#Task-1---Code-to-create-the-HIP-buffers-for-each-thread">&#182;</a></h4><p>For every device at index <strong>n</strong>, use the function <a href="https://registry.khronos.org/HIP/sdk/3.0/docs/man/html/clCreateBuffer.html">clCreateBuffer</a> to create buffers for <strong>buffer_srces[n]</strong>, <strong>buffer_dests[n]</strong> and the image kernel buffer <strong>buffer_kerns[n]</strong>. You have <strong>contexts[n]</strong> available as the context associated with each device. You might want to consider using <a href="https://registry.khronos.org/HIP/sdk/3.0/docs/man/html/clEnqueueFillBuffer.html">clEnqueueFillBuffer</a> to zero out the contents of the <strong>buffer_dests[n]</strong> array, as the edge may not be written to.</p>
-<h4 id="Task-2---Code-to-set-kernel-arguments-for-each-thread"><strong>Task 2</strong> - Code to set kernel arguments for each thread<a class="anchor-link" href="#Task-2---Code-to-set-kernel-arguments-for-each-thread">&#182;</a></h4><p>For every device at index <strong>n</strong> set all arguments to <strong>kernels[n]</strong>. Have a look at the <strong>xcorr</strong> kernel preamble in <a href="kernels.cl">kernels.cl</a> to make sure you have the right data type.</p>
-<h4 id="Task-3---Code-to-upload-memory-to-the-compute-device-buffer"><strong>Task 3</strong> - Code to upload memory to the compute device buffer<a class="anchor-link" href="#Task-3---Code-to-upload-memory-to-the-compute-device-buffer">&#182;</a></h4><p>Within the OpenMP loop over the images is a place to upload memory, enqueue the correlation kernel, and download memory. If <strong>tid</strong> is the thread id, you can use the HIP function <a href="https://registry.khronos.org/HIP/sdk/3.0/docs/man/html/clEnqueueReadBuffer.html">clEnqueueWriteBuffer</a> to write <strong>nbytes_image</strong> of memory from <strong>images_in</strong> at position <strong>offset</strong> to the HIP buffer <strong>buffer_srces[tid]</strong>. You have <strong>command_queues[tid]</strong> available to perform the copy and can use <strong>blocking</strong> transfers.</p>
-<h4 id="Task-4---A-kernel-to-perform-the-cross-correlation-for-each-pixel"><strong>Task 4</strong> - A kernel to perform the cross-correlation for each pixel<a class="anchor-link" href="#Task-4---A-kernel-to-perform-the-cross-correlation-for-each-pixel">&#182;</a></h4><p>This task is probably the most challenging. Have a look at the kernel source <a href="kernels.cl">kernels.cl</a>. The variables <strong>gid0</strong> and <strong>gid1</strong> cover <strong>at least</strong> the domain of the source buffer <strong>src</strong>. Consider the source array as being already padded, so make sure you don't read or write outside either the <strong>src</strong> image or the image kernel <strong>kern</strong>. The source image is of size <strong>(len0_src, len1_src)</strong>, and the variables <strong>pad0_l, pad0_r, pad1_l, pad1_r</strong> represent the left and right padding for dimensions 0 and 1.</p>
-<p>If you get stuck at this point you can take a peek at the answer <a href="kernels_answers.cl">kernels_answers.cl</a> or just load the answers kernel by swapping the comments on these two lines.</p>
-<div class="highlight"><pre><span></span><span class="c1">// Read kernel sources </span>
-<span class="w">    </span><span class="c1">//const char* filename = &quot;kernels_answers.cl&quot;</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">filename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;kernels.cl&quot;</span><span class="p">;</span><span class="w"></span>
+<h4 id="Task-1.-Implement-a-correlation-kernel"><strong>Task 1</strong>. Implement a correlation kernel<a class="anchor-link" href="#Task-1.-Implement-a-correlation-kernel">&#182;</a></h4><p>This task is probably the most challenging. Have a look at the kernel source in the function <strong>xcorr</strong>. The variables <strong>i0</strong> and <strong>i1</strong> cover <strong>at least</strong> the domain of the source image <strong>src</strong>. Consider the source image as being already padded, so make sure you don't read or write outside either the <strong>src</strong> image or the image kernel <strong>kern</strong>. The source image is of size <strong>(len0_src, len1_src)</strong>, and the variables <strong>pad0_l, pad0_r, pad1_l, pad1_r</strong> represent the left and right padding for dimensions 0 and 1.</p>
+<p>If you get stuck at this point you can take a peek at the <strong>xcorr</strong> kernel in  <a href="xcorr_answers.cpp">xcorr_answers.cpp</a>, or uncomment the solution in this line of code</p>
+<div class="highlight"><pre><span></span><span class="c1">// Uncomment for the shortcut answer</span>
+<span class="w">    </span><span class="c1">// #include &quot;task1_answer.hpp&quot;</span>
 </pre></div>
-<h4 id="Task-5---Code-to-enqueue-the-kernel"><strong>Task 5</strong> - Code to enqueue the kernel<a class="anchor-link" href="#Task-5---Code-to-enqueue-the-kernel">&#182;</a></h4><p>Once the kernel is written, you can enqueue <strong>kernels[tid]</strong> using <strong>command_queues[tid]</strong> and the HIP function <a href="https://registry.khronos.org/HIP/sdk/3.0/docs/man/html/clEnqueueNDRangeKernel.html">clEnqueueNDRangeKernel</a>.</p>
-<h4 id="Task-6---Code-to-download-memory-from-the-compute-device-buffer"><strong>Task 6</strong> - Code to download memory from the compute device buffer<a class="anchor-link" href="#Task-6---Code-to-download-memory-from-the-compute-device-buffer">&#182;</a></h4><p>Finally, within the OpenMP loop you need to be able to read memory of size <strong>nbytes_image</strong> from <strong>buffer_dests[tid]</strong> to <strong>images_out</strong> at position <strong>offset</strong>. Use the HIP function <a href="https://registry.khronos.org/HIP/sdk/3.0/docs/man/html/clEnqueueReadBuffer.html">clEnqueueReadBuffer</a> and use <strong>blocking</strong> transfers.</p>
-<h4 id="Task-7---Compile-and-debug"><strong>Task 7</strong> - Compile and debug<a class="anchor-link" href="#Task-7---Compile-and-debug">&#182;</a></h4><p>It is always a good idea to check your memory transfers first, to make sure that output from the kernel is making it into the right place in <strong>images_out</strong>. The program <strong>oclgrind</strong> is helpful in diagnosing faults in the use of HIP functions and memory errors in kernels. Once you are satisfied memory is being transferred correctly then proceed to finish the kernel. In the cells below is functionality to compile <strong>xcorr.exe</strong> and to run and check output.</p>
+<h4 id="Task-2.-Allocate-memory-on-the-compute-device-buffer"><strong>Task 2</strong>. Allocate memory on the compute device buffer<a class="anchor-link" href="#Task-2.-Allocate-memory-on-the-compute-device-buffer">&#182;</a></h4><p>For every device at index <strong>n</strong>, use the function <strong>hipMalloc</strong> to create buffers for <strong>srces_d[n]</strong>, <strong>dests_d[n]</strong> and the image kernel buffer <strong>kerns_d[n]</strong>. You might want to consider using <strong>hipMemset</strong> to zero out the contents of the <strong>dests_d[n]</strong> array, as the edge may not be written to.</p>
+<h4 id="Task-3.-Upload-memory-to-the-compute-device-buffer"><strong>Task 3</strong>. Upload memory to the compute device buffer<a class="anchor-link" href="#Task-3.-Upload-memory-to-the-compute-device-buffer">&#182;</a></h4><p>The inner OpenMP loop over images is a place to upload memory, launch the correlation kernel, and download memory. If <strong>tid</strong> is the thread id, you can use the HIP function <strong>hipMemcpy</strong> with option <strong>hipMemcpyHostToDevice</strong> to write <strong>nbytes_image</strong> of memory from <strong>images_in</strong> at position <strong>offset</strong> to the HIP buffer <strong>srces_d[tid]</strong>.</p>
+<h4 id="Task-4.-Launch-the-kernel"><strong>Task 4</strong>. Launch the kernel<a class="anchor-link" href="#Task-4.-Launch-the-kernel">&#182;</a></h4><p>Once the kernel has been written you can use the <strong>hipLaunchKernelGGL</strong> macro to launch the <strong>xcorr</strong> kernel. Make sure the arguments are correct and have the right data type.</p>
+<h4 id="Task-5.-Download-memory-from-the-compute-device-buffer"><strong>Task 5</strong>. Download memory from the compute device buffer<a class="anchor-link" href="#Task-5.-Download-memory-from-the-compute-device-buffer">&#182;</a></h4><p>Finally, within the OpenMP loop you need to be able to read memory of size <strong>nbytes_image</strong> from <strong>dests_d[tid]</strong> to <strong>images_out</strong> at position <strong>offset</strong>. Use the HIP function <strong>hipMemcpy</strong> again but with the option <strong>hipMemcpyDeviceToHost</strong>.</p>
+<h4 id="Task-6.---Compile-and-debug"><strong>Task 6</strong>. - Compile and debug<a class="anchor-link" href="#Task-6.---Compile-and-debug">&#182;</a></h4><p>It is always a good idea to check your memory transfers first, to make sure that output from the kernel is making it into the right place in <strong>images_out</strong>. Once you are satisfied memory is being transferred correctly then proceed to finish the kernel. In the cells below is functionality to compile <strong>xcorr.exe</strong> and to run and check output.</p>
 <h4 id="If-you-get-stuck">If you get stuck<a class="anchor-link" href="#If-you-get-stuck">&#182;</a></h4><p>The program <a href="xcorr.cpp">xcorr.cpp</a> has clearly delineated sections where you can insert code for each task. If you get stuck, or want to skip a task, you can uncomment a line that includes the answer i.e.</p>
 <div class="highlight"><pre><span></span><span class="c1">// Uncomment this to include the solution</span>
 <span class="w">        </span><span class="c1">//#include &quot;task1_answer.hpp&quot;</span>
@@ -14972,7 +14970,6 @@ $$C(i,j)=(I\star K)(i,j)=\sum_{u}\sum_v I(i+u,j+v)K(u,v)$$
 <p>As always, the full solution is available at the sources below. If you need inspiration by all means take a peek at the solution.</p>
 <ul>
 <li>Cross-correlation program (for reference) <a href="xcorr_answers.cpp">xcorr_answers.cpp</a>. </li>
-<li>kernel source (for reference) <a href="kernels_answers.cl">kernels_answers.cl</a></li>
 </ul>
 
 </div>
@@ -14994,7 +14991,7 @@ $$C(i,j)=(I\star K)(i,j)=\sum_{u}\sum_v I(i+u,j+v)K(u,v)$$
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>rocm-smi
@@ -15026,8 +15023,8 @@ $$C(i,j)=(I\star K)(i,j)=\sum_{u}\sum_v I(i+u,j+v)K(u,v)$$
 ERROR: GPU[0]	: sclk clock is unsupported
 ================================================================================
 GPU[0]		: Not supported on the given system
-GPU  Temp (DieEdge)  AvgPwr   SCLK  MCLK     Fan  Perf  PwrCap       VRAM%  GPU%  
-0    61.0c           20.024W  None  2400Mhz  0%   auto  Unsupported   89%   0%    
+GPU  Temp (DieEdge)  AvgPwr  SCLK  MCLK     Fan  Perf  PwrCap       VRAM%  GPU%  
+0    65.0c           41.08W  None  2400Mhz  0%   auto  Unsupported   88%   0%    
 ================================================================================
 ============================= End of ROCm SMI Log ==============================
 </pre>
@@ -15055,7 +15052,7 @@ GPU  Temp (DieEdge)  AvgPwr   SCLK  MCLK     Fan  Perf  PwrCap       VRAM%  GPU%
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make<span class="p">;</span> ./xcorr.exe
@@ -15080,19 +15077,20 @@ GPU  Temp (DieEdge)  AvgPwr   SCLK  MCLK     Fan  Perf  PwrCap       VRAM%  GPU%
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>make: Nothing to be done for &#39;all&#39;.
+<pre>hipcc -g -fopenmp -O2 -I../include xcorr_answers.cpp -o xcorr_answers.exe 
+hipcc -g -fopenmp -O2 -I../include xcorr.cpp -o xcorr.exe 
 Device id: 0
-	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
-	global memory size:                      6226 MB
+	name:                                    
+	global memory size:                      536 MB
 	available registers per block:           65536 
-	maximum shared memory size per block:    49 KB
-	maximum pitch size for memory copies:    2147 MB
-	max block size:                          (1024,1024,64)
+	maximum shared memory size per block:    65 KB
+	maximum pitch size for memory copies:    536 MB
+	max block size:                          (1024,1024,1024)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,65535,65535)
+	max Grid size:                           (2147483647,2147483647,2147483647)
 Processing iteration 1 of 1
 Device 0 processed 100 of 100 images (100.00%)
-Overall processing rate 929.20 images/s
+Overall processing rate 43040.08 images/s
 </pre>
 </div>
 </div>
@@ -15242,7 +15240,7 @@ Overall processing rate 929.20 images/s
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>./xcorr_answers.exe
@@ -15268,17 +15266,17 @@ Overall processing rate 929.20 images/s
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>Device id: 0
-	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
-	global memory size:                      6226 MB
+	name:                                    
+	global memory size:                      536 MB
 	available registers per block:           65536 
-	maximum shared memory size per block:    49 KB
-	maximum pitch size for memory copies:    2147 MB
-	max block size:                          (1024,1024,64)
+	maximum shared memory size per block:    65 KB
+	maximum pitch size for memory copies:    536 MB
+	max block size:                          (1024,1024,1024)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,65535,65535)
+	max Grid size:                           (2147483647,2147483647,2147483647)
 Processing iteration 1 of 1
 Device 0 processed 100 of 100 images (100.00%)
-Overall processing rate 926.45 images/s
+Overall processing rate 1305.24 images/s
 </pre>
 </div>
 </div>
@@ -15292,7 +15290,7 @@ Overall processing rate 926.45 images/s
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Read images from file</span>
