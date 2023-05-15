@@ -14667,7 +14667,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="How-does-HIP-work?">How does HIP work?<a class="anchor-link" href="#How-does-HIP-work?">&#182;</a></h2><h3 id="Kernels-and-software-threads">Kernels and software threads<a class="anchor-link" href="#Kernels-and-software-threads">&#182;</a></h3><p>HIP is a framework to support running lightweight pieces of code, called kernels, <strong>in parallel</strong> over the available cores of a compute device. Below is an example kernel to compute the floating point absolute value of a single element in an array of floating point numbers.</p>
+<h2 id="How-does-HIP-work?">How does HIP work?<a class="anchor-link" href="#How-does-HIP-work?">&#182;</a></h2><h3 id="Kernels-in-software-threads">Kernels in software threads<a class="anchor-link" href="#Kernels-in-software-threads">&#182;</a></h3><p>HIP is a framework to support running lightweight pieces of code, called kernels, <strong>in parallel</strong> over the available cores of a compute device. Below is an example kernel to compute the floating point absolute value of a single element in an array of floating point numbers.</p>
 <div class="highlight"><pre><span></span><span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">vec_fabs</span><span class="p">(</span><span class="w"></span>
 <span class="w">        </span><span class="c1">// Memory allocations that are on the compute device</span>
 <span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">src</span><span class="p">,</span><span class="w"> </span>
@@ -14887,8 +14887,20 @@ When the NVIDIA backend has had a recent major version change, it is advisable t
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">&#182;</a></h2><p>In this section we have covered the fundamentals of HIP, what it is, and how it applies to your workloads in the context of the hardware capabilites of CPU and GPU compute devices. We revised the elements of a hardware accelerated application, and how HIP ensures a kernel is launched in a software thread for every element in a compute space called the <strong>grid</strong>. Then we covered the practicalities of HIP, such as installation and getting help with API. Finally, we covered the basics of compiling HIP software for both AMD and NVIDIA platforms.</p>
+
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <address>
-Written by Dr. Toby Potter of <a href="https://www.pelagos-consulting.com">Pelagos Consulting and Education</a> for the Pawsey Supercomputing Centre<br/>
+Written by Dr. Toby Potter of <a href="https://www.pelagos-consulting.com">Pelagos Consulting and Education</a> for the <a href="https://pawsey.org.au">Pawsey Supercomputing Centre</a>.<br/>
 </address>
 </div>
 </div>
