@@ -1,5 +1,6 @@
 // Include the HIP helper headers
 #include <hip/hip_runtime.h>
+#include <iostream>
 
 /// Examine an error code and exit if necessary.
 void h_errchk(hipError_t errcode, const char* message) {
