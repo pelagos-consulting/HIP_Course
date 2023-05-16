@@ -3,7 +3,7 @@
 include ../env
 
 # List of applications to target
-TARGETS=xcorr_answers.exe xcorr.exe
+TARGETS=xcorr_answers.exe xcorr.exe xcorr_testbench.exe xcorr_testbench_answers.exe
 
 all: $(TARGETS)
 

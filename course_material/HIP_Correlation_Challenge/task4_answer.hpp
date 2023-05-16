@@ -4,8 +4,8 @@
             size_t sharedMemBytes=0;
             
             // Just for kernel arguments
-            int len0_src = N0, len1_src = N1;
-            int pad0_l = L0, pad0_r = R0, pad1_l = L1, pad1_r = R1;
+            size_t len0_src = N0, len1_src = N1;
+            size_t pad0_l = L0, pad0_r = R0, pad1_l = L1, pad1_r = R1;
             
             // Launch the kernel
             hipLaunchKernelGGL(xcorr, 

@@ -138,3 +138,44 @@ void m_residual(T* A, T* B, T* C, size_t N0, size_t N1) {
         }
     }
 }
+
+/// Cross-correlation on the CPU
+template<typename T>
+void m_xcorr(
+        T* dst, 
+        T* src, 
+        T* krn, 
+        size_t len0_src,
+        size_t len1_src, 
+        size_t pad0_l,
+        size_t pad0_r,
+        size_t pad1_l,
+        size_t pad1_r) {
+
+    // Assuming row-major ordering
+    
+    // Size of the kernel
+    size_t K0=pad0_l+pad0_r+1;
+    size_t K1=pad1_l+pad1_r+1;
+    
+    // Make sure the sizes work ok
+    assert(len0_src>=K0);
+    assert(len1_src>=K1);    
+    
+    // Compute a naive cross correlation on the CPU
+    for (size_t i0=pad0_l; i0<len0_src-pad0_r; i0++) {
+        for (size_t i1=pad1_l; i1<len1_src-pad1_r; i1++) {
+            // Loop over the kernel
+            T sum=0.0;
+            for (size_t k0=0; k0<K0; k0++) {
+                for (size_t k1=0; k1<K1; k1++) {
+                    sum+=krn[k0*K1+k1]
+                        *src[(i0-pad0_l+k0)*len1_src+(i1-pad1_l+k1)];
+                }
+            }
+            
+            // Put the matrix into the destination
+            dst[i0*len1_src+i1]=sum;
+        }
+    }
+}
