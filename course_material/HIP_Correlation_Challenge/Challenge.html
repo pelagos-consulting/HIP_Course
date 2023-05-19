@@ -14658,7 +14658,7 @@ $$C(i,j)=(I\star K)(i,j)=\sum_{u}\sum_v I(i+u,j+v)K(u,v)$$
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -14767,7 +14767,7 @@ $$C(i,j)=(I\star K)(i,j)=\sum_{u}\sum_v I(i+u,j+v)K(u,v)$$
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Number of images to write</span>
@@ -14835,7 +14835,7 @@ $$C(i,j)=(I\star K)(i,j)=\sum_{u}\sum_v I(i+u,j+v)K(u,v)$$
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
@@ -14904,7 +14904,7 @@ $$C(i,j)=(I\star K)(i,j)=\sum_{u}\sum_v I(i+u,j+v)K(u,v)$$
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Python image processing rate is 150.71 images/s
+<pre>Python image processing rate is 101.95 images/s
 </pre>
 </div>
 </div>
@@ -15052,7 +15052,7 @@ GPU  Temp (DieEdge)  AvgPwr   SCLK  MCLK     Fan  Perf  PwrCap       VRAM%  GPU%
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make<span class="p">;</span> ./xcorr.exe
@@ -15077,7 +15077,7 @@ GPU  Temp (DieEdge)  AvgPwr   SCLK  MCLK     Fan  Perf  PwrCap       VRAM%  GPU%
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>make: Nothing to be done for &#39;all&#39;.
+<pre>hipcc -g -fopenmp -O2 -I../include xcorr.cpp -o xcorr.exe 
 Device id: 0
 	name:                                    
 	global memory size:                      536 MB
@@ -15089,7 +15089,7 @@ Device id: 0
 	max Grid size:                           (2147483647,2147483647,2147483647)
 Processing iteration 1 of 1
 Device 0 processed 100 of 100 images (100.00%)
-Overall processing rate 1389.72 images/s
+Overall processing rate 178705.46 images/s
 </pre>
 </div>
 </div>
@@ -15114,7 +15114,7 @@ Overall processing rate 1389.72 images/s
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">check_solution</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">proof_images</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"Greys_r"</span><span class="p">):</span>
@@ -15223,7 +15223,7 @@ Overall processing rate 1389.72 images/s
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>./xcorr_answers.exe
@@ -15259,7 +15259,7 @@ Overall processing rate 1389.72 images/s
 	max Grid size:                           (2147483647,2147483647,2147483647)
 Processing iteration 1 of 1
 Device 0 processed 100 of 100 images (100.00%)
-Overall processing rate 1402.12 images/s
+Overall processing rate 1235.20 images/s
 </pre>
 </div>
 </div>
@@ -15273,7 +15273,7 @@ Overall processing rate 1402.12 images/s
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Read images from file</span>

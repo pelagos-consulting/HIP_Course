@@ -1,2 +1,2 @@
 "Name","Calls","TotalDurationNs","AverageNs","Percentage"
-"mat_mult(float*, float*, float*, unsigned long, unsigned long, unsigned long) [clone .kd]",1,2888655,2888655,100.0
+"mat_mult(float*, float*, float*, unsigned long, unsigned long, unsigned long) [clone .kd]",1,2020036,2020036,100.0

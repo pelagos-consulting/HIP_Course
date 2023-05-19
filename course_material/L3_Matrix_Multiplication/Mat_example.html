@@ -14634,7 +14634,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make clean<span class="p">;</span> make<span class="p">;</span> ./mat_mult.exe
@@ -14696,7 +14696,7 @@ Maximum error (infinity norm) is: 1.52588e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>ls *.dat
@@ -14747,7 +14747,7 @@ Maximum error (infinity norm) is: 1.52588e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -14916,7 +14916,7 @@ Maximum error (infinity norm) is: 1.52588e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Use the GPU at device index 0</span>
@@ -15106,7 +15106,7 @@ Options:
 <span class="w">    </span><span class="n">h_errchk</span><span class="p">(</span><span class="n">hipInit</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span><span class="w"></span>
 
 <span class="w">    </span><span class="c1">// Get the number of devices</span>
-<span class="w">    </span><span class="n">h_errchk</span><span class="p">(</span><span class="n">hipGetDeviceCount</span><span class="p">(</span><span class="n">num_devices</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="n">hipGetDeviceCount</span><span class="p">(</span><span class="n">num_devices</span><span class="p">));</span><span class="w"></span>
 
 <span class="w">    </span><span class="c1">// Check to make sure we have one or more suitable devices</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">num_devices</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
@@ -15128,20 +15128,19 @@ Options:
 <div class="highlight"><pre><span></span><span class="c1">/// Function to reset devices before and after runtime</span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">h_reset_devices</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">num_devices</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 
-<span class="w">    </span><span class="c1">// Reset devices</span>
+<span class="w">   </span><span class="c1">// Reset devices</span>
 <span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="n">num_devices</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">        </span><span class="c1">// Set device</span>
-<span class="w">        </span><span class="n">h_errchk</span><span class="p">(</span><span class="n">hipSetDevice</span><span class="p">(</span><span class="n">i</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="n">hipSetDevice</span><span class="p">(</span><span class="n">i</span><span class="p">));</span><span class="w"></span>
 
-<span class="w">        </span><span class="c1">// Synchronize the compute device\</span>
-<span class="c1">        // (make sure everything has finished) </span>
-<span class="w">        </span><span class="n">h_errchk</span><span class="p">(</span><span class="n">hipDeviceSynchronize</span><span class="p">());</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Synchronize device </span>
+<span class="w">        </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="n">hipDeviceSynchronize</span><span class="p">());</span><span class="w"></span>
 
 <span class="w">        </span><span class="c1">// Reset device (destroys primary context)</span>
-<span class="w">        </span><span class="n">h_errchk</span><span class="p">(</span><span class="n">hipDeviceReset</span><span class="p">());</span><span class="w"></span>
+<span class="w">        </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="n">hipDeviceReset</span><span class="p">());</span><span class="w"></span>
 
-<span class="w">        </span><span class="c1">// Set the device to reinitialise the device</span>
-<span class="w">        </span><span class="n">h_errchk</span><span class="p">(</span><span class="n">hipSetDevice</span><span class="p">(</span><span class="n">i</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Set the device to reinitialise it</span>
+<span class="w">        </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="n">hipSetDevice</span><span class="p">(</span><span class="n">i</span><span class="p">));</span><span class="w"></span>
 <span class="w">    </span><span class="p">}</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
 </pre></div>

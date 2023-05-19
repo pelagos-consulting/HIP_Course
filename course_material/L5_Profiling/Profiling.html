@@ -14755,8 +14755,8 @@ Device id: 0
 	max block size:                          (1024,1024,1024)
 	max threads in a block:                  1024
 	max Grid size:                           (2147483647,2147483647,2147483647)
-Time for event &#34;memcpy&#34;: 0.418 ms (3805.42 MB/s)
-Time for event &#34;mat_mult kernel&#34;: 2.694 ms
+Time for event &#34;memcpy&#34;: 0.669 ms (2376.81 MB/s)
+Time for event &#34;mat_mult kernel&#34;: 3.006 ms
 Maximum error (infinity norm) is: 2.28882e-05
 </pre>
 </div>
@@ -14784,7 +14784,7 @@ Maximum error (infinity norm) is: 2.28882e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>rocprof --hip-trace --hsa-trace -o rocprof_trace/result.csv ./mat_mult_profiling.exe
@@ -14809,14 +14809,14 @@ Maximum error (infinity norm) is: 2.28882e-05
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>RPL: on &#39;230510_161136&#39; from &#39;/opt/rocm-5.4.3&#39; in &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L5_Profiling&#39;
+<pre>RPL: on &#39;230518_135904&#39; from &#39;/opt/rocm-5.4.3&#39; in &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L5_Profiling&#39;
 RPL: profiling &#39;&#34;./mat_mult_profiling.exe&#34;&#39;
 RPL: input file &#39;&#39;
-RPL: output dir &#39;/tmp/rpl_data_230510_161136_23629&#39;
-RPL: result dir &#39;/tmp/rpl_data_230510_161136_23629/input_results_230510_161136&#39;
-ROCProfiler: input from &#34;/tmp/rpl_data_230510_161136_23629/input.xml&#34;
+RPL: output dir &#39;/tmp/rpl_data_230518_135904_15162&#39;
+RPL: result dir &#39;/tmp/rpl_data_230518_135904_15162/input_results_230518_135904&#39;
+ROCProfiler: input from &#34;/tmp/rpl_data_230518_135904_15162/input.xml&#34;
   0 metrics
-ROCtracer (23655):
+ROCtracer (15187):
     HSA-trace(*)
     HSA-activity-trace()
     HIP-trace(*)
@@ -14829,11 +14829,11 @@ Device id: 0
 	max block size:                          (1024,1024,1024)
 	max threads in a block:                  1024
 	max Grid size:                           (2147483647,2147483647,2147483647)
-Time for event &#34;memcpy&#34;: 0.467 ms (3405.19 MB/s)
-Time for event &#34;mat_mult kernel&#34;: 5.050 ms
+Time for event &#34;memcpy&#34;: 0.160 ms (9905.99 MB/s)
+Time for event &#34;mat_mult kernel&#34;: 3.420 ms
 Maximum error (infinity norm) is: 2.28882e-05
 
-ROCPRofiler: 1 contexts collected, output directory /tmp/rpl_data_230510_161136_23629/input_results_230510_161136
+ROCPRofiler: 1 contexts collected, output directory /tmp/rpl_data_230518_135904_15162/input_results_230518_135904
 hsa_copy_deps: 1
 scan hsa API data 5319:5320                                                                                                    hsa_copy_deps: 0
 scan hip API data 45:46                                                                                                    File &#39;rocprof_trace/result.csv&#39; is generating
@@ -14948,7 +14948,7 @@ File &#39;rocprof_trace/result.json&#39; is generating
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>rocprof --list-derived
@@ -14973,7 +14973,7 @@ File &#39;rocprof_trace/result.json&#39; is generating
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>RPL: on &#39;230510_161141&#39; from &#39;/opt/rocm-5.4.3&#39; in &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L5_Profiling&#39;
+<pre>RPL: on &#39;230518_143428&#39; from &#39;/opt/rocm-5.4.3&#39; in &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L5_Profiling&#39;
 Derived metrics:
 
   gpu-agent0 : GPU_UTIL : Percentage of the time that GUI is active
