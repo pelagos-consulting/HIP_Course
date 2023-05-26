@@ -16,6 +16,8 @@ module swap PrgEnv-gnu PrgEnv-cray
 module load craype-accel-amd-gfx90a
 module load rocm
 
+export MPICH_GPU_SUPPORT_ENABLED=1 # Enable GPU support with MPI
+
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK   #To define the number of OpenMP threads available per MPI task, in this case it will be 8
 export OMP_PLACES=cores     #To bind to cores 
 export OMP_PROC_BIND=close  #To bind (fix) threads (allocating them as close as possible). This option works together with the "places" indicated above, then: allocates threads in closest cores.
