@@ -14648,7 +14648,7 @@ $$C(i,j)=(I\star K)(i,j)=\sum_{u}\sum_v I(i+u,j+v)K(u,v)$$
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Construct-some-example-input-data">Construct some example input data<a class="anchor-link" href="#Construct-some-example-input-data">&#182;</a></h2><p>On a recent hike to the Porongorups National Park you took this image and can use it to generate a trial stack of images.</p>
+<h2 id="Construct-some-example-input-data">Construct some example input data<a class="anchor-link" href="#Construct-some-example-input-data">&#182;</a></h2><p>On a recent hike to the Porongorups National Park you took this image and can use it to generate a trial stack of images. In the code below we just load the image and plot both it and the filter we want to apply.</p>
 
 </div>
 </div>
@@ -14658,7 +14658,7 @@ $$C(i,j)=(I\star K)(i,j)=\sum_{u}\sum_v I(i+u,j+v)K(u,v)$$
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -14758,7 +14758,8 @@ $$C(i,j)=(I\star K)(i,j)=\sum_{u}\sum_v I(i+u,j+v)K(u,v)$$
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Write-the-stack-of-images-to-file">Write the stack of images to file<a class="anchor-link" href="#Write-the-stack-of-images-to-file">&#182;</a></h3>
+<h3 id="Write-the-stack-of-images-to-file">Write the stack of images to file<a class="anchor-link" href="#Write-the-stack-of-images-to-file">&#182;</a></h3><p>We are interested in generating a stack of images to be used as a test block. In this case we slide a window across the images and generate a stack that way.</p>
+
 </div>
 </div>
 </div>
@@ -14767,7 +14768,7 @@ $$C(i,j)=(I\star K)(i,j)=\sum_{u}\sum_v I(i+u,j+v)K(u,v)$$
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Number of images to write</span>
@@ -14835,7 +14836,7 @@ $$C(i,j)=(I\star K)(i,j)=\sum_{u}\sum_v I(i+u,j+v)K(u,v)$$
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
@@ -14869,6 +14870,7 @@ $$C(i,j)=(I\star K)(i,j)=\sum_{u}\sum_v I(i+u,j+v)K(u,v)$$
 <span class="c1"># Time how quick Python takes to run</span>
 <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
 
+<span class="c1"># Generate the test stack using Python</span>
 <span class="n">image_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">sample_image</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nimages</span><span class="p">):</span>
     <span class="n">image_in</span> <span class="o">=</span> <span class="n">images_in</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
@@ -14882,7 +14884,7 @@ $$C(i,j)=(I\star K)(i,j)=\sum_{u}\sum_v I(i+u,j+v)K(u,v)$$
 
 <span class="n">py_helper</span><span class="o">.</span><span class="n">plot_slices</span><span class="p">(</span><span class="n">proof_images</span><span class="p">)</span>
 
-<span class="c1"># Using Scipy took me about 5.30 images/s</span>
+<span class="c1"># Using Scipy the processing rate is about 5.30 images/s</span>
 </pre></div>
 
      </div>
@@ -14904,7 +14906,7 @@ $$C(i,j)=(I\star K)(i,j)=\sum_{u}\sum_v I(i+u,j+v)K(u,v)$$
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Python image processing rate is 101.95 images/s
+<pre>Python image processing rate is 153.80 images/s
 </pre>
 </div>
 </div>
@@ -14953,7 +14955,7 @@ $$C(i,j)=(I\star K)(i,j)=\sum_{u}\sum_v I(i+u,j+v)K(u,v)$$
 <li>Program optimisation</li>
 </ul>
 <p>Here are the tasks required to make the code operational.</p>
-<h4 id="Task-1.-Implement-a-correlation-kernel"><strong>Task 1</strong>. Implement a correlation kernel<a class="anchor-link" href="#Task-1.-Implement-a-correlation-kernel">&#182;</a></h4><p>This task is probably the most challenging. Have a look at the kernel source in the function <strong>xcorr</strong>. The variables <strong>i0</strong> and <strong>i1</strong> cover <strong>at least</strong> the domain of the source image <strong>src</strong>. Consider the source image as being already padded, so make sure you don't read or write outside either the <strong>src</strong> image or the image kernel <strong>kern</strong>. The source image is of size <strong>(len0_src, len1_src)</strong>, and the variables <strong>pad0_l, pad0_r, pad1_l, pad1_r</strong> represent the left and right padding for dimensions 0 and 1.</p>
+<h4 id="Task-1.-Implement-a-correlation-kernel"><strong>Task 1</strong>. Implement a correlation kernel<a class="anchor-link" href="#Task-1.-Implement-a-correlation-kernel">&#182;</a></h4><p>This task is probably the most challenging. Have a look at the kernel source in the function <strong>xcorr</strong>. The variables <strong>i0</strong> and <strong>i1</strong> cover <strong>at least</strong> the domain of the source image <strong>src</strong>. Consider the source image as being already padded, so make sure you don't read or write outside either the <strong>src</strong> image or the image kernel <strong>kern</strong>. The source image is of size <strong>(len0_src, len1_src)</strong>, and the variables <strong>pad0_l, pad0_r, pad1_l, pad1_r</strong> represent the left and right padding for dimensions 0 and 1 of the kernel.</p>
 <p>If it helps there is a testbench available just for implementing the kernel. The file <a href="xcorr_testbench.cpp">xcorr_testbench.cpp</a> performs a cross-correlation on a very small test image, and tests the output against a serial solution computed on the CPU. Kernel development can be implemented independently of Python, input arguments are otherwise indentical to that of the main cross-correlation algorithm. The <code>make</code> command compiles all the files. If you get stuck with the kernel in either <a href="xcorr_testbench.cpp">xcorr_testbench.cpp</a> or <a href="xcorr.cpp">xcorr.cpp</a>, uncomment the solution in this line of code</p>
 <div class="highlight"><pre><span></span><span class="c1">// Uncomment for the shortcut answer</span>
 <span class="w">    </span><span class="c1">// #include &quot;task1_answer.hpp&quot;</span>
