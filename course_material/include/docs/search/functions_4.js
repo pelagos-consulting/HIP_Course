@@ -1,7 +1,7 @@
 var searchData=
 [
   ['h_5facquire_5fdevices_61',['h_acquire_devices',['../hip__helper_8hpp.html#a78f43d33ed7ee7b6a1337b62428190fa',1,'hip_helper.hpp']]],
-  ['h_5falloc_62',['h_alloc',['../hip__helper_8hpp.html#aed03ed8d60e889e72ce1cfdb7338408e',1,'hip_helper.hpp']]],
+  ['h_5falloc_62',['h_alloc',['../hip__helper_8hpp.html#ae6a7f1510514049828e9ff001336135e',1,'hip_helper.hpp']]],
   ['h_5fcreate_5fstreams_63',['h_create_streams',['../hip__helper_8hpp.html#a90d156e75b44a7e40931dc05c191443d',1,'hip_helper.hpp']]],
   ['h_5ferrchk_64',['h_errchk',['../hip__helper_8hpp.html#a50caffc9419f922455a1825a79baca3d',1,'hip_helper.hpp']]],
   ['h_5ffit_5fblocks_65',['h_fit_blocks',['../hip__helper_8hpp.html#a10e4313d4850500675e9a0d2c575a319',1,'hip_helper.hpp']]],
