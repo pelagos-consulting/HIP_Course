@@ -15295,19 +15295,18 @@ Options:
 
 <span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">N1_A</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NCOLS_A</span><span class="p">,</span><span class="w"> </span><span class="n">N0_C</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NROWS_C</span><span class="p">,</span><span class="w"> </span><span class="n">N1_C</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NCOLS_C</span><span class="p">;</span><span class="w"></span>
 
-<span class="w">    </span><span class="c1">//// Step 3. Allocate memory for arrays A and B on the host ////</span>
-<span class="w">    </span><span class="c1">//// and fill with random numbers ////</span>
+<span class="w">    </span><span class="c1">//// Step 3. Construct matrices A_h and B_h on the host </span>
+<span class="w">    </span><span class="c1">//// and fill them with random numbers ////</span>
 
 <span class="w">    </span><span class="c1">// Number of bytes in each array</span>
 <span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nbytes_A</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">N0_C</span><span class="o">*</span><span class="n">N1_A</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">);</span><span class="w"></span>
 <span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nbytes_B</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">N1_A</span><span class="o">*</span><span class="n">N1_C</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">);</span><span class="w"></span>
 <span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nbytes_C</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">N0_C</span><span class="o">*</span><span class="n">N1_C</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">);</span><span class="w"></span>
 
-<span class="w">    </span><span class="c1">// Allocate pinned memory for the host arrays</span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">A_h</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">B_h</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">C_h</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="n">hipHostMalloc</span><span class="p">((</span><span class="kt">void</span><span class="o">**</span><span class="p">)</span><span class="o">&amp;</span><span class="n">A_h</span><span class="p">,</span><span class="w"> </span><span class="n">nbytes_A</span><span class="p">));</span><span class="w"></span>
-<span class="w">    </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="n">hipHostMalloc</span><span class="p">((</span><span class="kt">void</span><span class="o">**</span><span class="p">)</span><span class="o">&amp;</span><span class="n">B_h</span><span class="p">,</span><span class="w"> </span><span class="n">nbytes_B</span><span class="p">));</span><span class="w"></span>
-<span class="w">    </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="n">hipHostMalloc</span><span class="p">((</span><span class="kt">void</span><span class="o">**</span><span class="p">)</span><span class="o">&amp;</span><span class="n">C_h</span><span class="p">,</span><span class="w"> </span><span class="n">nbytes_C</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Allocate memory for the host arrays</span>
+<span class="w">    </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">A_h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">h_alloc</span><span class="p">(</span><span class="n">nbytes_A</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">B_h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">h_alloc</span><span class="p">(</span><span class="n">nbytes_B</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">C_h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">h_alloc</span><span class="p">(</span><span class="n">nbytes_C</span><span class="p">);</span><span class="w"></span>
 
 <span class="w">    </span><span class="c1">// Fill the host arrays with random numbers </span>
 <span class="w">    </span><span class="c1">// using the matrix helper library</span>
@@ -15325,15 +15324,28 @@ Options:
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Of course we could have used a call to <strong>new</strong>, <strong>calloc</strong>, or <strong>malloc</strong> to allocate memory for arrays <strong>A_h</strong>, <strong>B_h</strong>, and <strong>C_h</strong> on the host. For teaching purposes we use the HIP function <strong>hipHostMalloc</strong> to allocate <code>pinned memory</code> for the arrays instead. Pinned memory is just an ordinary memory allocation with flags set so the memory <strong>cannot be paged out to disk</strong>. Pinned memory enables the fastest DMA (Direct Memory Access)  transfers between host and compute device, however too much pinned memory will put the OS under stress if allocations get <strong>too large</strong>, so it is a good idea to use pinned memory only for allocations that are going to be a source or destination for memory copied between host and device. The OS often imposes limits on how much pinned memory can be allocated. Memory allocated with <strong>hipHostMalloc</strong> must be freed with <strong>hipHostFree</strong>, as shown at the end of the program.</p>
-<div class="highlight"><pre><span></span><span class="c1">// Clean up memory that was allocated on the read   </span>
-<span class="w">    </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="n">hipHostFree</span><span class="p">(</span><span class="n">A_h</span><span class="p">));</span><span class="w"></span>
-<span class="w">    </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="n">hipHostFree</span><span class="p">(</span><span class="n">B_h</span><span class="p">));</span><span class="w"></span>
-<span class="w">    </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="n">hipHostFree</span><span class="p">(</span><span class="n">C_h</span><span class="p">));</span><span class="w"></span>
+<p>Of course we could have used a call to <strong>new</strong>, <strong>calloc</strong>, or <strong>malloc</strong> to allocate memory for arrays <strong>A_h</strong>, <strong>B_h</strong>, and <strong>C_h</strong> on the host. For teaching purposes we use the helper function <strong>h_alloc</strong> to allocate <code>aligned memory</code> for the arrays instead. Aligned memory helps with enabling vector instructions on the CPU and optimising cache access. Here is the contents of <strong>h_alloc</strong> in <a href="../include/hip_helper.hpp">hip_helper.hpp</a></p>
+<div class="highlight"><pre><span></span><span class="c1">/// Allocate aligned memory for use on the host</span>
+<span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="nf">h_alloc</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">nbytes</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="cp">#if defined(_WIN32) || defined(_WIN64)</span>
+<span class="w">    </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_aligned_malloc</span><span class="p">(</span><span class="n">nbytes</span><span class="p">,</span><span class="w"> </span><span class="n">BYTE_ALIGNMENT</span><span class="p">);</span><span class="w"></span>
+<span class="cp">#else</span>
+<span class="w">    </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aligned_alloc</span><span class="p">(</span><span class="n">BYTE_ALIGNMENT</span><span class="p">,</span><span class="w"> </span><span class="n">nbytes</span><span class="p">);</span><span class="w"></span>
+<span class="cp">#endif</span>
+<span class="w">    </span><span class="c1">// Zero out the contents of the allocation for safety</span>
+<span class="w">    </span><span class="n">memset</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;\0&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">nbytes</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">buffer</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+<p>Memory allocated with <strong>h_alloc</strong> must be freed with <strong>free</strong>, as shown at the end of the program.</p>
+<div class="highlight"><pre><span></span><span class="c1">// Clean up host memory</span>
+<span class="w">    </span><span class="n">free</span><span class="p">(</span><span class="n">A_h</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">free</span><span class="p">(</span><span class="n">B_h</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">free</span><span class="p">(</span><span class="n">C_h</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 <blockquote><p>Notice that the memory allocations are labelled <strong>A_h</strong>, and <strong>B_h</strong>. The <strong>_h</strong> suffix in the name of the allocation is just <em>naming convention</em> to highlight that the memory is allocated on the host.</p>
 </blockquote>
-<p>Next we use the function <strong>m_random</strong> from our matrix helper library <a href="../include/mat_helper.hpp">mat_helper.hpp</a> in order to fill the allocations with random numbers in the range [0,1]. Feel free to look at the source code to see how this function works.</p>
+<p>Getting back to the program, we use the function <strong>m_random</strong> from our matrix helper library <a href="../include/mat_helper.hpp">mat_helper.hpp</a> in order to fill the allocations with random numbers in the range [0,1]. Feel free to look at the source code to see how this function works.</p>
 
 </div>
 </div>
@@ -15493,7 +15505,7 @@ Options:
 <span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">N0_C</span><span class="p">,</span><span class="w"></span>
 <span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">N1_C</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 </pre></div>
-<p>Qualifiers such as <strong>__global__</strong> help the compiler decide what to do with functions The qualifier <strong>__global__</strong> at the beginning signifies that the function is launched from the host and executed on the compute device. Additional qualifiers that can be specified in the preamble are <strong>__device__</strong> which signifies that the function runs on the device and may be called by either a <strong>kernel</strong> or another device function. Finally the extra qualifier <strong>__host__</strong> means the function may also be called from the host.</p>
+<p>Qualifiers such as <strong>__global__</strong> help the compiler decide what to do with functions The qualifier <strong>__global__</strong> at the beginning signifies that the function is launched from the host and executed on the compute device, but cannot be run from within a kernel. Additional qualifiers that can be specified in the preamble are <strong>__device__</strong> which signifies that the function runs on the device and may be called by either a <strong>kernel</strong> or another device function. Finally the extra qualifier <strong>__host__</strong> means the function may also be called from the host.</p>
 <table>
 <thead><tr>
 <th>Qualifier</th>
@@ -15503,11 +15515,11 @@ Options:
 <tbody>
 <tr>
 <td>__global__</td>
-<td>Specify that the function is a kernel to be run on the device</td>
+<td>Specify that the function is a kernel to be launched from the host and run on the device</td>
 </tr>
 <tr>
 <td>__device__</td>
-<td>Specify that a function is to be run on the device and called from a kernel or other device functioin</td>
+<td>Specify that a function is to be run on the device and called from a kernel or other device function</td>
 </tr>
 <tr>
 <td>__host__</td>
@@ -15515,7 +15527,7 @@ Options:
 </tr>
 </tbody>
 </table>
-<p>Qualifiers can be used in tandem, for example both <strong>__host__</strong> and <strong>__device__</strong> can be used together to specify a function that can run on both the host and the device!</p>
+<p>Qualifiers can be used in tandem, for example both <strong>__host__</strong> and <strong>__device__</strong> can be used together to specify a function that can run on both the host and the device, however <strong>__host__</strong> and <strong>__global__</strong> are mutually exclusive.</p>
 
 </div>
 </div>

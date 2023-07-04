@@ -3,7 +3,13 @@
 include ../env
 
 # List of applications to target
-TARGETS=mat_mult_local.exe mat_mult_local_transpose_vector.exe atomics.exe atomics2.exe mat_elementwise.exe mat_elementwise_answer.exe
+TARGETS=mat_mult.exe 
+
+#		mat_mult_local_vector.exe \
+#		atomics.exe \
+#		atomics2.exe \
+#		mat_elementwise.exe \
+#		mat_elementwise_answer.exe 
 
 all: $(TARGETS)
 
@@ -13,7 +19,7 @@ all: $(TARGETS)
 
 # Clean step
 clean:
-	rm -r *.exe
+	rm -rf *.exe
 
 
 .EXPORT_ALL_VARIABLES:

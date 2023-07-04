@@ -6,7 +6,6 @@ Written by Dr Toby M. Potter
 #include <cassert>
 #include <cmath>
 #include <iostream>
-#include "mpi.h"
 
 // Bring in the size of the matrices
 #include "mat_size.hpp"
@@ -26,20 +25,26 @@ __global__ void mat_mult (
         size_t N0_C,
         size_t N1_C) { 
             
-    // C is of size (N0_C, N1_C)
+    // A is of size (N0_C, N1_A)
+    // B is of size (N1_A, N1_C)
+    // C is of size (N0_C, N1_C)   
     
     // i0 and i1 represent the coordinates in Matrix C 
-    // We assume row-major ordering for the matrices
+    // We use row-major ordering for the matrices
+    
     size_t i0 = blockIdx.y * blockDim.y + threadIdx.y;
     size_t i1 = blockIdx.x * blockDim.x + threadIdx.x;
     
     // Scratch variable
-    float temp=0.0; 
+    float temp=0.0f; 
 
     // Guard mechanism to make sure we do not go
     // outside the boundaries of matrix C 
     if ((i0<N0_C) && (i1<N1_C)) {
-        // Loop over columns of A and rows of B 
+        // Get the offset within the memory allocation of C
+        size_t offset = i0*N1_C+i1;
+        
+        // Loop over columns of A and rows of B
         for (size_t n=0; n<N1_A; n++) {
             
             // A is of size (N0_C, N1_A)
@@ -47,21 +52,22 @@ __global__ void mat_mult (
             
             // Loop across row i0 of A
             // and down column i1 of B
-            temp+=A[i0*N1_A+n]*B[n*N1_C+i1]; 
-        } 
-        // Number of rows in C is same as number of rows in A
-        C[i0*N1_C+i1]=temp;
+            temp+=A[i0*N1_A+n]*B[i1+n*N1_C]; 
+        }
+        
+        // Set the value in C at offset
+        C[offset]=temp;
+        
+        // Uncomment this to perform elementwise matrix multiplication instead
+        // C[offset]=A[offset]*B[offset];
     }
 } 
 
 int main(int argc, char** argv) {
     
-    // Initialise MPI
-    MPI_Init(&argc, &argv);
-
     //// Step 1. Parse program arguments ////
 
-    // Parse arguments
+    // Parse command line arguments
     int dev_index = h_parse_args(argc, argv);
     
     // Number of devices discovered
@@ -112,30 +118,11 @@ int main(int argc, char** argv) {
     H_ERRCHK(hipMalloc((void**)&B_d, nbytes_B));
     H_ERRCHK(hipMalloc((void**)&C_d, nbytes_C));
 
-    // Create events for the memory copies and kernel runs
-    hipEvent_t t1=0, t2=0;
-    // Create the events
-    H_ERRCHK(hipEventCreate(&t1));
-    H_ERRCHK(hipEventCreate(&t2));
-
     //// Step 5. 1. Upload matrices A_h and B_h from the host //// 
     //// to A_d and B_d on the device ////
-    
-    // Record the start event into the default stream
-    H_ERRCHK(hipEventRecord(t1,0));
-    
-    // Peform the memory copies
     H_ERRCHK(hipMemcpy(A_d, A_h, nbytes_A, hipMemcpyHostToDevice));
     H_ERRCHK(hipMemcpy(B_d, B_h, nbytes_B, hipMemcpyHostToDevice));
-    
-    // Record the stop event into the default stream
-    H_ERRCHK(hipEventRecord(t2,0));
-
-    // Get the elapsed time in milliseconds
-    // Total number of Bytes copied
-    size_t total_bytes = nbytes_A + nbytes_B;
-    float elapsed_ms = h_get_event_time_ms(t1, t2, "memcpy", &total_bytes);
-
+ 
     //// Step 6. Run the kernel to compute C_d ///
     //// from A_d and B_d on the device ////
         
@@ -150,10 +137,8 @@ int main(int argc, char** argv) {
     // Amount of shared memory to use in the kernel
     size_t sharedMemBytes=0;
     
-    // Record the start event into the default stream
-    H_ERRCHK(hipEventRecord(t1,0));
-
     // Launch the kernel using hipLaunchKernelGGL method
+    // Use 0 when choosing the default (null) stream
     hipLaunchKernelGGL(mat_mult, 
             grid_nblocks, 
             block_size, sharedMemBytes, 0, 
@@ -162,14 +147,9 @@ int main(int argc, char** argv) {
             N0_C,
             N1_C
     );
-
-    // Record the stop event into the default stream
-    H_ERRCHK(hipEventRecord(t2,0));
-
-    // Get the elapsed time in milliseconds
-    elapsed_ms = h_get_event_time_ms(t1, t2, "mat_mult kernel", NULL);
     
     // Alternatively, launch the kernel using CUDA triple Chevron syntax
+    // which is not valid ANSI C++ syntax
     //mat_mult<<<grid_nblocks, block_size, 0, 0>>>(A_d, B_d, C_d, N1_A, N0_C, N1_C);
     
     // Wait for any commands to complete on the compute device
@@ -184,16 +164,22 @@ int main(int argc, char** argv) {
     // Compute the serial solution using the matrix helper library
     float* C_answer_h = (float*)calloc(nbytes_C, 1);
     m_mat_mult(A_h, B_h, C_answer_h, N1_A, N0_C, N1_C);
+    
+    // Uncomment this to check against elementwise matrix multiplication
+    // m_hadamard(A_h, B_h, C_answer_h, N0_C, N1_C);
 
     // Print the maximum error between matrices
     float max_err = m_max_error(C_h, C_answer_h, N0_C, N1_C);
-        
-    //// Step 9. Clean up memory alllocations and release resources
+    
+    //// Step 9. Write the contents of matrices A_h, B_h, and C_h to disk ////
 
-    // Destroy events
-    H_ERRCHK(hipEventDestroy(t1));
-    H_ERRCHK(hipEventDestroy(t2));
-
+    // Write out the host arrays to file
+    h_write_binary(A_h, "array_A.dat", nbytes_A);
+    h_write_binary(B_h, "array_B.dat", nbytes_B);
+    h_write_binary(C_h, "array_C.dat", nbytes_C);
+    
+    //// Step 10. Clean up memory alllocations and release resources
+    
     // Free the HIP buffers
     H_ERRCHK(hipFree(A_d));
     H_ERRCHK(hipFree(B_d));
@@ -209,8 +195,5 @@ int main(int argc, char** argv) {
     
     // Reset compute devices
     h_reset_devices(num_devices);
-
-    // Finalise MPI
-    MPI_Finalize( );
 }
 

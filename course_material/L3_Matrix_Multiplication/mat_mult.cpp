@@ -91,7 +91,7 @@ int main(int argc, char** argv) {
 
     size_t N1_A = NCOLS_A, N0_C = NROWS_C, N1_C = NCOLS_C;
 
-    //// Step 3. 1. Construct matrices A_h and B_h on the host 
+    //// Step 3. Construct matrices A_h and B_h on the host 
     //// and fill them with random numbers ////
     
     // Number of bytes in each array
@@ -99,11 +99,10 @@ int main(int argc, char** argv) {
     size_t nbytes_B = N1_A*N1_C*sizeof(float);
     size_t nbytes_C = N0_C*N1_C*sizeof(float);
 
-    // Allocate pinned memory for the host arrays
-    float *A_h, *B_h, *C_h;
-    H_ERRCHK(hipHostMalloc((void**)&A_h, nbytes_A));
-    H_ERRCHK(hipHostMalloc((void**)&B_h, nbytes_B));
-    H_ERRCHK(hipHostMalloc((void**)&C_h, nbytes_C));
+    // Allocate memory for the host arrays
+    float* A_h = (float*)h_alloc(nbytes_A);
+    float* B_h = (float*)h_alloc(nbytes_B);
+    float* C_h = (float*)h_alloc(nbytes_C);
 
     // Fill the host arrays with random numbers 
     // using the matrix helper library
@@ -185,10 +184,10 @@ int main(int argc, char** argv) {
     H_ERRCHK(hipFree(B_d));
     H_ERRCHK(hipFree(C_d));
 
-    // Clean up pinned memory on the host   
-    H_ERRCHK(hipHostFree(A_h));
-    H_ERRCHK(hipHostFree(B_h));
-    H_ERRCHK(hipHostFree(C_h));
+    // Clean up host memory
+    free(A_h);
+    free(B_h);
+    free(C_h);
 
     // Free the answer matrix
     free(C_answer_h);

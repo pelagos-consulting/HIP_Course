@@ -31,19 +31,32 @@ Lessons are in the form of Jupyter notebooks which can be viewed on the student'
 
 ### Anaconda Python (optional)
 
-A recent version of [Anaconda Python](https://www.anaconda.com/products/distribution) is helpful for viewing the notebook files. A list of helpful packages for viewing the material may then be installed with this command when run from the **HIP_Course** folder. 
+A recent version of [Anaconda Python](https://www.anaconda.com/products/distribution) is helpful for viewing the notebook files. Once Anaconda is installed create a new environment 
 
 ```bash
-pip -r deployment/requirements.txt
+conda create --name hip_course python=3.10 nodejs=18.15.0
+conda activate hip_course
 ```
+A list of helpful packages for viewing the material may then be installed with this command when run from the **HIP_Course** folder. 
 
+```bash
+pip install -r deployment/requirements.txt
+```
 then run 
 
 ```bash
 jupyter-lab
 ```
+from the command line to start the Jupyter Lab environment. The command
 
-from the command line to start the Jupyter Lab environment.
+```bash
+conda activate opencl_course
+```
+is to enter the created environment, and the command
+```bash
+conda deactivate
+```
+will leave the environment.
 
 ### ROCM
 

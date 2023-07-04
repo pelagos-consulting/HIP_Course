@@ -292,11 +292,11 @@ void h_fit_blocks(dim3* grid_nblocks, dim3 global_size, dim3 block_size) {
 }
 
 /// Allocate aligned memory for use on the host
-void* h_alloc(size_t nbytes, size_t alignment) {
+void* h_alloc(size_t nbytes) {
 #if defined(_WIN32) || defined(_WIN64)
-    void* buffer = _aligned_malloc(nbytes, alignment);
+    void* buffer = _aligned_malloc(nbytes, BYTE_ALIGNMENT);
 #else
-    void* buffer = aligned_alloc(alignment, nbytes);
+    void* buffer = aligned_alloc(BYTE_ALIGNMENT, nbytes);
 #endif
     // Zero out the contents of the allocation for safety
     memset(buffer, '\0', nbytes);
@@ -323,7 +323,7 @@ void* h_read_binary(const char* filename, size_t *nbytes) {
     // Create a buffer to read into
     // Add an extra Byte for a null termination character
     // just in case we are reading to a string
-    void *buffer = h_alloc((*nbytes)+1, BYTE_ALIGNMENT);
+    void *buffer = h_alloc((*nbytes)+1);
     
     // Set the NULL termination character for safety
     char* source = (char*)buffer;
