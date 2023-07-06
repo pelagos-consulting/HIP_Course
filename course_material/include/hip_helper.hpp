@@ -27,8 +27,46 @@
 // Import the HIP header
 #include <hip/hip_runtime.h>
 
-/// Align all memory allocations to this byte boundary
-#define BYTE_ALIGNMENT 64
+/// Get the L1 cache line size
+size_t h_get_cache_line_size() {
+    // Get the L1 cache line size
+    unsigned int eax, ebx, ecx, edx;
+    eax = 0x80000005; // CPUID function to get L1 cache information
+    __asm__ volatile("cpuid"
+                     : "=a" (eax), "=b" (ebx), "=c" (ecx), "=d" (edx)
+                     : "a" (eax));
+
+    // Extract L1 cache line size from ebx
+    unsigned int l1CacheLineSize = ebx & 0xFF;
+    return (size_t)l1CacheLineSize;
+}
+
+/// Find the greatest common divisor for two numbers
+size_t h_gcd(size_t a, size_t b) {
+    // Use the Euclidean algorithm to find the GCD    
+    while (b != 0) {
+        size_t temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a;
+}
+
+/// Find the least common multiple for two numbers
+size_t h_lcm(size_t a, size_t b) {
+    size_t gcd = h_gcd(a, b);
+    return (a / gcd) * b;
+}
+
+/// Get a "safe" value for memory alignment
+size_t h_get_alignment() {
+    // Least common multiple of L1 cache line size and 
+    // Largest data type that HIP supports
+    return h_lcm(h_get_cache_line_size(), sizeof(ulonglong4));
+}
+
+
+
 
 /// Examine an error code and exit if necessary.
 void h_errchk(hipError_t errcode, const char* message) {
@@ -51,15 +89,21 @@ void h_errchk(hipError_t errcode, const char* message) {
     h_errchk(cmd, "__FILE__:__LINE__");\
 }
 
-/// Get the least common multiple of two numbers.
-size_t h_lcm(size_t n1, size_t n2) {
-    size_t number = std::max(n1, n2);
-    
-    while ((number % n1) && (number % n2)) {
-        number++;
-    }
-    
-    return number;
+/// Check to see if device supports managed memory, exit if it does not
+void h_check_managed(int dev_index) {
+    // Check to make sure managed memory access is supported
+    int managed_capability = 0;
+    H_ERRCHK(
+        hipDeviceGetAttribute(
+            &managed_capability,
+            hipDeviceAttributeManagedMemory, 
+            dev_index
+        )
+    );
+    if (!managed_capability) {
+        std::printf("Sorry, device %d cannot allocate managed memory\n", dev_index);
+        exit(EXIT_FAILURE); 
+    }    
 }
 
 /// Show command line options
@@ -293,10 +337,13 @@ void h_fit_blocks(dim3* grid_nblocks, dim3 global_size, dim3 block_size) {
 
 /// Allocate aligned memory for use on the host
 void* h_alloc(size_t nbytes) {
+    // Get the alignment to use by default
+    size_t alignment = h_get_alignment();
+    
 #if defined(_WIN32) || defined(_WIN64)
-    void* buffer = _aligned_malloc(nbytes, BYTE_ALIGNMENT);
+    void* buffer = _aligned_malloc(nbytes, alignment);
 #else
-    void* buffer = aligned_alloc(BYTE_ALIGNMENT, nbytes);
+    void* buffer = aligned_alloc(alignment, nbytes);
 #endif
     // Zero out the contents of the allocation for safety
     memset(buffer, '\0', nbytes);

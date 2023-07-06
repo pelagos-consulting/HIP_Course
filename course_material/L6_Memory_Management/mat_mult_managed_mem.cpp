@@ -91,7 +91,7 @@ int main(int argc, char** argv) {
 
     size_t N1_A = NCOLS_A, N0_C = NROWS_C, N1_C = NCOLS_C;
 
-    //// Step 3. 1. Construct matrices A_h and B_h on the host 
+    //// Step 3. 1. Construct matrices A_m and B_m on the host 
     //// and fill them with random numbers ////
     
     // Number of bytes in each array
@@ -99,32 +99,39 @@ int main(int argc, char** argv) {
     size_t nbytes_B = N1_A*N1_C*sizeof(float);
     size_t nbytes_C = N0_C*N1_C*sizeof(float);
 
+    // Check to make sure managed memory can be allocated
+    h_check_managed(dev_index);
+
     // Allocate pinned memory for the host arrays
-    float *A_h, *B_h, *C_h;
-    H_ERRCHK(hipHostMalloc((void**)&A_h, nbytes_A));
-    H_ERRCHK(hipHostMalloc((void**)&B_h, nbytes_B));
-    H_ERRCHK(hipHostMalloc((void**)&C_h, nbytes_C));
+    float *A_m, *B_m, *C_m;
+    H_ERRCHK(
+        hipMallocManaged(
+            (void**)&A_m, 
+            nbytes_A, 
+            hipMemAttachGlobal
+        )
+    );
+    H_ERRCHK(
+        hipMallocManaged(
+            (void**)&B_m, 
+            nbytes_B, 
+            hipMemAttachHost
+        )
+    );
+    H_ERRCHK(
+        hipMallocManaged(
+            (void**)&C_m, 
+            nbytes_C
+        )
+    );
 
     // Fill the host arrays with random numbers 
     // using the matrix helper library
-    m_random(A_h, N0_C, N1_A);
-    m_random(B_h, N1_A, N1_C);
+    m_random(A_m, N0_C, N1_A);
+    m_random(B_m, N1_A, N1_C);
     
     //// Step 4. Allocate memory for arrays //// 
-    //// A_d, B_d, and C_d on the compute device ////
-
-    float *A_d, *B_d, *C_d;
-    H_ERRCHK(hipMalloc((void**)&A_d, nbytes_A));
-    H_ERRCHK(hipMalloc((void**)&B_d, nbytes_B));
-    H_ERRCHK(hipMalloc((void**)&C_d, nbytes_C));
-
-    //// Step 5. 1. Upload matrices A_h and B_h from the host //// 
-    //// to A_d and B_d on the device ////
-    H_ERRCHK(hipMemcpy(A_d, A_h, nbytes_A, hipMemcpyHostToDevice));
-    H_ERRCHK(hipMemcpy(B_d, B_h, nbytes_B, hipMemcpyHostToDevice));
- 
-    //// Step 6. Run the kernel to compute C_d ///
-    //// from A_d and B_d on the device ////
+    //// A_m, B_m, and C_m on the compute device ////
         
     // Desired block size
     dim3 block_size = { 8, 8, 1 };
@@ -142,7 +149,7 @@ int main(int argc, char** argv) {
     hipLaunchKernelGGL(mat_mult, 
             grid_nblocks, 
             block_size, sharedMemBytes, 0, 
-            A_d, B_d, C_d,
+            A_m, B_m, C_m,
             N1_A,
             N0_C,
             N1_C
@@ -150,45 +157,36 @@ int main(int argc, char** argv) {
     
     // Alternatively, launch the kernel using CUDA triple Chevron syntax
     // which is not valid ANSI C++ syntax
-    //mat_mult<<<grid_nblocks, block_size, 0, 0>>>(A_d, B_d, C_d, N1_A, N0_C, N1_C);
+    //mat_mult<<<grid_nblocks, block_size, 0, 0>>>(A_m, B_m, C_m, N1_A, N0_C, N1_C);
     
     // Wait for any commands to complete on the compute device
     H_ERRCHK(hipDeviceSynchronize());
-
-    //// Step 7. Copy the buffer for matrix C_d //// 
-    //// on the device back to C_h on the host ////
-    H_ERRCHK(hipMemcpy((void*)C_h, (const void*)C_d, nbytes_C, hipMemcpyDeviceToHost));
     
-    //// Step 8. Test the computed matrix **C_h** against a known answer
+    //// Step 5. Test the computed matrix **C_m** against a known answer
     
     // Compute the serial solution using the matrix helper library
     float* C_answer_h = (float*)calloc(nbytes_C, 1);
-    m_mat_mult(A_h, B_h, C_answer_h, N1_A, N0_C, N1_C);
+    m_mat_mult(A_m, B_m, C_answer_h, N1_A, N0_C, N1_C);
     
     // Uncomment this to check against elementwise matrix multiplication
-    // m_hadamard(A_h, B_h, C_answer_h, N0_C, N1_C);
+    // m_hadamard(A_m, B_m, C_answer_h, N0_C, N1_C);
 
     // Print the maximum error between matrices
-    float max_err = m_max_error(C_h, C_answer_h, N0_C, N1_C);
+    float max_err = m_max_error(C_m, C_answer_h, N0_C, N1_C);
     
-    //// Step 9. Write the contents of matrices A_h, B_h, and C_h to disk ////
+    //// Step 6. Write the contents of matrices A_m, B_m, and C_m to disk ////
 
     // Write out the host arrays to file
-    h_write_binary(A_h, "array_A.dat", nbytes_A);
-    h_write_binary(B_h, "array_B.dat", nbytes_B);
-    h_write_binary(C_h, "array_C.dat", nbytes_C);
+    h_write_binary(A_m, "array_A.dat", nbytes_A);
+    h_write_binary(B_m, "array_B.dat", nbytes_B);
+    h_write_binary(C_m, "array_C.dat", nbytes_C);
     
-    //// Step 10. Clean up memory alllocations and release resources
+    //// Step 7. Clean up memory alllocations and release resources
     
-    // Free the HIP buffers
-    H_ERRCHK(hipFree(A_d));
-    H_ERRCHK(hipFree(B_d));
-    H_ERRCHK(hipFree(C_d));
-
-    // Clean up pinned memory on the host   
-    H_ERRCHK(hipHostFree(A_h));
-    H_ERRCHK(hipHostFree(B_h));
-    H_ERRCHK(hipHostFree(C_h));
+    // Clean up managed memory on the host   
+    H_ERRCHK(hipFree(A_m));
+    H_ERRCHK(hipFree(B_m));
+    H_ERRCHK(hipFree(C_m));
 
     // Free the answer matrix
     free(C_answer_h);
