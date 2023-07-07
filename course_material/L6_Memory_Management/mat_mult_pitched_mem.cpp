@@ -121,10 +121,17 @@ int main(int argc, char** argv) {
         hipMallocPitch(
             (void**)&A_d,
             &pitch_A, // actual given width of pencils
-            // requested pencil width (bytes)
-            N1_A*sizeof(float),
-            // Height is the number of pencils to allocate for
-            N0_C
+            N1_A*sizeof(float), // requested pencil width (bytes)
+            N0_C // Height is the number of pencils to allocate for
+        )
+    );
+    
+    // Initialise pitched memory with a value
+    H_ERRCHK(
+        hipMemset(
+            A_d, // The pointer to set
+            0, // The value to fill
+            pitch_A*N0_C // Number of bytes to fill
         )
     );
     
