@@ -20,12 +20,16 @@ Written by Dr Toby M. Potter
 __global__ void mat_mult (
         float* A, 
         float* B, 
-        float* C, 
+        float* C,
+        size_t pitch_A, // The pitch of A (in bytes)
         size_t N1_A, 
         size_t N0_C,
         size_t N1_C) { 
-            
-    // A is of size (N0_C, N1_A)
+    
+    // pitch_A_N is the pitch of A in elements
+    size_t pitch_A_N = pitch_A/sizeof(float);
+    
+    // A is of size (N0_C, N1_A) with a pitch of pitch_A
     // B is of size (N1_A, N1_C)
     // C is of size (N0_C, N1_C)   
     
@@ -47,19 +51,16 @@ __global__ void mat_mult (
         // Loop over columns of A and rows of B
         for (size_t n=0; n<N1_A; n++) {
             
-            // A is of size (N0_C, N1_A)
+            // A is of size (N0_C, N1_A) with a pitch of pitch_A_N (in elements) 
             // B is of size (N1_A, N1_C)
             
             // Loop across row i0 of A
             // and down column i1 of B
-            temp+=A[i0*N1_A+n]*B[i1+n*N1_C]; 
+            temp+=A[i0*pitch_A_N+n]*B[i1+n*N1_C]; 
         }
         
         // Set the value in C at offset
         C[offset]=temp;
-        
-        // Uncomment this to perform elementwise matrix multiplication instead
-        // C[offset]=A[offset]*B[offset];
     }
 } 
 
@@ -115,14 +116,14 @@ int main(int argc, char** argv) {
     float *A_d, *B_d, *C_d;
     size_t pitch_A;
     
-    // Allocate A from pitched memory
+    // Allocate A using pitched memory
     H_ERRCHK(
         hipMallocPitch(
             (void**)&A_d,
-            &pitch_A,
-            // Desired width of a row (bytes)
+            &pitch_A, // actual given width of pencils
+            // requested pencil width (bytes)
             N1_A*sizeof(float),
-            // Height is the number of rows
+            // Height is the number of pencils to allocate for
             N0_C
         )
     );
@@ -143,14 +144,16 @@ int main(int argc, char** argv) {
             A_h,
             // source pitch
             N1_A*sizeof(float),
-            // height is the number of rows
+            // width is number of bytes along a pencil that is transferred
+            N1_A*sizeof(float),
+            // height is the number of pencils that are transferred
             N0_C,
-            // Copy flag
+            // copy flag
             hipMemcpyHostToDevice
         )
     );
         
-    // Copy memory from the B_h to B_d
+    // Copy memory from B_h to B_d
     H_ERRCHK(hipMemcpy(B_d, B_h, nbytes_B, hipMemcpyHostToDevice));
  
     //// Step 6. Run the kernel to compute C_d ///
@@ -161,7 +164,7 @@ int main(int argc, char** argv) {
     dim3 global_size = { (uint32_t)N1_C, (uint32_t)N0_C, 1 };
     dim3 grid_nblocks;
     
-    // Choose the number of blocks so that Grid fits within it.
+    // Choose the number of blocks so that grid fits within it.
     h_fit_blocks(&grid_nblocks, global_size, block_size);
 
     // Amount of shared memory to use in the kernel
@@ -173,6 +176,7 @@ int main(int argc, char** argv) {
             grid_nblocks, 
             block_size, sharedMemBytes, 0, 
             A_d, B_d, C_d,
+            pitch_A,
             N1_A,
             N0_C,
             N1_C
@@ -180,7 +184,7 @@ int main(int argc, char** argv) {
     
     // Alternatively, launch the kernel using CUDA triple Chevron syntax
     // which is not valid ANSI C++ syntax
-    //mat_mult<<<grid_nblocks, block_size, 0, 0>>>(A_d, B_d, C_d, N1_A, N0_C, N1_C);
+    //mat_mult<<<grid_nblocks, block_size, 0, 0>>>(A_d, B_d, C_d, pitch_A, N1_A, N0_C, N1_C);
     
     // Wait for any commands to complete on the compute device
     H_ERRCHK(hipDeviceSynchronize());
@@ -188,41 +192,54 @@ int main(int argc, char** argv) {
     //// Step 7. Copy the buffer for matrix C_d //// 
     //// on the device back to C_h on the host ////
     
+    // Use hipMemcpy3D for reference
+    
     // Create pitched pointers 
-    // for the copy back to the host
+    // For the host
     hipPitchedPtr C_h_ptr = make_hipPitchedPtr(
         C_h, // pointer 
-        N1_C*sizeof(float), // pitch (bytes) 
-        N1_C*sizeof(float), // specified width (bytes)
-        N0_C // number of pencils (rows)
+        N1_C*sizeof(float), // pitch - actual pencil width (bytes) 
+        N1_C, // requested pencil width (elements)
+        N0_C // total number of pencils in the allocation (elements)
     );
     // For the device
     hipPitchedPtr C_d_ptr = make_hipPitchedPtr(
         C_d, // pointer
-        N1_C*sizeof(float), // pitch (bytes) 
-        N1_C*sizeof(float), // specified width (bytes)
-        N0_C // number of pencils (rows)
+        N1_C*sizeof(float), // pitch - actual pencil width (bytes) 
+        N1_C, // requested pencil width (elements)
+        N0_C // total number of pencils (elements)
     );
     // Postion within the host array
     hipPos C_h_pos = make_hipPos(
-        0*sizeof(float) // bytes
-        0, // start at row 0
-        0, // start at plane 0
-    )
+        0*sizeof(float), // byte position along a pencil (bytes)
+        0, // starting pencil index (elements)
+        0 // start pencil plane index (elements)
+    );
     // Postion within the device array
     hipPos C_d_pos = make_hipPos(
-        0*sizeof(float) // bytes
-        0, // start at row 0
-        0, // start at plane 0
-    )
+        0*sizeof(float), // byte position along a pencil (bytes)
+        0, // starting pencil index (elements)
+        0 // starting pencil plane index (elements)
+    );
     // Choose the region to copy
     hipExtent extent = make_hipExtent(
-        N1_C*sizeof(float), // width (bytes)
-        N0_C, // number of pencils 
+        N1_C*sizeof(float), // width of pencil region to copy (bytes)
+        N0_C, // number of pencils to copy the region from
         1 // number of pencil planes
     );
     
-    /// Got to here
+    // Fill the copy parameters
+    hipMemcpy3DParms copy_parms = {0};
+    copy_parms.srcPtr = C_d_ptr;
+    copy_parms.srcPos = C_d_pos;
+    
+    copy_parms.dstPtr = C_h_ptr;
+    copy_parms.dstPos = C_h_pos;
+    
+    copy_parms.extent = extent;
+    copy_parms.kind = hipMemcpyDeviceToHost;
+    
+    H_ERRCHK(hipMemcpy3D(&copy_parms));
     
     //// Step 8. Test the computed matrix **C_h** against a known answer
     

@@ -5,6 +5,7 @@ include ../env
 # List of applications to target
 TARGETS=mat_mult_pinned_mem.exe \
 		mat_mult_managed_mem.exe \
+		mat_mult_pitched_mem.exe 
 #		mat_mult_local_vector.exe \
 #		atomics.exe \
 #		atomics2.exe \
