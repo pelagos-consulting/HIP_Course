@@ -15349,10 +15349,30 @@ Maximum error (infinity norm) is: 1.14441e-05
 <span class="w">    </span><span class="n">copy_parms</span><span class="p">.</span><span class="n">extent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">extent</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="n">copy_parms</span><span class="p">.</span><span class="n">kind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hipMemcpyDeviceToHost</span><span class="p">;</span><span class="w"></span>
 </pre></div>
+<p>The memcpy flags we can use for <strong>kind</strong> are:</p>
+<ul>
+<li>hipMemcpyHostToHost</li>
+<li>hipMemcpyHostToDevice</li>
+<li>hipMemcpyDeviceToHost</li>
+<li>hipMemcpyDeviceToDevice</li>
+<li>hipMemcpyDefault</li>
+</ul>
 <p>Finally, we perform the copy with <strong>hipMemcpy3D</strong> and <strong>copy_parms</strong>.</p>
 <div class="highlight"><pre><span></span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="n">hipMemcpy3D</span><span class="p">(</span><span class="o">&amp;</span><span class="n">copy_parms</span><span class="p">));</span><span class="w"></span>
 </pre></div>
 <p>As with contiguous memory copies, the rectangular copy function <strong>hipMemcpy3D</strong> has an asynchronous partner function <strong>hipMemcpy3DAsync</strong> that takes in a stream as an extra argument and the copy will be submitted to that stream. As with asynchronous contiguous copies, the host allocation <strong>needs to be pinned</strong> in order for a copy to be truly asynchronous and return immediately.</p>
+
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="Fast-copies-between-compute-devices">Fast copies between compute devices<a class="anchor-link" href="#Fast-copies-between-compute-devices">&#182;</a></h4><p>When performing memory transfers between compute devices you can enable <strong>peer-to-peer</strong> memory transfers using the <strong>hipDeviceEnablePeerAccess</strong> function . Otherwise memory transfers that use the <strong>hipMemcpyDeviceToDevice</strong> flag will still work, but they will use a slower method of transferring using a host memory allocation as an intermediary.</p>
 
 </div>
 </div>
@@ -15374,7 +15394,7 @@ Maximum error (infinity norm) is: 1.14441e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make<span class="p">;</span> ./mat_mult_pitched_mem.exe
@@ -15423,7 +15443,7 @@ Maximum error (infinity norm) is: 1.14441e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mat_mul</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
@@ -15473,14 +15493,16 @@ Maximum error (infinity norm) is: 1.14441e-05
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Memory-control-and-access-from-kernels">Memory control and access from kernels<a class="anchor-link" href="#Memory-control-and-access-from-kernels">&#182;</a></h2><p>Kernels have access to the following memory spaces:</p>
+<h2 id="Memory-control-and-access-from-kernels">Memory control and access from kernels<a class="anchor-link" href="#Memory-control-and-access-from-kernels">&#182;</a></h2><p>Kernels have access to the following memory spaces on a compute device:</p>
 <ul>
-<li>Global memory</li>
-<li>Local (shared) memory</li>
-<li>Private memory</li>
-<li>Constant memory</li>
+<li>Private memory (read-write memory stored registers)</li>
+<li>Shared memory (read-write memory stored on fast cache)</li>
+<li>Global memory (read-write main memory on device)</li>
+<li>Constant memory (read-only memory in fast cache)</li>
+<li>Texture memory (fast read-only access)</li>
+<li>L1 and L2 cache (automatically managed, but kernels can influence)</li>
 </ul>
-<p><a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/addressSpaceQualifiers.html">This link</a> provides more information on the memory spaces. Variables defined in kernel sources can be (and sometimes must be) qualified as to which memory space they belong to. There is, however a myriad of rules to navigate, as we shall see below.</p>
+<p>In this section we explore how to utilize each memory space from within a kernel.</p>
 
 </div>
 </div>
@@ -15492,7 +15514,7 @@ Maximum error (infinity norm) is: 1.14441e-05
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Global-address-space">Global address space<a class="anchor-link" href="#Global-address-space">&#182;</a></h3><p>Allocations of memory in the <strong>global address space</strong> are qualified by an additional <strong>__global</strong> or <strong>global</strong> qualifier in front of the variable type when it is declared (both in function preambles as well as in the function body). Both are valid and you don't need to put the <strong>__</strong> in front of <strong>global</strong>. <em>I'm just doing it here so Jupyter syntax highlighting picks up the qualifier</em>. Pointers to buffer allocations passed in to kernels <strong>always</strong> need to have the <strong>__global</strong> qualifier. We see this in the kernel definition for <strong>mat_mult_local</strong> in <a href="kernels_mat_mult.c">kernels_mat_mult.c</a>.</p>
+<h3 id="Global-address-space">Global address space<a class="anchor-link" href="#Global-address-space">&#182;</a></h3><p>Allocations of memory in the <strong>global address space</strong></p>
 <div class="highlight"><pre><span></span><span class="c1">// kernels_mat_mult.c source</span>
 
 <span class="c1">// Matrix multiply kernel that uses local memory for B</span>
