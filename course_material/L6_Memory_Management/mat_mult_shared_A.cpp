@@ -19,6 +19,12 @@ Written by Dr Toby M. Potter
 
 typedef float float_type;
 
+// Number of coefficients to define
+#define NCOEFFS 3
+
+// Define some constant memory
+__constant__ float coeffs[NCOEFFS] = {0};
+
 // Device function to get the start and end values
 // for filling a shared memory array
 __device__ void get_start_end(
@@ -55,10 +61,13 @@ __global__ void mat_mult_shared_A (
                         size_t N1_C) { 
     
     // Access the allocation of shared memory
-    extern __shared__ float_type shared[];
+    extern __shared__ char shared[];
+    
+    // Example allocation of static memory
+    __shared__ float_type shared_temp[10];
     
     // Get a pointer to shared_A from shared
-    float* shared_A = &shared[0];
+    float* shared_A = (float*)&shared[0];
     
     // A is of size (N0_C, N1_A)
     // B is of size (N1_A, N1_C)
@@ -96,7 +105,8 @@ __global__ void mat_mult_shared_A (
     __syncthreads();
     
     // Scratch variable
-    float_type temp=0.0f; 
+    // Demonstrate access of constant memory
+    float_type temp=0.0*coeffs[0]; 
     
     // Guard mechanism to make sure we do not go
     // outside the boundaries of matrix C
@@ -115,6 +125,7 @@ __global__ void mat_mult_shared_A (
             temp+=shared_A[s0*N1_A+n]*B[n*N1_C+i1];
             
         } 
+        
         // Number of rows in C is same as number of rows in A
         C[i0*N1_C+i1]=temp;
     }
@@ -148,6 +159,16 @@ int main(int argc, char** argv) {
 
     size_t N1_A = NCOLS_A, N0_C = NROWS_C, N1_C = NCOLS_C;
 
+    // Copy memory to the coefficients
+    float temp_coeffs[NCOEFFS] = {1};
+    H_ERRCHK(
+        hipMemcpyToSymbol(
+            coeffs, 
+            temp_coeffs, 
+            NCOEFFS*sizeof(float)
+        )
+    );
+    
     //// Step 3. Construct matrices A_h and B_h on the host 
     //// and fill them with random numbers ////
     
@@ -191,7 +212,7 @@ int main(int argc, char** argv) {
     h_fit_blocks(&grid_nblocks, global_size, block_size);
 
     // Amount of shared memory to use in the kernel
-    size_t sharedMemBytes=block_size.y*N1_A*sizeof(float_type);;
+    size_t sharedMemBytes=block_size.y*N1_A*sizeof(float_type);
     
     // Launch the kernel using hipLaunchKernelGGL method
     // Use 0 when choosing the default (null) stream
