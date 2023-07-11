@@ -97,8 +97,7 @@ __global__ void mat_mult_shared_A_vector (
     // sync to this point before moving on 
     __syncthreads();
     
-    // Scratch variable
-    // Demonstrate access of constant memory
+    // Scratch variables
     float_vec_type temp = (float_vec_type){0.0f}; 
     float_vec_type scratch = (float_vec_type){0.0f};
     
@@ -111,7 +110,7 @@ __global__ void mat_mult_shared_A_vector (
             
             // A is of size (N0_C, N1_A_v)
             // B is of size (N1_A, N1_C)
-            // shared_A is of size (L0, N1_A)
+            // shared_A is of size (L0, N1_A_v)
             // C is of size (N0_C, N1_C)
              
             float_type* Bn_i1=&B[n*vector_len*N1_C+i1];
@@ -173,8 +172,6 @@ int main(int argc, char** argv) {
     
     // Number of bytes in each array
     size_t nbytes_A = N0_C*N1_A*sizeof(float_type);
-    // Number of bytes in enlarged array
-    size_t nbytes_A_v = N0_C*N1_A_v*sizeof(float_vec_type);
     size_t nbytes_B = N1_A*N1_C*sizeof(float_type);
     size_t nbytes_C = N0_C*N1_C*sizeof(float_type);
 
@@ -191,9 +188,11 @@ int main(int argc, char** argv) {
     //// Step 4. Allocate memory for arrays //// 
     //// A_d, B_d, and C_d on the compute device ////
 
+    
+    // Number of bytes in enlarged array
+    size_t nbytes_A_v = N0_C*N1_A_v*sizeof(float_vec_type);
     float_vec_type *A_d; 
     float_type *B_d, *C_d;
-    size_t pitch_A;
     
     // Allocate memory for A_d, B_d and C_d normally
     H_ERRCHK(hipMalloc((void**)&A_d, nbytes_A_v));
@@ -219,7 +218,7 @@ int main(int argc, char** argv) {
         hipMemcpy2D(
             (void*)A_d, // destination pointer
             N1_A_v*sizeof(float_vec_type), // destination pitch
-            (void*)C_h, // source pointer
+            (void*)A_h, // source pointer
             N1_A*sizeof(float_type), // source pitch
             N1_A*sizeof(float_type), // width of pencils to copy
             N0_C, // number of pencils to copy

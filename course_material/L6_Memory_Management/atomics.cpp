@@ -13,7 +13,14 @@ Written by Dr Toby M. Potter
 #define NCOLS_C 256
 
 // Bring in helper header to manage boilerplate code
-#include "cl_helper.hpp"
+#include "hip_helper.hpp"
+
+// Kernel to test atomics
+__global__ void atomic_test (hipAtomic_int *counter) {
+    
+    // Increment T atomically
+    hipAtomicAdd(counter, 1);
+}
 
 int main(int argc, char** argv) {
    
