@@ -6,7 +6,8 @@ include ../env
 TARGETS=mat_mult_pinned_mem.exe \
 		mat_mult_managed_mem.exe \
 		mat_mult_pitched_mem.exe \
-		mat_mult_shared_A.exe         
+		mat_mult_shared_A.exe \
+		vector_types.exe  
 #		mat_mult_local_vector.exe \
 #		atomics.exe \
 #		atomics2.exe \

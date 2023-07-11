@@ -14647,7 +14647,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Load-checking-data">Load checking data<a class="anchor-link" href="#Load-checking-data">&#182;</a></h2>
+<h2 id="Validation-software">Validation software<a class="anchor-link" href="#Validation-software">&#182;</a></h2><p>Here we load the Python software to verify matrix multiplication algorithms in this teaching module.</p>
+
 </div>
 </div>
 </div>
@@ -14808,7 +14809,7 @@ $$<p>where N is the number of elements along a row, or <strong>width</strong>/b.
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Filling-buffers">Filling buffers<a class="anchor-link" href="#Filling-buffers">&#182;</a></h3><p>Sometimes you might want to intialise a buffer with a value before using it. The functions <strong>hipMemset</strong> and <strong>hipMemsetAsync</strong> take care of the process of filling a HIP memory allocation. In <a href="mat_mult_pitched_mem.cpp">mat_mult_pitched_mem.cpp</a> we use <strong>hipMemset</strong> to fill a pitched memory allocation with zeros. When using pitched memory, care must be taken to ensure that we calculate the <strong>actual size</strong> of the memory using the pitch.</p>
+<h3 id="Filling-buffers-with-a-known-value">Filling buffers with a known value<a class="anchor-link" href="#Filling-buffers-with-a-known-value">&#182;</a></h3><p>Sometimes you might want to intialise a buffer with a value before using it. The functions <strong>hipMemset</strong> and <strong>hipMemsetAsync</strong> take care of the process of filling a HIP memory allocation. In <a href="mat_mult_pitched_mem.cpp">mat_mult_pitched_mem.cpp</a> we use <strong>hipMemset</strong> to fill a pitched memory allocation with zeros. When using pitched memory, care must be taken to ensure that we calculate the <strong>actual size</strong> of the memory using the pitch.</p>
 <div class="highlight"><pre><span></span><span class="c1">// Initialise pitched memory with a value</span>
 <span class="w">    </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="w"></span>
 <span class="w">        </span><span class="n">hipMemset</span><span class="p">(</span><span class="w"></span>
@@ -14844,7 +14845,7 @@ $$<p>where N is the number of elements along a row, or <strong>width</strong>/b.
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Zero-Copy-allocations-with-pinned-memory">Zero-Copy allocations with pinned memory<a class="anchor-link" href="#Zero-Copy-allocations-with-pinned-memory">&#182;</a></h4><p>Pinned memory is a memory allocation that lives on the host with flags set so the memory <strong>cannot be paged out to disk</strong>. Pinning enables Direct Memory Access (DMA) transfers between host and device that bypass the CPU, and can therefore be fast and efficient. The OS usually limits amount of pinned memory because large pinned memory allocations will put the OS under stress if resources run out. It is <strong>good practice</strong> to use pinned memory for allocations on the host that will be the source or destination for <strong>frequent transfers</strong> between host and device.</p>
+<h4 id="Pinned-memory">Pinned memory<a class="anchor-link" href="#Pinned-memory">&#182;</a></h4><p>Pinned memory is a memory allocation that lives on the host with flags set so the memory <strong>cannot be paged out to disk</strong>. Pinning enables Direct Memory Access (DMA) transfers between host and device that bypass the CPU, and can therefore be fast and efficient. The OS usually limits amount of pinned memory because large pinned memory allocations will put the OS under stress if resources run out. It is <strong>good practice</strong> to use pinned memory for allocations on the host that will be the source or destination for <strong>frequent transfers</strong> between host and device.</p>
 <p>Pinned memory may be <strong>used from the compute device directly (zero-copy memory)</strong> if the <strong>hipHostGetDevicePointer</strong> function is used to map a host pointer into the memory space of the compute device. During kernel invocation, memory that is accessed by the device is streamed into the device and updates are propagated back to host memory when the kernel is finished.</p>
 <h5 id="Allocating-pinned-host-memory">Allocating pinned host memory<a class="anchor-link" href="#Allocating-pinned-host-memory">&#182;</a></h5><p>In <a href="mat_mult_pinned_mem.cpp">mat_mult_pinned_mem.cpp</a> we use the HIP function <strong>hipHostMalloc</strong> to allocate <code>pinned memory</code> for the host arrays <strong>A_h</strong>, <strong>B_h</strong>, and <strong>C_h</strong>.</p>
 <div class="highlight"><pre><span></span><span class="c1">// Allocate pinned memory for the host arrays</span>
@@ -15083,7 +15084,7 @@ Maximum error (infinity norm) is: 1.14441e-05
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Zero-copy-allocations-with-managed-memory.">Zero-copy allocations with managed memory.<a class="anchor-link" href="#Zero-copy-allocations-with-managed-memory.">&#182;</a></h4><p>Managed memory is another form of allocating memory that is accessible from <strong>both the host and the compute device</strong>. Managed memory leaves it to the runtime to <code>manage</code> or cache pages of memory on either the host or the compute device, and shuffle memory between host and device as required. Instead of separate pointers to access from the host or the device, as with pinned memory, just <strong>one pointer</strong> can be used for both modes of access.</p>
+<h4 id="Managed-memory.">Managed memory.<a class="anchor-link" href="#Managed-memory.">&#182;</a></h4><p>Managed memory is another form of allocating memory that is accessible from <strong>both the host and the compute device</strong>. Managed memory leaves it to the runtime to <code>manage</code> or cache pages of memory on either the host or the compute device, and shuffle memory between host and device as required. Instead of separate pointers to access from the host or the device, as with pinned memory, just <strong>one pointer</strong> can be used for both modes of access.</p>
 <p>In the program <a href="mat_mult_managed_mem.cpp">mat_mult_managed_mem.cpp</a> we use managed memory to store matrices <strong>A</strong>, <strong>B</strong>, and <strong>C</strong>. Not every HIP device has support for managed memory, and we check for managed memory support with the following call to <strong>h_check_managed</strong> in <a href="../include/hip_helper.hpp">hip_helper.hpp</a>.</p>
 <div class="highlight"><pre><span></span><span class="c1">// Check to make sure managed memory can be allocated</span>
 <span class="w">    </span><span class="n">h_check_managed_mem</span><span class="p">(</span><span class="n">dev_index</span><span class="p">);</span><span class="w"></span>
@@ -15372,7 +15373,7 @@ Maximum error (infinity norm) is: 1.14441e-05
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Fast-copies-between-compute-devices">Fast copies between compute devices<a class="anchor-link" href="#Fast-copies-between-compute-devices">&#182;</a></h4><p>When performing memory transfers between compute devices you can enable <strong>peer-to-peer</strong> memory transfers using the <strong>hipDeviceEnablePeerAccess</strong> function . Otherwise memory transfers that use the <strong>hipMemcpyDeviceToDevice</strong> flag will still work, but they will use a slower method of transferring using a host memory allocation as an intermediary.</p>
+<h4 id="Fast-copies-between-compute-devices">Fast copies between compute devices<a class="anchor-link" href="#Fast-copies-between-compute-devices">&#182;</a></h4><p>When performing memory transfers between compute devices you can enable <strong>peer-to-peer</strong> memory transfers using the <strong>hipDeviceEnablePeerAccess</strong> function . Otherwise memory transfers that use the <strong>hipMemcpyDeviceToDevice</strong> flag will still work, but they will use a slower method of transfer with a host memory allocation as an intermediary.</p>
 
 </div>
 </div>
@@ -15519,7 +15520,16 @@ Maximum error (infinity norm) is: 1.14441e-05
 <span class="w">    </span><span class="c1">// Demonstrate copying from constant memory</span>
 <span class="w">    </span><span class="n">float_type</span><span class="w"> </span><span class="n">temp</span><span class="o">=</span><span class="mf">0.0</span><span class="o">*</span><span class="n">coeffs</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
 </pre></div>
-<p>Private memory is usually allocated from the fastest register memory on the device, but the  amount of available register memory is very small. If a kernel uses more register memory than there are variables, then register memory can spill over into global memory at the cost of performance.</p>
+<p>Private memory is usually allocated from the fastest register memory on the device, but the  amount of available register memory per thread is <strong>fairly low</strong> (on the order of 100 variables). If a kernel uses more register memory than there are variables, then register memory can spill over into global memory at the cost of performance. One can query the number of available 32-bit registers per block using a call to <strong>hipGetDeviceProperties</strong> as in the function <strong>h_report_on_device</strong> in <a href="../include/hip_helper.hpp">hip_helper.hpp</a>.</p>
+<div class="highlight"><pre><span></span><span class="c1">// Report some information on a compute device</span>
+<span class="w">    </span><span class="n">hipDeviceProp_t</span><span class="w"> </span><span class="n">prop</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Get the properties of the compute device</span>
+<span class="w">    </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="n">hipGetDeviceProperties</span><span class="p">(</span><span class="o">&amp;</span><span class="n">prop</span><span class="p">,</span><span class="w"> </span><span class="n">device_id</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Maximum number of registers per block</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">%-40s %d </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="s">&quot;available registers per block:&quot;</span><span class="p">,</span><span class="n">prop</span><span class="p">.</span><span class="n">regsPerBlock</span><span class="p">);</span><span class="w"></span>
+</pre></div>
 
 </div>
 </div>
@@ -15589,12 +15599,12 @@ Maximum error (infinity norm) is: 1.14441e-05
 <h3 id="Shared-memory">Shared memory<a class="anchor-link" href="#Shared-memory">&#182;</a></h3><p>Memory that is <strong>shared</strong> is available for reading and writing from <strong>every thread</strong> in the block, even if a block consists of more than one thread team. However since threads and thread teams in a block don't always finish work at the same time, there must be <strong>block-level synchronisation</strong> before threads can read what others have written.</p>
 <p>Shared memory is often located in high bandwidth and low latency cache on the compute device and <strong>might</strong> provide a speed boost by virtue of being in close proximity (in terms of latency and bandwidth) to the hardware threads that execute a kernel. However HIP devices are adept at caching global memory to fast cache, so you <strong>might not always</strong> see a performance boost by using shared memory.</p>
 <p>There are two ways to allocate shared memory for use in a kernel, both <strong>static</strong> and <strong>dynamic</strong> allocation. In the program <a href="mat_mult_shared_A.cpp">mat_mult_shared_A.cpp</a> we demonstrate both ways of making shared memory available.</p>
-<h4 id="Static-allocation">Static allocation<a class="anchor-link" href="#Static-allocation">&#182;</a></h4><p>Static allocations of shared memory happen within the body of the kernel function and must have the <strong>__shared__</strong> qualifer. In <a href="mat_mult_shared_A.cpp">mat_mult_shared_A.cpp</a> we statically allocate an array of 10 floats.</p>
+<h4 id="Static-allocation-of-shared-memory">Static allocation of shared memory<a class="anchor-link" href="#Static-allocation-of-shared-memory">&#182;</a></h4><p>Static allocations of shared memory happen within the body of the kernel function and must have the <strong>__shared__</strong> qualifer. In <a href="mat_mult_shared_A.cpp">mat_mult_shared_A.cpp</a> we statically allocate an array of 10 floats.</p>
 <div class="highlight"><pre><span></span><span class="c1">// Example allocation of static memory</span>
 <span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="n">float_type</span><span class="w"> </span><span class="n">shared_temp</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span><span class="w"></span>
 </pre></div>
 <p>Static allocations of shared memory are not limited to the outermost scope within the allocation, however all threads that <strong>must</strong> access the allocation also must encounter the allocation statement.</p>
-<h4 id="Dynamic-allocation">Dynamic allocation<a class="anchor-link" href="#Dynamic-allocation">&#182;</a></h4><p>Shared memory for a block may also be dynamically reserved when the kernel is <strong>launched</strong>. The size of local memory to allocate is an argument to <strong>hipLaunchKernelGGL</strong>. In <a href="mat_mult_shared_A.cpp">mat_mult_shared_A.cpp</a> we specify an amount of shared memory to reserve in the variable <strong>sharedMemBytes</strong> and pass it to <strong>hipLaunchKernelGGL</strong>.</p>
+<h4 id="Dynamic-allocation-of-shared-memory">Dynamic allocation of shared memory<a class="anchor-link" href="#Dynamic-allocation-of-shared-memory">&#182;</a></h4><p>Shared memory for a block may also be dynamically reserved when the kernel is <strong>launched</strong>. The size of local memory to allocate is an argument to <strong>hipLaunchKernelGGL</strong>. In <a href="mat_mult_shared_A.cpp">mat_mult_shared_A.cpp</a> we specify an amount of shared memory to reserve in the variable <strong>sharedMemBytes</strong> and pass it to <strong>hipLaunchKernelGGL</strong>.</p>
 <div class="highlight"><pre><span></span><span class="c1">// Amount of shared memory to use in the kernel</span>
 <span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">sharedMemBytes</span><span class="o">=</span><span class="n">block_size</span><span class="p">.</span><span class="n">y</span><span class="o">*</span><span class="n">N1_A</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="n">float_type</span><span class="p">);</span><span class="w"></span>
 
@@ -15617,7 +15627,7 @@ Maximum error (infinity norm) is: 1.14441e-05
 <div class="highlight"><pre><span></span><span class="c1">// Get a pointer to shared_A from shared</span>
 <span class="w">    </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">shared_A</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">shared</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
 </pre></div>
-<h4 id="Example,-matrix-multiplication-with-dynamically-allocated-shared-memory">Example, matrix multiplication with dynamically allocated shared memory<a class="anchor-link" href="#Example,-matrix-multiplication-with-dynamically-allocated-shared-memory">&#182;</a></h4><p>There is an opportunity to employ shared memory within the matrix multiplication example. A block is of size <strong>(L0, L1)</strong> in the coordinate system of the matrices. Every thread along a row of the block needs access to the same row of matrix A, and every column in the block needs access to the same column of matrix B. If each thread in the block prefetches a section of a row of <strong>A</strong> into fast storage, then there is potential to save time on fetches from global memory.</p>
+<h4 id="Example,-matrix-multiplication-with-shared-memory">Example, matrix multiplication with shared memory<a class="anchor-link" href="#Example,-matrix-multiplication-with-shared-memory">&#182;</a></h4><p>There is an opportunity to employ shared memory within the matrix multiplication example. A block is of size <strong>(L0, L1)</strong> in the coordinate system of the matrices. Every thread along a row of the block needs access to the same row of matrix A, and every column in the block needs access to the same column of matrix B. If each thread in the block prefetches a section of a row of <strong>A</strong> into fast storage, then there is potential to save time on fetches from global memory.</p>
 <p>Using the dynamic memory allocation method above, we allocate a shared memory space <strong>shared_A</strong> to store the rows of A that will be used by the block of threads. The shared memory allocation is of size (L0, N1_A).</p>
 
 </div>
@@ -15659,7 +15669,7 @@ Maximum error (infinity norm) is: 1.14441e-05
 <span class="w">    </span><span class="p">}</span><span class="w"></span>
 </pre></div>
 <p>We use a kernel function called <strong>get_start_end</strong> to get the start and end indices of a block along dimension 1 of shared memory. Then we use a loop to fill the <strong>shared_A</strong> from the allocation for matrix A on the device.</p>
-<h5 id="Thread-synchronisation"><strong>Thread synchronisation</strong><a class="anchor-link" href="#Thread-synchronisation">&#182;</a></h5><p>Threads in a block will often finish work before others, however in order to keep in sync (and avoid a data race) they need to be made to <strong>wait</strong> until all other threads have completed. A call to the inbuilt HIP kernel function <strong>__syncthreads</strong>  ensures that shared memory is consistent among block threads before proceeding.</p>
+<h5 id="Thread-synchronisation">Thread synchronisation<a class="anchor-link" href="#Thread-synchronisation">&#182;</a></h5><p>Threads in a block will often finish work before others, however in order to keep in sync (and avoid a data race) they need to be made to <strong>wait</strong> until all other threads have completed. A call to the inbuilt HIP kernel function <strong>__syncthreads</strong>  ensures that shared memory is consistent among block threads before proceeding.</p>
 <div class="highlight"><pre><span></span><span class="c1">// mat_mult_shared_A.cpp source</span>
 
 <span class="w">    </span><span class="c1">// Set a barrier to ensure that all threads </span>
@@ -15815,7 +15825,7 @@ Maximum error (infinity norm) is: 1.14441e-05
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Vectors-in-HIP">Vectors in HIP<a class="anchor-link" href="#Vectors-in-HIP">&#182;</a></h2><p>In addition to the standard types, the OpenCL standard also defines a number of vector types with <strong>n</strong> = 2,3,4,8, and 16 elements. Vectors can unlock performance within an OpenCL application because memory is loaded into caches using cache lines that are typically around 64-128 bytes (or 16-32 floats) wide. Furthermore, CPU's have SIMD units that can process, in one instruction, vectors of floats. Here are the vector types as used in both host and kernel code.</p>
+<h2 id="Vectors-in-HIP">Vectors in HIP<a class="anchor-link" href="#Vectors-in-HIP">&#182;</a></h2><p>HIP also defines a number of vector types with <strong>n</strong> = 1,2,3, and 4 elements. Vectors can unlock performance within a HIP application because memory is loaded into caches using cache lines that are typically around 64-128 bytes (or 16-32 floats) wide. Furthermore, CPU's and some GPU's have SIMD units that can process, in one instruction, vectors of floats. Here are the vector types as used in both host and kernel code.</p>
 
 </div>
 </div>
@@ -15829,104 +15839,79 @@ Maximum error (infinity norm) is: 1.14441e-05
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <table>
 <thead><tr>
-<th style="text-align:left">kernel C type</th>
-<th style="text-align:left">OpenCL standard type</th>
+<th style="text-align:left">Vector type</th>
 <th style="text-align:left">Number of bits used, description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align:left">char<strong>n</strong></td>
-<td style="text-align:left">cl_char<strong>n</strong></td>
 <td style="text-align:left"><strong>n</strong> x 8 bits, signed two's complement integers</td>
 </tr>
 <tr>
 <td style="text-align:left">uchar<strong>n</strong></td>
-<td style="text-align:left">cl_uchar<strong>n</strong></td>
 <td style="text-align:left"><strong>n</strong> x 8 bits, unsigned integers</td>
 </tr>
 <tr>
 <td style="text-align:left">short<strong>n</strong></td>
-<td style="text-align:left">cl_short<strong>n</strong></td>
 <td style="text-align:left"><strong>n</strong> x 16 bits, signed two's complement integers</td>
 </tr>
 <tr>
 <td style="text-align:left">ushort<strong>n</strong></td>
-<td style="text-align:left">cl_ushort<strong>n</strong></td>
 <td style="text-align:left"><strong>n</strong> x 16 bits, unsigned integers</td>
 </tr>
 <tr>
 <td style="text-align:left">int<strong>n</strong></td>
-<td style="text-align:left">cl_int<strong>n</strong></td>
 <td style="text-align:left"><strong>n</strong> x 32 bits, signed two's complement integers</td>
 </tr>
 <tr>
 <td style="text-align:left">uint<strong>n</strong></td>
-<td style="text-align:left">cl_uint<strong>n</strong></td>
 <td style="text-align:left"><strong>n</strong> x 32 bits, unsigned integers</td>
 </tr>
 <tr>
 <td style="text-align:left">long<strong>n</strong></td>
-<td style="text-align:left">cl_long<strong>n</strong></td>
 <td style="text-align:left"><strong>n</strong> x 64 bits, signed two's complement integers</td>
 </tr>
 <tr>
 <td style="text-align:left">ulong<strong>n</strong></td>
-<td style="text-align:left">cl_ulong<strong>n</strong></td>
+<td style="text-align:left"><strong>n</strong> x 64 bits, unsigned integers</td>
+</tr>
+<tr>
+<td style="text-align:left">longlong<strong>n</strong></td>
+<td style="text-align:left"><strong>n</strong> x 64 bits, signed two's complement integers </td>
+</tr>
+<tr>
+<td style="text-align:left">ulonglong<strong>n</strong></td>
 <td style="text-align:left"><strong>n</strong> x 64 bits, unsigned integers</td>
 </tr>
 <tr>
 <td style="text-align:left">float<strong>n</strong></td>
-<td style="text-align:left">cl_float<strong>n</strong></td>
 <td style="text-align:left"><strong>n</strong> x 32 bits, floating point numbers</td>
 </tr>
 <tr>
 <td style="text-align:left">double<strong>n</strong></td>
-<td style="text-align:left">cl_double<strong>n</strong></td>
 <td style="text-align:left"><strong>n</strong> x 64 bits, floating point numbers</td>
 </tr>
 </tbody>
 </table>
+<p>Access to the individual components of the vector <strong>from both host and kernel</strong> is through structure access to .x(yzw) depending on how many elements there are. In the program <a href="vector_types.cpp">vector_types.cpp</a> is a program to work with the components of a vector.</p>
+<div class="highlight"><pre><span></span><span class="c1">// One way to make a vector type</span>
+<span class="w">    </span><span class="n">float4</span><span class="w"> </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">float4</span><span class="p">){</span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">3.0f</span><span class="p">};</span><span class="w"></span>
 
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Complex-numbers-in-HIP">Complex numbers in HIP<a class="anchor-link" href="#Complex-numbers-in-HIP">&#182;</a></h3><p>Complex numbers are not implemented in OpenCL, however you can store the real and imaginary components in a <strong>float2</strong> or <strong>double2</strong> vector type for example. One must manually perform the complex number math operations on the individual components.</p>
+<span class="w">    </span><span class="c1">// Access to individual elements in a vector</span>
+<span class="w">    </span><span class="n">temp</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">temp</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">temp</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.0f</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">temp</span><span class="p">.</span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.0f</span><span class="p">;</span><span class="w"></span>
 
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Vector-access-from-the-host">Vector access from the host<a class="anchor-link" href="#Vector-access-from-the-host">&#182;</a></h3><p>There is a sophisticated means of indexing into a vector type within an OpenCL kernel, however from the host one has to use the <strong>.s[index]</strong> indexing to get at individual elements.</p>
-<div class="highlight"><pre><span></span><span class="c1">// Code from the host</span>
+<span class="w">    </span><span class="c1">// Shortened quick form to make vector</span>
+<span class="w">    </span><span class="n">float4</span><span class="w"> </span><span class="n">temp2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">float4</span><span class="p">){</span><span class="mf">0.0f</span><span class="p">};</span><span class="w"></span>
 
-<span class="c1">// Declare an initialised vector</span>
-<span class="n">cl_float4</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">cl_float4</span><span class="p">){</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="mf">3.0</span><span class="p">};</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Another way to make a vector type </span>
+<span class="w">    </span><span class="c1">// using the make_&lt;vector type&gt; function</span>
+<span class="w">    </span><span class="n">float4</span><span class="w"> </span><span class="n">temp3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">make_float4</span><span class="p">(</span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">3.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">4.0f</span><span class="p">);</span><span class="w"></span>
 
-<span class="c1">// Could have also been done like this</span>
-<span class="c1">//cl_float4 f = (cl_float4){0.0};</span>
-
-<span class="c1">// Print out the last element</span>
-<span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="p">.</span><span class="n">s</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span><span class="w"></span>
-
-<span class="c1">// Store a value in the last element</span>
-<span class="n">f</span><span class="p">.</span><span class="n">s</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">10.0</span><span class="p">;</span><span class="w"></span>
-
-<span class="c1">// Print out the last element again</span>
-<span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="p">.</span><span class="n">s</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span><span class="w"></span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;temp.w is %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">temp</span><span class="p">.</span><span class="n">w</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 
 </div>
@@ -15939,101 +15924,7 @@ Maximum error (infinity norm) is: 1.14441e-05
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Vector-access-from-within-a-kernel">Vector access from within a kernel<a class="anchor-link" href="#Vector-access-from-within-a-kernel">&#182;</a></h3>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Allocations of memory that are passed to a kernel in the <strong>__global</strong> or <strong>__local</strong> address spaces can be interpreted as a vector data type. For example in the <strong>mat_mult_local_vector</strong> kernel in <a href="kernels_mat_mult.c">kernels_mat_mult.c</a> we interpret the global memory allocation <strong>A</strong>, and the local memory allocation <strong>shared_B</strong> as vectors of type <strong>float8</strong>.</p>
-<div class="highlight"><pre><span></span><span class="c1">// Matrix multiply kernel that uses local memory for B</span>
-<span class="n">__kernel</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">mat_mult_local_vector</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
-<span class="w">                        </span><span class="n">__global</span><span class="w"> </span><span class="n">float8</span><span class="o">*</span><span class="w"> </span><span class="n">A</span><span class="p">,</span><span class="w"> </span>
-<span class="w">                        </span><span class="n">__global</span><span class="w"> </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">B</span><span class="p">,</span><span class="w"> </span>
-<span class="w">                        </span><span class="n">__global</span><span class="w"> </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"></span>
-<span class="w">                        </span><span class="n">__local</span><span class="w">  </span><span class="n">float8</span><span class="o">*</span><span class="w"> </span><span class="n">shared_B</span><span class="p">,</span><span class="w"></span>
-<span class="w">                        </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">N1_A</span><span class="p">,</span><span class="w"> </span>
-<span class="w">                        </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">N0_C</span><span class="p">,</span><span class="w"></span>
-<span class="w">                        </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">N1_C</span><span class="p">,</span><span class="w"></span>
-<span class="w">                        </span><span class="c1">// N1_A_v is the number of float8 vectors along N1_A axis</span>
-<span class="w">                        </span><span class="c1">// We have asserted that N1_A%8 == 0</span>
-<span class="w">                        </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">N1_A_v</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-</pre></div>
-<p>One must make sure of two things when using memory in this way:</p>
-<ul>
-<li>The size of the memory allocation is a multiple of the size of the vector type (float8 in this example).</li>
-<li>The memory is byte-aligned so that the starting address of the allocation is a multiple of the vector length.</li>
-</ul>
-<p>If an OpenCL function is performing the memory allocation, such as <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clCreateBuffer.html">clCreateBuffer</a> or <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clSVMAlloc.html">clSVMAlloc</a>, then it will usually allocate memory according to the largest OpenCL memory type (<strong>long16</strong>). Otherwise, use the C11 function <strong>aligned_alloc</strong> to allocate memory with the same alignment as there are bytes in the vector type. The helper function <strong>h_alloc</strong> in <a href="../include/cl_helper.hpp">cl_helper.hpp</a> allocates memory using the size of <strong>cl_long16</strong> (128 bytes) as the alignment.</p>
-
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Access to a vector type from within a kernel is done using dot notation. You can use <strong>.x .y .z</strong> and <strong>.w</strong> for the first four elements, or you can use <strong>.s0, .s1, .s2, .s3, .s4, .s5, .s6, .s7, .s8, .s9, .sa, .sb, .sc, .sd, .se, .sf</strong> to access values up to the 16th element. A neat thing about OpenCL vectors is that you can "swizzle", or permute indices (using either .xyzw or .s* but not both) to mix up the order of the vector.</p>
-
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<div class="highlight"><pre><span></span><span class="c1">// Code within a kernel</span>
-
-<span class="c1">// Explicit declaration</span>
-<span class="n">float4</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">float4</span><span class="p">)(</span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">3.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">4.0f</span><span class="p">);</span><span class="w"></span>
-
-<span class="c1">// Explicit declaration</span>
-<span class="n">float4</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">float4</span><span class="p">)(</span><span class="mf">1.0f</span><span class="p">);</span><span class="w"></span>
-
-<span class="c1">// Access to element 0 (both expressions are equivalent)</span>
-<span class="n">v</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">;</span><span class="w"></span>
-<span class="n">v</span><span class="p">.</span><span class="n">s0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">;</span><span class="w"></span>
-
-<span class="c1">// Valid examples of swizzling</span>
-<span class="n">v</span><span class="p">.</span><span class="n">xyzw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="p">.</span><span class="n">wzyx</span><span class="p">;</span><span class="w"></span>
-<span class="n">v</span><span class="p">.</span><span class="n">xyzw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="p">.</span><span class="n">s3210</span><span class="p">;</span><span class="w"></span>
-</pre></div>
-
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>You can also load and store vectors from a memory allocation using the <strong>vload(n)</strong> and <strong>vstore(n)</strong> functions, where n is in the range (2,3,4,8,16).</p>
-<div class="highlight"><pre><span></span><span class="c1">// OpenCL kernel code</span>
-
-<span class="c1">// Assuming arr is a memory allocation from global memory</span>
-
-<span class="c1">// Load a float4 vector starting at the</span>
-<span class="c1">// memory location of offset*4 relative to arr</span>
-<span class="n">float4</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vload4</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span><span class="w"> </span><span class="n">arr</span><span class="p">);</span><span class="w"></span>
-
-<span class="c1">// Store a float4 vector starting at the </span>
-<span class="c1">// memory location of offset*4 relative to arr</span>
-<span class="n">vstore4</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">offset</span><span class="p">,</span><span class="w"> </span><span class="n">arr</span><span class="p">);</span><span class="w"></span>
-</pre></div>
-<p>In order to avoid undefined behaviour, the address <strong>arr</strong> for the allocation needs to be byte-aligned to the data type being used. So as long as you use the allocated (and aligned) address as the address for <strong>vstore(n)</strong> and <strong>vload(n)</strong> functions you will be fine.</p>
+<h3 id="Complex-numbers-in-HIP">Complex numbers in HIP<a class="anchor-link" href="#Complex-numbers-in-HIP">&#182;</a></h3><p>Complex numbers are not implemented in OpenCL, however you can store the real and imaginary components in a <strong>float2</strong> or <strong>double2</strong> vector type for example. One must manually perform the complex number math operations on the individual components <strong>x</strong> and <strong>y</strong>.</p>
 
 </div>
 </div>
