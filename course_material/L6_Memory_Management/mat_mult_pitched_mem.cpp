@@ -143,20 +143,13 @@ int main(int argc, char** argv) {
     //// to A_d and B_d on the device ////
     H_ERRCHK(
         hipMemcpy2D(
-            // destination pointer
-            A_d,
-            // destination pitch
-            pitch_A,
-            // source pointer
-            A_h,
-            // source pitch
-            N1_A*sizeof(float),
-            // width is number of bytes along a pencil that is transferred
-            N1_A*sizeof(float),
-            // height is the number of pencils that are transferred
-            N0_C,
-            // copy flag
-            hipMemcpyHostToDevice
+            A_d, // destination pointer
+            pitch_A, // destination pitch
+            A_h, // source pointer
+            N1_A*sizeof(float), // source pitch
+            N1_A*sizeof(float), // bytes along a pencil to transfer
+            N0_C, // height (number of pencils to transfer)
+            hipMemcpyHostToDevice // copy flag
         )
     );
         
@@ -239,7 +232,6 @@ int main(int argc, char** argv) {
     hipMemcpy3DParms copy_parms = {0};
     copy_parms.srcPtr = C_d_ptr;
     copy_parms.srcPos = C_d_pos;
-    
     copy_parms.dstPtr = C_h_ptr;
     copy_parms.dstPos = C_h_pos;
     
@@ -260,7 +252,8 @@ int main(int argc, char** argv) {
     // Print the maximum error between matrices
     float max_err = m_max_error(C_h, C_answer_h, N0_C, N1_C);
     
-    //// Step 9. Write the contents of matrices A_h, B_h, and C_h to disk ////
+    //// Step 9. Write the contents of matrices 
+    //// A_h, B_h, and C_h to disk
 
     // Write out the host arrays to file
     h_write_binary(A_h, "array_A.dat", nbytes_A);

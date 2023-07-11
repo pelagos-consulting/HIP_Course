@@ -18,12 +18,7 @@ Written by Dr Toby M. Potter
 #include "hip_helper.hpp"
 
 typedef float float_type;
-
-// Number of coefficients to define
-#define NCOEFFS 3
-
-// Define some constant memory
-__constant__ float coeffs[NCOEFFS] = {0};
+typedef float4 float_vec_type;
 
 // Device function to get the start and end values
 // for filling a shared memory array
@@ -52,22 +47,20 @@ __device__ void get_start_end(
 }
 
 // Matrix multiply kernel that uses shared memory for A
-__global__ void mat_mult_shared_A (
-                        float_type* A, 
+__global__ void mat_mult_shared_A_vector (
+                        float_vec_type* A, 
                         float_type* B, 
                         float_type* C,
-                        size_t N1_A, 
+                        size_t vector_len,
+                        size_t N1_A_v,
                         size_t N0_C,
                         size_t N1_C) { 
     
     // Access the allocation of shared memory
     extern __shared__ char shared[];
     
-    // Example allocation of static memory
-    __shared__ float_type shared_temp[10];
-    
     // Get a pointer to shared_A from shared
-    float_type* shared_A = (float_type*)&shared[0];
+    float_vec_type* shared_A = (float_vec_type*)&shared[0];
     
     // A is of size (N0_C, N1_A)
     // B is of size (N1_A, N1_C)
@@ -91,12 +84,12 @@ __global__ void mat_mult_shared_A (
     size_t start, end;
     
     // Get the start and end lengths to fill array
-    get_start_end(L1, N1_A, s1, &start, &end);
+    get_start_end(L1, N1_A_v, s1, &start, &end);
     
     // Fill shared_A
     if (i0<N0_C) {
         for (size_t n=start; n<end; n++) {
-            shared_A[s0*N1_A+n]=A[i0*N1_A+n]; 
+            shared_A[s0*N1_A_v+n]=A[i0*N1_A_v+n]; 
         }   
     }
     
@@ -106,28 +99,37 @@ __global__ void mat_mult_shared_A (
     
     // Scratch variable
     // Demonstrate access of constant memory
-    float_type temp=0.0*coeffs[0]; 
+    float_vec_type temp = (float_vec_type){0.0f}; 
+    float_vec_type scratch = (float_vec_type){0.0f};
     
     // Guard mechanism to make sure we do not go
     // outside the boundaries of matrix C
     if ((i0<N0_C) && (i1<N1_C)) {
         
         // Loop over columns of A and rows of B 
-        for (size_t n=0; n<N1_A; n++) {
+        for (size_t n=0; n<N1_A_v; n++) {
             
-            // A is of size (N0_C, N1_A)
+            // A is of size (N0_C, N1_A_v)
             // B is of size (N1_A, N1_C)
-            // shared_B is of size (L1, N1_A)
+            // shared_A is of size (L0, N1_A)
             // C is of size (N0_C, N1_C)
+             
+            float_type* Bn_i1=&B[n*vector_len*N1_C+i1];
+            
+            // Fill components of scratch
+            scratch.x = Bn_i1[0*N1_C];
+            scratch.y = Bn_i1[1*N1_C];
+            scratch.z = Bn_i1[2*N1_C];
+            scratch.w = Bn_i1[3*N1_C];
             
             // Loop across row s0 of shared_A
             // and down column i1 of B
-            temp+=shared_A[s0*N1_A+n]*B[n*N1_C+i1];
+            temp += shared_A[s0*N1_A_v+n]*scratch;
             
         } 
         
         // Number of rows in C is same as number of rows in A
-        C[i0*N1_C+i1]=temp;
+        C[i0*N1_C+i1] = temp.x+temp.y+temp.z+temp.w;
     }
 }
 
@@ -158,29 +160,28 @@ int main(int argc, char** argv) {
     // C is of size (N0_C, N1_C)
 
     size_t N1_A = NCOLS_A, N0_C = NROWS_C, N1_C = NCOLS_C;
+    
+    // Get the vector length
+    size_t vector_len = sizeof(float_vec_type)/sizeof(float_type);
 
-    // Copy memory to the coefficients
-    float temp_coeffs[NCOEFFS] = {1};
-    H_ERRCHK(
-        hipMemcpyToSymbol(
-            coeffs, 
-            temp_coeffs, 
-            NCOEFFS*sizeof(float)
-        )
-    );
+    // Get the nearest acceptable vector length
+    size_t N1_A_v = N1_A/vector_len;
+    if (N1_A%vector_len) N1_A_v++;
     
     //// Step 3. Construct matrices A_h and B_h on the host 
     //// and fill them with random numbers ////
     
     // Number of bytes in each array
-    size_t nbytes_A = N0_C*N1_A*sizeof(float);
-    size_t nbytes_B = N1_A*N1_C*sizeof(float);
-    size_t nbytes_C = N0_C*N1_C*sizeof(float);
+    size_t nbytes_A = N0_C*N1_A*sizeof(float_type);
+    // Number of bytes in enlarged array
+    size_t nbytes_A_v = N0_C*N1_A_v*sizeof(float_vec_type);
+    size_t nbytes_B = N1_A*N1_C*sizeof(float_type);
+    size_t nbytes_C = N0_C*N1_C*sizeof(float_type);
 
     // Allocate memory for the host arrays
-    float* A_h = (float*)h_alloc(nbytes_A);
-    float* B_h = (float*)h_alloc(nbytes_B);
-    float* C_h = (float*)h_alloc(nbytes_C);
+    float* A_h = (float_type*)h_alloc(nbytes_A);
+    float* B_h = (float_type*)h_alloc(nbytes_B);
+    float* C_h = (float_type*)h_alloc(nbytes_C);
 
     // Fill the host arrays with random numbers 
     // using the matrix helper library
@@ -190,14 +191,43 @@ int main(int argc, char** argv) {
     //// Step 4. Allocate memory for arrays //// 
     //// A_d, B_d, and C_d on the compute device ////
 
-    float *A_d, *B_d, *C_d;
-    H_ERRCHK(hipMalloc((void**)&A_d, nbytes_A));
+    float_vec_type *A_d; 
+    float_type *B_d, *C_d;
+    size_t pitch_A;
+    
+    // Allocate memory for A_d, B_d and C_d normally
+    H_ERRCHK(hipMalloc((void**)&A_d, nbytes_A_v));
     H_ERRCHK(hipMalloc((void**)&B_d, nbytes_B));
     H_ERRCHK(hipMalloc((void**)&C_d, nbytes_C));
 
+    // Fill A_d with zeros
+    H_ERRCHK(
+        hipMemset(
+            A_d, // the pointer to set
+            0, // the value to fill
+            nbytes_A_v // number of bytes to fill
+        )
+    );
+    
     //// Step 5. 1. Upload matrices A_h and B_h from the host //// 
     //// to A_d and B_d on the device ////
-    H_ERRCHK(hipMemcpy(A_d, A_h, nbytes_A, hipMemcpyHostToDevice));
+    
+    // Copy a rectangular region into A
+    
+    // Memcpy2D method
+    H_ERRCHK(
+        hipMemcpy2D(
+            (void*)A_d, // destination pointer
+            N1_A_v*sizeof(float_vec_type), // destination pitch
+            (void*)C_h, // source pointer
+            N1_A*sizeof(float_type), // source pitch
+            N1_A*sizeof(float_type), // width of pencils to copy
+            N0_C, // number of pencils to copy
+            hipMemcpyHostToDevice // type of memory transfer
+        )
+    );
+        
+    // Copy B normally using a contiguous copy
     H_ERRCHK(hipMemcpy(B_d, B_h, nbytes_B, hipMemcpyHostToDevice));
  
     //// Step 6. Run the kernel to compute C_d ///
@@ -212,15 +242,16 @@ int main(int argc, char** argv) {
     h_fit_blocks(&grid_nblocks, global_size, block_size);
 
     // Amount of shared memory to use in the kernel
-    size_t sharedMemBytes=block_size.y*N1_A*sizeof(float_type);
+    size_t sharedMemBytes=block_size.y*N1_A_v*sizeof(float_vec_type);
     
     // Launch the kernel using hipLaunchKernelGGL method
     // Use 0 when choosing the default (null) stream
-    hipLaunchKernelGGL(mat_mult_shared_A, 
+    hipLaunchKernelGGL(mat_mult_shared_A_vector, 
             grid_nblocks, 
             block_size, sharedMemBytes, 0, 
             A_d, B_d, C_d,
-            N1_A,
+            vector_len,
+            N1_A_v,
             N0_C,
             N1_C
     );
@@ -248,7 +279,8 @@ int main(int argc, char** argv) {
     // Print the maximum error between matrices
     float max_err = m_max_error(C_h, C_answer_h, N0_C, N1_C);
     
-    //// Step 9. Write the contents of matrices A_h, B_h, and C_h to disk ////
+    //// Step 9. Write the contents of matrices 
+    ///  A_h, B_h, and C_h to disk 
 
     // Write out the host arrays to file
     h_write_binary(A_h, "array_A.dat", nbytes_A);
