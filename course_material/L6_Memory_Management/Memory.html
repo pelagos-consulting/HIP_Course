@@ -16263,134 +16263,68 @@ Maximum error (infinity norm) is: 2.67029e-05
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Atomics-in-HIP">Atomics in HIP<a class="anchor-link" href="#Atomics-in-HIP">&#182;</a></h3><p><strong>Got to here</strong></p>
-
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>OpenCL 1.x has basic support for atomic operations. Documentation is available <a href="https://www.khronos.org/registry/OpenCL/sdk/1.2/docs/man/xhtml/atomicFunctions.html">here</a> and the operations are for use within a kernel to ensure atomic operations are conducted across work items. These functions mostly operate on signed or unsigned integers that are part of the global or local address space.</p>
-
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>In the file <a href="atomics.cpp">atomics.cpp</a> is an example of OpenCL 1.x atomics in operation. We create a buffer_T that is the size of cl_uint and increment it atomically in the <strong>atomic_test</strong> kernel in <a href="kernels_atomics.c">kernels_atomics.c</a>.</p>
+<h3 id="Atomics-in-HIP">Atomics in HIP<a class="anchor-link" href="#Atomics-in-HIP">&#182;</a></h3><p>At the time of writing, support for atomic functions in HIP do not appear to be well documented. In CUDA there is support for functions like <strong>atomicAdd</strong> that provide atomic operations with device level synchronisation, meaning that the operation is atomic for all threads executed on the device. The functions <strong>atomicAdd_system</strong> can provide system level synchronisation (i.e host can atomically increment too),  and <strong>atomicAdd_block</strong> can provide perform an atomic add that is synchronised over all threads in a block.</p>
+<p>In the program <a href="atomics.cpp">atomics.cpp</a> we allocate memory for a single integer in global memory and use <strong>atomicAdd</strong> within a kernel to increment it from 65536 threads over a grid of size (256, 256). The kernel code is below:</p>
 <div class="highlight"><pre><span></span><span class="c1">// Kernel to test atomics</span>
-<span class="n">__kernel</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">atomic_test</span><span class="w"> </span><span class="p">(</span><span class="n">__global</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">T</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">atomic_test</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">counter</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 
-<span class="w">    </span><span class="c1">// Increment T atomically</span>
-<span class="w">    </span><span class="n">atomic_add</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Increment T atomically with device-level synchronisation</span>
+<span class="w">    </span><span class="n">atomicAdd</span><span class="p">(</span><span class="n">counter</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
 </pre></div>
-
+<h4 id="Run-the-program">Run the program<a class="anchor-link" href="#Run-the-program">&#182;</a></h4>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Memory-synchronisation-in-OpenCL-2.0+---atomics-and-fences">Memory synchronisation in OpenCL 2.0+ - atomics and fences<a class="anchor-link" href="#Memory-synchronisation-in-OpenCL-2.0+---atomics-and-fences">&#182;</a></h3>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>OpenCL 1.x has a <strong>relaxed</strong> memory model. It means that consistency between items in a workgroup is only guaranteed at a workgroup barrier, and consistency between host and device memory is only guaranteed at synchronisation points like <strong>clFinish</strong> or <strong>clWaitForEvents</strong> or after blocking memory copies. There are basic atomic functions within OpenCL 1.x, however with the introduction of OpenCL 2.0 there needed to be more sophisticated synchronisation between host and device. OpenCL 2.0+ has two types of synchronisation constructs.</p>
-<ul>
-<li>Fences</li>
-<li>Atomic operations</li>
-</ul>
-
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>In the code <a href="atomics2.cpp">atomics2.cpp</a> is an equivalent operation to the atomics from the example above. Instead we use an atomic type <strong>std::atomic_uint from</strong> <strong>\&lt;atomic&gt;</strong> as the initialised memory for <strong>Buffer_T</strong>.</p>
-<div class="highlight"><pre><span></span><span class="c1">// atomics2.cpp:82</span>
-
-<span class="w">    </span><span class="c1">// Make an atomic counter</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="kt">atomic_uint</span><span class="w"> </span><span class="n">value_T</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
-
-<span class="w">    </span><span class="c1">// Make some global memory for an atomic operation</span>
-<span class="w">    </span><span class="n">cl_mem</span><span class="w"> </span><span class="n">buffer_T</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clCreateBuffer</span><span class="p">(</span><span class="w"></span>
-<span class="w">        </span><span class="n">context</span><span class="p">,</span><span class="w"> </span>
-<span class="w">        </span><span class="n">CL_MEM_READ_WRITE</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">CL_MEM_COPY_HOST_PTR</span><span class="p">,</span><span class="w"> </span>
-<span class="w">        </span><span class="k">sizeof</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">atomic_uint</span><span class="p">),</span><span class="w"> </span>
-<span class="w">        </span><span class="o">&amp;</span><span class="n">value_T</span><span class="p">,</span><span class="w"> </span>
-<span class="w">        </span><span class="o">&amp;</span><span class="n">errcode</span><span class="w"></span>
-<span class="w">    </span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="n">h_errchk</span><span class="p">(</span><span class="n">errcode</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Creating buffer_T&quot;</span><span class="p">);</span><span class="w"></span>
-</pre></div>
-<p>Then, in the kernel in file <a href="kernels_atomics2.c">kernels_atomics2.c</a> we use the OpenCL 2.0+ function <strong>atomic_fetch_add</strong> to increment the counter.</p>
-
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<div class="highlight"><pre><span></span><span class="c1">// kernels_atomics2.c:0</span>
-
-<span class="c1">// Kernel to test OpenCL atomics v2.0</span>
-<span class="n">__kernel</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">atomics_test2</span><span class="w"> </span><span class="p">(</span><span class="n">__global</span><span class="w"> </span><span class="kt">atomic_uint</span><span class="o">*</span><span class="w"> </span><span class="n">T</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-
-<span class="w">    </span><span class="c1">// Increment T atomically using OpenCL 2.0</span>
-<span class="w">    </span><span class="n">atomic_fetch_add</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make atomics.exe<span class="p">;</span> ./atomics.exe
 </pre></div>
 
+     </div>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Since this is OpenCL 2.0+ kernel code we need to include the <strong>"-cl-std=CL2.0"</strong> build flag in <a href="atomics2.cpp">atomics2.cpp</a></p>
-<div class="highlight"><pre><span></span><span class="c1">// atomics2.cpp:102</span>
 
-<span class="w">    </span><span class="c1">// Turn this source code into a program</span>
-<span class="w">    </span><span class="n">cl_program</span><span class="w"> </span><span class="n">program</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h_build_program</span><span class="p">(</span><span class="n">kernel_source</span><span class="p">,</span><span class="w"> </span><span class="n">context</span><span class="p">,</span><span class="w"> </span><span class="n">device</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;-cl-std=CL2.0&quot;</span><span class="p">);</span><span class="w"></span>
-</pre></div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>make: &#39;atomics.exe&#39; is up to date.
+Device id: 0
+	name:                                    
+	global memory size:                      536 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    65 KB
+	maximum pitch size for memory copies:    402 MB
+	max block size:                          (1024,1024,1024)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,2147483647,2147483647)
+Counter has been incremented 65536 out of 65536 times
+</pre>
+</div>
+</div>
 
 </div>
+
 </div>
-</div>
+
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">

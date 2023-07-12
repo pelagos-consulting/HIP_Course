@@ -254,6 +254,7 @@ int main(int argc, char** argv) {
             N0_C,
             N1_C
     );
+    H_ERRCHK(hipGetLastError());
     
     // Alternatively, launch the kernel using CUDA triple Chevron syntax
     // which is not valid ANSI C++ syntax

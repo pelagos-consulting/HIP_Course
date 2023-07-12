@@ -146,10 +146,13 @@ int main(int argc, char** argv) {
             N0_C,
             N1_C
     );
-    
+
     // Alternatively, launch the kernel using CUDA triple Chevron syntax
     // which is not valid ANSI C++ syntax
-    //mat_mult<<<grid_nblocks, block_size, 0, 0>>>(A_d, B_d, C_d, N1_A, N0_C, N1_C);
+    //mat_mult<<<grid_nblocks, block_size, sharedMemBytes, 0>>>(A_d, B_d, C_d, N1_A, N0_C, N1_C);
+    
+    // Check the status of the kernel launch
+    H_ERRCHK(hipGetLastError());
     
     // Wait for any commands to complete on the compute device
     H_ERRCHK(hipDeviceSynchronize());
