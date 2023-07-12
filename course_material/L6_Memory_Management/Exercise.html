@@ -14585,17 +14585,19 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <figcaption style="text-align:lower; margin:1em; float:bottom; vertical-align:bottom;">Elementwise multiplication of matrices D and E to get F.</figcaption>
 </figure><p>The steps are:</p>
 <ol>
+<li>Parse command line arguments.</li>
 <li>Device discovery and selection.</li>
-<li>Command queues created.</li>
-<li>Matrices <strong>D_h</strong> and <strong>E_h</strong> allocated on the host and filled with random numbers.</li>
-<li>Matrices <strong>D_d</strong> and <strong>E_d</strong> allocated on the compute device.</li>
-<li>Programs built, kernels created and kernel arguments selected.</li>
-<li>Matrices <strong>D_h</strong> and <strong>E_h</strong> uploaded to device allocations <strong>D_d</strong> and <strong>E_d</strong>.</li>
-<li>The kernel <strong>mat_elementwise</strong> is run on the device to compute <strong>F_d</strong> from <strong>D_d</strong> and <strong>E_d</strong>.</li>
-<li><strong>F_d</strong> is copied to <strong>F_h</strong> and compared with the solution <strong>F_answer_h</strong> from sequential CPU code.</li>
-<li>Memory and device cleanup</li>
+<li>Allocate matrices <strong>D_h</strong>, <strong>E_h</strong>, and <strong>F_h</strong> on the host. Fill matrices <strong>D_h</strong> and <strong>E_h</strong> with random numbers.</li>
+<li>Allocate matrices <strong>D_d</strong>, <strong>E_d</strong> and <strong>F_d</strong> on the compute device.</li>
+<li>Upload matrices <strong>D_h</strong> and <strong>E_h</strong> to device allocations <strong>D_d</strong> and <strong>E_d</strong>.</li>
+<li>Run the kernel <strong>mat_elementwise</strong> on the device to compute <strong>F_d</strong> from <strong>D_d</strong> and <strong>E_d</strong>.</li>
+<li>Copy <strong>F_d</strong> on the device to <strong>F_h</strong> on the host.</li>
+<li>Compare <strong>F_h</strong> is with the solution <strong>F_answer_h</strong> from sequential CPU code.</li>
+<li>Write <strong>D_h</strong>, <strong>E_h</strong> and <strong>F_h</strong> to disk.</li>
+<li>Release resources.</li>
 </ol>
-<p>Using rectangular copies is an important skill to master, especially when you are decomposing your problem into sections that are to be handled by different devices. In this exercise we are going enable the elementwise matrix multiplication code to use a <strong>rectangular copy</strong> to copy the memory allocation <strong>F_d</strong> back to the host (<strong>F_h</strong>). The source code to edit is located in <a href="mat_elementwise.cpp">mat_elementwise.cpp</a> and the kernel is in <a href="kernels_elementwise.c">kernels_elementwise.c</a>. Your task is to make the necessary change so that copies back from <strong>F_d</strong> uses a <strong>rectangular</strong> copy (<a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueReadBufferRect.html">clEnqueueReadBufferRect</a>) instead of the normal copy.</p>
+<p>Using rectangular copies is an important skill to master, especially when you are decomposing your problem into sections that are to be handled by different devices. In this exercise we are going enable the elementwise matrix multiplication code to use a <strong>rectangular copy</strong> to copy the memory allocation <strong>F_d</strong> back to the host (<strong>F_h</strong>). The source code to edit is located in <a href="mat_elementwise.cpp">mat_elementwise.cpp</a>.</p>
+<p>The code works fine as it is, however it is only using a 1D memory copy with a call to <strong>hipMemcpy</strong>. For teaching purposes your task is to instrument this program to copy the device memory allocation <strong>F_d</strong> to <strong>F_h</strong> using a call to the rectangular copy function <strong>hipMemcpy3D</strong>.</p>
 
 </div>
 </div>
@@ -14617,10 +14619,10 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make clean<span class="p">;</span> make ./mat_elementwise.exe<span class="p">;</span> ./mat_elementwise.exe
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make ./mat_elementwise.exe<span class="p">;</span> ./mat_elementwise.exe
 </pre></div>
 
      </div>
@@ -14642,15 +14644,17 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>rm -rf *.exe
-CC -g -fopenmp -O2 -I../include mat_elementwise.cpp -o mat_elementwise.exe -lOpenCL
-	               name: gfx1035 
-	     Device version: OpenCL 2.0  
-	 global memory size: 536 MB
-	    max buffer size: 456 MB
-	     max local size: (1024,1024,1024)
-	     max work-items: 256
-The output array F_h (as computed with OpenCL) is
+<pre>make: &#39;mat_elementwise.exe&#39; is up to date.
+Device id: 0
+	name:                                    
+	global memory size:                      536 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    65 KB
+	maximum pitch size for memory copies:    402 MB
+	max block size:                          (1024,1024,1024)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,2147483647,2147483647)
+The output array F_h (as computed with HIP) is
 ----
 |  4.50e-01  1.70e-01  2.77e-01  2.21e-02 |
 |  2.46e-02  3.48e-02  4.41e-02  2.05e-01 |
@@ -14700,9 +14704,10 @@ Maximum error (infinity norm) is: 0
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="Tasks">Tasks<a class="anchor-link" href="#Tasks">&#182;</a></h2><ol>
-<li>Load up the documentation for <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueReadBufferRect.html">clEnqueueReadBufferRect</a>.</li>
-<li>In <a href="mat_mult_local.cpp">mat_mult_local.cpp:190</a> there is an example for performing a rectangular copy using <a href="https://www.khronos.org/registry/OpenCL/sdk/3.0/docs/man/html/clEnqueueWriteBufferRect.html">clEnqueueWriteBufferRect</a>. Copy-paste that code to <a href="mat_elementwise.cpp">mat_elementwise.cpp</a> and begin modifications.</li>
+<li>Load up the documentation for <strong>hipMemcpy3D</strong>.</li>
+<li>In <a href="mat_mult_pitched_mem.cpp">mat_mult_pitched_mem.cpp:197</a> there is an example for performing a rectangular copy using <strong>hipMemcpy3D</strong>. Copy-paste that code to <a href="mat_elementwise.cpp">mat_elementwise.cpp</a> and begin modifications.</li>
 </ol>
+<h3 id="Bonus-task">Bonus task<a class="anchor-link" href="#Bonus-task">&#182;</a></h3><p>Experiment with the 3D copy, can you change it so that it only copies back a rectangular region inside F_d, leaving a border 1 cell wide all the way around?</p>
 
 </div>
 </div>
@@ -14724,7 +14729,7 @@ Maximum error (infinity norm) is: 0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make mat_elementwise_answer.exe<span class="p">;</span> ./mat_elementwise_answer.exe
@@ -14749,14 +14754,17 @@ Maximum error (infinity norm) is: 0
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>CC -g -fopenmp -O2 -I../include mat_elementwise_answer.cpp -o mat_elementwise_answer.exe -lOpenCL
-	               name: gfx1035 
-	     Device version: OpenCL 2.0  
-	 global memory size: 536 MB
-	    max buffer size: 456 MB
-	     max local size: (1024,1024,1024)
-	     max work-items: 256
-The output array F_h (as computed with OpenCL) is
+<pre>make: &#39;mat_elementwise_answer.exe&#39; is up to date.
+Device id: 0
+	name:                                    
+	global memory size:                      536 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    65 KB
+	maximum pitch size for memory copies:    402 MB
+	max block size:                          (1024,1024,1024)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,2147483647,2147483647)
+The output array F_h (as computed with HIP) is
 ----
 |  4.50e-01  1.70e-01  2.77e-01  2.21e-02 |
 |  2.46e-02  3.48e-02  4.41e-02  2.05e-01 |

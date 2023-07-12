@@ -9,12 +9,9 @@ TARGETS=mat_mult_pinned_mem.exe \
 		mat_mult_shared_A.exe \
 		mat_mult_shared_A_vector.exe \
 		vector_types.exe \
-		atomics.exe         
-#		mat_mult_local_vector.exe \
-#		atomics.exe \
-#		atomics2.exe \
-#		mat_elementwise.exe \
-#		mat_elementwise_answer.exe 
+		atomics.exe \
+		mat_elementwise.exe \
+		mat_elementwise_answer.exe        
 
 all: $(TARGETS)
 
