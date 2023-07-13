@@ -65,9 +65,6 @@ size_t h_get_alignment() {
     return h_lcm(h_get_cache_line_size(), sizeof(ulonglong4));
 }
 
-
-
-
 /// Examine an error code and exit if necessary.
 void h_errchk(hipError_t errcode, const char* message) {
 
@@ -237,7 +234,7 @@ void h_release_devices(int num_devices) {
 }
 
 /// Create a number of streams
-hipStream_t* h_create_streams(int nstreams, int blocking) {
+hipStream_t* h_create_streams(size_t nstreams, int blocking) {
     // Blocking is a boolean, 0==no, 
     assert(nstreams>0);
 
@@ -249,7 +246,7 @@ hipStream_t* h_create_streams(int nstreams, int blocking) {
     }
 
     // Make the streams
-    hipStream_t* streams = (hipStream_t*)calloc((size_t)nstreams, sizeof(hipStream_t));
+    hipStream_t* streams = (hipStream_t*)calloc(nstreams, sizeof(hipStream_t));
 
     for (int i=0; i<nstreams; i++) {
         H_ERRCHK(hipStreamCreateWithFlags(&streams[i], flag));
@@ -259,7 +256,7 @@ hipStream_t* h_create_streams(int nstreams, int blocking) {
 }
 
 /// Release streams that were created
-void h_release_streams(int nstreams, hipStream_t* streams) {
+void h_release_streams(size_t nstreams, hipStream_t* streams) {
     for (int i=0; i<nstreams; i++) {
         H_ERRCHK(hipStreamDestroy(streams[i]));    
     }

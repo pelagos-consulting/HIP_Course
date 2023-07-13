@@ -10,176 +10,162 @@ Written by Dr Toby M. Potter
 #include "mat_size.hpp"
 
 // Bring in helper header to manage boilerplate code
-#include "cl_helper.hpp"
+#include "hip_helper.hpp"
 
-typedef cl_float float_type;
+typedef float float_type;
+
+// Kernel to solve the wave equation with fourth-order accuracy in space
+__global__ void wave2d_4o (
+        // Arguments
+        float_type* U0,
+        float_type* U1,
+        float_type* U2,
+        float_type* V,
+        size_t N0,
+        size_t N1,
+        float dt2,
+        float inv_dx02,
+        float inv_dx12,
+        // Position, frequency, and time for the
+        // wavelet injection
+        size_t P0,
+        size_t P1,
+        float pi2fm2t2) {    
+
+    // U2, U1, U0, V is of size (N0, N1)
+    size_t i0 = blockIdx.y * blockDim.y + threadIdx.y;
+    size_t i1 = blockIdx.x * blockDim.x + threadIdx.x;
+    
+    // Required padding and coefficients for spatial finite difference
+    const int pad_l=2, pad_r=2, ncoeffs=5;
+    float coeffs[ncoeffs] = {-0.083333336f, 1.3333334f, -2.5f, 1.3333334f, -0.083333336f};
+    
+    // Limit i0 and i1 to the region of U2 within the padding
+    i0=min(i0, (size_t)(N0-1-pad_r));
+    i1=min(i1, (size_t)(N1-1-pad_r));
+    i0=max((size_t)pad_l, i0);
+    i1=max((size_t)pad_l, i1);
+    
+    // Position within the grid as a 1D offset
+    long offset=i0*N1+i1;
+    
+    // Temporary storage
+    float temp0=0.0f, temp1=0.0f;
+    float tempV=V[offset];
+    
+    // Calculate the Laplacian
+    for (long n=0; n<ncoeffs; n++) {
+        // Stride in dim0 is N1        
+        temp0+=coeffs[n]*U1[offset+(n*(long)N1)-(pad_l*(long)N1)];
+        // Stride in dim1 is 1
+        temp1+=coeffs[n]*U1[offset+n-pad_l];
+    }
+    
+    // Calculate the wavefield U2 at the next timestep
+    U2[offset]=(2.0f*U1[offset])-U0[offset]+((dt2*tempV*tempV)*(temp0*inv_dx02+temp1*inv_dx12));
+    
+    // Inject the forcing term at coordinates (P0, P1)
+    if ((i0==P0) && (i1==P1)) {
+        U2[offset]+=(1.0f-2.0f*pi2fm2t2)*exp(-pi2fm2t2);
+    }
+    
+}
 
 int main(int argc, char** argv) {
    
-    // Parse arguments and set the target device
-    cl_device_type target_device;
-    cl_uint dev_index = h_parse_args(argc, argv, &target_device);
+    //// Step 1. Parse program arguments ////
+
+    // Parse command line arguments
+    int dev_index = h_parse_args(argc, argv);
     
-    // Useful for checking OpenCL errors
-    cl_int errcode;
-
-    // Create handles to platforms, 
-    // devices, and contexts
-
-    // Number of platforms discovered
-    cl_uint num_platforms;
-
     // Number of devices discovered
-    cl_uint num_devices;
-
-    // Pointer to an array of platforms
-    cl_platform_id *platforms = NULL;
-
-    // Pointer to an array of devices
-    cl_device_id *devices = NULL;
-
-    // Pointer to an array of contexts
-    cl_context *contexts = NULL;
+    int num_devices=0;
+    
+    //// Step 2. Discover resources and choose a compute device ////
     
     // Helper function to acquire devices
-    h_acquire_devices(target_device,
-                     &platforms,
-                     &num_platforms,
-                     &devices,
-                     &num_devices,
-                     &contexts);
-    
-
-    
-    // Do we enable out-of-order execution 
-    cl_bool ordering = CL_FALSE;
-    
-    // Do we enable profiling?
-    cl_bool profiling = CL_TRUE;
-
-    // Do we enable blocking IO?
-    cl_bool blocking = CL_FALSE;
-    
-    // Number of scratch buffers, must be at least 3
-    const int nscratch=5;
-    
-    // Number of command queues to generate
-    cl_uint num_command_queues = nscratch;
-    
-    // Choose the first available context
-    // and compute device to use
-    assert(dev_index < num_devices);
-    cl_context context = contexts[dev_index];
-    cl_device_id device = devices[dev_index];
-    
-    // Create the command queues
-    cl_command_queue* command_queues = h_create_command_queues(
-        &device,
-        &context,
-        (cl_uint)1,
-        (cl_uint)(num_command_queues+1),
-        ordering,
-        profiling
-    );
-    
-    // Command queue to do temporary things
-    cl_command_queue compute_queue = command_queues[nscratch];
-    
+    // This sets the default device
+    h_acquire_devices(&num_devices, dev_index);
+        
     // Report on the device in use
-    h_report_on_device(device);
+    h_report_on_device(dev_index);
+    
+    // Number of scratch buffers, must be at least 4
+    const size_t nscratch=5;
+    
+    // Number of streams to create
+    const size_t nstreams = nscratch;
+    
+    // Create streams with no blocking
+    hipStream_t* streams = h_create_streams(nstreams, 0);
     
     // We are going to do a simple array multiplication for this example, 
     // using raw binary files for input and output
     size_t nbytes_U;
     
+    // Make up sizes 
+    size_t N0=N0_U, N1=N1_U;
+    
     // Read in the velocity from disk and find the maximum
-    float_type* array_V = (float_type*)h_read_binary("array_V.dat", &nbytes_U);
+    float_type* V_h = (float_type*)h_read_binary("array_V.dat", &nbytes_U);
     assert(nbytes_U==N0*N1*sizeof(float_type));
     float_type Vmax = 0.0;
     for (size_t i=0; i<N0*N1; i++) {
-        Vmax = (array_V[i]>Vmax) ? array_V[i] : Vmax;
+        Vmax = (V_h[i]>Vmax) ? V_h[i] : Vmax;
     }
 
     // Make up the timestep using maximum velocity
     float_type dt = CFL*std::min(D0, D1)/Vmax;
-    
     printf("dt=%f, Vmax=%f\n", dt, Vmax);
     
     // Use a grid crossing time at maximum velocity to get the number of timesteps
     int NT = (int)std::max(D0*N0, D1*N1)/(dt*Vmax);
     
     // Make up the output array
-    size_t nbytes_out = NT*N0*N1*sizeof(cl_float);
-    cl_float* array_out = (cl_float*)h_alloc(nbytes_out);
+    size_t nbytes_out = NT*N0*N1*sizeof(float_type);
     
-    // Make Buffers on the compute device for matrices U0, U1, U2, V
+    // Allocate memory for out_h
+    float_type* out_h;
+    H_ERRCHK(
+        hipHostMalloc(
+            (void**)&out_h, 
+            nbytes_out, 
+            hipHostMallocDefault
+        )
+    );
+    
+    // Reset memory
+    H_ERRCHK(hipMemset(out_h, 0, nbytes_out));
+    
+    // Make buffers on the compute device for matrices U0, U1, U2, V
     
     // Read-only buffer for V
-    cl_mem buffer_V = clCreateBuffer(
-        context, 
-        CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, 
-        nbytes_U, 
-        (void*)array_V, 
-        &errcode
-    );
-    h_errchk(errcode, "Creating buffer_V");
+    float_type* V_d;
+    H_ERRCHK(hipMalloc((void**)&V_d, nbytes_U));
+    H_ERRCHK(hipMemcpy(V_d, V_h, nbytes_U, hipMemcpyHostToDevice));
     
-    // Make up events
-    cl_event events[nscratch];
+    // Create events for maintaining sync
+    hipEvent_t events[nscratch];
     
     // Create scratch buffers for the computation
-    cl_mem buffers_U[nscratch];
+    float* U_ds[nscratch];
     for (int n=0; n<nscratch; n++) {
-        buffers_U[n] = clCreateBuffer(
-            context, 
-            CL_MEM_ALLOC_HOST_PTR, 
-            nbytes_U, 
-            NULL, 
-            &errcode
-        );
-        h_errchk(errcode, "Creating scratch buffer.");
+        // Allocate memory and zero out
+        H_ERRCHK(hipMalloc((void**)&U_ds[n], nbytes_U));
+        H_ERRCHK(hipMemset(U_ds[n], 0, nbytes_U));
         
-        // Zero out buffers
-        float_type zero=0.0f;
-        h_errchk(
-            clEnqueueFillBuffer(
-                compute_queue,
-                buffers_U[n],
-                &zero,
-                sizeof(float_type),
-                0,
-                nbytes_U,
-                0,
-                NULL,
-                &events[n]
-            ),
-            "Filling buffer with zeroes."
-        );
+        // Initialise the event
+        H_ERRCHK(hipEventCreate(&events[n]));
     }
     
-    // Now specify the kernel source and read it in
-    size_t nbytes_src = 0;
-    const char* kernel_source = (const char*)h_read_binary(
-        "kernels.c", 
-        &nbytes_src
-    );
-
-    // Turn this source code into a program
-    cl_program program = h_build_program(kernel_source, context, device, NULL);
-        
-    // Create a kernel from the built program
-    cl_kernel kernel=clCreateKernel(program, "wave2d_4o", &errcode);
-    h_errchk(errcode, "Creating wave2d_4o Kernel");
-
     // Set up arguments for the kernel
-    cl_uint N0_k=N0, N1_k=N1;
-    cl_float dt2=dt*dt, inv_dx02=1.0/(D0*D0), inv_dx12=1.0/(D1*D1);
+    float_type dt2=dt*dt, inv_dx02=1.0/(D0*D0), inv_dx12=1.0/(D1*D1);
     
     // time, pi^2 fm^2 t^2 for the Ricker wavelet
     // Get the frequency of the wavelet
     
     // Number of points per wavelength
-    float_type ppw=10;
+    float_type ppw=10.0f;
     // Frequency of the Ricker Wavelet
     float_type fm=Vmax/(ppw*std::max(D0,D1));
     float_type pi=3.141592f;
@@ -190,55 +176,30 @@ int main(int argc, char** argv) {
     printf("dt=%g, fm=%g, Vmax=%g, dt2=%g\n", dt, fm, Vmax, dt2);
     
     // Coordinates of the Ricker wavelet
-    cl_uint P0=N0/2;
-    cl_uint P1=N1/2;
+    size_t P0=N0/2;
+    size_t P1=N1/2;
     
-    // Set arguments to the kernel (not thread safe)
-    h_errchk(
-        clSetKernelArg(kernel, 3, sizeof(cl_mem), &buffer_V ),
-        "setting kernel argument 3"
-    );
-    h_errchk(
-        clSetKernelArg(kernel, 4, sizeof(cl_uint), &N0_k ),
-        "setting kernel argument 4"
-    );
-    h_errchk(
-        clSetKernelArg(kernel, 5, sizeof(cl_uint), &N1_k ),
-        "setting kernel argument 5"
-    );
-    h_errchk(
-        clSetKernelArg(kernel, 6, sizeof(cl_float), &dt2 ),
-        "setting kernel argument 6"
-    );
-    h_errchk(
-        clSetKernelArg(kernel, 7, sizeof(cl_float), &inv_dx02 ),
-        "setting kernel argument 7"
-    );
-    h_errchk(
-        clSetKernelArg(kernel, 8, sizeof(cl_float), &inv_dx12 ),
-        "setting kernel argument 8"
-    );
-    h_errchk(
-        clSetKernelArg(kernel, 9, sizeof(cl_uint), &P0 ),
-        "setting kernel argument 9"
-    );
-    h_errchk(
-        clSetKernelArg(kernel, 10, sizeof(cl_uint), &P1 ),
-        "setting kernel argument 10"
-    );
+    // Desired block size
+    dim3 block_size = { 64, 4, 1 };
+    dim3 global_size = { (uint32_t)N1, (uint32_t)N0, 1 };
+    dim3 grid_nblocks;
     
-    // Number of dimensions in the kernel
-    size_t work_dim=2;
-    
-    // Desired local size
-    const size_t local_size[]={ 64, 4 };
-    
-    // Desired global_size
-    const size_t global_size[]={ N1, N0 };
-    h_fit_global_size(global_size, local_size, work_dim);
+    // Choose the number of blocks so that grid fits within it.
+    h_fit_blocks(&grid_nblocks, global_size, block_size);
+
+    // Amount of shared memory to use in the kernel
+    size_t sharedMemBytes=0;
     
     // Main loop
-    cl_mem U0, U1, U2;
+    float_type *U0_d, *U1_d, *U2_d;
+  
+    // Alternative allocation because async copy failed
+    float_type* out2_h = (float_type*)h_alloc(nbytes_out);
+    float_type** out2p_h = (float_type**)h_alloc(NT*sizeof(float_type*));
+    for (int n=0; n<NT; n++) {
+        out2p_h[n] = &out2_h[n*N0*N1];
+        H_ERRCHK(hipHostRegister(out2p_h[n], nbytes_U, hipHostRegisterDefault));
+    }    
     
     // Start the clock
     auto t1 = std::chrono::high_resolution_clock::now();
@@ -246,117 +207,104 @@ int main(int argc, char** argv) {
     for (int n=0; n<NT; n++) {
         
         // Wait for the previous copy command to finish
-        h_errchk(
-            clFinish(command_queues[(n+2)%nscratch]),
-            "Waiting for all previous things to finish"
-        );
+        H_ERRCHK(hipStreamSynchronize(streams[(n+2)%nscratch]));
         
         // Get the wavefields
-        U0 = buffers_U[n%nscratch];
-        U1 = buffers_U[(n+1)%nscratch];
-        U2 = buffers_U[(n+2)%nscratch];
+        U0_d = U_ds[n%nscratch];
+        U1_d = U_ds[(n+1)%nscratch];
+        U2_d = U_ds[(n+2)%nscratch];
         
         // Shifted time
         t = n*dt-2.0*td;
         pi2fm2t2 = pi*pi*fm*fm*t*t;
         
-        // Set kernel arguments
-        h_errchk(
-            clSetKernelArg(kernel, 0, sizeof(cl_mem), &U0 ),
-            "setting kernel argument 0"
+        // Launch the kernel using hipLaunchKernelGGL method
+        // Use 0 when choosing the default (null) stream
+        hipLaunchKernelGGL(wave2d_4o, 
+            grid_nblocks, block_size, sharedMemBytes, streams[n%nscratch],
+            U_ds[n%nscratch], U_ds[(n+1)%nscratch], U_ds[(n+2)%nscratch], V_d,
+            N0, N1, dt2,
+            inv_dx02, inv_dx12,
+            P0, P1, pi2fm2t2
         );
-        h_errchk(
-            clSetKernelArg(kernel, 1, sizeof(cl_mem), &U1 ),
-            "setting kernel argument 1"
-        );
-        h_errchk(
-            clSetKernelArg(kernel, 2, sizeof(cl_mem), &U2 ),
-            "setting kernel argument 2"
-        );
-        h_errchk(
-            clSetKernelArg(kernel, 11, sizeof(cl_float), &pi2fm2t2 ),
-            "setting kernel argument 11"
-        );
-        
-        // Enqueue the wave solver    
-        h_errchk(
-            clEnqueueNDRangeKernel(
-                compute_queue,
-                kernel,
-                work_dim,
-                NULL,
-                global_size,
-                local_size,
-                0,
-                NULL,
-                &events[n%nscratch]), 
-            "Running the kernel"
-        );
+                           
+        // Check the status of the kernel launch
+        H_ERRCHK(hipGetLastError());
           
+        // Insert an event into stream at n%nscratch
+        // It will complete afer the kernel does
+        H_ERRCHK(hipEventRecord(events[n%nscratch],streams[n%nscratch]));   
+        
         // Read memory from the buffer to the host in an asynchronous manner
         if (n>0) {
-            cl_int copy_index=n-1;
-            h_errchk(
-                clEnqueueReadBuffer(
-                    command_queues[copy_index%nscratch],
-                    buffers_U[copy_index%nscratch],
-                    blocking,
-                    0,
+            size_t copy_index=n-1;
+            
+            // Insert a wait for the copy stream on the compute event
+            H_ERRCHK(
+                hipStreamWaitEvent(
+                    streams[copy_index%nscratch], 
+                    events[copy_index%nscratch],
+                    0
+                )
+            );
+            
+            // Then asynchronously copy a wavefield back
+            // Using the copy stream
+            H_ERRCHK(
+                //hipMemcpy(
+                //    &out_h[copy_index*N0*N1],
+                //    U_ds[copy_index%nscratch],
+                //    nbytes_U,
+                //    hipMemcpyDeviceToHost
+                //)
+                
+                hipMemcpyAsync(
+                    out2p_h[n],
+                    U_ds[copy_index%nscratch],
                     nbytes_U,
-                    &array_out[copy_index*N0*N1],
-                    1,
-                    &events[copy_index%nscratch],
-                    NULL), 
-                "Asynchronous copy from U2 on device to host"
+                    hipMemcpyDeviceToHost,
+                    streams[copy_index%nscratch]
+                )
             );
         }
     }
 
     // Make sure all work is done
-    for (int i=0; i<nscratch; i++) {
-        h_errchk(
-            clFinish(command_queues[i]),
-            "Finishing the command queues."
-        );
-    }
-
+    H_ERRCHK(hipDeviceSynchronize());
+    
     // Stop the clock
     auto t2 = std::chrono::high_resolution_clock::now();    
-    cl_double time_ms = (cl_double)std::chrono::duration_cast<std::chrono::microseconds>(t2-t1).count()/1000.0;
-    printf("The asynchronous calculation took %d milliseconds.", time_ms);
+    double time_ms = (double)std::chrono::duration_cast<std::chrono::microseconds>(t2-t1).count()/1000.0;
+    printf("The asynchronous calculation took %f milliseconds.\n", time_ms);
     
     // Write out the result to file
-    h_write_binary(array_out, "array_out.dat", nbytes_out);
+    h_write_binary(out2_h, "array_out.dat", nbytes_out);
 
-    // Free the OpenCL buffers
-    h_errchk(
-        clReleaseMemObject(buffer_V),
-        "releasing buffer V"
-    );
+    // Free the HIP buffers
+    H_ERRCHK(hipFree(V_d));
+
     for (int n=0; n<nscratch; n++) {
-        h_errchk(
-            clReleaseMemObject(buffers_U[n]),
-            "Releasing scratch buffer"
-        );
+        H_ERRCHK(hipFree(U_ds[n]));
     }
     
     // Clean up memory that was allocated on the read   
-    free(array_V);
-    free(array_out);
+    free(V_h);
     
-    // Clean up command queues
-    h_release_command_queues(
-        command_queues, 
-        num_command_queues
-    );
+    // Free out_h on the host
+    H_ERRCHK(hipHostFree(out_h));
     
-    // Clean up devices, queues, and contexts
-    h_release_devices(
-        devices,
-        num_devices,
-        contexts,
-        platforms
-    );
+    // Free experimental mems
+    for (int n=0; n<NT; n++) {
+        H_ERRCHK(hipHostUnregister(out2p_h[n]));
+    }    
+    free(out2p_h);
+    free(out2_h);
+    
+    // Release compute streams
+    h_release_streams(nstreams, streams);
+    
+    // Reset compute devices
+    h_reset_devices(num_devices);
 
     return 0;
 }

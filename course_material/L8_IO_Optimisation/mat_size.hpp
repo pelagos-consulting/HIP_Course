@@ -1,7 +1,7 @@
 
 // Define the size of the domain
-#define N0 256
-#define N1 256
+#define N0_U 256
+#define N1_U 256
 
 // Spatial step in each direction
 #define D0 1.0
