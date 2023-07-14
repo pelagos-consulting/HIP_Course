@@ -96,8 +96,8 @@ int main(int argc, char** argv) {
     // Number of streams to create
     const size_t nstreams = nscratch;
     
-    // Create streams with no blocking
-    hipStream_t* streams = h_create_streams(nstreams, 0);
+    // Create streams that block with null stream
+    hipStream_t* streams = h_create_streams(nstreams, 1);
     
     // We are going to do a simple array multiplication for this example, 
     // using raw binary files for input and output
@@ -227,7 +227,7 @@ int main(int argc, char** argv) {
         N0, // number of pencils to copy the region from
         1 // number of pencil planes
     );
-    
+
     // Fill the copy parameters
     hipMemcpy3DParms copy_parms = {0};
     copy_parms.srcPtr = out_d_ptr;
@@ -245,6 +245,13 @@ int main(int argc, char** argv) {
         // Wait for the previous copy command to finish
         H_ERRCHK(hipStreamSynchronize(streams[(n+2)%nscratch]));
         
+        // Wait for the event associated with a stream
+        H_ERRCHK(
+            hipEventSynchronize(
+                events[(n+1)%nscratch]
+            )
+        );
+        
         // Get the wavefields
         U0_d = U_ds[n%nscratch];
         U1_d = U_ds[(n+1)%nscratch];
@@ -258,7 +265,7 @@ int main(int argc, char** argv) {
         // Use 0 when choosing the default (null) stream
         hipLaunchKernelGGL(wave2d_4o, 
             grid_nblocks, block_size, sharedMemBytes, streams[n%nscratch],
-            U_ds[n%nscratch], U_ds[(n+1)%nscratch], U_ds[(n+2)%nscratch], V_d,
+            U0_d, U1_d, U2_d, V_d,
             N0, N1, dt2,
             inv_dx02, inv_dx12,
             P0, P1, pi2fm2t2
@@ -286,6 +293,8 @@ int main(int argc, char** argv) {
                 )
             );
             
+            H_ERRCHK(hipDeviceSynchronize());
+            
             // Then asynchronously copy a wavefield back
             // Using the copy stream
             
@@ -296,20 +305,27 @@ int main(int argc, char** argv) {
             std::printf("copy_start\n");
             
             // Copy memory asynchronously
-            //H_ERRCHK(
-            //    hipMemcpy3DAsync(
-            //        &copy_parms,
-            //        streams[copy_index%nscratch]
-            //    )
-            //);
-            
-            // Copy memory asynchronously
             H_ERRCHK(
-                hipMemcpy3D(
-                    &copy_parms
-                    //streams[copy_index%nscratch]
+                hipMemcpy3DAsync(
+                    &copy_parms,
+                    streams[copy_index%nscratch]
                 )
             );
+            // Record the event to a stream
+            H_ERRCHK(
+                hipEventRecord(
+                    events[copy_index%nscratch],
+                    streams[copy_index%nscratch]
+                )
+            );
+            
+            // Copy memory asynchronously
+            //H_ERRCHK(
+            //    hipMemcpy3D(
+            //        &copy_parms
+            //        //streams[copy_index%nscratch]
+            //    )
+            //);
             
             //H_ERRCHK(
             //    hipMemcpyAsync(
@@ -320,6 +336,8 @@ int main(int argc, char** argv) {
             //        streams[copy_index%nscratch]
             //    )
             //);
+            
+            //H_ERRCHK(hipDeviceSynchronize());
             
             std::printf("copy_stop\n");
         }
