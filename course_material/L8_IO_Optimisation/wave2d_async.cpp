@@ -148,7 +148,7 @@ int main(int argc, char** argv) {
     hipEvent_t events[nscratch];
     
     // Create scratch buffers for the computation
-    float* U_ds[nscratch];
+    float_type* U_ds[nscratch] = {NULL};
     for (int n=0; n<nscratch; n++) {
         // Allocate memory and zero out
         H_ERRCHK(hipMalloc((void**)&U_ds[n], nbytes_U));
@@ -192,14 +192,50 @@ int main(int argc, char** argv) {
     
     // Main loop
     float_type *U0_d, *U1_d, *U2_d;
-  
-    // Alternative allocation because async copy failed
-    float_type* out2_h = (float_type*)h_alloc(nbytes_out);
-    float_type** out2p_h = (float_type**)h_alloc(NT*sizeof(float_type*));
-    for (int n=0; n<NT; n++) {
-        out2p_h[n] = &out2_h[n*N0*N1];
-        H_ERRCHK(hipHostRegister(out2p_h[n], nbytes_U, hipHostRegisterDefault));
-    }    
+    
+    // Setup the asynchronous 3D memory copy
+    
+    // For the host
+    hipPitchedPtr out_h_ptr = make_hipPitchedPtr(
+        out_h, // pointer 
+        N1*sizeof(float), // pitch - actual pencil width (bytes) 
+        N1, // requested pencil width (elements)
+        N0*NT // total number of pencils in the allocation (elements)
+    );
+    // For the device
+    hipPitchedPtr out_d_ptr = make_hipPitchedPtr(
+        U_ds[0], // pointer
+        N1*sizeof(float), // pitch - actual pencil width (bytes) 
+        N1, // requested pencil width (elements)
+        N0 // total number of pencils (elements)
+    );
+    // Postion within the host array
+    hipPos out_h_pos = make_hipPos(
+        0*sizeof(float), // byte position along a pencil (bytes)
+        0, // starting pencil index (elements)
+        0 // start pencil plane index (elements)
+    );
+    // Postion within the device array
+    hipPos out_d_pos = make_hipPos(
+        0*sizeof(float), // byte position along a pencil (bytes)
+        0, // starting pencil index (elements)
+        0 // starting pencil plane index (elements)
+    );
+    // Choose the region to copy
+    hipExtent extent = make_hipExtent(
+        N1*sizeof(float), // width of pencil region to copy (bytes)
+        N0, // number of pencils to copy the region from
+        1 // number of pencil planes
+    );
+    
+    // Fill the copy parameters
+    hipMemcpy3DParms copy_parms = {0};
+    copy_parms.srcPtr = out_d_ptr;
+    copy_parms.srcPos = out_d_pos;
+    copy_parms.dstPtr = out_h_ptr;
+    copy_parms.dstPos = out_h_pos;
+    copy_parms.extent = extent;
+    copy_parms.kind = hipMemcpyDeviceToHost;
     
     // Start the clock
     auto t1 = std::chrono::high_resolution_clock::now();
@@ -250,7 +286,19 @@ int main(int argc, char** argv) {
             
             // Then asynchronously copy a wavefield back
             // Using the copy stream
+            
+            // Change what is necessary for copy_parms
+            copy_parms.srcPtr.ptr = U_ds[copy_index%nscratch];
+            copy_parms.dstPos.z = copy_index;
+           
             H_ERRCHK(
+                //hipMemcpy3DAsync(
+                //    &copy_parms,
+                //    streams[copy_index%nscratch]
+                //)
+                
+                hipMemcpy3D(&copy_parms)
+                
                 //hipMemcpy(
                 //    &out_h[copy_index*N0*N1],
                 //    U_ds[copy_index%nscratch],
@@ -258,13 +306,15 @@ int main(int argc, char** argv) {
                 //    hipMemcpyDeviceToHost
                 //)
                 
-                hipMemcpyAsync(
-                    out2p_h[n],
-                    U_ds[copy_index%nscratch],
-                    nbytes_U,
-                    hipMemcpyDeviceToHost,
-                    streams[copy_index%nscratch]
-                )
+                //hipMemcpyAsync(
+                //    out2p_h[n],
+                //    U_ds[copy_index%nscratch],
+                //    nbytes_U,
+                //    hipMemcpyDeviceToHost,
+                //    streams[copy_index%nscratch]
+                //)
+                
+                //
             );
         }
     }
@@ -278,7 +328,7 @@ int main(int argc, char** argv) {
     printf("The asynchronous calculation took %f milliseconds.\n", time_ms);
     
     // Write out the result to file
-    h_write_binary(out2_h, "array_out.dat", nbytes_out);
+    h_write_binary(out_h, "array_out.dat", nbytes_out);
 
     // Free the HIP buffers
     H_ERRCHK(hipFree(V_d));
@@ -292,13 +342,6 @@ int main(int argc, char** argv) {
     
     // Free out_h on the host
     H_ERRCHK(hipHostFree(out_h));
-    
-    // Free experimental mems
-    for (int n=0; n<NT; n++) {
-        H_ERRCHK(hipHostUnregister(out2p_h[n]));
-    }    
-    free(out2p_h);
-    free(out2_h);
     
     // Release compute streams
     h_release_streams(nstreams, streams);
