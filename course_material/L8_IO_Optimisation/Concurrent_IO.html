@@ -14716,7 +14716,7 @@ $$\textbf{U}_{2}=\textbf{F}(\textbf{U}_0, \textbf{U}_1, \textbf{V}, f_{1})$$<blo
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> widget
@@ -14772,7 +14772,7 @@ $$\textbf{U}_{2}=\textbf{F}(\textbf{U}_0, \textbf{U}_1, \textbf{V}, f_{1})$$<blo
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make
@@ -14797,7 +14797,7 @@ $$\textbf{U}_{2}=\textbf{F}(\textbf{U}_0, \textbf{U}_1, \textbf{V}, f_{1})$$<blo
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>hipcc -g -fopenmp -O2 -I../include wave2d_sync.cpp -o wave2d_sync.exe 
+<pre>hipcc -g -fopenmp -O2 -I../include wave2d_async.cpp -o wave2d_async.exe 
 </pre>
 </div>
 </div>
@@ -14811,7 +14811,7 @@ $$\textbf{U}_{2}=\textbf{F}(\textbf{U}_0, \textbf{U}_1, \textbf{V}, f_{1})$$<blo
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span><span class="s2">"wave2d_sync.exe"</span><span class="p">),</span> <span class="s2">"-gpu"</span><span class="p">])</span>
@@ -14837,17 +14837,17 @@ $$\textbf{U}_{2}=\textbf{F}(\textbf{U}_0, \textbf{U}_1, \textbf{V}, f_{1})$$<blo
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>Device id: 0
-	name:                                    
-	global memory size:                      536 MB
+	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
+	global memory size:                      6226 MB
 	available registers per block:           65536 
-	maximum shared memory size per block:    65 KB
-	maximum pitch size for memory copies:    402 MB
-	max block size:                          (1024,1024,1024)
+	maximum shared memory size per block:    49 KB
+	maximum pitch size for memory copies:    2147 MB
+	max block size:                          (1024,1024,64)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,2147483647,2147483647)
+	max Grid size:                           (2147483647,65535,65535)
 dt=0.001166, Vmax=343.000000
 dt=0.00116618, fm=34.3, Vmax=343, dt2=1.35998e-06
-The synchronous calculation took 44.629000 milliseconds.
+The synchronous calculation took 36.884000 milliseconds.
 </pre>
 </div>
 </div>
@@ -14855,7 +14855,7 @@ The synchronous calculation took 44.629000 milliseconds.
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[15]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[3]:</div>
 
 
 
@@ -14887,7 +14887,7 @@ The synchronous calculation took 44.629000 milliseconds.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>./make_traces.sh
@@ -14912,67 +14912,34 @@ The synchronous calculation took 44.629000 milliseconds.
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>	               name: gfx1035 
-	 global memory size: 536 MB
-	    max buffer size: 456 MB
-	     max local size: (1024,1024,1024)
-	     max work-items: 256
+<pre>Device id: 0
+	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
+	global memory size:                      6226 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    49 KB
+	maximum pitch size for memory copies:    2147 MB
+	max block size:                          (1024,1024,64)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,65535,65535)
 dt=0.001166, Vmax=343.000000
 dt=0.00116618, fm=34.3, Vmax=343, dt2=1.35998e-06
-device id: -2042467264.
-command id: 94555955408576.
-vendor id: 0.
-Got a bogus start! 2 .TAU application
-The synchronous calculation took 100352 milliseconds.
-/opt/tau/2.31.1/x86_64/bin/tau_merge -m tau.edf -e events.0.edf events.0.edf events.0.edf tautrace.0.0.0.trc tautrace.0.0.1.trc tautrace.0.0.2.trc tau.trc
-tautrace.0.0.0.trc: 18909 records read.
-tautrace.0.0.1.trc: 6 records read.
-tautrace.0.0.2.trc: 8326 records read.
-	               name: gfx1035 
-	 global memory size: 536 MB
-	    max buffer size: 456 MB
-	     max local size: (1024,1024,1024)
-	     max work-items: 256
+The synchronous calculation took 36.144000 milliseconds.
+/opt/tau/2.31.1/x86_64/bin/tau_merge -m tau.edf -e events.0.edf tautrace.0.0.0.trc tau.trc
+tautrace.0.0.0.trc: 261 records read.
+Device id: 0
+	name:                                    
+	global memory size:                      536 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    65 KB
+	maximum pitch size for memory copies:    402 MB
+	max block size:                          (1024,1024,1024)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,2147483647,2147483647)
 dt=0.001166, Vmax=343.000000
 dt=0.00116618, fm=34.3, Vmax=343, dt2=1.35998e-06
-device id: -315371040.
-command id: 94179739064784.
-vendor id: 0.
-Got a bogus start! 2 .TAU application
-device id: -315371040.
-command id: 94179725475520.
-vendor id: 0.
-Got a bogus start! 4 .TAU application
-device id: -315371040.
-command id: 94179726173600.
-vendor id: 0.
-Got a bogus start! 6 .TAU application
-device id: -315371040.
-command id: 94179739007072.
-vendor id: 0.
-Got a bogus start! 8 .TAU application
-device id: -315371040.
-command id: 94179738948576.
-vendor id: 0.
-Got a bogus start! 10 .TAU application
-device id: -315371040.
-command id: 94179738909952.
-vendor id: 0.
-Got a bogus start! 12 .TAU application
-The asynchronous calculation took 83262 milliseconds./opt/tau/2.31.1/x86_64/bin/tau_merge -m tau.edf -e events.0.edf events.0.edf events.0.edf events.0.edf events.0.edf events.0.edf events.0.edf events.0.edf events.0.edf events.0.edf events.0.edf events.0.edf events.0.edf tautrace.0.0.0.trc tautrace.0.0.1.trc tautrace.0.0.10.trc tautrace.0.0.11.trc tautrace.0.0.12.trc tautrace.0.0.2.trc tautrace.0.0.3.trc tautrace.0.0.4.trc tautrace.0.0.5.trc tautrace.0.0.6.trc tautrace.0.0.7.trc tautrace.0.0.8.trc tautrace.0.0.9.trc tau.trc
-tau.trc exists; override [y]? tautrace.0.0.0.trc: 20230 records read.
-tautrace.0.0.1.trc: 6 records read.
-tautrace.0.0.10.trc: 1414 records read.
-tautrace.0.0.11.trc: 6 records read.
-tautrace.0.0.12.trc: 1403 records read.
-tautrace.0.0.2.trc: 1286 records read.
-tautrace.0.0.3.trc: 6 records read.
-tautrace.0.0.4.trc: 1414 records read.
-tautrace.0.0.5.trc: 6 records read.
-tautrace.0.0.6.trc: 1414 records read.
-tautrace.0.0.7.trc: 6 records read.
-tautrace.0.0.8.trc: 1414 records read.
-tautrace.0.0.9.trc: 6 records read.
+Error, HIP call failed at __FILE__:__LINE__, error string is: invalid argument
+/opt/tau/2.31.1/x86_64/bin/tau_merge -m tau.edf -e events.0.edf tautrace.0.0.0.trc tau.trc
+tau.trc exists; override [y]? tautrace.0.0.0.trc: 261 records read.
 </pre>
 </div>
 </div>
@@ -15129,7 +15096,7 @@ tautrace.0.0.9.trc: 6 records read.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[25]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make
@@ -15168,11 +15135,11 @@ tautrace.0.0.9.trc: 6 records read.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Run the application</span>
-<span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span><span class="s2">"wave2d_async.exe"</span><span class="p">),</span> <span class="s2">"-gpu"</span><span class="p">])</span>
+<span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span><span class="s2">"wave2d_async.exe"</span><span class="p">)])</span>
 </pre></div>
 
      </div>
@@ -15195,17 +15162,17 @@ tautrace.0.0.9.trc: 6 records read.
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>Device id: 0
-	name:                                    
-	global memory size:                      536 MB
+	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
+	global memory size:                      6226 MB
 	available registers per block:           65536 
-	maximum shared memory size per block:    65 KB
-	maximum pitch size for memory copies:    402 MB
-	max block size:                          (1024,1024,1024)
+	maximum shared memory size per block:    49 KB
+	maximum pitch size for memory copies:    2147 MB
+	max block size:                          (1024,1024,64)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,2147483647,2147483647)
+	max Grid size:                           (2147483647,65535,65535)
 dt=0.001166, Vmax=343.000000
 dt=0.00116618, fm=34.3, Vmax=343, dt2=1.35998e-06
-The asynchronous calculation took 20.833000 milliseconds.
+The asynchronous calculation took 13.925000 milliseconds.
 </pre>
 </div>
 </div>
@@ -15213,13 +15180,13 @@ The asynchronous calculation took 20.833000 milliseconds.
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[26]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[11]:</div>
 
 
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>CompletedProcess(args=[&#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/wave2d_async.exe&#39;, &#39;-gpu&#39;], returncode=0)</pre>
+<pre>CompletedProcess(args=[&#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/wave2d_async.exe&#39;], returncode=0)</pre>
 </div>
 
 </div>
@@ -15258,7 +15225,7 @@ The asynchronous calculation took 20.833000 milliseconds.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[31]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Read the outputfile back in for display</span>

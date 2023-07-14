@@ -193,21 +193,21 @@ int main(int argc, char** argv) {
     // Main loop
     float_type *U0_d, *U1_d, *U2_d;
     
-    // Setup the asynchronous 3D memory copy
+    // Setup parameters for an asynchronous 3D memory copy
     
     // For the host
     hipPitchedPtr out_h_ptr = make_hipPitchedPtr(
         out_h, // pointer 
         N1*sizeof(float), // pitch - actual pencil width (bytes) 
-        N1, // requested pencil width (elements)
-        N0*NT // total number of pencils in the allocation (elements)
+        N1, // pencil width (elements)
+        N0 // number of pencils in a plane (elements), not the total number of pencils
     );
     // For the device
     hipPitchedPtr out_d_ptr = make_hipPitchedPtr(
         U_ds[0], // pointer
         N1*sizeof(float), // pitch - actual pencil width (bytes) 
-        N1, // requested pencil width (elements)
-        N0 // total number of pencils (elements)
+        N1, // pencil width (elements)
+        N0 // number of pencils in a plane (elements), not the total number of pencils
     );
     // Postion within the host array
     hipPos out_h_pos = make_hipPos(
@@ -275,6 +275,8 @@ int main(int argc, char** argv) {
         if (n>0) {
             size_t copy_index=n-1;
             
+            //std::printf("Start copy\n");
+            
             // Insert a wait for the copy stream on the compute event
             H_ERRCHK(
                 hipStreamWaitEvent(
@@ -287,35 +289,39 @@ int main(int argc, char** argv) {
             // Then asynchronously copy a wavefield back
             // Using the copy stream
             
-            // Change what is necessary for copy_parms
+            // Only change what is necessary in copy_parms
             copy_parms.srcPtr.ptr = U_ds[copy_index%nscratch];
             copy_parms.dstPos.z = copy_index;
            
+            std::printf("copy_start\n");
+            
+            // Copy memory asynchronously
+            //H_ERRCHK(
+            //    hipMemcpy3DAsync(
+            //        &copy_parms,
+            //        streams[copy_index%nscratch]
+            //    )
+            //);
+            
+            // Copy memory asynchronously
             H_ERRCHK(
-                //hipMemcpy3DAsync(
-                //    &copy_parms,
-                //    streams[copy_index%nscratch]
-                //)
-                
-                hipMemcpy3D(&copy_parms)
-                
-                //hipMemcpy(
-                //    &out_h[copy_index*N0*N1],
-                //    U_ds[copy_index%nscratch],
-                //    nbytes_U,
-                //    hipMemcpyDeviceToHost
-                //)
-                
-                //hipMemcpyAsync(
-                //    out2p_h[n],
-                //    U_ds[copy_index%nscratch],
-                //    nbytes_U,
-                //    hipMemcpyDeviceToHost,
-                //    streams[copy_index%nscratch]
-                //)
-                
-                //
+                hipMemcpy3D(
+                    &copy_parms
+                    //streams[copy_index%nscratch]
+                )
             );
+            
+            //H_ERRCHK(
+            //    hipMemcpyAsync(
+            //        &out_h[copy_index*N0*N1],
+            //        U_ds[copy_index%nscratch],
+            //        nbytes_U,
+            //        hipMemcpyDeviceToHost,
+            //        streams[copy_index%nscratch]
+            //    )
+            //);
+            
+            std::printf("copy_stop\n");
         }
     }
 

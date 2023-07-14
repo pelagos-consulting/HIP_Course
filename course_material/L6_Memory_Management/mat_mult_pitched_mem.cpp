@@ -200,14 +200,14 @@ int main(int argc, char** argv) {
         C_h, // pointer 
         N1_C*sizeof(float), // pitch - actual pencil width (bytes) 
         N1_C, // requested pencil width (elements)
-        N0_C // total number of pencils in the allocation (elements)
+        N0_C // number of pencils in a plane (elements)
     );
     // For the device
     hipPitchedPtr C_d_ptr = make_hipPitchedPtr(
         C_d, // pointer
         N1_C*sizeof(float), // pitch - actual pencil width (bytes) 
         N1_C, // requested pencil width (elements)
-        N0_C // total number of pencils (elements)
+        N0_C // number of pencils in a plane (elements)
     );
     // Postion within the host array
     hipPos C_h_pos = make_hipPos(
