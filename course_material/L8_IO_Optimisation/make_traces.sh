@@ -1,25 +1,12 @@
 #!/bin/bash
 
-export experiment_dir=$(pwd)
+export experiment_dir=$(pwd)/rocprof_trace
 
-export taudir=./tau
+mkdir -p $experiment_dir
 
-export TAU_TRACE=1
-export TRACEDIR=$taudir
-export PROFILEDIR=$taudir
+# Run rocprof to make traces
+rocprof --hip-trace --hsa-trace -o $experiment_dir/wave2d_sync.csv ./wave2d_sync.exe
+rocprof --hip-trace --hsa-trace -o $experiment_dir/wave2d_async.csv ./wave2d_async.exe
 
-rm -rf $taudir
-mkdir -p $taudir
-
-# Get a trace for the calculation with synchronous IO
-tau_exec -T serial -opencl ./wave2d_sync.exe -gpu
-cd $taudir; echo 'y' | tau_treemerge.pl
-tau_trace2json ./tau.trc ./tau.edf -chrome -ignoreatomic -o trace_sync.json
-
-# Get a trace for the calculation with asynchronous IO
-cd $experiment_dir
-tau_exec -T serial -opencl ./wave2d_async.exe -gpu
-cd $taudir; echo 'y' | tau_treemerge.pl
-tau_trace2json ./tau.trc ./tau.edf -chrome -ignoreatomic -o trace_async.json
 
 
