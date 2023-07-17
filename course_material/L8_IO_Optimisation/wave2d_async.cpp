@@ -246,11 +246,11 @@ int main(int argc, char** argv) {
         H_ERRCHK(hipStreamSynchronize(streams[(n+2)%nscratch]));
         
         // Wait for the event associated with a stream
-        //H_ERRCHK(
-        //    hipEventSynchronize(
-        //        events[(n+1)%nscratch]
-        //    )
-        //);
+        H_ERRCHK(
+            hipEventSynchronize(
+                events[(n+1)%nscratch]
+            )
+        );
         
         // Get the wavefields
         U0_d = U_ds[n%nscratch];
@@ -290,8 +290,6 @@ int main(int argc, char** argv) {
                     0
                 )
             );
-            
-            H_ERRCHK(hipDeviceSynchronize());
             
             // Then asynchronously copy a wavefield back
             // Using the copy stream
