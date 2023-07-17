@@ -246,11 +246,11 @@ int main(int argc, char** argv) {
         H_ERRCHK(hipStreamSynchronize(streams[(n+2)%nscratch]));
         
         // Wait for the event associated with a stream
-        H_ERRCHK(
-            hipEventSynchronize(
-                events[(n+1)%nscratch]
-            )
-        );
+        //H_ERRCHK(
+        //    hipEventSynchronize(
+        //        events[(n+1)%nscratch]
+        //    )
+        //);
         
         // Get the wavefields
         U0_d = U_ds[n%nscratch];
@@ -279,10 +279,8 @@ int main(int argc, char** argv) {
         H_ERRCHK(hipEventRecord(events[n%nscratch],streams[n%nscratch]));   
         
         // Read memory from the buffer to the host in an asynchronous manner
-        if (n>0) {
+        if (n>2) {
             size_t copy_index=n-1;
-            
-            //std::printf("Start copy\n");
             
             // Insert a wait for the copy stream on the compute event
             H_ERRCHK(
@@ -300,9 +298,9 @@ int main(int argc, char** argv) {
             
             // Only change what is necessary in copy_parms
             copy_parms.srcPtr.ptr = U_ds[copy_index%nscratch];
+            
+            // Z positions of 1 don't seem to work on AMD platforms?!?!
             copy_parms.dstPos.z = copy_index;
-           
-            std::printf("copy_start\n");
             
             // Copy memory asynchronously
             H_ERRCHK(
@@ -319,7 +317,7 @@ int main(int argc, char** argv) {
                 )
             );
             
-            // Copy memory asynchronously
+            // Copy memory synchronously
             //H_ERRCHK(
             //    hipMemcpy3D(
             //        &copy_parms
@@ -327,19 +325,6 @@ int main(int argc, char** argv) {
             //    )
             //);
             
-            //H_ERRCHK(
-            //    hipMemcpyAsync(
-            //        &out_h[copy_index*N0*N1],
-            //        U_ds[copy_index%nscratch],
-            //        nbytes_U,
-            //        hipMemcpyDeviceToHost,
-            //        streams[copy_index%nscratch]
-            //    )
-            //);
-            
-            //H_ERRCHK(hipDeviceSynchronize());
-            
-            std::printf("copy_stop\n");
         }
     }
 
