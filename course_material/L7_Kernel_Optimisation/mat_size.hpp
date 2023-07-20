@@ -3,3 +3,5 @@
 #define NCOLS_A 768
 #define NROWS_C 768
 #define NCOLS_C 768
+
+#define NSTATS 10

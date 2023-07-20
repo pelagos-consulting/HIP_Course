@@ -5,11 +5,11 @@ Written by Dr. Toby Potter
 for the Commonwealth Scientific and Industrial Research Organisation of Australia (CSIRO).
 """
 
-
 import numpy as np
 import ast
 import math
 from matplotlib import pyplot as plt
+import matplotlib.patches as patches
 from ipywidgets import widgets
 
 # Import axes machinery
@@ -17,6 +17,9 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 import subprocess
 from collections.abc import Iterable
 from collections import OrderedDict
+import json
+
+from local_opt import LocalOpt
 
 def load_defines(fname):
     """Load all defines from a header file"""
@@ -172,136 +175,6 @@ class Hadamard:
         fig.tight_layout()
         plt.show()
         
-class LocalOpt():
-    """Class to capture and plot the results of an optimisation exercise for different algorithms."""
-    
-    def report_timings(self):
-        """Find the minimum and maximum of timing data obtained from an experiement"""
-        
-        assert hasattr(self, "timing_data"), "Must execute run_problem() before report_timings()."
-        
-        print(f"Min time is {self.timing_data['min_ms']:.3f} ms, at the local size of" 
-            f" ({self.timing_data['L0_min']},{self.timing_data['L1_min']},{self.timing_data['L2_min']}).")
-        print(f"Max time is {self.timing_data['max_ms']:.3f} ms, at the local size of" 
-            f" ({self.timing_data['L0_max']},{self.timing_data['L1_max']},{self.timing_data['L2_max']}).")
-        print(f"Max time / min time == {self.timing_data['max_ms']/self.timing_data['min_ms']:.3f}")
-        
-    def run_problem(self, 
-                    cmds,
-                    # Vectors of local sizes
-                    local0=np.uint32(2**np.arange(0,10,1)),
-                    local1=np.uint32(2**np.arange(0,10,1)),
-                    local2=np.uint32(2**np.arange(0,1,1)),
-                    plot=True):
-        
-        """Prepare the input file for local optimisation and run the problem"""
-        
-        self.local0 = local0
-        self.local1 = local1
-        self.local2 = local2
-        
-        # Make up the optimisation grid
-        self.L0, self.L1, self.L2 = np.meshgrid(self.local0, self.local1, self.local2, indexing="ij")    
-    
-        self.nexperiments = self.L0.size
-        self.input_local = np.zeros((*self.L0.shape, 3), dtype=np.uint32)
-        self.input_local[...,0] = self.L0
-        self.input_local[...,1] = self.L1
-        self.input_local[...,2] = self.L2
-        
-        # Write out to file
-        self.input_local.tofile("input_local.dat")        
-    
-        # Add the --local-file flag
-        if isinstance(cmds, Iterable) and not isinstance(cmds, str):
-            temp_cmds = list(cmds) + ["--local_file"]
-        else:
-            temp_cmds=[cmds,"--local_file"]
-        
-        # Run the program 
-        result = subprocess.run(temp_cmds)
-        print(f"returncode is {result.returncode}")
-        
-        if (result.returncode==0):
-        
-            # Get the output data
-            self.output_local = np.fromfile("output_local.dat", dtype=np.float64).reshape(
-                self.local0.size, self.local1.size, self.local2.size, 2, order="C"
-            )
-            
-            # Data to plot
-            #data = [self.output_local[:,:,0], self.output_local[:,:,1]]
-            times_ms = self.output_local[...,0]
-            times_stdev = self.output_local[...,1]
-            data = [times_ms] #, times_stdev]
-            
-            # Find the minimum time
-            index_min = np.nanargmin(times_ms)
-            index_max = np.nanargmax(times_ms)
-            
-            self.timing_data = {
-                "min_ms" : times_ms.ravel()[index_min],
-                "std_ms" : times_stdev.ravel()[index_min],
-                "L0_min" : self.L0.ravel()[index_min],
-                "L1_min" : self.L1.ravel()[index_min],
-                "L2_min" : self.L2.ravel()[index_min],
-                "max_ms" : times_ms.ravel()[index_max],
-                "std_ms_max" : times_stdev.ravel()[index_max],
-                "L0_max" : self.L0.ravel()[index_max],
-                "L1_max" : self.L1.ravel()[index_max],
-                "L2_max" : self.L2.ravel()[index_max]
-            }
-            
-            # Report timings
-            self.report_timings()
-
-            if plot:
-            
-                # Make plots
-                fig, axes = plt.subplots(1, 1, figsize=(6,6), sharex=True, sharey=True)
-
-                # Labels to plot
-                labels = ["Time (ms)", "Error (ms)"]
-
-                for n, value in enumerate(data):
-                    # Plot the graph
-                    #ax = axes[n]
-                    ax=axes
-                
-                    indices = np.where(~np.isnan(value))
-                    bad_indices=np.where(np.isnan(value))
-    
-                    #value[bad_indices]=1.0
-                    value=np.log10(value)
-                    #value[bad_indices]=np.nan
-                
-                    min_data = np.min(value[indices])
-                    max_data = np.max(value[indices])
-                
-                    im = ax.imshow(value[...,0], vmin=min_data, vmax=max_data, origin="lower")
-                    #ax.contour(value, 20, origin="lower")
-                
-                    divider = make_axes_locatable(ax)
-                    cax = divider.append_axes("right", size="5%", pad=0.1)
-
-                    # Set labels on things
-                    ax.set_xticks(np.arange(0,self.local1.size,1))
-                    ax.set_yticks(np.arange(0,self.local0.size,1))
-                    ax.set_xticklabels([str(x) for x in self.local1])
-                    ax.set_yticklabels([str(x) for x in self.local0])
-                    ax.set_xlabel("Local size (dimension 1)")
-                    ax.set_ylabel("Local size (dimension 0)")
-                    ax.set_title(labels[n])
-
-                    # Put a color bar on the plot
-                    plt.colorbar(mappable=im, cax=cax)
-
-                fig.tight_layout()
-                plt.show()
-                
-            return self.timing_data
-
-        
 class TimingPlotData:
     """Class to store the optimised timings for a number of algorithms"""
     def __init__(self):
@@ -327,7 +200,7 @@ class TimingResults:
         """Constructor"""
         self.results = OrderedDict()
     
-    def add_result(self, result, label, benchmark=False):
+    def add_result(self, result, label, plot=False, benchmark=False):
         """Add a result to the dictionary, 
         label must be unique or else the 
         result will be overwritten.""" 
@@ -335,13 +208,82 @@ class TimingResults:
             if len(self.results)==0 or benchmark:
                 self.benchmark_label = label
             self.results[label] = result
+            
+            if (plot):
+                self.plot_result(label)
+            
     
     def delete_result(self, label):
         """Remove a result from the dictionary"""
         if label in self.results:
             del self.results["label"]
     
-    def plot_results(self, highlight_key=None):
+    def plot_result(self, key):
+        """Plot a single timing result"""
+        
+        timings=self.results[key]
+        result = LocalOpt(timings=timings)
+        
+        result.report_timings()
+            
+        # Make plots
+        fig, axes = plt.subplots(1, 1, figsize=(6,6), sharex=True, sharey=True)
+        ax=axes
+                
+        # Get data
+        value = result.times_ms
+            
+        indices = np.where(~np.isnan(value))
+        bad_indices=np.where(np.isnan(value))
+    
+        #value[bad_indices]=1.0
+        value=np.log10(value)
+        #value[bad_indices]=np.nan
+                
+        min_data = np.min(value[indices])
+        max_data = np.max(value[indices])
+                
+        im = ax.imshow(value[...,0], vmin=min_data, vmax=max_data, origin="lower")
+        #ax.contour(value, 20, origin="lower")
+        
+        divider = make_axes_locatable(ax)
+        cax = divider.append_axes("right", size="5%", pad=0.1)
+
+        # Set labels on things
+        ax.set_xticks(np.arange(0,result.local1.size,1))
+        ax.set_yticks(np.arange(0,result.local0.size,1))
+        ax.set_xticklabels([str(x) for x in result.local1])
+        ax.set_yticklabels([str(x) for x in result.local0])
+        ax.set_xlabel("Local size (dimension 1)")
+        ax.set_ylabel("Local size (dimension 0)")
+        ax.set_title(f"{key} - (time ms)")
+
+        index0_min = np.where(result.local0==timings["L0_min"])[0]
+        index1_min = np.where(result.local1==timings["L1_min"])[0]
+        index2_min = np.where(result.local2==timings["L2_min"])[0]
+        
+        index0_max = np.where(result.local0==timings["L0_max"])[0]
+        index1_max = np.where(result.local1==timings["L1_max"])[0]
+        index2_max = np.where(result.local2==timings["L2_max"])[0]
+        
+        # Put patches on minima and maxima
+        min_patch = patches.Rectangle(
+            np.array([index1_min,index0_min])-0.5,
+            1, 1, edgecolor="black", facecolor='none', linewidth=4)
+        ax.add_patch(min_patch)
+        
+        max_patch = patches.Rectangle(
+            np.array([index1_max,index0_max])-0.5,
+            1, 1, edgecolor="white", facecolor='none', linewidth=4)
+        ax.add_patch(max_patch)
+        
+        # Put a color bar on the plot
+        plt.colorbar(mappable=im, cax=cax)
+
+        fig.tight_layout()
+        plt.show()
+        
+    def plot_results(self, highlight_key=None, sort=False):
         """Plot the collection of results, separate out the CPU and GPU results"""
         if len(self.results)>0:
             
@@ -388,8 +330,11 @@ class TimingResults:
             for n, data in enumerate([cpu_data, gpu_data]):
                 if data.num_items()>0:
                     
-                    # Sort in descending order
-                    sort_indices = (np.argsort(data.speedups))[::-1]
+                    if (sort):
+                        # Sort in descending order
+                        sort_indices = (np.argsort(data.speedups))[::-1]
+                    else:
+                        sort_indices = np.int32(np.arange(0,len(data.labels)))
                     
                     ax[n].barh(np.array(data.labels)[sort_indices], 
                                np.array(data.speedups)[sort_indices], 
@@ -431,3 +376,10 @@ def plot_slices(images):
         update,
         n=(0, nslices-1, 1)
     )
+
+def load_benchmark(filename):
+    with open(filename, "r") as fd:
+        result_json=" ".join(fd.readlines())
+        results=json.loads(result_json)
+        
+    return results

@@ -442,6 +442,9 @@ float h_run_kernel(
         )
     );
 
+    // Check the status of the kernel launch
+    H_ERRCHK(hipGetLastError());
+    
     // Stop event recording
     H_ERRCHK(hipEventRecord(t2, stream));
 

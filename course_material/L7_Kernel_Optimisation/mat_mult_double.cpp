@@ -1,81 +1,88 @@
-/* Code to perform a Matrix multiplication using OpenCL
+/* Code to perform a Matrix multiplication using HIP
 Written by Dr Toby M. Potter
 */
 
+// Setup headers
 #include <cassert>
 #include <cmath>
 #include <iostream>
 
-// Include the size of arrays to be computed
+// Bring in the size of the matrices
 #include "mat_size.hpp"
 
-// Bring in helper header to manage boilerplate code
-#include "cl_helper.hpp"
+// Bring in a library to manage matrices on the CPU
+#include "mat_helper.hpp"
 
-typedef cl_double float_type;
+// Bring in helper header to manage boilerplate code
+#include "hip_helper.hpp"
+
+typedef double float_type;
+
+// standard matrix multiply kernel 
+__global__ void mat_mult (
+        float_type* A, 
+        float_type* B, 
+        float_type* C, 
+        size_t N1_A, 
+        size_t N0_C,
+        size_t N1_C) { 
+            
+    // A is of size (N0_C, N1_A)
+    // B is of size (N1_A, N1_C)
+    // C is of size (N0_C, N1_C)   
+    
+    // i0 and i1 represent the coordinates in Matrix C 
+    // We use row-major ordering for the matrices
+    
+    size_t i0 = blockIdx.y * blockDim.y + threadIdx.y;
+    size_t i1 = blockIdx.x * blockDim.x + threadIdx.x;
+    
+    // Scratch variable
+    float_type temp=0.0; 
+
+    // Guard mechanism to make sure we do not go
+    // outside the boundaries of matrix C 
+    if ((i0<N0_C) && (i1<N1_C)) {
+        // Get the offset within the memory allocation of C
+        size_t offset = i0*N1_C+i1;
+        
+        // Loop over columns of A and rows of B
+        for (size_t n=0; n<N1_A; n++) {
+            
+            // A is of size (N0_C, N1_A)
+            // B is of size (N1_A, N1_C)
+            
+            // Loop across row i0 of A
+            // and down column i1 of B
+            temp+=A[i0*N1_A+n]*B[i1+n*N1_C]; 
+        }
+        
+        // Set the value in C at offset
+        C[offset]=temp;
+        
+        // Uncomment this to perform elementwise matrix multiplication instead
+        // C[offset]=A[offset]*B[offset];
+    }
+} 
 
 int main(int argc, char** argv) {
     
-    // Parse arguments and set the target device
-    cl_device_type target_device;
-    cl_uint dev_index = h_parse_args(argc, argv, &target_device);
+    //// Step 1. Parse program arguments ////
+
+    // Parse command line arguments
+    int dev_index = h_parse_args(argc, argv);
     
-    // Useful for checking OpenCL errors
-    cl_int errcode;
-
-    // Create handles to platforms, 
-    // devices, and contexts
-
-    // Number of platforms discovered
-    cl_uint num_platforms;
-
     // Number of devices discovered
-    cl_uint num_devices;
-
-    // Pointer to an array of platforms
-    cl_platform_id *platforms = NULL;
-
-    // Pointer to an array of devices
-    cl_device_id *devices = NULL;
-
-    // Pointer to an array of contexts
-    cl_context *contexts = NULL;
+    int num_devices=0;
+    
+    //// Step 2. Discover resources and choose a compute device ////
     
     // Helper function to acquire devices
-    h_acquire_devices(target_device,
-                     &platforms,
-                     &num_platforms,
-                     &devices,
-                     &num_devices,
-                     &contexts);
-    
-    // Number of command queues to generate
-    cl_uint num_command_queues = num_devices;
-    
-    // Do we enable out-of-order execution 
-    cl_bool ordering = CL_FALSE;
-    
-    // Do we enable profiling?
-    cl_bool profiling = CL_TRUE;
-    
-    // Create the command queues
-    cl_command_queue* command_queues = h_create_command_queues(
-        devices,
-        contexts,
-        num_devices,
-        num_command_queues,
-        ordering,
-        profiling
-    );
-
-    // Make sure command line arguments are sane
-    assert(dev_index < num_devices);
-    cl_context context = contexts[dev_index];
-    cl_command_queue command_queue = command_queues[dev_index];
-    cl_device_id device = devices[dev_index];
-    
+    // This sets the default device
+    h_acquire_devices(&num_devices, dev_index);
+        
     // Report on the device in use
-    h_report_on_device(device);
+    h_report_on_device(dev_index);
     
     // We are going to do a simple array multiplication for this example, 
     // using raw binary files for input and output
@@ -83,194 +90,111 @@ int main(int argc, char** argv) {
     // A is of size (N0_C, N1_A)
     // B is of size (N1_A, N1_C)    
     // C is of size (N0_C, N1_C)
-    
-    cl_uint N1_A = NCOLS_A, N0_C = NROWS_C, N1_C = NCOLS_C;
-    size_t nbytes_A, nbytes_B, nbytes_C;
 
-    // Read the input data into arrays and sanity check
-    float_type* array_A = (float_type*)h_read_binary("array_A.dat", &nbytes_A);
-    float_type* array_B = (float_type*)h_read_binary("array_B.dat", &nbytes_B);
+    size_t N1_A = NCOLS_A, N0_C = NROWS_C, N1_C = NCOLS_C;
 
-    // Sanity check on incoming data
-    assert(nbytes_A==N0_C*N1_A*sizeof(float_type));   
-    assert(nbytes_B==N1_A*N1_C*sizeof(float_type));
-    nbytes_C=N0_C*N1_C*sizeof(float_type);
+    //// Step 3. Construct matrices A_h and B_h on the host 
+    //// and fill them with random numbers ////
     
-    // Make an array to store the result in array_C
-    float_type* array_C = (float_type*)h_alloc(nbytes_C);
-    
-    // Make Buffers on the compute device for matrices A, B, and C
-    cl_mem buffer_A = clCreateBuffer(context, 
-                                     CL_MEM_READ_WRITE, 
-                                     nbytes_A, 
-                                     NULL, 
-                                     &errcode);
-    h_errchk(errcode, "Creating buffer_A");
-    
-    cl_mem buffer_B = clCreateBuffer(context, 
-                                     CL_MEM_READ_WRITE, 
-                                     nbytes_B, 
-                                     NULL, 
-                                     &errcode);
-    h_errchk(errcode, "Creating buffer_B");
-    
-    cl_mem buffer_C = clCreateBuffer(context, 
-                                     CL_MEM_READ_WRITE, 
-                                     nbytes_C, 
-                                     NULL, 
-                                     &errcode);
-    h_errchk(errcode, "Creating buffer_C");
+    // Number of bytes in each array
+    size_t nbytes_A = N0_C*N1_A*sizeof(float_type);
+    size_t nbytes_B = N1_A*N1_C*sizeof(float_type);
+    size_t nbytes_C = N0_C*N1_C*sizeof(float_type);
 
-    // Now specify the kernel source and read it in
-    size_t nbytes_src = 0;
-    const char* kernel_source = (const char*)h_read_binary(
-        "kernels_mat_mult.c", 
-        &nbytes_src
-    );
+    // Allocate memory for the host arrays
+    float_type* A_h = (float_type*)h_alloc(nbytes_A);
+    float_type* B_h = (float_type*)h_alloc(nbytes_B);
+    float_type* C_h = (float_type*)h_alloc(nbytes_C);
 
-    // Turn this source code into a program
-    cl_program program = h_build_program(kernel_source, context, device, NULL);
+    // Fill the host arrays with random numbers 
+    // using the matrix helper library
+    m_random(A_h, N0_C, N1_A);
+    m_random(B_h, N1_A, N1_C);
+    
+    //// Step 4. Allocate memory for arrays //// 
+    //// A_d, B_d, and C_d on the compute device ////
+
+    float_type *A_d, *B_d, *C_d;
+    H_ERRCHK(hipMalloc((void**)&A_d, nbytes_A));
+    H_ERRCHK(hipMalloc((void**)&B_d, nbytes_B));
+    H_ERRCHK(hipMalloc((void**)&C_d, nbytes_C));
+
+    //// Step 5. 1. Upload matrices A_h and B_h from the host //// 
+    //// to A_d and B_d on the device ////
+    H_ERRCHK(hipMemcpy(A_d, A_h, nbytes_A, hipMemcpyHostToDevice));
+    H_ERRCHK(hipMemcpy(B_d, B_h, nbytes_B, hipMemcpyHostToDevice));
+ 
+    //// Step 6. Run the kernel to compute C_d ///
+    //// from A_d and B_d on the device ////
         
-    // Create a kernel from the built program
-    cl_kernel kernel=clCreateKernel(program, "mat_mult_double", &errcode);
-    h_errchk(errcode, "Creating Kernel");
+    // Desired block size
+    dim3 block_size = { 8, 8, 1 };
     
-    // Set arguments to the kernel (not thread safe)
-    h_errchk(
-        clSetKernelArg(kernel, 0, sizeof(cl_mem), &buffer_A ),
-        "setting kernel argument 0"
-    );
-    h_errchk(
-        clSetKernelArg(kernel, 1, sizeof(cl_mem), &buffer_B ),
-        "setting kernel argument 1"
-    );
-    h_errchk(
-        clSetKernelArg(kernel, 2, sizeof(cl_mem), &buffer_C ),
-        "setting kernel argument 2"
-    );
-    h_errchk(
-        clSetKernelArg(kernel, 3, sizeof(cl_uint), &N1_A ),
-        "setting kernel argument 3"
-    );
-    h_errchk(
-        clSetKernelArg(kernel, 4, sizeof(cl_uint), &N0_C ),
-        "setting kernel argument 4"
-    );
-    h_errchk(
-        clSetKernelArg(kernel, 5, sizeof(cl_uint), &N1_C ),
-        "setting kernel argument 5"
-    );
-
-    // Write memory from the host
-    // to buffer_A and buffer_B on the compute device
+    // Desired global size
+    dim3 global_size = { (uint32_t)N1_C, (uint32_t)N0_C, 1 };
     
-    // Do we enable a blocking write?
-    cl_bool blocking=CL_TRUE;
+    // Arguments to the kernel
+    void* kernel_args[] = {&A_d, &B_d, &C_d, &N1_A, &N0_C, &N1_C};
     
-    h_errchk(
-        clEnqueueWriteBuffer(command_queue,
-                            buffer_A,
-                            blocking,
-                            0,
-                            nbytes_A,
-                            array_A,
-                            0,
-                            NULL,
-                            NULL), 
-        "Writing to buffer_A from host"
-    );
-
-    h_errchk(
-        clEnqueueWriteBuffer(command_queue,
-                            buffer_B,
-                            blocking,
-                            0,
-                            nbytes_B,
-                            array_B,
-                            0,
-                            NULL,
-                            NULL), 
-        "Writing to buffer_B from host"
-    );
+    // Number of statistical runs to perform per experiment
+    size_t nstats = NSTATS;
     
-    // Number of dimensions in the kernel
-    size_t work_dim=2;
-    
-    // Number of statistical runs to do per experiment 
-    size_t nstats = 3;
-    
-    // Desired local size
-    size_t local_size[]={ 8, 8 };
-    
-    // Desired global_size
-    size_t global_size[]={ N0_C, N1_C };
-    
-    // Run the optimisation program
+    // Run h_optimise_local to find an optimal local size
     h_optimise_local(
-        argc,
-        argv,
-        command_queue,
-        kernel,
-        device,
-        global_size,
-        local_size,
-        work_dim,
+        argc, // Number of command line arguments
+        argv, // Command line arguments as an array of C-strings
+        (const void*)&mat_mult, // Kernel function to execute
+        kernel_args, // Arguments we will be passing to the kernel
+        global_size, // Desired global_size
+        &block_size, // Default block size
         nstats,
-        0,
-        NULL,
-        NULL
+        0.0f, // No prior times required
+        NULL, // No function required to prep the kernel
+        NULL // No arguments to prep function
     );
     
-    // Read memory from the buffer to the host
-    h_errchk(
-        clEnqueueReadBuffer(command_queue,
-                            buffer_C,
-                            blocking,
-                            0,
-                            nbytes_C,
-                            array_C,
-                            0,
-                            NULL,
-                            NULL), 
-             "Copying matrix C from device to host"
-    );
-    
-    // Write out the result to file
-    h_write_binary(array_C, "array_C.dat", nbytes_C);
+    // Wait for any commands to complete on the compute device
+    H_ERRCHK(hipDeviceSynchronize());
 
-    // Free the OpenCL buffers
-    h_errchk(
-        clReleaseMemObject(buffer_A),
-        "releasing buffer A"
-    );
-    h_errchk(
-        clReleaseMemObject(buffer_B),
-        "releasing buffer B"
-    );
-    h_errchk(
-        clReleaseMemObject(buffer_C),
-        "releasing buffer C"
-    );
+    //// Step 7. Copy the buffer for matrix C_d //// 
+    //// on the device back to C_h on the host ////
+    H_ERRCHK(hipMemcpy((void*)C_h, (const void*)C_d, nbytes_C, hipMemcpyDeviceToHost));
     
-    // Clean up memory that was allocated on the read   
-    free(array_A);
-    free(array_B);
-    free(array_C);
+    //// Step 8. Test the computed matrix **C_h** against a known answer
     
-    // Clean up command queues
-    h_release_command_queues(
-        command_queues, 
-        num_command_queues
-    );
+    // Compute the serial solution using the matrix helper library
+    float_type* C_answer_h = (float_type*)calloc(nbytes_C, 1);
+    m_mat_mult(A_h, B_h, C_answer_h, N1_A, N0_C, N1_C);
     
-    // Clean up devices, queues, and contexts
-    h_release_devices(
-        devices,
-        num_devices,
-        contexts,
-        platforms
-    );
+    // Uncomment this to check against elementwise matrix multiplication
+    // m_hadamard(A_h, B_h, C_answer_h, N0_C, N1_C);
+
+    // Print the maximum error between matrices
+    float_type max_err = m_max_error(C_h, C_answer_h, N0_C, N1_C);
     
-    return 0;
+    //// Step 9. Write the contents of matrices A_h, B_h, and C_h to disk ////
+
+    // Write out the host arrays to file
+    h_write_binary(A_h, "array_A.dat", nbytes_A);
+    h_write_binary(B_h, "array_B.dat", nbytes_B);
+    h_write_binary(C_h, "array_C.dat", nbytes_C);
+    
+    //// Step 10. Clean up memory alllocations and release resources
+    
+    // Free the HIP buffers
+    H_ERRCHK(hipFree(A_d));
+    H_ERRCHK(hipFree(B_d));
+    H_ERRCHK(hipFree(C_d));
+
+    // Clean up host memory
+    free(A_h);
+    free(B_h);
+    free(C_h);
+
+    // Free the answer matrix
+    free(C_answer_h);
+    
+    // Reset compute devices
+    h_reset_devices(num_devices);
 }
 
