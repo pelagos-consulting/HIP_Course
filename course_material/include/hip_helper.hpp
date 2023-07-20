@@ -401,8 +401,8 @@ float h_run_kernel(
     const void* kernel_function,
     // Arguments to the kernel function
     void** kernel_args,
-    // Number of blocks to run
-    dim3 num_blocks,
+    // Desired global size
+    dim3 global_size,
     // Size of each block
     dim3 block_size,
     // Number of shared bytes to use
@@ -415,7 +415,13 @@ float h_run_kernel(
     // Needs flags for prep_kernel_function
     void (*prep_kernel_function)(const void*, void**, dim3, dim3, size_t*, void**),
     void** prep_kernel_args) {
-
+    
+        // Number of blocks in each dimension
+    dim3 num_blocks = {1,1,1};
+    
+    // Fit the number of blocks
+    h_fit_blocks(&num_blocks, global_size, block_size);
+    
     // Prepare the kernel for execution, setting arguments etc
     if (prep_kernel_function!=NULL) {
         prep_kernel_function(kernel_function, kernel_args, num_blocks, block_size, shared_bytes, prep_kernel_args);
@@ -519,9 +525,6 @@ void h_optimise_local(
     // Get the properties of the current compute device
     H_ERRCHK(hipGetDeviceProperties(&prop, device_id));
 
-    // Number of blocks in each dimension
-    dim3 temp_num_blocks = {1,1,1};
-
     // How many bytes do we use?
     size_t shared_bytes=0;
 
@@ -559,9 +562,6 @@ void h_optimise_local(
 
             // Size of the block in threads
             nthreads = temp_block_size.x*temp_block_size.y*temp_block_size.z;
-            
-            // Fit the number of blocks
-            h_fit_blocks(&temp_num_blocks, global_size, temp_block_size);
 
             // Average and standard deviation for statistical collection
             double avg=0.0, stdev=0.0;
@@ -575,7 +575,7 @@ void h_optimise_local(
                     experiment_msec[s] = (double)h_run_kernel(
                         kernel_function,
                         kernel_args,
-                        temp_num_blocks,
+                        global_size,
                         temp_block_size,
                         &shared_bytes,
                         // Use the null stream
@@ -619,12 +619,10 @@ void h_optimise_local(
     } else {
         // Run the kernel with just one experiment
         // Using the default block size
-        h_fit_blocks(&temp_num_blocks, global_size, temp_block_size);
-
         double experiment_msec = h_run_kernel(
             kernel_function,
             kernel_args,
-            temp_num_blocks,
+            global_size,
             temp_block_size,
             &shared_bytes,
             0,

@@ -38,13 +38,11 @@ __global__ void mat_mult (
     size_t i1 = blockIdx.x * blockDim.x + threadIdx.x;
     
     // Scratch variable
-    float_type temp=0.0; 
+    float_type temp=0.0f; 
 
     // Guard mechanism to make sure we do not go
     // outside the boundaries of matrix C 
     if ((i0<N0_C) && (i1<N1_C)) {
-        // Get the offset within the memory allocation of C
-        size_t offset = i0*N1_C+i1;
         
         // Loop over columns of A and rows of B
         for (size_t n=0; n<N1_A; n++) {
@@ -57,11 +55,8 @@ __global__ void mat_mult (
             temp+=A[i0*N1_A+n]*B[i1+n*N1_C]; 
         }
         
-        // Set the value in C at offset
-        C[offset]=temp;
-        
-        // Uncomment this to perform elementwise matrix multiplication instead
-        // C[offset]=A[offset]*B[offset];
+        // Set the value in C 
+        C[i0*N1_C+i1]=temp;
     }
 } 
 

@@ -3,8 +3,8 @@ include ../env
 
 # List of applications to target
 TARGETS=mat_mult_float.exe \
-		mat_mult_double.exe 
-#		mat_mult_local.exe \
+		mat_mult_double.exe \
+		mat_mult_transpose_A.exe 
 #		mat_mult_shared_A.exe \
 #		mat_mult_shared_A_vector.exe \
 #		vector_types.exe \

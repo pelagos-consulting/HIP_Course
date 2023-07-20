@@ -58,7 +58,7 @@ int main(int argc, char** argv) {
     // Do we enable profiling?
     cl_bool profiling = CL_TRUE;
 
-    // Do we enable blocking IO?
+    // Do we enable blocking?
     cl_bool blocking = CL_TRUE;
     
     // Create the command queues
@@ -71,8 +71,7 @@ int main(int argc, char** argv) {
         profiling
     );
 
-    // Choose the first available context
-    // and compute device to use
+    // Make sure command line arguments are sane
     assert(dev_index < num_devices);
     cl_context context = contexts[dev_index];
     cl_command_queue command_queue = command_queues[dev_index];
@@ -85,6 +84,7 @@ int main(int argc, char** argv) {
     // using raw binary files for input and output
     
     // A is of size (N0_C, N1_A)
+    // AT is of size (N1_A, N0_C)
     // B is of size (N1_A, N1_C)
     // C is of size (N0_C, N1_C)
     
@@ -100,7 +100,7 @@ int main(int argc, char** argv) {
     assert(nbytes_B==N1_A*N1_C*sizeof(float_type));
     nbytes_C=N0_C*N1_C*sizeof(float_type);
     
-    // Make Buffers on the compute device for matrices A, B, BT, and C
+    // Make Buffers on the compute device for matrices A, AT, B, and C
     float_type* array_C = (float_type*)h_alloc(nbytes_C);
 
     // Make buffer_A by copying from array_A
@@ -113,6 +113,16 @@ int main(int argc, char** argv) {
     );
     h_errchk(errcode, "Creating buffer_A");
     
+    // Create buffer AT in the normal manner
+    cl_mem buffer_AT = clCreateBuffer(
+        context, 
+        CL_MEM_READ_WRITE, 
+        nbytes_A, 
+        NULL, 
+        &errcode
+    );
+    h_errchk(errcode, "Creating buffer_AT");
+    
     // Make buffer_B using array_B as a backing store
     cl_mem buffer_B = clCreateBuffer(
         context, 
@@ -122,12 +132,15 @@ int main(int argc, char** argv) {
         &errcode
     );
     h_errchk(errcode, "Creating buffer_B");
-   
-    cl_mem buffer_C = clCreateBuffer(context, 
-                                     CL_MEM_READ_WRITE, 
-                                     nbytes_C, 
-                                     NULL, 
-                                     &errcode);
+    
+    // Allocate buffer C from pinned host memory
+    cl_mem buffer_C = clCreateBuffer(
+        context, 
+        CL_MEM_READ_WRITE, 
+        nbytes_C, 
+        NULL, 
+        &errcode
+    );
     h_errchk(errcode, "Creating buffer_C");
 
     // Now specify the kernel source and read it in
@@ -140,44 +153,103 @@ int main(int argc, char** argv) {
     // Turn this source code into a program
     cl_program program = h_build_program(kernel_source, context, device, NULL);
         
-    // Create a kernel from the built program
-    cl_kernel kernel=clCreateKernel(program, "mat_mult_float", &errcode);
-    h_errchk(errcode, "Creating Kernel");
+    // Write memory from the host
+    // to buffer_A and buffer_B on the compute device
     
+    // Number of dimensions in the kernel
+    size_t work_dim=2;
+    
+    // Desired local size for all
+    size_t local_size[]={ 16, 16 };
+    
+    // Create and run the transpose kernel
+    cl_kernel kernel_transp=clCreateKernel(program, "transpose", &errcode);
+    h_errchk(errcode, "Creating transpose kernel");
+    
+    // Desired global_size
+    const size_t global_size_transp[]={ N0_C, N1_A };
+    h_fit_global_size(global_size_transp, 
+                      local_size, 
+                      work_dim
+    );    
+    
+    // Set kernel arguments
+    h_errchk(
+        clSetKernelArg(kernel_transp, 0, sizeof(cl_mem), &buffer_A ),
+        "setting transpose kernel argument 0"
+    );
+    h_errchk(
+        clSetKernelArg(kernel_transp, 1, sizeof(cl_mem), &buffer_AT ),
+        "setting transpose kernel argument 1"
+    );
+    h_errchk(
+        clSetKernelArg(kernel_transp, 2, sizeof(cl_uint), &N0_C ),
+        "setting transpose kernel argument 2"
+    );
+    h_errchk(
+        clSetKernelArg(kernel_transp, 3, sizeof(cl_uint), &N1_A ),
+        "setting transpose kernel argument 3"
+    );
+    
+    // Event for querying the transpose kernel
+    cl_event kernel_event;
+
+    // Now enqueue the transpose kernel
+    h_errchk(
+        clEnqueueNDRangeKernel(command_queue,
+                                kernel_transp,
+                                work_dim,
+                                NULL,
+                                global_size_transp,
+                                local_size,
+                                0,
+                                NULL,
+                                &kernel_event), 
+        "Running the transpose kernel"
+    );
+
+    // Time the transpose kernel
+    cl_double transpose_ms = h_get_event_time_ms(
+        &kernel_event,
+        NULL,
+        NULL);        
+    
+    // Create and run the matrix multiplication kernel
+    cl_kernel kernel_mat_mult=clCreateKernel(program, "mat_mult_transpose_A", &errcode);
+    h_errchk(errcode, "Creating mat_mult_kernel");
+        
     // Set arguments to the kernel (not thread safe)
     h_errchk(
-        clSetKernelArg(kernel, 0, sizeof(cl_mem), &buffer_A ),
+        clSetKernelArg(kernel_mat_mult, 0, sizeof(cl_mem), &buffer_AT ),
         "setting kernel argument 0"
     );
     h_errchk(
-        clSetKernelArg(kernel, 1, sizeof(cl_mem), &buffer_B ),
+        clSetKernelArg(kernel_mat_mult, 1, sizeof(cl_mem), &buffer_B ),
         "setting kernel argument 1"
     );
     h_errchk(
-        clSetKernelArg(kernel, 2, sizeof(cl_mem), &buffer_C ),
+        clSetKernelArg(kernel_mat_mult, 2, sizeof(cl_mem), &buffer_C ),
         "setting kernel argument 2"
     );
     h_errchk(
-        clSetKernelArg(kernel, 3, sizeof(cl_uint), &N1_A ),
-        "setting kernel argument 3"
+        clSetKernelArg(kernel_mat_mult, 3, sizeof(cl_uint), &N1_A ),
+        "setting kernel argument 5"
     );
     h_errchk(
-        clSetKernelArg(kernel, 4, sizeof(cl_uint), &N0_C ),
+        clSetKernelArg(kernel_mat_mult, 4, sizeof(cl_uint), &N0_C ),
         "setting kernel argument 4"
     );
     h_errchk(
-        clSetKernelArg(kernel, 5, sizeof(cl_uint), &N1_C ),
+        clSetKernelArg(kernel_mat_mult, 5, sizeof(cl_uint), &N1_C ),
         "setting kernel argument 5"
     );
-    
-    // Number of dimensions in the kernel
-    size_t work_dim = 2;
     
     // Number of statistical runs to do per experiment 
     size_t nstats = 3;
     
     // Desired local size
-    size_t local_size[]={ 4, 16 };
+    local_size[0] = 16;
+    local_size[1] = 16;
     
     // Desired global_size
     size_t global_size[]={ N0_C, N1_C };
@@ -187,17 +259,17 @@ int main(int argc, char** argv) {
         argc,
         argv,
         command_queue,
-        kernel,
+        kernel_mat_mult,
         device,
         global_size,
         local_size,
         work_dim,
         nstats,
-        0,
+        transpose_ms,
         NULL,
         NULL
     );
-
+    
     // Read memory from the buffer to the host
     h_errchk(
         clEnqueueReadBuffer(command_queue,
@@ -220,10 +292,17 @@ int main(int argc, char** argv) {
         clReleaseMemObject(buffer_A),
         "releasing buffer A"
     );
+    
+    h_errchk(
+        clReleaseMemObject(buffer_AT),
+        "releasing buffer AT"
+    );
+    
     h_errchk(
         clReleaseMemObject(buffer_B),
         "releasing buffer B"
     );
+
     h_errchk(
         clReleaseMemObject(buffer_C),
         "releasing buffer C"
