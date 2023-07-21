@@ -62,7 +62,7 @@ __global__ void mat_mult_shared_A (
     
     // A is of size (N0_C, N1_A)
     // B is of size (N1_A, N1_C)
-    // shared_B is of size (L1, N1_A)
+    // shared_A is of size (L0, N1_A)
     // C is of size (N0_C, N1_C)
     
     // i0 and i1 represent the coordinates in Matrix C 
@@ -204,7 +204,6 @@ int main(int argc, char** argv) {
     // Desired block size
     dim3 block_size = { 8, 8, 1 };
     dim3 global_size = { (uint32_t)N1_C, (uint32_t)N0_C, 1 };
-    dim3 grid_nblocks;
     
     // Arguments for prep_kernel
     size_t line_width = N1_A*sizeof(float_type);
@@ -215,16 +214,16 @@ int main(int argc, char** argv) {
     
     // Find the optimum block size
     h_optimise_block(
-        argc,
-        argv,
-        (const void*)&mat_mult_shared_A,
-        kernel_args,
-        global_size,
-        &block_size,
-        (size_t)NSTATS,
-        0.0,
-        prep_kernel,
-        prep_kernel_args
+        argc, // Number of command line arguments
+        argv, // Command line arguments as an array of C-strings
+        (const void*)&mat_mult_shared_A, // Kernel function to execute
+        kernel_args, // Arguments passed to the kernel  
+        global_size, // Desired global_size
+        &block_size, // Default block size
+        (size_t)NSTATS, // Number of statistical runs per experiment
+        0.0, // No prior times required
+        prep_kernel, // No function required to prep the kernel
+        prep_kernel_args // No arguments to prep function
     );
     
     // Wait for any commands to complete on the compute device

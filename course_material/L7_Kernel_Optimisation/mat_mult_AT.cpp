@@ -174,9 +174,6 @@ int main(int argc, char** argv) {
     // Arguments to the kernel
     void* kernel_args[] = {&AT_d, &B_d, &C_d, &N1_A, &N0_C, &N1_C};
     
-    // Number of statistical runs to perform per experiment
-    size_t nstats = NSTATS;
-    
     // Run h_optimise_block to find an optimal block size
     h_optimise_block(
         argc, // Number of command line arguments
@@ -185,7 +182,7 @@ int main(int argc, char** argv) {
         kernel_args, // Arguments we will be passing to the kernel
         global_size, // Desired global_size
         &block_size, // Default block size
-        nstats,
+        (size_t)NSTATS, // Number of statistical runs per experiment
         transpose_ms, // Prior times of transpose required
         NULL, // No function required to prep the kernel
         NULL // No arguments to prep function

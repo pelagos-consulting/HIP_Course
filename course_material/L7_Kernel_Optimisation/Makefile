@@ -6,7 +6,9 @@ TARGETS=mat_mult_float.exe \
 		mat_mult_double.exe \
 		mat_mult_AT.exe \
 		mat_mult_BT.exe \
-		mat_mult_shared_A.exe 
+		mat_mult_shared_A.exe \
+		mat_mult_shared_B.exe  \
+		mat_mult_tile_shared_AB.exe
 #		mat_mult_shared_A_vector.exe \
 #		vector_types.exe \
 #		atomics.exe \
