@@ -4,8 +4,9 @@ include ../env
 # List of applications to target
 TARGETS=mat_mult_float.exe \
 		mat_mult_double.exe \
-		mat_mult_transpose_A.exe 
-#		mat_mult_shared_A.exe \
+		mat_mult_AT.exe \
+		mat_mult_BT.exe \
+		mat_mult_shared_A.exe 
 #		mat_mult_shared_A_vector.exe \
 #		vector_types.exe \
 #		atomics.exe \

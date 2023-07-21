@@ -16,20 +16,40 @@ Written by Dr Toby M. Potter
 // Bring in helper header to manage boilerplate code
 #include "hip_helper.hpp"
 
-typedef double float_type;
+typedef float float_type;
+
+// transpose kernel 
+__global__ void transpose (
+        float_type* dst, 
+        float_type* src, 
+        size_t N0_src,
+        size_t N1_src) { 
+    
+    // src is of size (N0_src, N1_src)
+    // dest is of size (N1_src, N0_src)
+    
+    // i0 and i1 represent the coordinates in Matrix C 
+    // We assume row-major ordering for the matrices 
+    size_t i0 = blockIdx.x * blockDim.x + threadIdx.x;
+    size_t i1 = blockIdx.y * blockDim.y + threadIdx.y;
+    
+    if ((i0<N0_src) && (i1<N1_src)) {
+        dst[i1*N0_src+i0]=src[i0*N1_src+i1];
+    }
+}
 
 // standard matrix multiply kernel 
-__global__ void mat_mult (
+__global__ void mat_mult_BT (
         float_type* A, 
-        float_type* B, 
+        float_type* BT, 
         float_type* C, 
         size_t N1_A, 
         size_t N0_C,
         size_t N1_C) { 
-            
+           
     // A is of size (N0_C, N1_A)
-    // B is of size (N1_A, N1_C)
-    // C is of size (N0_C, N1_C)   
+    // BT is of size (N1_C, N1_A)
+    // C is of size (N0_C, N1_C)    
     
     // i0 and i1 represent the coordinates in Matrix C 
     // We use row-major ordering for the matrices
@@ -38,7 +58,7 @@ __global__ void mat_mult (
     size_t i1 = blockIdx.x * blockDim.x + threadIdx.x;
     
     // Scratch variable
-    float_type temp=0.0; 
+    float_type temp=0.0f; 
 
     // Guard mechanism to make sure we do not go
     // outside the boundaries of matrix C 
@@ -48,11 +68,11 @@ __global__ void mat_mult (
         for (size_t n=0; n<N1_A; n++) {
             
             // A is of size (N0_C, N1_A)
-            // B is of size (N1_A, N1_C)
+            // BT is of size (N1_C, N1_A)
             
             // Loop across row i0 of A
-            // and down column i1 of B
-            temp+=A[i0*N1_A+n]*B[i1+n*N1_C]; 
+            // and across row i1 of BT
+            temp+=A[i0*N1_A+n]*BT[i1*N1_A+n]; 
         }
         
         // Set the value in C at offset
@@ -109,9 +129,10 @@ int main(int argc, char** argv) {
     //// Step 4. Allocate memory for arrays //// 
     //// A_d, B_d, and C_d on the compute device ////
 
-    float_type *A_d, *B_d, *C_d;
+    float_type *A_d, *B_d, *BT_d, *C_d;
     H_ERRCHK(hipMalloc((void**)&A_d, nbytes_A));
     H_ERRCHK(hipMalloc((void**)&B_d, nbytes_B));
+    H_ERRCHK(hipMalloc((void**)&BT_d, nbytes_B));
     H_ERRCHK(hipMalloc((void**)&C_d, nbytes_C));
 
     //// Step 5. 1. Upload matrices A_h and B_h from the host //// 
@@ -122,14 +143,36 @@ int main(int argc, char** argv) {
     //// Step 6. Run the kernel to compute C_d ///
     //// from A_d and B_d on the device ////
         
-    // Desired block size
-    dim3 block_size = { 8, 8, 1 };
+    // Desired block size for all grids
+    dim3 block_size = { 16, 16, 1 };
+    
+    // Desired global size for transpose
+    dim3 global_size_transp = { (uint32_t)N1_C, (uint32_t)N1_A, 1 };
+    
+    // Bytes to allocate for shared memory
+    size_t shared_bytes = 0;
+    
+    // Arguments for transpose kernel
+    void* transp_args[] = {&BT_d, &B_d, &N1_A, &N1_C };
+    
+    // Run the transpose kernel and get runtimes
+    float transpose_ms = h_run_kernel(
+        (const void*)&transpose,
+        transp_args,
+        global_size_transp,
+        block_size,
+        &shared_bytes,
+        0, // No shared bytes
+        0, // Null stream
+        NULL, // No prep kernel function
+        NULL // No prep kernel args
+    );
     
     // Desired global size
     dim3 global_size = { (uint32_t)N1_C, (uint32_t)N0_C, 1 };
     
     // Arguments to the kernel
-    void* kernel_args[] = {&A_d, &B_d, &C_d, &N1_A, &N0_C, &N1_C};
+    void* kernel_args[] = {&A_d, &BT_d, &C_d, &N1_A, &N0_C, &N1_C};
     
     // Number of statistical runs to perform per experiment
     size_t nstats = NSTATS;
@@ -138,12 +181,12 @@ int main(int argc, char** argv) {
     h_optimise_block(
         argc, // Number of command line arguments
         argv, // Command line arguments as an array of C-strings
-        (const void*)&mat_mult, // Kernel function to execute
+        (const void*)&mat_mult_BT, // Kernel function to execute
         kernel_args, // Arguments we will be passing to the kernel
         global_size, // Desired global_size
         &block_size, // Default block size
         nstats,
-        0.0f, // No prior times required
+        transpose_ms, // Prior times of transpose required
         NULL, // No function required to prep the kernel
         NULL // No arguments to prep function
     );

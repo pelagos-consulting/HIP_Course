@@ -18,7 +18,7 @@ Written by Dr Toby M. Potter
 
 typedef float float_type;
 
-// Local memory matrix multiply kernel 
+// Matrix transpose kernel 
 __global__ void transpose (
         float_type* dst, 
         float_type* src, 
@@ -67,10 +67,10 @@ __global__ void mat_mult_AT (
         // Loop over columns of A and rows of B
         for (size_t n=0; n<N1_A; n++) {
             
-            // A is of size (N0_C, N1_A)
+            // AT is of size (N1_A, N0_C)
             // B is of size (N1_A, N1_C)
             
-            // Loop across row i0 of A
+            // Loop down column i0 of AT
             // and down column i1 of B
             temp+=AT[i0+n*N0_C]*B[i1+n*N1_C]; 
         }
@@ -153,7 +153,7 @@ int main(int argc, char** argv) {
     size_t shared_bytes = 0;
     
     // Arguments for transpose kernel
-    void* transp_args[] = {&A_d, &AT_d, &N0_C, &N1_A };
+    void* transp_args[] = {&AT_d, &A_d, &N0_C, &N1_A };
     
     // Run the transpose kernel and get runtimes
     float transpose_ms = h_run_kernel(
@@ -172,13 +172,13 @@ int main(int argc, char** argv) {
     dim3 global_size = { (uint32_t)N1_C, (uint32_t)N0_C, 1 };
     
     // Arguments to the kernel
-    void* kernel_args[] = {&A_d, &B_d, &C_d, &N1_A, &N0_C, &N1_C};
+    void* kernel_args[] = {&AT_d, &B_d, &C_d, &N1_A, &N0_C, &N1_C};
     
     // Number of statistical runs to perform per experiment
     size_t nstats = NSTATS;
     
-    // Run h_optimise_local to find an optimal local size
-    h_optimise_local(
+    // Run h_optimise_block to find an optimal block size
+    h_optimise_block(
         argc, // Number of command line arguments
         argv, // Command line arguments as an array of C-strings
         (const void*)&mat_mult_AT, // Kernel function to execute

@@ -1,8 +1,9 @@
-/* Code to perform a Matrix multiplication using HIP
+/* Code to perform a Matrix multiplication using OpenCL
 Written by Dr Toby M. Potter
 */
 
-// Setup headers
+//// Step 1. Setup headers and parse command line arguments ////
+
 #include <cassert>
 #include <cmath>
 #include <iostream>
@@ -10,58 +11,136 @@ Written by Dr Toby M. Potter
 // Bring in the size of the matrices
 #include "mat_size.hpp"
 
-// Bring in a library to manage matrices on the CPU
+// Bring in the library to work with matrices
 #include "mat_helper.hpp"
 
 // Bring in helper header to manage boilerplate code
 #include "hip_helper.hpp"
 
-typedef double float_type;
+typedef float float_type;
 
-// standard matrix multiply kernel 
-__global__ void mat_mult (
-        float_type* A, 
-        float_type* B, 
-        float_type* C, 
-        size_t N1_A, 
-        size_t N0_C,
-        size_t N1_C) { 
-            
+// Device function to get the start and end values
+// for filling a shared memory array
+__device__ void get_start_end(
+    // Number of work-items along a dimension of workgroup
+    size_t block_length,
+    // Number of items in the array
+    size_t array_length,
+    // Index of work item along dimension of workgroup
+    size_t block_index,
+    // Starting position of the copy
+    size_t *start,
+    // End position of the copy
+    size_t *end) {
+  
+    // Work out the jump size
+    size_t jump_size=array_length/block_length;
+    if (array_length%block_length) jump_size++;
+    
+    // Starting position for the copy
+    *start=block_index*jump_size;
+    // End position for the copy
+    *end=(block_index+1)*jump_size;
+    // Limit end so we don't go off the end
+    *end=min(*end,array_length);
+}
+
+// Matrix multiply kernel that uses shared memory for A
+__global__ void mat_mult_shared_A (
+                        float_type* A, 
+                        float_type* B, 
+                        float_type* C,
+                        size_t N1_A, 
+                        size_t N0_C,
+                        size_t N1_C) { 
+    
+    // Access the allocation of shared memory
+    extern __shared__ char shared[];
+    
+    // Get a pointer to shared_A from shared
+    float_type* shared_A = (float_type*)&shared[0];
+    
     // A is of size (N0_C, N1_A)
     // B is of size (N1_A, N1_C)
-    // C is of size (N0_C, N1_C)   
+    // shared_B is of size (L1, N1_A)
+    // C is of size (N0_C, N1_C)
     
     // i0 and i1 represent the coordinates in Matrix C 
-    // We use row-major ordering for the matrices
-    
+    // We assume row-major ordering for the matrices 
     size_t i0 = blockIdx.y * blockDim.y + threadIdx.y;
     size_t i1 = blockIdx.x * blockDim.x + threadIdx.x;
     
+    // Location within the workgroup
+    size_t s0=threadIdx.y;
+    size_t s1=threadIdx.x;
+    
+    // block size
+    size_t L0=blockDim.y;
+    size_t L1=blockDim.x;
+    
+    // start and end positions for the copy
+    size_t start, end;
+    
+    // Get the start and end lengths to fill array
+    get_start_end(L1, N1_A, s1, &start, &end);
+    
+    // Fill shared_A
+    if (i0<N0_C) {
+        for (size_t n=start; n<end; n++) {
+            shared_A[s0*N1_A+n]=A[i0*N1_A+n]; 
+        }   
+    }
+    
+    // Set a barrier to ensure that all threads 
+    // sync to this point before moving on 
+    __syncthreads();
+    
     // Scratch variable
-    float_type temp=0.0; 
-
+    // Demonstrate access of constant memory
+    float_type temp=0.0f; 
+    
     // Guard mechanism to make sure we do not go
-    // outside the boundaries of matrix C 
+    // outside the boundaries of matrix C
     if ((i0<N0_C) && (i1<N1_C)) {
         
-        // Loop over columns of A and rows of B
+        // Loop over columns of A and rows of B 
         for (size_t n=0; n<N1_A; n++) {
             
             // A is of size (N0_C, N1_A)
             // B is of size (N1_A, N1_C)
+            // shared_B is of size (L1, N1_A)
+            // C is of size (N0_C, N1_C)
             
-            // Loop across row i0 of A
+            // Loop across row s0 of shared_A
             // and down column i1 of B
-            temp+=A[i0*N1_A+n]*B[i1+n*N1_C]; 
-        }
+            temp+=shared_A[s0*N1_A+n]*B[n*N1_C+i1];
+            
+        } 
         
-        // Set the value in C at offset
+        // Number of rows in C is same as number of rows in A
         C[i0*N1_C+i1]=temp;
     }
-} 
+}
+
+// Function to decide how much shared memory to allocate
+void prep_kernel(
+    const void *kernel, 
+    void** kernel_args, 
+    dim3 num_blocks, 
+    dim3 block_size,
+    size_t* sharedMemBytes,
+    void** prep_kernel_args
+) {
+
+    // Extract line width from prep kernel_args
+    size_t* line_width = (size_t*)prep_kernel_args[0];
+
+    // Set shared_bytes using line width
+    *sharedMemBytes=(*line_width)*block_size.y;
+}
 
 int main(int argc, char** argv) {
-    
+
     //// Step 1. Parse program arguments ////
 
     // Parse command line arguments
@@ -87,19 +166,19 @@ int main(int argc, char** argv) {
     // C is of size (N0_C, N1_C)
 
     size_t N1_A = NCOLS_A, N0_C = NROWS_C, N1_C = NCOLS_C;
-
+    
     //// Step 3. Construct matrices A_h and B_h on the host 
     //// and fill them with random numbers ////
     
     // Number of bytes in each array
-    size_t nbytes_A = N0_C*N1_A*sizeof(float_type);
-    size_t nbytes_B = N1_A*N1_C*sizeof(float_type);
-    size_t nbytes_C = N0_C*N1_C*sizeof(float_type);
+    size_t nbytes_A = N0_C*N1_A*sizeof(float);
+    size_t nbytes_B = N1_A*N1_C*sizeof(float);
+    size_t nbytes_C = N0_C*N1_C*sizeof(float);
 
     // Allocate memory for the host arrays
-    float_type* A_h = (float_type*)h_alloc(nbytes_A);
-    float_type* B_h = (float_type*)h_alloc(nbytes_B);
-    float_type* C_h = (float_type*)h_alloc(nbytes_C);
+    float* A_h = (float*)h_alloc(nbytes_A);
+    float* B_h = (float*)h_alloc(nbytes_B);
+    float* C_h = (float*)h_alloc(nbytes_C);
 
     // Fill the host arrays with random numbers 
     // using the matrix helper library
@@ -109,7 +188,7 @@ int main(int argc, char** argv) {
     //// Step 4. Allocate memory for arrays //// 
     //// A_d, B_d, and C_d on the compute device ////
 
-    float_type *A_d, *B_d, *C_d;
+    float *A_d, *B_d, *C_d;
     H_ERRCHK(hipMalloc((void**)&A_d, nbytes_A));
     H_ERRCHK(hipMalloc((void**)&B_d, nbytes_B));
     H_ERRCHK(hipMalloc((void**)&C_d, nbytes_C));
@@ -124,28 +203,28 @@ int main(int argc, char** argv) {
         
     // Desired block size
     dim3 block_size = { 8, 8, 1 };
-    
-    // Desired global size
     dim3 global_size = { (uint32_t)N1_C, (uint32_t)N0_C, 1 };
+    dim3 grid_nblocks;
     
-    // Arguments to the kernel
-    void* kernel_args[] = {&A_d, &B_d, &C_d, &N1_A, &N0_C, &N1_C};
+    // Arguments for prep_kernel
+    size_t line_width = N1_A*sizeof(float_type);
+    void* prep_kernel_args[] = { &line_width };
     
-    // Number of statistical runs to perform per experiment
-    size_t nstats = NSTATS;
+    // Arguments for the kernel
+    void* kernel_args[] = { &A_d, &B_d, &C_d, &N1_A, &N0_C, &N1_C };
     
-    // Run h_optimise_block to find an optimal block size
+    // Find the optimum block size
     h_optimise_block(
-        argc, // Number of command line arguments
-        argv, // Command line arguments as an array of C-strings
-        (const void*)&mat_mult, // Kernel function to execute
-        kernel_args, // Arguments we will be passing to the kernel
-        global_size, // Desired global_size
-        &block_size, // Default block size
-        nstats,
-        0.0f, // No prior times required
-        NULL, // No function required to prep the kernel
-        NULL // No arguments to prep function
+        argc,
+        argv,
+        (const void*)&mat_mult_shared_A,
+        kernel_args,
+        global_size,
+        &block_size,
+        (size_t)NSTATS,
+        0.0,
+        prep_kernel,
+        prep_kernel_args
     );
     
     // Wait for any commands to complete on the compute device
@@ -158,14 +237,14 @@ int main(int argc, char** argv) {
     //// Step 8. Test the computed matrix **C_h** against a known answer
     
     // Compute the serial solution using the matrix helper library
-    float_type* C_answer_h = (float_type*)calloc(nbytes_C, 1);
+    float* C_answer_h = (float*)calloc(nbytes_C, 1);
     m_mat_mult(A_h, B_h, C_answer_h, N1_A, N0_C, N1_C);
     
     // Uncomment this to check against elementwise matrix multiplication
     // m_hadamard(A_h, B_h, C_answer_h, N0_C, N1_C);
 
     // Print the maximum error between matrices
-    float_type max_err = m_max_error(C_h, C_answer_h, N0_C, N1_C);
+    float max_err = m_max_error(C_h, C_answer_h, N0_C, N1_C);
     
     //// Step 9. Write the contents of matrices A_h, B_h, and C_h to disk ////
 

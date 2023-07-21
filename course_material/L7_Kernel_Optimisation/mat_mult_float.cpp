@@ -134,8 +134,8 @@ int main(int argc, char** argv) {
     // Number of statistical runs to perform per experiment
     size_t nstats = NSTATS;
     
-    // Run h_optimise_local to find an optimal local size
-    h_optimise_local(
+    // Run h_optimise_block to find an optimal block size
+    h_optimise_block(
         argc, // Number of command line arguments
         argv, // Command line arguments as an array of C-strings
         (const void*)&mat_mult, // Kernel function to execute

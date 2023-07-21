@@ -82,13 +82,13 @@ class LocalOpt():
         input_local[...,2] = L2
         
         # Write out to file
-        input_local.tofile("input_local.dat")        
+        input_local.tofile("input_block.dat")        
     
         # Add the --local-file flag
         if isinstance(cmds, Iterable) and not isinstance(cmds, str):
-            temp_cmds = list(cmds) + ["--local_file"]
+            temp_cmds = list(cmds) + ["--block_file"]
         else:
-            temp_cmds=[cmds,"--local_file"]
+            temp_cmds=[cmds,"--block_file"]
         
         # Run the program 
         result = subprocess.run(temp_cmds)
@@ -97,7 +97,7 @@ class LocalOpt():
         if (result.returncode==0):
         
             # Get the output data
-            output_local = np.fromfile("output_local.dat", dtype=np.float64).reshape(
+            output_local = np.fromfile("output_block.dat", dtype=np.float64).reshape(
                 local0.size, local1.size, local2.size, 2, order="C"
             )
             

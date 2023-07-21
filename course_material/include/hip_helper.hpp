@@ -464,15 +464,15 @@ float h_run_kernel(
     return elapsed;
 }
 
-/// Function to optimise the local size
-/// if command line arguments are --local_file or -local_file.
-/// Read an input file called input_local.dat of
+/// Function to optimise the block size
+/// if command line arguments are --block_file or -block_file.
+/// Read an input file called input_block.dat of
 /// type == uint32_t, and dimensions == (nexperiments, ndim) with row major ordering.
 ///
-/// Writes to a file called output_local.dat of 
+/// Writes to a file called output_block.dat of 
 /// type == double and dimensions == (nexperiments, 2) with row major ordering
 /// and where each line is (avg, stdev) in milliseconds
-void h_optimise_local(
+void h_optimise_block(
         int argc,
         char** argv,
         const void* kernel_function,
@@ -489,7 +489,7 @@ void h_optimise_local(
         void (*prep_kernel_function)(const void*, void**, dim3, dim3, size_t*, void**),
         void** prep_kernel_args) {
 
-    // Default local size
+    // Default block size
     dim3 temp_block_size = {16,1,1};
     if (default_block_size!=NULL) {
         temp_block_size.x = (*default_block_size).x;
@@ -500,18 +500,18 @@ void h_optimise_local(
     // Maximum number of dimensions
     const int max_ndim=3;
 
-    // Array of ints for local size (nexperiments, max_dims)
+    // Array of ints for block size (nexperiments, max_dims)
     // With row_major ordering
-    uint32_t *input_local = NULL;
-    size_t local_bytes = 0;
+    uint32_t *input_block = NULL;
+    size_t block_bytes = 0;
 
-    // Look for the --local_file in argv, must be integer
+    // Look for the --block_file in argv, must be integer
     for (int i=1; i<argc; i++) {   
-        if ((std::strncmp(argv[i], "--local_file", 12)==0) ||
-            (std::strncmp(argv[i], "-local_file", 11)==0)) {
+        if ((std::strncmp(argv[i], "--block_file", 12)==0) ||
+            (std::strncmp(argv[i], "-block_file", 11)==0)) {
         
             // Read the input file as 32-bit integers
-            input_local=(uint32_t*)h_read_binary("input_local.dat", &local_bytes);
+            input_block=(uint32_t*)h_read_binary("input_block.dat", &block_bytes);
         }
     }    
    
@@ -528,19 +528,19 @@ void h_optimise_local(
     // How many bytes do we use?
     size_t shared_bytes=0;
 
-    if (input_local != NULL) {
-        // Find the optimal local size 
+    if (input_block != NULL) {
+        // Find the optimal block size 
         
         // Number of rows to process
-        size_t nexperiments = local_bytes/(max_ndim*sizeof(uint32_t));
+        size_t nexperiments = block_bytes/(max_ndim*sizeof(uint32_t));
         
-        // Input_local is of size (nexperiments, max_ndim)
+        // Input_block is of size (nexperiments, max_ndim)
         
         // Number of data points per experiment
         size_t npoints = 2; // (avg, stdev)
-        // Output_local is of size (nexperiments, npoints)
+        // Output_block is of size (nexperiments, npoints)
         size_t nbytes_output = nexperiments*npoints*sizeof(double);
-        double* output_local = (double*)malloc(nbytes_output);
+        double* output_block = (double*)malloc(nbytes_output);
         
         // Array to store the statistical timings for each experiment
         double* experiment_msec = new double[nstats];
@@ -551,13 +551,13 @@ void h_optimise_local(
             int valid_size = 1;
             
             // Fill temp_block_size
-            temp_block_size.x=(int)input_local[n*max_ndim+0];
+            temp_block_size.x=(int)input_block[n*max_ndim+0];
             valid_size*=(temp_block_size.x<=prop.maxThreadsDim[0]);
 
-            temp_block_size.y=(int)input_local[n*max_ndim+1];
+            temp_block_size.y=(int)input_block[n*max_ndim+1];
             valid_size*=(temp_block_size.y<=prop.maxThreadsDim[1]);
             
-            temp_block_size.z=(int)input_local[n*max_ndim+2];
+            temp_block_size.z=(int)input_block[n*max_ndim+2];
             valid_size*=(temp_block_size.z<=prop.maxThreadsDim[2]);
 
             // Size of the block in threads
@@ -606,15 +606,15 @@ void h_optimise_local(
             }
                   
             // Send to output array 
-            output_local[n*npoints+0] = avg;
-            output_local[n*npoints+1] = stdev;
+            output_block[n*npoints+0] = avg;
+            output_block[n*npoints+1] = stdev;
         }
                             
-        h_write_binary(output_local, "output_local.dat", nbytes_output); 
+        h_write_binary(output_block, "output_block.dat", nbytes_output); 
                             
         delete[] experiment_msec;
-        free(output_local);
-        free(input_local);
+        free(output_block);
+        free(input_block);
         
     } else {
         // Run the kernel with just one experiment
