@@ -14594,9 +14594,10 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <ul>
 <li>Host </li>
 <li>Global</li>
-<li>Local </li>
-<li>Private </li>
-<li>Constant </li>
+<li>Texture</li>
+<li>Shared</li>
+<li>Constant</li>
+<li>Private / local </li>
 </ul>
 
 </div>
@@ -14609,7 +14610,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p><strong>Host memory</strong> is usually the largest and slowest memory space on the host, and <strong>global memory</strong> is the largest and slowest memory space available on the compute device. <strong>Local</strong> and <strong>Constant</strong> memory is usually located in the small and fast caches on the compute device. <strong>Private memory</strong> is usually located in the registers, which are the fastest and smallest memory spaces available on the compute device. A programmer has some degree of control over where memory is stored during the operation of a HIP program. The diagram below shows what memory is available for access by both host and kernel threads at runtime.</p>
+<p><strong>Host memory</strong> is usually the largest and slowest memory space on the host, and <strong>global memory</strong> is the largest and slowest memory space available on the compute device. Texture memory is fast read-only memory useful for working with images. <strong>Shared</strong> and <strong>constant</strong> memory is usually located in small and fast caches on the compute device. <strong>private / local memory</strong> is usually located in the registers or L1 cache, which is the fastest and smallest memory spaces available on the compute device. A programmer has some degree of control over where memory is stored during the operation of a HIP program. The diagram below shows what memory is available for access by both host and kernel threads at runtime.</p>
 
 </div>
 </div>
