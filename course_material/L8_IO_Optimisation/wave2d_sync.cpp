@@ -93,19 +93,17 @@ int main(int argc, char** argv) {
     // Number of scratch buffers, must be at least 3
     const int nscratch=3;
     
-    // We are going to do a simple array multiplication for this example, 
-    // using raw binary files for input and output
-    size_t nbytes_U;
-    
     // Make up sizes 
     size_t N0=N0_U, N1=N1_U;
     
+    // Size of the grid
+    size_t nbytes_U=N0*N1*sizeof(float_type);
+    
     // Read in the velocity from disk and find the maximum
-    float_type* V_h = (float_type*)h_read_binary("array_V.dat", &nbytes_U);
-    assert(nbytes_U==N0*N1*sizeof(float_type));
-    float_type Vmax = 0.0;
+    float_type* V_h = (float_type*)h_alloc(nbytes_U);
+    float_type Vmax = VEL;
     for (size_t i=0; i<N0*N1; i++) {
-        Vmax = (V_h[i]>Vmax) ? V_h[i] : Vmax;
+        V_h[i] = Vmax;
     }
 
     // Make up the timestep using maximum velocity
@@ -127,7 +125,7 @@ int main(int argc, char** argv) {
     H_ERRCHK(hipMemcpy(V_d, V_h, nbytes_U, hipMemcpyHostToDevice));
     
     // Create scratch buffers for the computation
-    float* U_ds[nscratch];
+    float_type* U_ds[nscratch] = {NULL};
     for (int n=0; n<nscratch; n++) {
         // Allocate memory and zero out
         H_ERRCHK(hipMalloc((void**)&U_ds[n], nbytes_U));
@@ -172,7 +170,7 @@ int main(int argc, char** argv) {
     // Start the clock
     auto t1 = std::chrono::high_resolution_clock::now();
     
-    for (int n=0; n<NT; n++) {        
+    for (int n=0; n<NT; n++) {
         // Get the wavefields
         U0_d = U_ds[n%nscratch];
         U1_d = U_ds[(n+1)%nscratch];
@@ -196,14 +194,17 @@ int main(int argc, char** argv) {
         H_ERRCHK(hipGetLastError());
           
         // Copy the wavefield back to the host
-        H_ERRCHK(
-            hipMemcpy(
-                (void*)&out_h[n*N0*N1],
-                U0_d,
-                nbytes_U,
-                hipMemcpyDeviceToHost
-            )
-        );
+        // hipMemcpy is a barrier
+        if (n>1 && n<NT-1) { // For consistency with the async solution
+            H_ERRCHK(
+                hipMemcpy(
+                    (void*)&out_h[n*N0*N1],
+                    U0_d,
+                    nbytes_U,
+                    hipMemcpyDeviceToHost
+                )
+            );
+        }
     }
 
     // Make sure all work is done

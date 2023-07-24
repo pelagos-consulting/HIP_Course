@@ -9,3 +9,6 @@
 
 // Courant number for stability
 #define CFL 0.4
+
+// Velocity for the grid
+#define VEL 343.0

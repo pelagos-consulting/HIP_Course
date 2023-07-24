@@ -94,24 +94,25 @@ int main(int argc, char** argv) {
     const size_t nscratch=5;
     
     // Number of streams to create
-    const size_t nstreams = nscratch;
+    const size_t nstreams = nscratch + 1;
     
     // Create streams that block with null stream
     hipStream_t* streams = h_create_streams(nstreams, 1);
     
-    // We are going to do a simple array multiplication for this example, 
-    // using raw binary files for input and output
-    size_t nbytes_U;
+    // Select the compute stream
+    hipStream_t compute_stream = streams[nscratch];
     
     // Make up sizes 
     size_t N0=N0_U, N1=N1_U;
     
+    // Size of the grid
+    size_t nbytes_U=N0*N1*sizeof(float_type);
+    
     // Read in the velocity from disk and find the maximum
-    float_type* V_h = (float_type*)h_read_binary("array_V.dat", &nbytes_U);
-    assert(nbytes_U==N0*N1*sizeof(float_type));
-    float_type Vmax = 0.0;
+    float_type* V_h = (float_type*)h_alloc(nbytes_U);
+    float_type Vmax = VEL;
     for (size_t i=0; i<N0*N1; i++) {
-        Vmax = (V_h[i]>Vmax) ? V_h[i] : Vmax;
+        V_h[i] = Vmax;
     }
 
     // Make up the timestep using maximum velocity
@@ -124,7 +125,7 @@ int main(int argc, char** argv) {
     // Make up the output array
     size_t nbytes_out = NT*N0*N1*sizeof(float_type);
     
-    // Allocate memory for out_h
+    // Allocate pinned memory for out_h
     float_type* out_h;
     H_ERRCHK(
         hipHostMalloc(
@@ -242,15 +243,18 @@ int main(int argc, char** argv) {
     
     for (int n=0; n<NT; n++) {
         
-        // Wait for the previous copy command to finish
-        H_ERRCHK(hipStreamSynchronize(streams[(n+2)%nscratch]));
-        
         // Wait for the event associated with a stream
-        H_ERRCHK(
-            hipEventSynchronize(
-                events[(n+1)%nscratch]
-            )
-        );
+        
+        // Can make a stream wait on an event
+        // Make the compute stream wait on previous copies
+        H_ERRCHK(hipStreamWaitEvent(compute_stream, events[(n+2)%nscratch], 0));
+        H_ERRCHK(hipStreamWaitEvent(compute_stream, events[(n+1)%nscratch], 0));
+        
+        // Or wait on an event directly
+        H_ERRCHK(hipEventSynchronize(events[n%nscratch]));
+        
+        // Can wait on a stream directly also
+        H_ERRCHK(hipStreamSynchronize(compute_stream));
         
         // Get the wavefields
         U0_d = U_ds[n%nscratch];
@@ -264,7 +268,7 @@ int main(int argc, char** argv) {
         // Launch the kernel using hipLaunchKernelGGL method
         // Use 0 when choosing the default (null) stream
         hipLaunchKernelGGL(wave2d_4o, 
-            grid_nblocks, block_size, sharedMemBytes, streams[n%nscratch],
+            grid_nblocks, block_size, sharedMemBytes, compute_stream,
             U0_d, U1_d, U2_d, V_d,
             N0, N1, dt2,
             inv_dx02, inv_dx12,
@@ -276,7 +280,7 @@ int main(int argc, char** argv) {
           
         // Insert an event into stream at n%nscratch
         // It will complete afer the kernel does
-        H_ERRCHK(hipEventRecord(events[n%nscratch],streams[n%nscratch]));   
+        H_ERRCHK(hipEventRecord(events[n%nscratch], compute_stream));   
         
         // Read memory from the buffer to the host in an asynchronous manner
         if (n>2) {
@@ -321,8 +325,7 @@ int main(int argc, char** argv) {
             //        &copy_parms
             //        //streams[copy_index%nscratch]
             //    )
-            //);
-            
+            //); 
         }
     }
 
