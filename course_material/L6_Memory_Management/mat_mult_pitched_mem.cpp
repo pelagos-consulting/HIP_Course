@@ -192,6 +192,10 @@ int main(int argc, char** argv) {
     //// Step 7. Copy the buffer for matrix C_d //// 
     //// on the device back to C_h on the host ////
     
+    // Create the object to hold 
+    // the parameters of the 3D copy
+    hipMemcpy3DParms copy_parms = {0};
+    
     // Use hipMemcpy3D for reference
     
     // Create pitched pointers 
@@ -229,7 +233,6 @@ int main(int argc, char** argv) {
     );
     
     // Fill the copy parameters
-    hipMemcpy3DParms copy_parms = {0};
     copy_parms.srcPtr = C_d_ptr;
     copy_parms.srcPos = C_d_pos;
     copy_parms.dstPtr = C_h_ptr;
