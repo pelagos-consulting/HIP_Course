@@ -7,6 +7,7 @@
    <missing-glyph horiz-adv-x="2048" d="M 0,0 L 2047,0 2047,2047 0,2047 0,0 Z"/>
    <glyph unicode="~" horiz-adv-x="1033" d="M 844,553 C 798,553 751,560 703,575 654,590 606,606 557,623 471,653 399,668 340,668 295,668 254,661 215,648 176,634 135,611 92,580 L 92,723 C 166,779 254,807 355,807 390,807 428,803 471,794 513,785 577,766 664,735 685,727 715,718 755,707 795,696 830,690 860,690 947,690 1028,721 1104,782 L 1104,633 C 1065,605 1027,585 988,572 949,559 901,553 844,553 Z"/>
    <glyph unicode="y" horiz-adv-x="1033" d="M 191,-425 C 142,-425 100,-421 67,-414 L 67,-279 C 92,-283 120,-285 151,-285 263,-285 352,-203 417,-38 L 434,5 5,1082 197,1082 425,484 C 428,475 432,464 437,451 442,438 457,394 482,320 507,246 521,205 523,196 L 593,393 830,1082 1020,1082 604,0 C 559,-115 518,-201 479,-258 440,-314 398,-356 351,-384 304,-411 250,-425 191,-425 Z"/>
+   <glyph unicode="x" horiz-adv-x="1006" d="M 801,0 L 510,444 217,0 23,0 408,556 41,1082 240,1082 510,661 778,1082 979,1082 612,558 1002,0 801,0 Z"/>
    <glyph unicode="v" horiz-adv-x="1033" d="M 613,0 L 400,0 7,1082 199,1082 437,378 C 446,351 469,272 506,141 L 541,258 580,376 826,1082 1017,1082 613,0 Z"/>
    <glyph unicode="u" horiz-adv-x="874" d="M 314,1082 L 314,396 C 314,325 321,269 335,230 349,191 371,162 402,145 433,128 478,119 537,119 624,119 692,149 742,208 792,267 817,350 817,455 L 817,1082 997,1082 997,231 C 997,105 999,28 1003,0 L 833,0 C 832,3 832,12 831,27 830,42 830,59 829,78 828,97 826,132 825,185 L 822,185 C 781,110 733,58 679,27 624,-4 557,-20 476,-20 357,-20 271,10 216,69 161,128 133,225 133,361 L 133,1082 314,1082 Z"/>
    <glyph unicode="t" horiz-adv-x="531" d="M 554,8 C 495,-8 434,-16 372,-16 228,-16 156,66 156,229 L 156,951 31,951 31,1082 163,1082 216,1324 336,1324 336,1082 536,1082 536,951 336,951 336,268 C 336,216 345,180 362,159 379,138 408,127 450,127 474,127 509,132 554,141 L 554,8 Z"/>
@@ -75,8 +76,8 @@
  <g class="Page">
   <g class="com.sun.star.drawing.CustomShape">
    <g id="id3">
-    <rect class="BoundingBox" stroke="none" fill="none" x="8644" y="2238" width="15323" height="7328"/>
-    <path fill="none" stroke="rgb(52,101,164)" stroke-width="81" stroke-linejoin="round" stroke-linecap="round" d="M 16305,9524 L 8685,9524 8685,2279 23925,2279 23925,9524 16305,9524 Z"/>
+    <rect class="BoundingBox" stroke="none" fill="none" x="8644" y="2338" width="15323" height="7328"/>
+    <path fill="none" stroke="rgb(52,101,164)" stroke-width="81" stroke-linejoin="round" stroke-linecap="round" d="M 16305,9624 L 8685,9624 8685,2379 23925,2379 23925,9624 16305,9624 Z"/>
    </g>
   </g>
   <g class="TextShape">
@@ -90,7 +91,7 @@
     <rect class="BoundingBox" stroke="none" fill="none" x="9397" y="10125" width="13931" height="2543"/>
     <path fill="rgb(63,175,70)" stroke="none" d="M 16362,12666 L 9398,12666 9398,10126 23326,10126 23326,12666 16362,12666 Z"/>
     <path fill="none" stroke="rgb(0,0,0)" d="M 16362,12666 L 9398,12666 9398,10126 23326,10126 23326,12666 16362,12666 Z"/>
-    <text class="SVGTextShape"><tspan class="TextParagraph" font-family="Liberation Sans, sans-serif" font-size="635px" font-weight="400"><tspan class="TextPosition" x="11689" y="11261"><tspan fill="rgb(0,0,0)" stroke="none" style="white-space: pre">Host memory ~= Global Memory </tspan></tspan></tspan><tspan class="TextParagraph" font-family="Liberation Sans, sans-serif" font-size="635px" font-weight="400"><tspan class="TextPosition" x="11871" y="11972"><tspan fill="rgb(0,0,0)" stroke="none" style="white-space: pre">Constant memory still on device</tspan></tspan></tspan></text>
+    <text class="SVGTextShape"><tspan class="TextParagraph" font-family="Liberation Sans, sans-serif" font-size="635px" font-weight="400"><tspan class="TextPosition" x="11689" y="11261"><tspan fill="rgb(0,0,0)" stroke="none" style="white-space: pre">Host memory ~= Global Memory </tspan></tspan></tspan><tspan class="TextParagraph" font-family="Liberation Sans, sans-serif" font-size="635px" font-weight="400"><tspan class="TextPosition" x="10196" y="11972"><tspan fill="rgb(0,0,0)" stroke="none" style="white-space: pre">Constant and texture memory still on device</tspan></tspan></tspan></text>
    </g>
   </g>
   <g class="com.sun.star.drawing.CustomShape">

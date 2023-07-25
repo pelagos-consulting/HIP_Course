@@ -15039,9 +15039,12 @@ Options:
 <span class="p">}</span><span class="w"></span>
 </pre></div>
 <p>The following macro, defined as <strong>H_ERRCHK</strong> in <a href="../include/hip_helper.hpp">hip_helper.hpp</a> just calls <strong>h_errchk</strong> with the file and line number information as the message, as shown below:</p>
-<div class="highlight"><pre><span></span><span class="cp">#define H_ERRCHK(cmd) \</span>
+<div class="highlight"><pre><span></span><span class="c1">/// Macro to check error codes.</span>
+<span class="cp">#define H_ERRCHK(cmd) \</span>
 <span class="cp">{\</span>
-<span class="cp">    h_errchk(cmd, &quot;__FILE__:__LINE__&quot;);\</span>
+<span class="cp">    std::string file = __FILE__;\</span>
+<span class="cp">    std::string mesg = file + &quot;:&quot; + std::to_string(__LINE__);\</span>
+<span class="cp">    h_errchk(cmd, mesg.c_str());\</span>
 <span class="cp">}</span>
 </pre></div>
 <h4 id="Example-usage">Example usage<a class="anchor-link" href="#Example-usage">&#182;</a></h4><p>The HIP function <strong>hipInit</strong> is used to explicitly initialise the HIP runtime. It returns a value of type <strong>hipError_t</strong>. We can use the <strong>H_ERRCHK</strong> macro to examine the output of <strong>hipInit</strong> in the following way:</p>

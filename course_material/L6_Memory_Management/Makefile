@@ -7,6 +7,7 @@ TARGETS=mat_mult_pinned_mem.exe \
 		mat_mult_managed_mem.exe \
 		mat_mult_pitched_mem.exe \
 		mat_mult_shared_A.exe \
+		mat_mult_shared_A_faulty.exe \
 		mat_mult_shared_A_vector.exe \
 		vector_types.exe \
 		atomics.exe \

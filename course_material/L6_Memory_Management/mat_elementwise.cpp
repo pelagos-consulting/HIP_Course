@@ -128,6 +128,9 @@ int main(int argc, char** argv) {
     // Alternatively, launch the kernel using CUDA triple Chevron syntax
     //mat_hadamard<<<grid_nblocks, block_size, sharedMemBytes, 0>>>(D_d, E_d, F_d, N0_F, N1_F);
     
+    // Check for errors in the kernel launch
+    H_ERRCHK(hipGetLastError());
+    
     // Wait for any commands to complete on the compute device
     H_ERRCHK(hipDeviceSynchronize());
 

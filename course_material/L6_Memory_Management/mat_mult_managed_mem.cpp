@@ -159,6 +159,9 @@ int main(int argc, char** argv) {
     // which is not valid ANSI C++ syntax
     //mat_mult<<<grid_nblocks, block_size, 0, 0>>>(A_m, B_m, C_m, N1_A, N0_C, N1_C);
     
+    // Check for errors in the kernel launch
+    H_ERRCHK(hipGetLastError());
+    
     // Wait for any commands to complete on the compute device
     H_ERRCHK(hipDeviceSynchronize());
     

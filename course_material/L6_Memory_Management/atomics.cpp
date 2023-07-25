@@ -74,6 +74,8 @@ int main(int argc, char** argv) {
         0,
         counter_d
     );
+    
+    // Check for errors in the kernel launch
     H_ERRCHK(hipGetLastError());
     
     //// Step 5. Copy the counter back to the host

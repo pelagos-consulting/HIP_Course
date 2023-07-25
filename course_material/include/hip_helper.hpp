@@ -27,6 +27,29 @@
 // Import the HIP header
 #include <hip/hip_runtime.h>
 
+/// Examine an error code and exit if necessary.
+void h_errchk(hipError_t errcode, const char* message) {
+
+    if (errcode != hipSuccess) { 
+        const char* errstring = hipGetErrorString(errcode); 
+        std::fprintf( 
+            stderr, 
+            "Error, HIP call failed at %s, error string is: %s\n", 
+            message, 
+            errstring 
+        ); 
+        exit(EXIT_FAILURE); 
+    }
+}
+
+/// Macro to check error codes.
+#define H_ERRCHK(cmd) \
+{\
+    std::string file = __FILE__;\
+    std::string mesg = file + ":" + std::to_string(__LINE__);\
+    h_errchk(cmd, mesg.c_str());\
+}
+
 /// Get the L1 cache line size
 size_t h_get_cache_line_size() {
     // Get the L1 cache line size
@@ -63,27 +86,6 @@ size_t h_get_alignment() {
     // Least common multiple of L1 cache line size and 
     // Largest data type that HIP supports
     return h_lcm(h_get_cache_line_size(), sizeof(ulonglong4));
-}
-
-/// Examine an error code and exit if necessary.
-void h_errchk(hipError_t errcode, const char* message) {
-
-    if (errcode != hipSuccess) { 
-        const char* errstring = hipGetErrorString(errcode); 
-        std::fprintf( 
-            stderr, 
-            "Error, HIP call failed at %s, error string is: %s\n", 
-            message, 
-            errstring 
-        ); 
-        exit(EXIT_FAILURE); 
-    }
-}
-
-/// Macro to check error codes.
-#define H_ERRCHK(cmd) \
-{\
-    h_errchk(cmd, "__FILE__:__LINE__");\
 }
 
 /// Check to see if device supports managed memory, exit if it does not
