@@ -14,7 +14,10 @@ Written by Dr Toby M. Potter
 
 typedef float float_type;
 
-// Kernel to solve the wave equation with fourth-order accuracy in space
+// Kernel to solve the wave equation using 
+// finite differencing that is accurate 
+// to second-order in time, 
+// and fourth order in space
 __global__ void wave2d_4o (
         // Arguments
         float_type* U0,

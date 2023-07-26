@@ -14802,7 +14802,7 @@ $$\textbf{U}_{2}=\textbf{F}(\textbf{U}_0, \textbf{U}_1, \textbf{V}, f_{1})$$<blo
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span><span class="s2">"wave2d_sync.exe"</span><span class="p">)])</span>
@@ -14838,7 +14838,7 @@ $$\textbf{U}_{2}=\textbf{F}(\textbf{U}_0, \textbf{U}_1, \textbf{V}, f_{1})$$<blo
 	max Grid size:                           (2147483647,2147483647,2147483647)
 dt=0.001166, Vmax=343.000000
 dt=0.00116618, fm=34.3, Vmax=343, dt2=1.35998e-06
-The synchronous calculation took 43.580000 milliseconds.
+The synchronous calculation took 42.635000 milliseconds.
 </pre>
 </div>
 </div>
@@ -14846,7 +14846,7 @@ The synchronous calculation took 43.580000 milliseconds.
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[3]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
 
 
 
@@ -14878,7 +14878,7 @@ The synchronous calculation took 43.580000 milliseconds.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Read the output file back in for display</span>
@@ -14961,14 +14961,14 @@ The synchronous calculation took 43.580000 milliseconds.
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>RPL: on &#39;230724_165528&#39; from &#39;/opt/rocm-5.6.0&#39; in &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation&#39;
+<pre>RPL: on &#39;230726_144644&#39; from &#39;/opt/rocm-5.6.0&#39; in &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation&#39;
 RPL: profiling &#39;&#34;./wave2d_sync.exe&#34;&#39;
 RPL: input file &#39;&#39;
-RPL: output dir &#39;/tmp/rpl_data_230724_165528_29373&#39;
-RPL: result dir &#39;/tmp/rpl_data_230724_165528_29373/input_results_230724_165528&#39;
-ROCProfiler: input from &#34;/tmp/rpl_data_230724_165528_29373/input.xml&#34;
+RPL: output dir &#39;/tmp/rpl_data_230726_144644_32057&#39;
+RPL: result dir &#39;/tmp/rpl_data_230726_144644_32057/input_results_230726_144644&#39;
+ROCProfiler: input from &#34;/tmp/rpl_data_230726_144644_32057/input.xml&#34;
   0 metrics
-ROCtracer (29396):
+ROCtracer (32080):
     HSA-trace(*)
     HSA-activity-trace()
     HIP-trace(*)
@@ -14983,17 +14983,17 @@ Device id: 0
 	max Grid size:                           (2147483647,2147483647,2147483647)
 dt=0.001166, Vmax=343.000000
 dt=0.00116618, fm=34.3, Vmax=343, dt2=1.35998e-06
-The synchronous calculation took 47.016000 milliseconds.
+The synchronous calculation took 55.081000 milliseconds.
 
-ROCPRofiler: 643 contexts collected, output directory /tmp/rpl_data_230724_165528_29373/input_results_230724_165528
+ROCPRofiler: 643 contexts collected, output directory /tmp/rpl_data_230726_144644_32057/input_results_230726_144644
 hsa_copy_deps: 1
-scan hsa API data 18975:18976                                                                                                    hsa_copy_deps: 0
+scan hsa API data 18941:18942                                                                                                    hsa_copy_deps: 0
 scan hip API data 3222:3223                                                                                                    File &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_sync.csv&#39; is generating
 File &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_sync.stats.csv&#39; is generating
 dump json 642:643                                                                                                    
 File &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_sync.json&#39; is generating
 File &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_sync.hsa_stats.csv&#39; is generating
-dump json 19618:19619                                                                                                    
+dump json 19584:19585                                                                                                    
 File &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_sync.json&#39; is generating
 File &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_sync.copy_stats.csv&#39; is generating
 dump json 637:638                                                                                                    
@@ -15001,14 +15001,14 @@ File &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisat
 File &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_sync.hip_stats.csv&#39; is generating
 dump json 3222:3223                                                                                                    
 File &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_sync.json&#39; is generating
-RPL: on &#39;230724_165530&#39; from &#39;/opt/rocm-5.6.0&#39; in &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation&#39;
+RPL: on &#39;230726_144646&#39; from &#39;/opt/rocm-5.6.0&#39; in &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation&#39;
 RPL: profiling &#39;&#34;./wave2d_async.exe&#34;&#39;
 RPL: input file &#39;&#39;
-RPL: output dir &#39;/tmp/rpl_data_230724_165530_29452&#39;
-RPL: result dir &#39;/tmp/rpl_data_230724_165530_29452/input_results_230724_165530&#39;
-ROCProfiler: input from &#34;/tmp/rpl_data_230724_165530_29452/input.xml&#34;
+RPL: output dir &#39;/tmp/rpl_data_230726_144646_32136&#39;
+RPL: result dir &#39;/tmp/rpl_data_230726_144646_32136/input_results_230726_144646&#39;
+ROCProfiler: input from &#34;/tmp/rpl_data_230726_144646_32136/input.xml&#34;
   0 metrics
-ROCtracer (29475):
+ROCtracer (32159):
     HSA-trace(*)
     HSA-activity-trace()
     HIP-trace(*)
@@ -15023,17 +15023,17 @@ Device id: 0
 	max Grid size:                           (2147483647,2147483647,2147483647)
 dt=0.001166, Vmax=343.000000
 dt=0.00116618, fm=34.3, Vmax=343, dt2=1.35998e-06
-The asynchronous calculation took 30.273000 milliseconds.
+The asynchronous calculation took 27.674000 milliseconds.
 
-ROCPRofiler: 1282 contexts collected, output directory /tmp/rpl_data_230724_165530_29452/input_results_230724_165530
+ROCPRofiler: 1282 contexts collected, output directory /tmp/rpl_data_230726_144646_32136/input_results_230726_144646
 hsa_copy_deps: 1
-scan hsa API data 29506:29507                                                                                                    hsa_copy_deps: 0
+scan hsa API data 29637:29638                                                                                                    hsa_copy_deps: 0
 scan hip API data 7722:7723                                                                                                    File &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_async.csv&#39; is generating
 File &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_async.stats.csv&#39; is generating
 dump json 1281:1282                                                                                                    
 File &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_async.json&#39; is generating
 File &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_async.hsa_stats.csv&#39; is generating
-dump json 30788:30789                                                                                                    
+dump json 30919:30920                                                                                                    
 File &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_async.json&#39; is generating
 File &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_async.copy_stats.csv&#39; is generating
 dump json 0:1                                                                                                    
@@ -15222,7 +15222,7 @@ File &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisat
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make
@@ -15261,7 +15261,7 @@ File &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisat
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Run the application</span>
@@ -15298,7 +15298,7 @@ File &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisat
 	max Grid size:                           (2147483647,2147483647,2147483647)
 dt=0.001166, Vmax=343.000000
 dt=0.00116618, fm=34.3, Vmax=343, dt2=1.35998e-06
-The asynchronous calculation took 26.425000 milliseconds.
+The asynchronous calculation took 23.605000 milliseconds.
 </pre>
 </div>
 </div>
@@ -15306,7 +15306,7 @@ The asynchronous calculation took 26.425000 milliseconds.
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[7]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
 
 
 
@@ -15351,7 +15351,7 @@ The asynchronous calculation took 26.425000 milliseconds.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Read the output file back in for display</span>
