@@ -189,11 +189,6 @@ int main(int argc, char** argv) {
     // Make sure an integer number of vectors fit into chunk_len 
     chunk_len = h_lcm(chunk_len, vector_len);
     
-    // Chunk length in vectors
-    chunk_len_v = chunk_len/vector_len;
-    
-    // Got to here
-    
     size_t nchunks = N1_A/chunk_len;
     // Enlarge nchunks if there is not enough of them
     if (N1_A % chunk_len) nchunks++;

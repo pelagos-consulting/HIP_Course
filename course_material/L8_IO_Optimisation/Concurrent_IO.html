@@ -15114,15 +15114,18 @@ File &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisat
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">n</span><span class="o">&lt;</span><span class="n">NT</span><span class="p">;</span><span class="w"> </span><span class="n">n</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 
-<span class="w">        </span><span class="c1">// Wait for the previous copy command to finish</span>
-<span class="w">        </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="n">hipStreamSynchronize</span><span class="p">(</span><span class="n">streams</span><span class="p">[(</span><span class="n">n</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span><span class="o">%</span><span class="n">nscratch</span><span class="p">]));</span><span class="w"></span>
-
 <span class="w">        </span><span class="c1">// Wait for the event associated with a stream</span>
-<span class="w">        </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="w"></span>
-<span class="w">            </span><span class="n">hipEventSynchronize</span><span class="p">(</span><span class="w"></span>
-<span class="w">                </span><span class="n">events</span><span class="p">[(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="n">nscratch</span><span class="p">]</span><span class="w"></span>
-<span class="w">            </span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="p">);</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1">// Can make a stream wait on an event</span>
+<span class="w">        </span><span class="c1">// Make the compute stream wait on previous copies</span>
+<span class="w">        </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="n">hipStreamWaitEvent</span><span class="p">(</span><span class="n">compute_stream</span><span class="p">,</span><span class="w"> </span><span class="n">events</span><span class="p">[(</span><span class="n">n</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span><span class="o">%</span><span class="n">nscratch</span><span class="p">],</span><span class="w"> </span><span class="mi">0</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="n">hipStreamWaitEvent</span><span class="p">(</span><span class="n">compute_stream</span><span class="p">,</span><span class="w"> </span><span class="n">events</span><span class="p">[(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="n">nscratch</span><span class="p">],</span><span class="w"> </span><span class="mi">0</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1">// Or wait on an event directly</span>
+<span class="w">        </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="n">hipEventSynchronize</span><span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="n">n</span><span class="o">%</span><span class="n">nscratch</span><span class="p">]));</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1">// Can wait on a stream directly also</span>
+<span class="w">        </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="n">hipStreamSynchronize</span><span class="p">(</span><span class="n">compute_stream</span><span class="p">));</span><span class="w"></span>
 
 <span class="w">        </span><span class="c1">// Get the wavefields</span>
 <span class="w">        </span><span class="n">U0_d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">U_ds</span><span class="p">[</span><span class="n">n</span><span class="o">%</span><span class="n">nscratch</span><span class="p">];</span><span class="w"></span>
@@ -15136,7 +15139,7 @@ File &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisat
 <span class="w">        </span><span class="c1">// Launch the kernel using hipLaunchKernelGGL method</span>
 <span class="w">        </span><span class="c1">// Use 0 when choosing the default (null) stream</span>
 <span class="w">        </span><span class="n">hipLaunchKernelGGL</span><span class="p">(</span><span class="n">wave2d_4o</span><span class="p">,</span><span class="w"> </span>
-<span class="w">            </span><span class="n">grid_nblocks</span><span class="p">,</span><span class="w"> </span><span class="n">block_size</span><span class="p">,</span><span class="w"> </span><span class="n">sharedMemBytes</span><span class="p">,</span><span class="w"> </span><span class="n">streams</span><span class="p">[</span><span class="n">n</span><span class="o">%</span><span class="n">nscratch</span><span class="p">],</span><span class="w"></span>
+<span class="w">            </span><span class="n">grid_nblocks</span><span class="p">,</span><span class="w"> </span><span class="n">block_size</span><span class="p">,</span><span class="w"> </span><span class="n">sharedMemBytes</span><span class="p">,</span><span class="w"> </span><span class="n">compute_stream</span><span class="p">,</span><span class="w"></span>
 <span class="w">            </span><span class="n">U0_d</span><span class="p">,</span><span class="w"> </span><span class="n">U1_d</span><span class="p">,</span><span class="w"> </span><span class="n">U2_d</span><span class="p">,</span><span class="w"> </span><span class="n">V_d</span><span class="p">,</span><span class="w"></span>
 <span class="w">            </span><span class="n">N0</span><span class="p">,</span><span class="w"> </span><span class="n">N1</span><span class="p">,</span><span class="w"> </span><span class="n">dt2</span><span class="p">,</span><span class="w"></span>
 <span class="w">            </span><span class="n">inv_dx02</span><span class="p">,</span><span class="w"> </span><span class="n">inv_dx12</span><span class="p">,</span><span class="w"></span>
@@ -15148,7 +15151,7 @@ File &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisat
 
 <span class="w">        </span><span class="c1">// Insert an event into stream at n%nscratch</span>
 <span class="w">        </span><span class="c1">// It will complete afer the kernel does</span>
-<span class="w">        </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="n">hipEventRecord</span><span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="n">n</span><span class="o">%</span><span class="n">nscratch</span><span class="p">],</span><span class="n">streams</span><span class="p">[</span><span class="n">n</span><span class="o">%</span><span class="n">nscratch</span><span class="p">]));</span><span class="w">   </span>
+<span class="w">        </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="n">hipEventRecord</span><span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="n">n</span><span class="o">%</span><span class="n">nscratch</span><span class="p">],</span><span class="w"> </span><span class="n">compute_stream</span><span class="p">));</span><span class="w">   </span>
 
 <span class="w">        </span><span class="c1">// Read memory from the buffer to the host in an asynchronous manner</span>
 <span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="o">&gt;</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
@@ -15193,8 +15196,7 @@ File &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisat
 <span class="w">            </span><span class="c1">//        &amp;copy_parms</span>
 <span class="w">            </span><span class="c1">//        //streams[copy_index%nscratch]</span>
 <span class="w">            </span><span class="c1">//    )</span>
-<span class="w">            </span><span class="c1">//);</span>
-
+<span class="w">            </span><span class="c1">//); </span>
 <span class="w">        </span><span class="p">}</span><span class="w"></span>
 <span class="w">    </span><span class="p">}</span><span class="w"></span>
 </pre></div>

@@ -3,7 +3,7 @@
 include ../env
 
 # List of applications to target
-TARGETS=wave2d_sync.exe wave2d_async.exe layer_cake.exe layer_cake_answers.exe
+TARGETS=wave2d_sync.exe wave2d_async.exe
 
 all: $(TARGETS)
 
