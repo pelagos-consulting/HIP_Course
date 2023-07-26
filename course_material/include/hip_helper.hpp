@@ -236,14 +236,15 @@ void h_release_devices(int num_devices) {
 }
 
 /// Create a number of streams
-hipStream_t* h_create_streams(size_t nstreams, int blocking) {
+hipStream_t* h_create_streams(size_t nstreams, int synchronise) {
     // Blocking is a boolean, 0==no, 
     assert(nstreams>0);
 
     unsigned int flag = hipStreamDefault;
 
-    // If blocking is false then set NonBlocking flag
-    if (blocking == 0) {
+    // If blocking is 0 then set NonBlocking flag
+    // meaning we don't synchronise with the null stream
+    if (synchronise == 0) {
         flag = hipStreamNonBlocking;
     }
 
