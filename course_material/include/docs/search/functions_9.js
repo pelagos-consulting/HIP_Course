@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['plot_5fresults_91',['plot_results',['../classpy__helper_1_1TimingResults.html#a358489d9e6f7915738c9a4ca95301191',1,'py_helper::TimingResults']]],
-  ['plot_5fslices_92',['plot_slices',['../namespacepy__helper.html#a939d3ff696230d402463ef404f89a2f7',1,'py_helper']]]
+  ['plot_5fresult_100',['plot_result',['../classpy__helper_1_1TimingResults.html#a8d0ab0e085b1b1c7af5f77a95a99c7d9',1,'py_helper::TimingResults']]],
+  ['plot_5fresults_101',['plot_results',['../classpy__helper_1_1TimingResults.html#a09efdca53ac3d499ae85d85646cb923e',1,'py_helper::TimingResults']]],
+  ['plot_5fslices_102',['plot_slices',['../namespacepy__helper.html#a939d3ff696230d402463ef404f89a2f7',1,'py_helper']]]
 ];

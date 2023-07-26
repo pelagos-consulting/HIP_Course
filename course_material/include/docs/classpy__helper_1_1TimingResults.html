@@ -78,12 +78,14 @@ $(function() {
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ac9deb0f9de46fb8ccecbdad48f9e1eb8"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpy__helper_1_1TimingResults.html#ac9deb0f9de46fb8ccecbdad48f9e1eb8">__init__</a> (self)</td></tr>
 <tr class="separator:ac9deb0f9de46fb8ccecbdad48f9e1eb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab14363b913d2e98d028dd53150ef3b92"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpy__helper_1_1TimingResults.html#ab14363b913d2e98d028dd53150ef3b92">add_result</a> (self, result, label, benchmark=False)</td></tr>
-<tr class="separator:ab14363b913d2e98d028dd53150ef3b92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a654e916ee2ee7720dfaa5140a6d9fb30"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpy__helper_1_1TimingResults.html#a654e916ee2ee7720dfaa5140a6d9fb30">add_result</a> (self, result, label, plot=False, benchmark=False)</td></tr>
+<tr class="separator:a654e916ee2ee7720dfaa5140a6d9fb30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ef9a053b032927906f287eb25526ad5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpy__helper_1_1TimingResults.html#a4ef9a053b032927906f287eb25526ad5">delete_result</a> (self, label)</td></tr>
 <tr class="separator:a4ef9a053b032927906f287eb25526ad5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a358489d9e6f7915738c9a4ca95301191"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpy__helper_1_1TimingResults.html#a358489d9e6f7915738c9a4ca95301191">plot_results</a> (self, highlight_key=None)</td></tr>
-<tr class="separator:a358489d9e6f7915738c9a4ca95301191"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d0ab0e085b1b1c7af5f77a95a99c7d9"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpy__helper_1_1TimingResults.html#a8d0ab0e085b1b1c7af5f77a95a99c7d9">plot_result</a> (self, key)</td></tr>
+<tr class="separator:a8d0ab0e085b1b1c7af5f77a95a99c7d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09efdca53ac3d499ae85d85646cb923e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpy__helper_1_1TimingResults.html#a09efdca53ac3d499ae85d85646cb923e">plot_results</a> (self, highlight_key=None, sort=False)</td></tr>
+<tr class="separator:a09efdca53ac3d499ae85d85646cb923e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -115,8 +117,8 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab14363b913d2e98d028dd53150ef3b92"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab14363b913d2e98d028dd53150ef3b92">&#9670;&nbsp;</a></span>add_result()</h2>
+<a id="a654e916ee2ee7720dfaa5140a6d9fb30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a654e916ee2ee7720dfaa5140a6d9fb30">&#9670;&nbsp;</a></span>add_result()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -138,6 +140,12 @@ Public Attributes</h2></td></tr>
           <td></td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>label</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>plot</em> = <code>False</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -185,8 +193,36 @@ result will be overwritten.</pre>
 <pre class="fragment">Remove a result from the dictionary</pre> 
 </div>
 </div>
-<a id="a358489d9e6f7915738c9a4ca95301191"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a358489d9e6f7915738c9a4ca95301191">&#9670;&nbsp;</a></span>plot_results()</h2>
+<a id="a8d0ab0e085b1b1c7af5f77a95a99c7d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d0ab0e085b1b1c7af5f77a95a99c7d9">&#9670;&nbsp;</a></span>plot_result()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def py_helper.TimingResults.plot_result </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>key</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">Plot a single timing result</pre> 
+</div>
+</div>
+<a id="a09efdca53ac3d499ae85d85646cb923e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09efdca53ac3d499ae85d85646cb923e">&#9670;&nbsp;</a></span>plot_results()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -201,7 +237,13 @@ result will be overwritten.</pre>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>highlight_key</em> = <code>None</code>&#160;</td>
+          <td class="paramname"><em>highlight_key</em> = <code>None</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>sort</em> = <code>False</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['byte_5falignment_96',['BYTE_ALIGNMENT',['../hip__helper_8hpp.html#aeddaa278786a8b48fab3055c84614c40',1,'hip_helper.hpp']]]
+  ['h_5ferrchk_105',['H_ERRCHK',['../hip__helper_8hpp.html#a576ec48a9bb2ce0f04cb7de06ca64281',1,'hip_helper.hpp']]]
 ];

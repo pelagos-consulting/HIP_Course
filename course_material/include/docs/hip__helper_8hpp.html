@@ -104,10 +104,6 @@ Include dependency graph for hip_helper.hpp:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:aeddaa278786a8b48fab3055c84614c40"><td class="memItemLeft" align="right" valign="top"><a id="aeddaa278786a8b48fab3055c84614c40"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#aeddaa278786a8b48fab3055c84614c40">BYTE_ALIGNMENT</a>&#160;&#160;&#160;64</td></tr>
-<tr class="memdesc:aeddaa278786a8b48fab3055c84614c40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Align all memory allocations to this byte boundary. <br /></td></tr>
-<tr class="separator:aeddaa278786a8b48fab3055c84614c40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a576ec48a9bb2ce0f04cb7de06ca64281"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#a576ec48a9bb2ce0f04cb7de06ca64281">H_ERRCHK</a>(cmd)</td></tr>
 <tr class="memdesc:a576ec48a9bb2ce0f04cb7de06ca64281"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro to check error codes.  <a href="hip__helper_8hpp.html#a576ec48a9bb2ce0f04cb7de06ca64281">More...</a><br /></td></tr>
 <tr class="separator:a576ec48a9bb2ce0f04cb7de06ca64281"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -118,10 +114,26 @@ Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#a50caffc9419f922455a1825a79baca3d">h_errchk</a> (hipError_t errcode, const char *message)</td></tr>
 <tr class="memdesc:a50caffc9419f922455a1825a79baca3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Examine an error code and exit if necessary. <br /></td></tr>
 <tr class="separator:a50caffc9419f922455a1825a79baca3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfe30491ea55a605fce80ad22c4ee48e"><td class="memItemLeft" align="right" valign="top"><a id="adfe30491ea55a605fce80ad22c4ee48e"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#adfe30491ea55a605fce80ad22c4ee48e">h_lcm</a> (size_t n1, size_t n2)</td></tr>
-<tr class="memdesc:adfe30491ea55a605fce80ad22c4ee48e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the least common multiple of two numbers. <br /></td></tr>
-<tr class="separator:adfe30491ea55a605fce80ad22c4ee48e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81777cddf6f3ed41fc5430da4b34ea67"><td class="memItemLeft" align="right" valign="top"><a id="a81777cddf6f3ed41fc5430da4b34ea67"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#a81777cddf6f3ed41fc5430da4b34ea67">h_get_cache_line_size</a> ()</td></tr>
+<tr class="memdesc:a81777cddf6f3ed41fc5430da4b34ea67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the L1 cache line size. <br /></td></tr>
+<tr class="separator:a81777cddf6f3ed41fc5430da4b34ea67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a262cc2b41f368f0f34681733f1527b47"><td class="memItemLeft" align="right" valign="top"><a id="a262cc2b41f368f0f34681733f1527b47"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#a262cc2b41f368f0f34681733f1527b47">h_gcd</a> (size_t a, size_t b)</td></tr>
+<tr class="memdesc:a262cc2b41f368f0f34681733f1527b47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the greatest common divisor for two numbers. <br /></td></tr>
+<tr class="separator:a262cc2b41f368f0f34681733f1527b47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a906739a6b6d7b464a629815d9783e6fb"><td class="memItemLeft" align="right" valign="top"><a id="a906739a6b6d7b464a629815d9783e6fb"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#a906739a6b6d7b464a629815d9783e6fb">h_lcm</a> (size_t a, size_t b)</td></tr>
+<tr class="memdesc:a906739a6b6d7b464a629815d9783e6fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the least common multiple for two numbers. <br /></td></tr>
+<tr class="separator:a906739a6b6d7b464a629815d9783e6fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac73116fd7cbfc410a43884edd96fcae2"><td class="memItemLeft" align="right" valign="top"><a id="ac73116fd7cbfc410a43884edd96fcae2"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#ac73116fd7cbfc410a43884edd96fcae2">h_get_alignment</a> ()</td></tr>
+<tr class="memdesc:ac73116fd7cbfc410a43884edd96fcae2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a "safe" value for memory alignment. <br /></td></tr>
+<tr class="separator:ac73116fd7cbfc410a43884edd96fcae2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9a6e2822f971badfeb6c0d5bbf2d0d6"><td class="memItemLeft" align="right" valign="top"><a id="af9a6e2822f971badfeb6c0d5bbf2d0d6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#af9a6e2822f971badfeb6c0d5bbf2d0d6">h_check_managed</a> (int dev_index)</td></tr>
+<tr class="memdesc:af9a6e2822f971badfeb6c0d5bbf2d0d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check to see if device supports managed memory, exit if it does not. <br /></td></tr>
+<tr class="separator:af9a6e2822f971badfeb6c0d5bbf2d0d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abeaded96e18c452a283adc6bf2567bd8"><td class="memItemLeft" align="right" valign="top"><a id="abeaded96e18c452a283adc6bf2567bd8"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#abeaded96e18c452a283adc6bf2567bd8">h_show_options</a> (const char *name)</td></tr>
 <tr class="memdesc:abeaded96e18c452a283adc6bf2567bd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show command line options. <br /></td></tr>
@@ -146,14 +158,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip_
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#aebe2dd0bf256ab42059ac3f3ac69b825">h_release_devices</a> (int num_devices)</td></tr>
 <tr class="memdesc:aebe2dd0bf256ab42059ac3f3ac69b825"><td class="mdescLeft">&#160;</td><td class="mdescRight">Release compute devices. <br /></td></tr>
 <tr class="separator:aebe2dd0bf256ab42059ac3f3ac69b825"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90d156e75b44a7e40931dc05c191443d"><td class="memItemLeft" align="right" valign="top"><a id="a90d156e75b44a7e40931dc05c191443d"></a>
-hipStream_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#a90d156e75b44a7e40931dc05c191443d">h_create_streams</a> (int nstreams, int blocking)</td></tr>
-<tr class="memdesc:a90d156e75b44a7e40931dc05c191443d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a number of streams. <br /></td></tr>
-<tr class="separator:a90d156e75b44a7e40931dc05c191443d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad24e03d5515dda3f4effdf8ed7290034"><td class="memItemLeft" align="right" valign="top"><a id="ad24e03d5515dda3f4effdf8ed7290034"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#ad24e03d5515dda3f4effdf8ed7290034">h_release_streams</a> (int nstreams, hipStream_t *streams)</td></tr>
-<tr class="memdesc:ad24e03d5515dda3f4effdf8ed7290034"><td class="mdescLeft">&#160;</td><td class="mdescRight">Release streams that were created. <br /></td></tr>
-<tr class="separator:ad24e03d5515dda3f4effdf8ed7290034"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a366fcc5bd10302e98aefb296d976e8d1"><td class="memItemLeft" align="right" valign="top"><a id="a366fcc5bd10302e98aefb296d976e8d1"></a>
+hipStream_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#a366fcc5bd10302e98aefb296d976e8d1">h_create_streams</a> (size_t nstreams, int blocking)</td></tr>
+<tr class="memdesc:a366fcc5bd10302e98aefb296d976e8d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a number of streams. <br /></td></tr>
+<tr class="separator:a366fcc5bd10302e98aefb296d976e8d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2134191226c4beaad0d5b4c3a5338210"><td class="memItemLeft" align="right" valign="top"><a id="a2134191226c4beaad0d5b4c3a5338210"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#a2134191226c4beaad0d5b4c3a5338210">h_release_streams</a> (size_t nstreams, hipStream_t *streams)</td></tr>
+<tr class="memdesc:a2134191226c4beaad0d5b4c3a5338210"><td class="mdescLeft">&#160;</td><td class="mdescRight">Release streams that were created. <br /></td></tr>
+<tr class="separator:a2134191226c4beaad0d5b4c3a5338210"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab160b4acc393055582d981854564d788"><td class="memItemLeft" align="right" valign="top"><a id="ab160b4acc393055582d981854564d788"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#ab160b4acc393055582d981854564d788">h_get_io_rate_MBs</a> (float elapsed_ms, size_t nbytes)</td></tr>
 <tr class="memdesc:ab160b4acc393055582d981854564d788"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the IO rate in MB/s for bytes read or written. <br /></td></tr>
@@ -178,12 +190,12 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hi
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#ad9b52e39234d8122286af58b508f7dc5">h_write_binary</a> (void *data, const char *filename, size_t nbytes)</td></tr>
 <tr class="memdesc:ad9b52e39234d8122286af58b508f7dc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write binary data to file. <br /></td></tr>
 <tr class="separator:ad9b52e39234d8122286af58b508f7dc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5821d409cc52f2380de8f173006216fc"><td class="memItemLeft" align="right" valign="top"><a id="a5821d409cc52f2380de8f173006216fc"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#a5821d409cc52f2380de8f173006216fc">h_run_kernel</a> (const void *kernel_function, void **kernel_args, dim3 num_blocks, dim3 block_size, size_t *shared_bytes, hipStream_t stream, int non_ordered_launch, void(*prep_kernel_function)(const void *, void **, dim3, dim3, size_t *, void **), void **prep_kernel_args)</td></tr>
-<tr class="memdesc:a5821d409cc52f2380de8f173006216fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to run a kernel. <br /></td></tr>
-<tr class="separator:a5821d409cc52f2380de8f173006216fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d71b8a94bcd6d30c0ea1d0f5c6b78b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#a3d71b8a94bcd6d30c0ea1d0f5c6b78b2">h_optimise_local</a> (int argc, char **argv, const void *kernel_function, void **kernel_args, dim3 global_size, dim3 *default_block_size, size_t nstats, float prior_times, void(*prep_kernel_function)(const void *, void **, dim3, dim3, size_t *, void **), void **prep_kernel_args)</td></tr>
-<tr class="separator:a3d71b8a94bcd6d30c0ea1d0f5c6b78b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5dea353f5f5be7a44b575cd2f9d13c6"><td class="memItemLeft" align="right" valign="top"><a id="ae5dea353f5f5be7a44b575cd2f9d13c6"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#ae5dea353f5f5be7a44b575cd2f9d13c6">h_run_kernel</a> (const void *kernel_function, void **kernel_args, dim3 global_size, dim3 block_size, size_t *shared_bytes, hipStream_t stream, int non_ordered_launch, void(*prep_kernel_function)(const void *, void **, dim3, dim3, size_t *, void **), void **prep_kernel_args)</td></tr>
+<tr class="memdesc:ae5dea353f5f5be7a44b575cd2f9d13c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to run a kernel. <br /></td></tr>
+<tr class="separator:ae5dea353f5f5be7a44b575cd2f9d13c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d5582ab821d5731efab05fd3a7aef6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#a2d5582ab821d5731efab05fd3a7aef6e">h_optimise_block</a> (int argc, char **argv, const void *kernel_function, void **kernel_args, dim3 global_size, dim3 *default_block_size, size_t nstats, float prior_times, void(*prep_kernel_function)(const void *, void **, dim3, dim3, size_t *, void **), void **prep_kernel_args)</td></tr>
+<tr class="separator:a2d5582ab821d5731efab05fd3a7aef6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Helper functions for HIP. </p>
@@ -205,7 +217,9 @@ float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">{\</div>
-<div class="line">    h_errchk(cmd, <span class="stringliteral">&quot;__FILE__:__LINE__&quot;</span>);\</div>
+<div class="line">    std::string file = __FILE__;\</div>
+<div class="line">    std::string mesg = file + <span class="stringliteral">&quot;:&quot;</span> + std::to_string(__LINE__);\</div>
+<div class="line">    h_errchk(cmd, mesg.c_str());\</div>
 <div class="line">}</div>
 </div><!-- fragment -->
 <p>Macro to check error codes. </p>
@@ -213,14 +227,14 @@ float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a3d71b8a94bcd6d30c0ea1d0f5c6b78b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3d71b8a94bcd6d30c0ea1d0f5c6b78b2">&#9670;&nbsp;</a></span>h_optimise_local()</h2>
+<a id="a2d5582ab821d5731efab05fd3a7aef6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d5582ab821d5731efab05fd3a7aef6e">&#9670;&nbsp;</a></span>h_optimise_block()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void h_optimise_local </td>
+          <td class="memname">void h_optimise_block </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>argc</em>, </td>
@@ -286,8 +300,8 @@ float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Function to optimise the local size if command line arguments are &ndash;local_file or -local_file. Read an input file called input_local.dat of type == uint32_t, and dimensions == (nexperiments, ndim) with row major ordering.</p>
-<p>Writes to a file called output_local.dat of type == double and dimensions == (nexperiments, 2) with row major ordering and where each line is (avg, stdev) in milliseconds </p>
+<p>Function to optimise the block size if command line arguments are &ndash;block_file or -block_file. Read an input file called input_block.dat of type == uint32_t, and dimensions == (nexperiments, ndim) with row major ordering.</p>
+<p>Writes to a file called output_block.dat of type == double and dimensions == (nexperiments, 2) with row major ordering and where each line is (avg, stdev) in milliseconds </p>
 
 </div>
 </div>

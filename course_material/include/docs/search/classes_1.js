@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['localopt_50',['LocalOpt',['../classpy__helper_1_1LocalOpt.html',1,'py_helper']]]
+  ['localopt_54',['LocalOpt',['../classlocal__opt_1_1LocalOpt.html',1,'local_opt']]]
 ];
