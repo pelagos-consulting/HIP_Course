@@ -213,7 +213,7 @@ int main(int argc, char** argv) {
     // Stop the clock
     auto t2 = std::chrono::high_resolution_clock::now();    
     double time_ms = (double)std::chrono::duration_cast<std::chrono::microseconds>(t2-t1).count()/1000.0;
-    printf("The asynchronous calculation took %f milliseconds.\n", time_ms);
+    printf("The synchronous calculation took %f milliseconds.\n", time_ms);
     
     // Write out the result to file
     h_write_binary(out_h, "layer_cake_out.dat", nbytes_out);

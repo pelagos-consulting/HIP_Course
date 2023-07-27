@@ -249,6 +249,8 @@ int main(int argc, char** argv) {
     // of the cake for consistency    
     for (size_t n=0; n<NT; n++) {
         size_t offset=n*N0*N1;
+        
+        std::printf("Layer - %zu\n:", n);
     
         // Print the layer in the output array
         m_show_matrix(&out_h[offset], N0, N1);
