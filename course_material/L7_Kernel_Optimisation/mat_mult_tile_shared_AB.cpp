@@ -1,4 +1,4 @@
-/* Code to perform a Matrix multiplication using OpenCL
+/* Code to perform a Matrix multiplication using HIP
 Written by Dr Toby M. Potter
 */
 
@@ -87,7 +87,7 @@ __global__ void mat_mult_tile_shared_AB (
     float_type* shared_B_star_s1 = &shared_B_star[s1*chunk_len];
     
     // Scratch variable
-    float temp=0.0f;
+    float_type temp=0.0f;
     
     // Start and end positions to copy within a chunk
     size_t start0, end0, start1, end1;
@@ -202,9 +202,9 @@ int main(int argc, char** argv) {
     size_t nbytes_C = N0_C*N1_C*sizeof(float_type);
 
     // Allocate memory for the host arrays
-    float* A_h = (float*)h_alloc(nbytes_A);
-    float* B_h = (float*)h_alloc(nbytes_B);
-    float* C_h = (float*)h_alloc(nbytes_C);
+    float* A_h = (float_type*)h_alloc(nbytes_A);
+    float* B_h = (float_type*)h_alloc(nbytes_B);
+    float* C_h = (float_type*)h_alloc(nbytes_C);
 
     // Fill the host arrays with random numbers 
     // using the matrix helper library

@@ -1,4 +1,4 @@
-/* Code to perform a Matrix multiplication using OpenCL
+/* Code to perform a Matrix multiplication using HIP
 Written by Dr Toby M. Potter
 */
 
@@ -47,13 +47,19 @@ __device__ void get_start_end(
 }
 
 // Matrix multiply kernel that uses shared memory for A
-__global__ void mat_mult_tile_shared_AB (
+__global__ void mat_mult_tile_shared_AB_vector (
                         float_type* A_star, 
                         float_type* B_star, 
                         float_type* C,
+                        // number of elements in a chunk
                         size_t chunk_len,
+                        // number of chunks
                         size_t nchunks, 
+                        // number of vectors in a chunk
+                        size_t nvectors,
+                        // dimension 0 extent of C
                         size_t N0_C,
+                        // dimension 1 extent of C
                         size_t N1_C) { 
     
     // Access the allocation of shared memory
@@ -80,15 +86,20 @@ __global__ void mat_mult_tile_shared_AB (
     // Get a pointer to shared_A from shared
     // shared_A is of size (L0, chunk_len)
     // shared_B is of size (L1, chunk_len)
-    float_type* shared_A_star = (float_type*)&shared[0];
-    float_type* shared_B_star = (float_type*)&shared[L0*chunk_len*sizeof(float_type)];
     
-    // Positions within shared memory
-    float_type* shared_A_star_s0 = &shared_A_star[s0*chunk_len];
-    float_type* shared_B_star_s1 = &shared_B_star[s1*chunk_len];
+    float_type* shared_A = (float_type*)&shared[0];
+    float_type* shared_B = (float_type*)&shared[L0*chunk_len*sizeof(float_type)];
+
+    // Line of shared memory 
+    float_type* shared_A_star_s0 = &shared_A[s0*chunk_len];
+    float_type* shared_B_star_s1 = &shared_B[s1*chunk_len];    
+    
+    // Interpreted as a vector
+    float_vector_type* shared_A_star_v0 = (float_vector_type*)shared_A_star_s0;
+    float_vector_type* shared_B_star_v1 = (float_vector_type*)shared_B_star_s1;
     
     // Scratch variable
-    float temp=0.0f;
+    float_vector_type temp=(float_vector_type)0.0f;
     
     // Start and end positions to copy within a chunk
     size_t start0, end0, start1, end1;
@@ -119,10 +130,10 @@ __global__ void mat_mult_tile_shared_AB (
         
         // Loop over shared memory to compute dot product 
         // component for the chunk
-        for (size_t n=0; n<chunk_len; n++) {
+        for (size_t n=0; n<nvectors; n++) {
                 
             // Perform the dot product using local memory
-            temp+=shared_A_star_s0[n]*shared_B_star_s1[n];
+            temp+=shared_A_star_v0[n]*shared_B_star_v1[n];
         }
         
         // Synchronise threads so they are
@@ -131,7 +142,7 @@ __global__ void mat_mult_tile_shared_AB (
     }
     
     // Put the accumulated value into position
-    C[i0*N1_C+i1]=temp;
+    C[i0*N1_C+i1]=temp.x+temp.y+temp.z+temp.w;
 }
 
 // Function to decide how much shared memory to allocate
@@ -184,7 +195,7 @@ int main(int argc, char** argv) {
     size_t chunk_len = h_get_alignment()/sizeof(float_type);
     
     // Vector length
-    size_t vector_len = sizeof(float_vec_type)/sizeof(float_type);
+    size_t vector_len = sizeof(float_vector_type)/sizeof(float_type);
     
     // Make sure an integer number of vectors fit into chunk_len 
     chunk_len = h_lcm(chunk_len, vector_len);
@@ -192,6 +203,9 @@ int main(int argc, char** argv) {
     size_t nchunks = N1_A/chunk_len;
     // Enlarge nchunks if there is not enough of them
     if (N1_A % chunk_len) nchunks++;
+    
+    // Number of vectors in a chunk
+    size_t nvectors = chunk_len / vector_len;
     
     // Size of enlarged arrays
     size_t N1_A_star = nchunks*chunk_len;
@@ -210,9 +224,9 @@ int main(int argc, char** argv) {
     size_t nbytes_C = N0_C*N1_C*sizeof(float_type);
 
     // Allocate memory for the host arrays
-    float* A_h = (float*)h_alloc(nbytes_A);
-    float* B_h = (float*)h_alloc(nbytes_B);
-    float* C_h = (float*)h_alloc(nbytes_C);
+    float* A_h = (float_type*)h_alloc(nbytes_A);
+    float* B_h = (float_type*)h_alloc(nbytes_B);
+    float* C_h = (float_type*)h_alloc(nbytes_C);
 
     // Fill the host arrays with random numbers 
     // using the matrix helper library
@@ -273,13 +287,14 @@ int main(int argc, char** argv) {
     
     // Arguments for the kernel
     void* kernel_args[] = { &A_star_d, &B_star_d, &C_d, 
-                           &chunk_len, &nchunks, &N0_C, &N1_C };
+                           &chunk_len, &nchunks, &nvectors,
+                           &N0_C, &N1_C };
     
     // Find the optimum block size
     h_optimise_block(
         argc, // Number of command line arguments
         argv, // Command line arguments as an array of C-strings
-        (const void*)&mat_mult_tile_shared_AB, // Kernel function to execute
+        (const void*)&mat_mult_tile_shared_AB_vector, // Kernel function to execute
         kernel_args, // Arguments passed to the kernel  
         global_size, // Desired global_size
         &block_size, // Default block size
