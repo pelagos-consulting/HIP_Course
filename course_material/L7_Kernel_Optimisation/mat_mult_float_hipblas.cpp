@@ -99,10 +99,9 @@ int main(int argc, char** argv) {
         
     // Now we try to compute
     // AB = C
-    // But Sgemm computes
+    // But hipblasSgemm computes
     // alpha* op( A )*op( B ) + beta*C = C
-    // with
-    // A_{col_major} B_{col_major} = C_{row_major}
+    // where A, B, and C are column major
     
     // We want to input row_major matrices, we know that
     
@@ -119,13 +118,13 @@ int main(int argc, char** argv) {
     // Is equivalent to....
     // B_{row_major} A_{row_major} = C_{row_major}
      
-    // So we replace in the call to Sgemm
+    // So we replace in the call to hipblasSgemm
     
     // A_{col_major} -> B_{row_major}
     // B_{col_major} -> A_{row_major}
     // m -> n, n -> m
     
-    // Leading edge is the length along dimension of matrix 
+    // Leading dimension is the length along dimension of matrix 
     // along which memory is contiguous
     // for col_major arrays this is dimension 0
     
@@ -137,9 +136,9 @@ int main(int argc, char** argv) {
             (int)N0_C, // number of columns in C_{col_major} -> number of rows in C_{row_major}
             (int)N1_A, // number of columns in A_{col_major} -> number of rows in B_{row_major}
             &alpha, // Constant
-            B_d, // Normally A_{col_major} -> B^{T}_{col_major} == B_{row_major}
+            B_d, // Normally A_{col_major} -> B^{T}_{col_major} -> B_{row_major}
             (int)N1_C, // Leading dimension for B_{row_major} 
-            A_d, // Normally B_{col_major} -> A^{T}_{col_major} = A_{row_major}
+            A_d, // Normally B_{col_major} -> A^{T}_{col_major} -> A_{row_major}
             (int)N1_A, // Leading dimension for A_{row_major}
             &beta, // Constant
             C_d, // Pointer to memory for C_{row_major}

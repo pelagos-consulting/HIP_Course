@@ -131,8 +131,15 @@ __global__ void mat_mult_tile_shared_A_vector (
             scratch.z = B_star_i1[(n*vector_len+2)*N1_C];
             scratch.w = B_star_i1[(n*vector_len+3)*N1_C];
             
-            // Perform the dot product using local memory
+            // Perform the dot product using shared memory          
+#ifdef __HIP_PLATFORM_NVIDIA__
+            temp.x += shared_A_star_v0[n].x*scratch.x;
+            temp.y += shared_A_star_v0[n].y*scratch.y;
+            temp.z += shared_A_star_v0[n].z*scratch.z;
+            temp.w += shared_A_star_v0[n].w*scratch.w;
+#else
             temp+=shared_A_star_v0[n]*scratch;
+#endif
         }
         
         // Synchronise threads so they are

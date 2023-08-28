@@ -97,8 +97,8 @@ __global__ void mat_mult_tile_shared_B_vector (
     float_vector_type* shared_B_star_v1 = (float_vector_type*)shared_B_star_s1;
     
     // Scratch variables
-    float_vector_type temp = (float_vector_type)0.0f;
-    float_vector_type scratch = (float_vector_type)0.0f; 
+    float_vector_type temp = (float_vector_type){0.0f};
+    float_vector_type scratch = (float_vector_type){0.0f}; 
     
     // Start and end positions to copy within a chunk
     size_t start0, end0;
@@ -130,9 +130,17 @@ __global__ void mat_mult_tile_shared_B_vector (
             scratch.y = A_star_i0[n*vector_len+1];
             scratch.z = A_star_i0[n*vector_len+2];
             scratch.w = A_star_i0[n*vector_len+3];
-            
-            // Perform the dot product using local memory
-            temp+=scratch*shared_B_star_v1[n];
+
+            // Perform the dot product using shared memory
+#ifdef __HIP_PLATFORM_NVIDIA__
+            temp.x += scratch.x*shared_B_star_v1[n].x;
+            temp.y += scratch.y*shared_B_star_v1[n].y;
+            temp.z += scratch.z*shared_B_star_v1[n].z;
+            temp.w += scratch.w*shared_B_star_v1[n].w;
+#else
+            temp += scratch*shared_B_star_v1[n];
+#endif            
+             
         }
         
         // Synchronise threads so they are
