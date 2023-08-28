@@ -29,8 +29,10 @@ BASE_LIB_FLAGS=-lhipblas
 # Flags for CUDA platform
 ifeq ($(HIP_PLATFORM), nvidia)
 
-# Need to insert a path for a user-supplied hipblas library compiled with cublas support
-    CXXFLAGS=-O2 -Xcompiler -fopenmp --x cu
+    # Need to insert a path for a user-supplied hipblas library compiled with cublas support
+    HIPBLAS_CUDA=/opt/rocm/hipblas_cuda
+    
+    CXXFLAGS=-O2 -Xcompiler -fopenmp -L$(HIPBLAS_CUDA)/lib -I$(HIPBLAS_CUDA)/include
     ifeq ($(DEBUG), true)
         CXXFLAGS=-g -G $(CXXFLAGS)
     endif
