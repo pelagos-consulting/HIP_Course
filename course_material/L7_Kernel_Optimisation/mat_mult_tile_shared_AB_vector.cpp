@@ -54,7 +54,9 @@ __global__ void mat_mult_tile_shared_AB_vector (
                         // number of elements in a chunk
                         size_t chunk_len,
                         // number of chunks
-                        size_t nchunks, 
+                        size_t nchunks,
+                        // length of a vector
+                        size_t vector_len,
                         // number of vectors in a chunk
                         size_t nvectors,
                         // dimension 0 extent of C
@@ -66,6 +68,7 @@ __global__ void mat_mult_tile_shared_AB_vector (
     extern __shared__ char shared[];
     
     // N1_A_star >= N1_A
+    // N1_A_star = nchunks * chunk_len
     // A_star is of size (N0_C, N1_A_star)
     // B_star is of size (N1_A_star, N1_C)
     // C is of size (N0_C, N1_C)
@@ -94,7 +97,7 @@ __global__ void mat_mult_tile_shared_AB_vector (
     float_type* shared_A_star_s0 = &shared_A[s0*chunk_len];
     float_type* shared_B_star_s1 = &shared_B[s1*chunk_len];    
     
-    // Interpreted as a vector
+    // Line of shared memory as a vector
     float_vector_type* shared_A_star_v0 = (float_vector_type*)shared_A_star_s0;
     float_vector_type* shared_B_star_v1 = (float_vector_type*)shared_B_star_s1;
     
@@ -287,7 +290,8 @@ int main(int argc, char** argv) {
     
     // Arguments for the kernel
     void* kernel_args[] = { &A_star_d, &B_star_d, &C_d, 
-                           &chunk_len, &nchunks, &nvectors,
+                           &chunk_len, &nchunks, 
+                           &vector_len, &nvectors,
                            &N0_C, &N1_C };
     
     // Find the optimum block size
