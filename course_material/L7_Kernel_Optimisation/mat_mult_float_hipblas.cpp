@@ -91,68 +91,105 @@ int main(int argc, char** argv) {
     //// Step 6. Run the kernel to compute C_d ///
     //// from A_d and B_d on the device ////
 
-    // Call the hipblas Sgemm routine to perform the matrix multiplication
-    // for single precision matrices
+    // Setup memory for the experiment to run
+    int nexperiments=1;
+    int npoints=2;
+    size_t nbytes_output = nexperiments*npoints*sizeof(double);
+    double* output_local = (double*)malloc(nbytes_output);
     
-    const float_type alpha = 1.0f;
-    const float_type beta = 0.0f;
+    // Run the experiment nstats times
+    const size_t nstats=NSTATS;
+    double times_ms[nstats] = {0};
+    double time_ms=0.0;
+    double avg_time_ms=0.0;
+    double max_time_ms=0.0;
+    int max_time_n = 0;
+    
+    // Run the hipblas Sgemm routine nstats times and collect times
+    for (int n=0; n<nstats; n++) {
+    
+        // Start the clock
+        auto t1 = std::chrono::high_resolution_clock::now();
+    
+        // Call the hipblas Sgemm routine to perform the matrix multiplication
+        // for single precision matrices
+    
+        const float_type alpha = 1.0f;
+        const float_type beta = 0.0f;
         
-    // Now we try to compute
-    // AB = C
-    // But hipblasSgemm computes
-    // alpha* op( A )*op( B ) + beta*C = C
-    // where A, B, and C are column major
+        // Now we try to compute
+        // AB = C
+        // But hipblasSgemm computes
+        // alpha* op( A )*op( B ) + beta*C = C
+        // where A, B, and C are column major
     
-    // We want to input row_major matrices, we know that
+        // We want to input row_major matrices, we know that
     
-    // A_{row_major} = A^{T}_{col_major}
-    // B_{row_major} = B^{T}_{col_major}
-    // C_{row_major} = C^{T}_{col_major}
+        // A_{row_major} = A^{T}_{col_major}
+        // B_{row_major} = B^{T}_{col_major}
+        // C_{row_major} = C^{T}_{col_major}
     
-    // This identity is useful
-    // (AB)^T = B^T A^T = C^T
+        // This identity is useful
+        // (AB)^T = B^T A^T = C^T
     
-    // Then 
+        // Then 
     
-    // B^{T}_{col_major} A^{T}_{col_major} = C^{T}_{col_major}
-    // Is equivalent to....
-    // B_{row_major} A_{row_major} = C_{row_major}
+        // B^{T}_{col_major} A^{T}_{col_major} = C^{T}_{col_major}
+        // Is equivalent to....
+        // B_{row_major} A_{row_major} = C_{row_major}
      
-    // So we replace in the call to hipblasSgemm
+        // So we replace in the call to hipblasSgemm
     
-    // A_{col_major} -> B_{row_major}
-    // B_{col_major} -> A_{row_major}
-    // m -> n, n -> m
+        // A_{col_major} -> B_{row_major}
+        // B_{col_major} -> A_{row_major}
+        // m -> n, n -> m
     
-    // Leading dimension is the length along dimension of matrix 
-    // along which memory is contiguous
-    // for col_major arrays this is dimension 0
+        // Leading dimension is the length along dimension of matrix 
+        // along which memory is contiguous
+        // for col_major arrays this is dimension 0
     
-    hb_status = hipblasSgemm(
-            hb_handle, // hipblas handle  
-            HIPBLAS_OP_N, // what operation to apply to A (none)
-            HIPBLAS_OP_N, // what operation to apply to B (none)
-            (int)N1_C, // number of rows in C_{col_major} -> number of columns in C_{row_major}
-            (int)N0_C, // number of columns in C_{col_major} -> number of rows in C_{row_major}
-            (int)N1_A, // number of columns in A_{col_major} -> number of rows in B_{row_major}
-            &alpha, // Constant
-            B_d, // Normally A_{col_major} -> B^{T}_{col_major} -> B_{row_major}
-            (int)N1_C, // Leading dimension for B_{row_major} 
-            A_d, // Normally B_{col_major} -> A^{T}_{col_major} -> A_{row_major}
-            (int)N1_A, // Leading dimension for A_{row_major}
-            &beta, // Constant
-            C_d, // Pointer to memory for C_{row_major}
-            (int)N1_C // Leading dimension for C_{row_major}
-    );
+        hb_status = hipblasSgemm(
+                hb_handle, // hipblas handle  
+                HIPBLAS_OP_N, // what operation to apply to A (none)
+                HIPBLAS_OP_N, // what operation to apply to B (none)
+                (int)N1_C, // number of rows in C_{col_major} -> number of columns in C_{row_major}
+                (int)N0_C, // number of columns in C_{col_major} -> number of rows in C_{row_major}
+                (int)N1_A, // number of columns in A_{col_major} -> number of rows in B_{row_major}
+                &alpha, // Constant
+                B_d, // Normally A_{col_major} -> B^{T}_{col_major} -> B_{row_major}
+                (int)N1_C, // Leading dimension for B_{row_major} 
+                A_d, // Normally B_{col_major} -> A^{T}_{col_major} -> A_{row_major}
+                (int)N1_A, // Leading dimension for A_{row_major}
+                &beta, // Constant
+                C_d, // Pointer to memory for C_{row_major}
+                (int)N1_C // Leading dimension for C_{row_major}
+        );
     
-    if (hb_status != HIPBLAS_STATUS_SUCCESS) {
-        std::printf("Failed to run hipBlas function.\n");
-         exit(EXIT_FAILURE); 
-    }
+        if (hb_status != HIPBLAS_STATUS_SUCCESS) {
+            std::printf("Failed to run hipBlas function.\n");
+             exit(EXIT_FAILURE); 
+        }
     
-    // Wait for any commands to complete on the compute device
-    H_ERRCHK(hipDeviceSynchronize());
+        // Wait for any commands to complete on the compute device
+        H_ERRCHK(hipDeviceSynchronize());
 
+        // Stop the clock
+        auto t2 = std::chrono::high_resolution_clock::now();
+        
+        // Get the time
+        time_ms = (double)std::chrono::duration_cast<std::chrono::microseconds>(t2-t1).count()/1000.0;
+        
+        // Keep track of the maximum time
+        if (time_ms > max_time_ms) {
+            max_time_ms = time_ms;
+            max_time_n = n;
+        }
+        
+        times_ms[n]=time_ms;
+        
+        avg_time_ms+=time_ms;
+    }           
+        
     //// Step 7. Copy the buffer for matrix C_d //// 
     //// on the device back to C_h on the host ////
     H_ERRCHK(hipMemcpy((void*)C_h, (const void*)C_d, nbytes_C, hipMemcpyDeviceToHost));
@@ -175,6 +212,26 @@ int main(int argc, char** argv) {
     h_write_binary(A_h, "array_A.dat", nbytes_A);
     h_write_binary(B_h, "array_B.dat", nbytes_B);
     h_write_binary(C_h, "array_C.dat", nbytes_C);
+    
+    // Calculate the mean and average times
+    // Leave the longest time out of the calculation
+    avg_time_ms = avg_time_ms - max_time_ms;
+    avg_time_ms/=(double)(nstats-1);
+    double std_time_ms=0.0, scratch=0.0;
+    
+    for (int n=0; n<nstats; n++) {
+        scratch=times_ms[n]-avg_time_ms;
+        if (n!=max_time_n) {
+            std_time_ms+=(scratch*scratch);
+        }
+    }
+    std_time_ms=sqrt(std_time_ms)/(double)(nstats-1);
+    
+    output_local[0]=avg_time_ms;
+    output_local[1]=std_time_ms;
+    
+    h_write_binary(output_local, "output_local.dat", nbytes_output);
+    free(output_local);
     
     //// Step 10. Clean up memory alllocations and release resources
     

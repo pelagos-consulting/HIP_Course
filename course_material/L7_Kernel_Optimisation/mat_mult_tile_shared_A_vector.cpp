@@ -83,7 +83,7 @@ __global__ void mat_mult_tile_shared_A_vector (
     size_t s1=threadIdx.x;
     
     // block size
-    size_t L0=blockDim.y;
+    //size_t L0=blockDim.y;
     size_t L1=blockDim.x;
 
     // Get a pointer to shared_A from shared

@@ -84,7 +84,7 @@ __global__ void mat_mult_tile_shared_B_vector (
     
     // block size
     size_t L0=blockDim.y;
-    size_t L1=blockDim.x;
+    //size_t L1=blockDim.x;
 
     // Get a pointer to shared_A from shared
     // shared_B is of size (L1, chunk_len)

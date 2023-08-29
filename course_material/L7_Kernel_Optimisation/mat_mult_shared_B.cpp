@@ -76,7 +76,7 @@ __global__ void mat_mult_shared_B (
     
     // block size
     size_t L0=blockDim.y;
-    size_t L1=blockDim.x;
+    //size_t L1=blockDim.x;
     
     // start and end positions for the copy
     size_t start, end;
