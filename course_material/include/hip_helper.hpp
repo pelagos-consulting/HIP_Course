@@ -12,12 +12,15 @@
     #define NOMINMAX
     #include <windows.h>
     #include <malloc.h>
+#else
+    #include <unistd.h>
 #endif
 
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
 #include <map>
+#include <new>
 #include <cassert>
 #include <cstring>
 #include <cmath>
@@ -53,15 +56,16 @@ void h_errchk(hipError_t errcode, const char* message) {
 /// Get the L1 cache line size
 size_t h_get_cache_line_size() {
     // Get the L1 cache line size
-    unsigned int eax, ebx, ecx, edx;
-    eax = 0x80000005; // CPUID function to get L1 cache information
-    __asm__ volatile("cpuid"
-                     : "=a" (eax), "=b" (ebx), "=c" (ecx), "=d" (edx)
-                     : "a" (eax));
+    size_t cache_line_size = 0;
 
-    // Extract L1 cache line size from ebx
-    unsigned int l1CacheLineSize = ebx & 0xFF;
-    return (size_t)l1CacheLineSize;
+#if defined(_WIN32) || defined(_WIN64)
+    SYSTEM_INFO sys_info;
+    GetSystemInfo(&sys_info);
+    cache_line_size = sys_info.dwCacheLineSize;
+#else
+    cache_line_size = sysconf(_SC_LEVEL1_DCACHE_LINESIZE);
+#endif
+    return cache_line_size;   
 }
 
 /// Find the greatest common divisor for two numbers
