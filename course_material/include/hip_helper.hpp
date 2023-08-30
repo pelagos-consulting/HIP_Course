@@ -30,6 +30,9 @@
 // Import the HIP header
 #include <hip/hip_runtime.h>
 
+// Time to use for faulty runs
+#define FAULTY_TIME -1.0
+
 /// Examine an error code and exit if necessary.
 void h_errchk(hipError_t errcode, const char* message) {
 
@@ -444,31 +447,36 @@ float h_run_kernel(
     H_ERRCHK(hipEventRecord(t1, stream));
 
     // Launch the kernel
-    H_ERRCHK(
-        hipLaunchKernel(
-            kernel_function,
-            num_blocks,
-            block_size,
-            kernel_args,
-            *shared_bytes,
-            stream
-        )
+    hipError_t errcode = hipLaunchKernel(
+        kernel_function,
+        num_blocks,
+        block_size,
+        kernel_args,
+        *shared_bytes,
+        stream
     );
-
-    // Check the status of the kernel launch
-    H_ERRCHK(hipGetLastError());
     
     // Stop event recording
     H_ERRCHK(hipEventRecord(t2, stream));
 
     // Elapsed milliseconds
     float elapsed = h_get_event_time_ms(t1, t2, NULL, NULL);
-
+    
     // Destroy events
     H_ERRCHK(hipEventDestroy(t1));
     H_ERRCHK(hipEventDestroy(t2));
-
-    return elapsed;
+    
+    if (errcode == hipSuccess) {
+        // Run was successful
+        return elapsed;
+    } else {
+        // Manage the error
+        printf(
+            "Kernel execution not successful, error code is: %s\n", 
+            hipGetErrorString(errcode)
+        );
+        return FAULTY_TIME;
+    }
 }
 
 /// Function to optimise the block size
@@ -566,7 +574,7 @@ void h_optimise_block(
             
             temp_block_size.z=(int)input_block[n*max_ndim+2];
             valid_size*=(temp_block_size.z<=prop.maxThreadsDim[2]);
-
+            
             // Size of the block in threads
             nthreads = temp_block_size.x*temp_block_size.y*temp_block_size.z;
 
@@ -576,7 +584,10 @@ void h_optimise_block(
             if ((nthreads <= prop.maxThreadsPerBlock) && (valid_size > 0)) {
                 // Run the experiment nstats times and get statistical information
                 // Command queue must have profiling enabled 
-
+                assert(nstats>3);
+                
+                std::printf("Running block size of: (%d, %d, %d)\n", temp_block_size.x, temp_block_size.y, temp_block_size.z);
+                
                 // Run function pointer here                
                 for (int s=0; s<nstats; s++) {
                     experiment_msec[s] = (double)h_run_kernel(
@@ -595,22 +606,44 @@ void h_optimise_block(
                      );
                 }
 
-                // Calculate the average and standard deviation
-                for (int s=0; s<nstats; s++) {
-                    avg+=experiment_msec[s]+prior_times;
-                }
-                avg/=(double)nstats;
+                // Check the experiments for faulty kernel runs
+                int errflag = 0;
+                double t_lrg = 0.0;
+                int index_lrg = 0;
                 
+                // Calculate the average, check for faulty kernel runs
                 for (int s=0; s<nstats; s++) {
-                    stdev+=((experiment_msec[s]-avg)*(experiment_msec[s]-avg));
+                    // Check for faulty kernel runs
+                    if (experiment_msec[s]==FAULTY_TIME) errflag += 1;
+                    // Check also for largest time
+                    if (experiment_msec[s]>t_lrg) { 
+                        t_lrg = experiment_msec[s];
+                        index_lrg = s;
+                    }
+                    avg+=experiment_msec[s];
                 }
-                stdev/=(double)nstats;
+                
+                // Remove the largest time
+                avg-=t_lrg;
+                avg/=(double)(nstats-1);
+                // add prior times
+                avg+=prior_times;
+                
+                // Calculate standard deviation without contribution from faulty time
+                for (int s=0; s<nstats; s++) {
+                    if (s!=index_lrg) {
+                        stdev+=((experiment_msec[s]-avg)*(experiment_msec[s]-avg));
+                    }
+                }
+                stdev/=(double)(nstats-1);
                 stdev=sqrt(stdev);
-            } else {
-                // No result
-                avg = nan("");
-                stdev = nan("");
-            }
+                
+                if (errflag>0) {
+                    // invalidate result
+                    avg = nan("");
+                    stdev = nan("");
+                }
+            } 
                   
             // Send to output array 
             output_block[n*npoints+0] = avg;

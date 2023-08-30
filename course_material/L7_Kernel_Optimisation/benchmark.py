@@ -37,10 +37,10 @@ experiments = {
     "Transpose B" : "mat_mult_BT.exe",
     "Transpose A" : "mat_mult_AT.exe",
     "Tile shared AB" : "mat_mult_tile_shared_AB.exe",
-    "Tile local AB vector" : "mat_mult_tile_shared_AB_vector.exe",
-    #"Tile local A" : "mat_mult_tile_local_A.exe",
+    "Tile shared AB vector" : "mat_mult_tile_shared_AB_vector.exe",
+    "Tile shared A" : "mat_mult_tile_shared_A.exe",
     "Tile shared A vector" : "mat_mult_tile_shared_A_vector.exe",
-    #"Tile local B" : "mat_mult_tile_local_B.exe",
+    "Tile shared B" : "mat_mult_tile_shared_B.exe",
     "Tile shared B vector" : "mat_mult_tile_shared_B_vector.exe",
     "HIPBlas" : "mat_mult_float_hipblas.exe"
 }

@@ -284,7 +284,7 @@ int main(int argc, char** argv) {
     //// from A_d and B_d on the device ////
         
     // Desired block size
-    dim3 block_size = { 8, 8, 1 };
+    dim3 block_size = { 8, 16, 1 };
     dim3 global_size = { (uint32_t)N1_C, (uint32_t)N0_C, 1 };
     
     // Arguments for prep_kernel

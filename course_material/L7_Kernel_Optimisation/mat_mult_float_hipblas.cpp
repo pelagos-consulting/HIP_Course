@@ -230,7 +230,7 @@ int main(int argc, char** argv) {
     output_local[0]=avg_time_ms;
     output_local[1]=std_time_ms;
     
-    h_write_binary(output_local, "output_local.dat", nbytes_output);
+    h_write_binary(output_local, "output_block.dat", nbytes_output);
     free(output_local);
     
     //// Step 10. Clean up memory alllocations and release resources
