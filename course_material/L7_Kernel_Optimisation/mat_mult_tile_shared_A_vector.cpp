@@ -104,51 +104,55 @@ __global__ void mat_mult_tile_shared_A_vector (
     size_t start1, end1;
     get_start_end(L1, chunk_len, s1, &start1, &end1);
     
-    // Loop over the chunks
-    for (int chunk_id=0; chunk_id<nchunks; chunk_id++) {
+    // Make sure we don't go beyond the bounds of the array
+    if ((i0<N0_C) && (i1<N1_C)) {    
     
-        // Fill shared_A_star and shared_B_star 
-        // Starting positions for the copy
-        float_type* A_star_i0 = &A_star[i0*chunk_len*nchunks+chunk_id*chunk_len];
-        float_type* B_star_i1 = &B_star[chunk_id*chunk_len*N1_C+i1];
+        // Loop over the chunks
+        for (int chunk_id=0; chunk_id<nchunks; chunk_id++) {
+    
+            // Fill shared_A_star and shared_B_star 
+            // Starting positions for the copy
+            float_type* A_star_i0 = &A_star[i0*chunk_len*nchunks+chunk_id*chunk_len];
+            float_type* B_star_i1 = &B_star[chunk_id*chunk_len*N1_C+i1];
         
-        // Fill the rows of shared_A_star and shared_B_star
-        // Copy from row i0 of A_star
-        for (size_t n = start1; n<end1; n++) {
-            shared_A_star_s0[n] = A_star_i0[n];
-        }
+            // Fill the rows of shared_A_star and shared_B_star
+            // Copy from row i0 of A_star
+            for (size_t n = start1; n<end1; n++) {
+                shared_A_star_s0[n] = A_star_i0[n];
+            }
         
-        // Synchronise threads to ensure shared memory is filled
-        __syncthreads();
+            // Synchronise threads to ensure shared memory is filled
+            __syncthreads();
         
-        // Loop over shared memory to compute dot product 
-        // component for the chunk
-        for (size_t n=0; n<nvectors; n++) {
+            // Loop over shared memory to compute dot product 
+            // component for the chunk
+            for (size_t n=0; n<nvectors; n++) {
             
-            // Fill scratch from B_star_i1
-            scratch.x = B_star_i1[(n*vector_len+0)*N1_C];
-            scratch.y = B_star_i1[(n*vector_len+1)*N1_C];
-            scratch.z = B_star_i1[(n*vector_len+2)*N1_C];
-            scratch.w = B_star_i1[(n*vector_len+3)*N1_C];
+                // Fill scratch from B_star_i1
+                scratch.x = B_star_i1[(n*vector_len+0)*N1_C];
+                scratch.y = B_star_i1[(n*vector_len+1)*N1_C];
+                scratch.z = B_star_i1[(n*vector_len+2)*N1_C];
+                scratch.w = B_star_i1[(n*vector_len+3)*N1_C];
             
-            // Perform the dot product using shared memory          
+                // Perform the dot product using shared memory          
 #ifdef __HIP_PLATFORM_NVIDIA__
-            temp.x += shared_A_star_v0[n].x*scratch.x;
-            temp.y += shared_A_star_v0[n].y*scratch.y;
-            temp.z += shared_A_star_v0[n].z*scratch.z;
-            temp.w += shared_A_star_v0[n].w*scratch.w;
+                temp.x += shared_A_star_v0[n].x*scratch.x;
+                temp.y += shared_A_star_v0[n].y*scratch.y;
+                temp.z += shared_A_star_v0[n].z*scratch.z;
+                temp.w += shared_A_star_v0[n].w*scratch.w;
 #else
-            temp+=shared_A_star_v0[n]*scratch;
+                temp+=shared_A_star_v0[n]*scratch;
 #endif
-        }
+            }
         
-        // Synchronise threads so they are
-        // are ready to tackle the next tile together
-        __syncthreads();
-    }
+            // Synchronise threads so they are
+            // are ready to tackle the next tile together
+            __syncthreads();
+        }
     
-    // Put the accumulated value into position
-    C[i0*N1_C+i1]=temp.x+temp.y+temp.z+temp.w;
+        // Put the accumulated value into position
+        C[i0*N1_C+i1]=temp.x+temp.y+temp.z+temp.w;
+    }
 }
 
 // Function to decide how much shared memory to allocate
@@ -284,7 +288,7 @@ int main(int argc, char** argv) {
     //// from A_d and B_d on the device ////
         
     // Desired block size
-    dim3 block_size = { 8, 16, 1 };
+    dim3 block_size = { 16, 16, 1 };
     dim3 global_size = { (uint32_t)N1_C, (uint32_t)N0_C, 1 };
     
     // Arguments for prep_kernel

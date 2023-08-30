@@ -91,38 +91,42 @@ __global__ void mat_mult_tile_shared_B (
     size_t start0, end0;
     get_start_end(L0, chunk_len, s0, &start0, &end0);
     
-    // Loop over the chunks
-    for (int chunk_id=0; chunk_id<nchunks; chunk_id++) {
+    // Make sure we don't go beyond the bounds of the array
+    if ((i0<N0_C) && (i1<N1_C)) {
     
-        // Fill shared_A_star and shared_B_star 
-        // Starting positions for the copy
-        float_type* A_star_i0 = &A_star[i0*chunk_len*nchunks+chunk_id*chunk_len];
-        float_type* B_star_i1 = &B_star[chunk_id*chunk_len*N1_C+i1];
+        // Loop over the chunks
+        for (int chunk_id=0; chunk_id<nchunks; chunk_id++) {
+    
+            // Fill shared_A_star and shared_B_star 
+            // Starting positions for the copy
+            float_type* A_star_i0 = &A_star[i0*chunk_len*nchunks+chunk_id*chunk_len];
+            float_type* B_star_i1 = &B_star[chunk_id*chunk_len*N1_C+i1];
         
-        // Fill the rows of shared_B_star
-        // Copy from column i1 of B_star   
-        for (size_t n = start0; n<end0; n++) {
-            shared_B_star_s1[n] = B_star_i1[n*N1_C];
-        }
+            // Fill the rows of shared_B_star
+            // Copy from column i1 of B_star   
+            for (size_t n = start0; n<end0; n++) {
+                shared_B_star_s1[n] = B_star_i1[n*N1_C];
+            }
         
-        // Synchronise threads to ensure shared memory is filled
-        __syncthreads();
+            // Synchronise threads to ensure shared memory is filled
+            __syncthreads();
         
-        // Loop over shared memory to compute dot product 
-        // component for the chunk
-        for (size_t n=0; n<chunk_len; n++) {
+            // Loop over shared memory to compute dot product 
+            // component for the chunk
+            for (size_t n=0; n<chunk_len; n++) {
                 
-            // Perform the dot product using shared memory
-            temp+=A_star_i0[n]*shared_B_star_s1[n];
-        }
+                // Perform the dot product using shared memory
+                temp+=A_star_i0[n]*shared_B_star_s1[n];
+            }
         
-        // Synchronise threads so they are
-        // are ready to tackle the next tile together
-        __syncthreads();
-    }
+            // Synchronise threads so they are
+            // are ready to tackle the next tile together
+            __syncthreads();
+        }
     
-    // Put the accumulated value into position
-    C[i0*N1_C+i1]=temp;
+        // Put the accumulated value into position
+        C[i0*N1_C+i1]=temp;
+    }
 }
 
 // Function to decide how much shared memory to allocate
@@ -248,7 +252,7 @@ int main(int argc, char** argv) {
     //// from A_d and B_d on the device ////
         
     // Desired block size
-    dim3 block_size = { 8, 16, 1 };
+    dim3 block_size = { 16, 16, 1 };
     dim3 global_size = { (uint32_t)N1_C, (uint32_t)N0_C, 1 };
     
     // Arguments for prep_kernel
