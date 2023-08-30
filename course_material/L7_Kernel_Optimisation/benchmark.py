@@ -32,17 +32,17 @@ experiments = {
     "Double precision" : "mat_mult_double.exe",
     "Single precision" : "mat_mult_float.exe",
     #"Prefetch on A" : "mat_mult_prefetch.exe",
-    #"Local A" : "mat_mult_local_A.exe",
-    #"Local B" : "mat_mult_local_B.exe",
-    #"Transpose B" : "mat_mult_BT.exe",
-    #"Transpose A" : "mat_mult_AT.exe",
-    #"Tile local AB" : "mat_mult_tile_local_AB.exe",
-    #"Tile local AB vector" : "mat_mult_tile_local_AB_vector.exe",
+    "Shared A" : "mat_mult_shared_A.exe",
+    "Shared B" : "mat_mult_shared_B.exe",
+    "Transpose B" : "mat_mult_BT.exe",
+    "Transpose A" : "mat_mult_AT.exe",
+    "Tile shared AB" : "mat_mult_tile_shared_AB.exe",
+    "Tile local AB vector" : "mat_mult_tile_shared_AB_vector.exe",
     #"Tile local A" : "mat_mult_tile_local_A.exe",
-    #"Tile local A vector" : "mat_mult_tile_local_A_vector.exe",
+    "Tile shared A vector" : "mat_mult_tile_shared_A_vector.exe",
     #"Tile local B" : "mat_mult_tile_local_B.exe",
-    #"Tile local B vector" : "mat_mult_tile_local_B_vector.exe",
-    #"CLBlast" : "mat_mult_clblast.exe"
+    "Tile shared B vector" : "mat_mult_tile_shared_B_vector.exe",
+    "HIPBlas" : "mat_mult_float_hipblas.exe"
 }
 
 # Make up the input specification
@@ -52,7 +52,7 @@ for exp, executable in experiments.items():
         for i in indices:
             label=f"{exp} ({d.upper()})[{i}]"
             cmds=f"{executable} {i}"
-            if exp=="CLBlast":
+            if exp=="HIPBlas":
                 inputSpec[label]=Exp(cmds, local0=2**(np.arange(0,1,1)), local1=2**(np.arange(0,1,1)))
             else:
                 inputSpec[label]=Exp(cmds)

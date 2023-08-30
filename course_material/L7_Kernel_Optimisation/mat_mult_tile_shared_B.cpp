@@ -46,7 +46,7 @@ __device__ void get_start_end(
 }
 
 // Matrix multiply kernel that uses shared memory for A
-__global__ void mat_mult_tile_shared_AB (
+__global__ void mat_mult_tile_shared_B (
                         float_type* A_star, 
                         float_type* B_star, 
                         float_type* C,
@@ -74,24 +74,21 @@ __global__ void mat_mult_tile_shared_AB (
     
     // block size
     size_t L0=blockDim.y;
-    size_t L1=blockDim.x;
+    //size_t L1=blockDim.x;
 
-    // Get a pointer to shared_A from shared
-    // shared_A is of size (L0, chunk_len)
+    // Get a pointer to shared_B from shared
+
     // shared_B is of size (L1, chunk_len)
-    float_type* shared_A_star = (float_type*)&shared[0];
-    float_type* shared_B_star = (float_type*)&shared[L0*chunk_len*sizeof(float_type)];
+    float_type* shared_B_star = (float_type*)&shared[0];
     
     // Positions within shared memory
-    float_type* shared_A_star_s0 = &shared_A_star[s0*chunk_len];
     float_type* shared_B_star_s1 = &shared_B_star[s1*chunk_len];
     
     // Scratch variable
     float_type temp=0.0f;
     
     // Start and end positions to copy within a chunk
-    size_t start0, end0, start1, end1;
-    get_start_end(L1, chunk_len, s1, &start1, &end1);
+    size_t start0, end0;
     get_start_end(L0, chunk_len, s0, &start0, &end0);
     
     // Loop over the chunks
@@ -102,12 +99,7 @@ __global__ void mat_mult_tile_shared_AB (
         float_type* A_star_i0 = &A_star[i0*chunk_len*nchunks+chunk_id*chunk_len];
         float_type* B_star_i1 = &B_star[chunk_id*chunk_len*N1_C+i1];
         
-        // Fill the rows of shared_A_star and shared_B_star
-        // Copy from row i0 of A_star
-        for (size_t n = start1; n<end1; n++) {
-            shared_A_star_s0[n] = A_star_i0[n];
-        }
-        
+        // Fill the rows of shared_B_star
         // Copy from column i1 of B_star   
         for (size_t n = start0; n<end0; n++) {
             shared_B_star_s1[n] = B_star_i1[n*N1_C];
@@ -121,7 +113,7 @@ __global__ void mat_mult_tile_shared_AB (
         for (size_t n=0; n<chunk_len; n++) {
                 
             // Perform the dot product using shared memory
-            temp+=shared_A_star_s0[n]*shared_B_star_s1[n];
+            temp+=A_star_i0[n]*shared_B_star_s1[n];
         }
         
         // Synchronise threads so they are
@@ -147,7 +139,7 @@ void prep_kernel(
     size_t* chunk_width = (size_t*)prep_kernel_args[0];
 
     // Set shared_bytes using line_width
-    *sharedMemBytes=(*chunk_width)*(block_size.x+block_size.y);
+    *sharedMemBytes=(*chunk_width)*(block_size.x);
 }
 
 int main(int argc, char** argv) {
@@ -271,7 +263,7 @@ int main(int argc, char** argv) {
     h_optimise_block(
         argc, // Number of command line arguments
         argv, // Command line arguments as an array of C-strings
-        (const void*)&mat_mult_tile_shared_AB, // Kernel function to execute
+        (const void*)&mat_mult_tile_shared_B, // Kernel function to execute
         kernel_args, // Arguments passed to the kernel  
         global_size, // Desired global_size
         &block_size, // Default block size
