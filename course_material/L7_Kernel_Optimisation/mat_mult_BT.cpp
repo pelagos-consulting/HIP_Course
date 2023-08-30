@@ -28,10 +28,10 @@ __global__ void transpose (
     // src is of size (N0_src, N1_src)
     // dest is of size (N1_src, N0_src)
     
-    // i0 and i1 represent the coordinates in Matrix C 
+    // i0 and i1 represent the coordinates in src 
     // We assume row-major ordering for the matrices 
-    size_t i0 = blockIdx.x * blockDim.x + threadIdx.x;
-    size_t i1 = blockIdx.y * blockDim.y + threadIdx.y;
+    size_t i0 = blockIdx.y * blockDim.y + threadIdx.y;
+    size_t i1 = blockIdx.x * blockDim.x + threadIdx.x;
     
     if ((i0<N0_src) && (i1<N1_src)) {
         dst[i1*N0_src+i0]=src[i0*N1_src+i1];
