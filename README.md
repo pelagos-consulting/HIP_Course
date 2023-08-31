@@ -80,6 +80,6 @@ export HIP_PLATFORM=nvidia
 
 ### CPU backend
 
-If either and AMD or NVIDIA backend is not available then the [HIP CPU runtime](https://github.com/ROCm-Developer-Tools/HIP-CPU) is a header-only library that provides a way to develop HIP applications on a CPU. 
+If either the AMD or NVIDIA backend is not available, then the [HIP CPU runtime](https://github.com/ROCm-Developer-Tools/HIP-CPU) is a header-only library that provides a way to develop HIP applications on a CPU. 
 
 
