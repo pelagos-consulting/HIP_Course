@@ -50,7 +50,7 @@ jupyter-lab
 from the command line to start the Jupyter Lab environment. The command
 
 ```bash
-conda activate opencl_course
+conda activate hip_course
 ```
 is to enter the created environment, and the command
 ```bash
