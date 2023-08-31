@@ -579,7 +579,7 @@ void h_optimise_block(
             nthreads = temp_block_size.x*temp_block_size.y*temp_block_size.z;
 
             // Average and standard deviation for statistical collection
-            double avg=0.0, stdev=0.0;
+            double avg=nan(""), stdev=nan("");
 
             if ((nthreads <= prop.maxThreadsPerBlock) && (valid_size > 0)) {
                 // Run the experiment nstats times and get statistical information
@@ -611,6 +611,10 @@ void h_optimise_block(
                 double t_lrg = 0.0;
                 int index_lrg = 0;
                 
+                // Default avg and stdev
+                double temp_avg=0.0;
+                double temp_stdev=0.0;
+                
                 // Calculate the average, check for faulty kernel runs
                 for (int s=0; s<nstats; s++) {
                     // Check for faulty kernel runs
@@ -620,28 +624,28 @@ void h_optimise_block(
                         t_lrg = experiment_msec[s];
                         index_lrg = s;
                     }
-                    avg+=experiment_msec[s];
+                    temp_avg+=experiment_msec[s];
                 }
                 
                 // Remove the largest time
-                avg-=t_lrg;
-                avg/=(double)(nstats-1);
+                temp_avg-=t_lrg;
+                temp_avg/=(double)(nstats-1);
                 // add prior times
-                avg+=prior_times;
+                temp_avg+=prior_times;
                 
                 // Calculate standard deviation without contribution from faulty time
                 for (int s=0; s<nstats; s++) {
                     if (s!=index_lrg) {
-                        stdev+=((experiment_msec[s]-avg)*(experiment_msec[s]-avg));
+                        temp_stdev+=((experiment_msec[s]-temp_avg)*(experiment_msec[s]-temp_avg));
                     }
                 }
-                stdev/=(double)(nstats-1);
-                stdev=sqrt(stdev);
+                temp_stdev/=(double)(nstats-1);
+                temp_stdev=sqrt(temp_stdev);
                 
-                if (errflag>0) {
+                if (errflag==0) {
                     // invalidate result
-                    avg = nan("");
-                    stdev = nan("");
+                    avg = temp_avg;
+                    stdev = temp_stdev;
                 }
             } 
                   
