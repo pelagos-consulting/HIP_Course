@@ -242,22 +242,7 @@ class TimingResults:
                 
         min_data = np.min(value[indices])
         max_data = np.max(value[indices])
-                
-        im = ax.imshow(value[...,0], vmin=min_data, vmax=max_data, origin="lower")
-        #ax.contour(value, 20, origin="lower")
         
-        divider = make_axes_locatable(ax)
-        cax = divider.append_axes("right", size="5%", pad=0.1)
-
-        # Set labels on things
-        ax.set_xticks(np.arange(0,result.local1.size,1))
-        ax.set_yticks(np.arange(0,result.local0.size,1))
-        ax.set_xticklabels([str(x) for x in result.local1])
-        ax.set_yticklabels([str(x) for x in result.local0])
-        ax.set_xlabel("blockDim.y")
-        ax.set_ylabel("blockDim.x")
-        ax.set_title(f"{key} - (time ms)")
-
         index0_min = np.where(result.local0==timings["L0_min"])[0]
         index1_min = np.where(result.local1==timings["L1_min"])[0]
         index2_min = np.where(result.local2==timings["L2_min"])[0]
@@ -266,16 +251,60 @@ class TimingResults:
         index1_max = np.where(result.local1==timings["L1_max"])[0]
         index2_max = np.where(result.local2==timings["L2_max"])[0]
         
-        # Put patches on minima and maxima
-        min_patch = patches.Rectangle(
-            np.array([index1_min,index0_min])-0.5,
-            1, 1, edgecolor="black", facecolor='none', linewidth=4)
-        ax.add_patch(min_patch)
+        # Do we have local0 -> blockDim.x along the horizontal axis
+        dim0_horizontal = True
         
-        max_patch = patches.Rectangle(
-            np.array([index1_max,index0_max])-0.5,
-            1, 1, edgecolor="white", facecolor='none', linewidth=4)
-        ax.add_patch(max_patch)
+        if (dim0_horizontal==True):
+            
+            # Display dim0 -> blockdim.x on the vertical axis
+            im = ax.imshow(np.transpose(value[...,0]), vmin=min_data, vmax=max_data, origin="lower")
+        
+            # Set labels on things
+            ax.set_yticks(np.arange(0,result.local1.size,1))
+            ax.set_xticks(np.arange(0,result.local0.size,1))
+            ax.set_yticklabels([str(x) for x in result.local1])
+            ax.set_xticklabels([str(x) for x in result.local0])
+            ax.set_ylabel("blockDim.y -> dim 0 of matrix C")
+            ax.set_xlabel("blockDim.x -> dim 1 of matrix C")
+            ax.set_title(f"{key} - (time ms)")
+  
+            # Put patches on minima and maxima
+            min_patch = patches.Rectangle(
+                np.array([index0_min,index1_min])-0.5,
+                1, 1, edgecolor="black", facecolor='none', linewidth=4)
+            ax.add_patch(min_patch)
+        
+            max_patch = patches.Rectangle(
+                np.array([index0_max,index0_max])-0.5,
+                1, 1, edgecolor="white", facecolor='none', linewidth=4)
+            ax.add_patch(max_patch)
+            
+        else: 
+            # Display dim0 -> blockdim.x on the vertical axis
+            im = ax.imshow(value[...,0], vmin=min_data, vmax=max_data, origin="lower")
+        
+            # Set labels on things
+            ax.set_xticks(np.arange(0,result.local1.size,1))
+            ax.set_yticks(np.arange(0,result.local0.size,1))
+            ax.set_xticklabels([str(x) for x in result.local1])
+            ax.set_yticklabels([str(x) for x in result.local0])
+            ax.set_xlabel("blockDim.y -> dim 0 of matrix C")
+            ax.set_ylabel("blockDim.x -> dim 1 of matrix C")
+            ax.set_title(f"{key} - (time ms)")
+        
+            # Put patches on minima and maxima
+            min_patch = patches.Rectangle(
+                np.array([index1_min,index0_min])-0.5,
+                1, 1, edgecolor="black", facecolor='none', linewidth=4)
+            ax.add_patch(min_patch)
+        
+            max_patch = patches.Rectangle(
+                np.array([index1_max,index0_max])-0.5,
+                1, 1, edgecolor="white", facecolor='none', linewidth=4)
+            ax.add_patch(max_patch)
+        
+        divider = make_axes_locatable(ax)
+        cax = divider.append_axes("right", size="5%", pad=0.1)
         
         # Put a color bar on the plot
         plt.colorbar(mappable=im, cax=cax)
