@@ -1,5 +1,5 @@
 """@package py_helper
-Helper functions to facilitate loading and displaying results.
+Helper functions to facilitate loading and displaying HIP results.
  
 Written by Dr. Toby Potter 
 for the Commonwealth Scientific and Industrial Research Organisation of Australia (CSIRO).
@@ -284,7 +284,7 @@ class TimingResults:
         plt.show()
         
     def plot_results(self, highlight_key=None, sort=False):
-        """Plot the collection of results, separate out the CPU and GPU results"""
+        """Plot the collection of results"""
         if len(self.results)>0:
             
             if highlight_key is None:
@@ -293,13 +293,13 @@ class TimingResults:
             # Sort by GPU results and CPU results
             
             # Make up timing results
-            [fig, ax] = plt.subplots(2, 1, figsize=(6,6))
+            [fig, ax] = plt.subplots(1, 1, figsize=(6,6))
             
             t_bench = self.results[self.benchmark_label]["min_ms"]
             dt_bench = self.results[self.benchmark_label]["std_ms"]
             
-            gpu_data = TimingPlotData()
-            cpu_data = TimingPlotData()
+            data = TimingPlotData()
+            data = TimingPlotData()
             
             for key, result in self.results.items():
                 
@@ -314,35 +314,27 @@ class TimingResults:
                 err += (-t_bench/(t**2.0))**2.0 * dt**2.0
                 err = math.sqrt(err)
                 
-                output=gpu_data
-                if "CPU" in key:
-                    output=cpu_data
-                
                 colour="Orange"       
                 if highlight_key in key:
                     colour="Purple"
              
-                output.ingest(speedup, err, key, colour)
+                data.ingest(speedup, err, key, colour)
             
-            
-            total_data = [*gpu_data.speedups, *cpu_data.speedups]
-            
-            for n, data in enumerate([cpu_data, gpu_data]):
-                if data.num_items()>0:
+            if data.num_items()>0:
                     
-                    if (sort):
-                        # Sort in descending order
-                        sort_indices = (np.argsort(data.speedups))[::-1]
-                    else:
-                        sort_indices = np.int32(np.arange(0,len(data.labels)))
+                if (sort):
+                    # Sort in descending order
+                    sort_indices = (np.argsort(data.speedups))[::-1]
+                else:
+                    sort_indices = np.int32(np.arange(0,len(data.labels)))
                     
-                    ax[n].barh(np.array(data.labels)[sort_indices], 
-                               np.array(data.speedups)[sort_indices], 
-                               0.8, 
-                               xerr=np.array(data.errors)[sort_indices], 
-                               color=np.array(data.colours)[sort_indices])
-                    ax[n].set_xlabel("Speedup, more is better")
-                    ax[n].set_xlim((0,1.1*np.max(data.speedups)))
+                ax.barh(np.array(data.labels)[sort_indices], 
+                    np.array(data.speedups)[sort_indices], 
+                    0.8, 
+                    xerr=np.array(data.errors)[sort_indices], 
+                    color=np.array(data.colours)[sort_indices])
+                ax.set_xlabel("Speedup, more is better")
+                ax.set_xlim((0,1.1*np.max(data.speedups)))
     
             fig.tight_layout()
             plt.show()
