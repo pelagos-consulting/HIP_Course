@@ -254,8 +254,8 @@ class TimingResults:
         ax.set_yticks(np.arange(0,result.local0.size,1))
         ax.set_xticklabels([str(x) for x in result.local1])
         ax.set_yticklabels([str(x) for x in result.local0])
-        ax.set_xlabel("Local size (dimension 1)")
-        ax.set_ylabel("Local size (dimension 0)")
+        ax.set_xlabel("blockDim.y")
+        ax.set_ylabel("blockDim.x")
         ax.set_title(f"{key} - (time ms)")
 
         index0_min = np.where(result.local0==timings["L0_min"])[0]
@@ -293,7 +293,7 @@ class TimingResults:
             # Sort by GPU results and CPU results
             
             # Make up timing results
-            [fig, ax] = plt.subplots(1, 1, figsize=(6,6))
+            [fig, ax] = plt.subplots(1, 1, figsize=(6,4))
             
             t_bench = self.results[self.benchmark_label]["min_ms"]
             dt_bench = self.results[self.benchmark_label]["std_ms"]
