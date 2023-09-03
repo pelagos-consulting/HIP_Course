@@ -16,7 +16,7 @@ Written by Dr Toby M. Potter
 // Bring in helper header to manage boilerplate code
 #include "hip_helper.hpp"
 
-// Bring in the hipblas helper code
+// Bring in the hipblas header files
 #include <hipblas/hipblas.h>
 
 typedef float float_type;
