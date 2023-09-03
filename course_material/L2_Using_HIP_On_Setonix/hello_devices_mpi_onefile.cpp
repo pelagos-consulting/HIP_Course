@@ -20,17 +20,6 @@
 // Length of the vector
 #define N0_A 512
 
-// Simple kernel to fill a vector 
-__global__ void fill (float* A, float fill_value, size_t N) { 
-            
-    // A is of size (N,)
-    size_t i0 = blockIdx.x * blockDim.x + threadIdx.x;
-    
-    if (i0<N) {
-        A[i0]=fill_value;
-    }
-} 
-
 // Examine an error code and exit if necessary.
 void h_errchk(hipError_t errcode, const char* message) {
 
@@ -51,6 +40,17 @@ void h_errchk(hipError_t errcode, const char* message) {
 {\
     h_errchk(cmd, "__FILE__:__LINE__");\
 }
+
+// Simple kernel to fill a vector 
+__global__ void fill (float* A, float fill_value, size_t N) { 
+            
+    // A is of size (N,)
+    size_t i0 = blockIdx.x * blockDim.x + threadIdx.x;
+    
+    if (i0<N) {
+        A[i0]=fill_value;
+    }
+} 
 
 // Main program
 int main(int argc, char** argv) {

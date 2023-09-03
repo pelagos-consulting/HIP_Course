@@ -15649,11 +15649,11 @@ Maximum error (infinity norm) is: 1.14441e-05
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Constant-address-space">Constant address space<a class="anchor-link" href="#Constant-address-space">&#182;</a></h3><p>Memory in the constant address space is located in fast memory storage and is defined by the <strong>__constant__</strong> address qualifier. This memory is declared outside the kernel. In <a href="mat_mult_shared_A.cpp">mat_mult_shared_A.cpp</a> we declare an array of coefficients called <strong>coeffs</strong>.</p>
+<h3 id="Constant-memory">Constant memory<a class="anchor-link" href="#Constant-memory">&#182;</a></h3><p>Constant memory is located in fast memory storage and is defined by the <strong>__constant__</strong> address qualifier. This memory is declared outside the kernel. In <a href="mat_mult_shared_A.cpp">mat_mult_shared_A.cpp</a> we declare an array of coefficients called <strong>coeffs</strong>.</p>
 <div class="highlight"><pre><span></span><span class="c1">// Define some constant memory</span>
 <span class="n">__constant__</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">coeffs</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span><span class="w"></span>
 </pre></div>
-<h4 id="Access-from-the-host">Access from the host<a class="anchor-link" href="#Access-from-the-host">&#182;</a></h4><p>Within the main program we use the function <strong>hipMemcpyToSymbol</strong> to copy memory from the main program to the allocated constant memory.</p>
+<h4 id="Write-access-from-the-host">Write access from the host<a class="anchor-link" href="#Write-access-from-the-host">&#182;</a></h4><p>Within the main program we use the function <strong>hipMemcpyToSymbol</strong> to copy memory from the main program to the allocated constant memory.</p>
 <div class="highlight"><pre><span></span><span class="c1">// Copy memory to the coefficients</span>
 <span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">temp_coeffs</span><span class="p">[</span><span class="n">NCOEFFS</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">};</span><span class="w"></span>
 <span class="w">    </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="w"></span>

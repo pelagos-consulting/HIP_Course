@@ -26,6 +26,10 @@ all: $(TARGETS)
 %.exe: %.cpp
 	$(CXX) $(CXXFLAGS) $(BASE_INC_FLAGS) $< -o $@ $(BASE_LIB_FLAGS)
 
+# Special compilation flag for hipblas codes
+%hipblas.exe: %hipblas.cpp
+	$(CXX) $(CXXFLAGS) $(BASE_INC_FLAGS) $< -o $@ $(BASE_LIB_FLAGS) -lhipblas
+
 # Clean step
 clean:
 	rm -rf *.exe

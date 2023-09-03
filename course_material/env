@@ -24,7 +24,7 @@ endif
 BASE_INC_FLAGS=-I../include
 
 # Miscellaneous library flags for base compilation
-BASE_LIB_FLAGS=-lhipblas
+BASE_LIB_FLAGS=
 
 # Flags for CUDA platform
 ifeq ($(HIP_PLATFORM), nvidia)    
