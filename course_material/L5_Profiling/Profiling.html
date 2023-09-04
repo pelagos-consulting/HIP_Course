@@ -14719,7 +14719,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make clean<span class="p">;</span> make mat_mult_profiling.exe<span class="p">;</span> ./mat_mult_profiling.exe
@@ -14745,18 +14745,18 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>rm -r *.exe
-hipcc -g -fopenmp -O2 -I../include mat_mult_profiling.cpp -o mat_mult_profiling.exe 
+hipcc -g -O2 -Xcompiler -fopenmp  -I../include mat_mult_profiling.cpp -o mat_mult_profiling.exe -lgomp 
 Device id: 0
-	name:                                    
-	global memory size:                      536 MB
+	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
+	global memory size:                      6226 MB
 	available registers per block:           65536 
-	maximum shared memory size per block:    65 KB
-	maximum pitch size for memory copies:    536 MB
-	max block size:                          (1024,1024,1024)
+	maximum shared memory size per block:    49 KB
+	maximum pitch size for memory copies:    2147 MB
+	max block size:                          (1024,1024,64)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,2147483647,2147483647)
-Time for event &#34;memcpy&#34;: 0.669 ms (2376.81 MB/s)
-Time for event &#34;mat_mult kernel&#34;: 3.006 ms
+	max Grid size:                           (2147483647,65535,65535)
+Time for event &#34;memcpy&#34;: 0.144 ms (11031.54 MB/s)
+Time for event &#34;mat_mult kernel&#34;: 0.446 ms
 Maximum error (infinity norm) is: 2.28882e-05
 </pre>
 </div>
@@ -14906,7 +14906,7 @@ File &#39;rocprof_trace/result.json&#39; is generating
 </tr>
 </tbody>
 </table>
-<p>We can load the trace file <strong>result.json</strong> using a web browser. In a web browser you can go to this site for a user interface on viewing trace information for offline use.</p>
+<p>We can load the trace file <strong>rocprof_trace/result.json</strong> using a web browser. In a web browser you can go to this site for a user interface on viewing trace information for offline use.</p>
 <p><a href="https://ui.perfetto.dev/">https://ui.perfetto.dev/</a></p>
 <p>Download the trace file <strong>result.json</strong> to your computer and open it with the Perfetto UI in your web browser.</p>
 
@@ -14973,112 +14973,112 @@ File &#39;rocprof_trace/result.json&#39; is generating
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>RPL: on &#39;230518_143428&#39; from &#39;/opt/rocm-5.4.3&#39; in &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L5_Profiling&#39;
+<pre>RPL: on &#39;230904_171204&#39; from &#39;/opt/rocm-5.6.0&#39; in &#39;/home/toby/Pelagos/Projects/HIP_Course/course_material/L5_Profiling&#39;
 Derived metrics:
 
-  gpu-agent0 : GPU_UTIL : Percentage of the time that GUI is active
+  gpu-agent1 : GPU_UTIL : Percentage of the time that GUI is active
       GPU_UTIL = 100*GRBM_GUI_ACTIVE/GRBM_COUNT
 
-  gpu-agent0 : CP_UTIL : Percentage of the GRBM_GUI_ACTIVE time that any of the Command Processor (CPG/CPC/CPF) blocks are busy
+  gpu-agent1 : CP_UTIL : Percentage of the GRBM_GUI_ACTIVE time that any of the Command Processor (CPG/CPC/CPF) blocks are busy
       CP_UTIL = 100*GRBM_CP_BUSY/GRBM_GUI_ACTIVE
 
-  gpu-agent0 : SPI_UTIL : Percentage of the GRBM_GUI_ACTIVE time that any of the Shader Pipe Interpolators (SPI) are busy in the shader engine(s)
+  gpu-agent1 : SPI_UTIL : Percentage of the GRBM_GUI_ACTIVE time that any of the Shader Pipe Interpolators (SPI) are busy in the shader engine(s)
       SPI_UTIL = 100*GRBM_SPI_BUSY/GRBM_GUI_ACTIVE
 
-  gpu-agent0 : TA_UTIL : Percentage of the GRBM_GUI_ACTIVE time that any of the Texture Pipes (TA) are busy in the shader engine(s).
+  gpu-agent1 : TA_UTIL : Percentage of the GRBM_GUI_ACTIVE time that any of the Texture Pipes (TA) are busy in the shader engine(s).
       TA_UTIL = 100*GRBM_TA_BUSY/GRBM_GUI_ACTIVE
 
-  gpu-agent0 : GDS_UTIL : Percentage of the GRBM_GUI_ACTIVE time that the Global Data Share (GDS) is busy.
+  gpu-agent1 : GDS_UTIL : Percentage of the GRBM_GUI_ACTIVE time that the Global Data Share (GDS) is busy.
       GDS_UTIL = 100*GRBM_GDS_BUSY/GRBM_GUI_ACTIVE
 
-  gpu-agent0 : EA_UTIL : Percentage of the GRBM_GUI_ACTIVE time that the Efficiency Arbiter (EA) block is busy.
+  gpu-agent1 : EA_UTIL : Percentage of the GRBM_GUI_ACTIVE time that the Efficiency Arbiter (EA) block is busy.
       EA_UTIL = 100*GRBM_EA_BUSY/GRBM_GUI_ACTIVE
 
-  gpu-agent0 : WAVE_DEP_WAIT : Percentage of the SQ_WAVE_CYCLE time spent waiting for anything.
+  gpu-agent1 : WAVE_DEP_WAIT : Percentage of the SQ_WAVE_CYCLE time spent waiting for anything.
       WAVE_DEP_WAIT = 100*SQ_WAIT_ANY/SQ_WAVE_CYCLES
 
-  gpu-agent0 : WAVE_ISSUE_WAIT : Percentage of the SQ_WAVE_CYCLE time spent waiting for any instruction issue.
+  gpu-agent1 : WAVE_ISSUE_WAIT : Percentage of the SQ_WAVE_CYCLE time spent waiting for any instruction issue.
       WAVE_ISSUE_WAIT = 100*SQ_WAIT_INST_ANY/SQ_WAVE_CYCLES
 
-  gpu-agent0 : TA_BUSY_avr : TA block is busy. Average over TA instances.
+  gpu-agent1 : TA_BUSY_avr : TA block is busy. Average over TA instances.
       TA_BUSY_avr = avr(TA_TA_BUSY,16)
 
-  gpu-agent0 : TA_BUSY_max : TA block is busy. Max over TA instances.
+  gpu-agent1 : TA_BUSY_max : TA block is busy. Max over TA instances.
       TA_BUSY_max = max(TA_TA_BUSY,16)
 
-  gpu-agent0 : TA_BUSY_min : TA block is busy. Min over TA instances.
+  gpu-agent1 : TA_BUSY_min : TA block is busy. Min over TA instances.
       TA_BUSY_min = min(TA_TA_BUSY,16)
 
-  gpu-agent0 : TA_FLAT_LOAD_WAVEFRONTS_sum : Number of flat load vec32 packets processed by the TA. Sum over TA instances.
+  gpu-agent1 : TA_FLAT_LOAD_WAVEFRONTS_sum : Number of flat load vec32 packets processed by the TA. Sum over TA instances.
       TA_FLAT_LOAD_WAVEFRONTS_sum = sum(TA_FLAT_LOAD_WAVEFRONTS,16)
 
-  gpu-agent0 : TA_FLAT_STORE_WAVEFRONTS_sum : Number of flat store vec32 packets processed by the TA. Sum over TA instances.
+  gpu-agent1 : TA_FLAT_STORE_WAVEFRONTS_sum : Number of flat store vec32 packets processed by the TA. Sum over TA instances.
       TA_FLAT_STORE_WAVEFRONTS_sum = sum(TA_FLAT_STORE_WAVEFRONTS,16)
 
-  gpu-agent0 : GL2C_HIT_sum : Number of cache hits. Sum over GL2C instances.
+  gpu-agent1 : GL2C_HIT_sum : Number of cache hits. Sum over GL2C instances.
       GL2C_HIT_sum = sum(GL2C_HIT,16)
 
-  gpu-agent0 : GL2C_MISS_sum : Number of cache misses. Sum over GL2C instances.
+  gpu-agent1 : GL2C_MISS_sum : Number of cache misses. Sum over GL2C instances.
       GL2C_MISS_sum = sum(GL2C_MISS,16)
 
-  gpu-agent0 : GL2C_EA_RDREQ_32B_sum : Number of 32-byte GL2C/EA read requests. Sum over GL2C instances.
+  gpu-agent1 : GL2C_EA_RDREQ_32B_sum : Number of 32-byte GL2C/EA read requests. Sum over GL2C instances.
       GL2C_EA_RDREQ_32B_sum = sum(GL2C_EA_RDREQ_32B,16)
 
-  gpu-agent0 : GL2C_EA_RDREQ_64B_sum : Number of 64-byte GL2C/EA read requests. Sum over GL2C instances.
+  gpu-agent1 : GL2C_EA_RDREQ_64B_sum : Number of 64-byte GL2C/EA read requests. Sum over GL2C instances.
       GL2C_EA_RDREQ_64B_sum = sum(GL2C_EA_RDREQ_64B,16)
 
-  gpu-agent0 : GL2C_EA_RDREQ_96B_sum : Number of 96-byte GL2C/EA read requests. Sum over GL2C instances.
+  gpu-agent1 : GL2C_EA_RDREQ_96B_sum : Number of 96-byte GL2C/EA read requests. Sum over GL2C instances.
       GL2C_EA_RDREQ_96B_sum = sum(GL2C_EA_RDREQ_96B,16)
 
-  gpu-agent0 : GL2C_EA_RDREQ_128B_sum : Number of 128-byte GL2C/EA read requests. Sum over GL2C instances.
+  gpu-agent1 : GL2C_EA_RDREQ_128B_sum : Number of 128-byte GL2C/EA read requests. Sum over GL2C instances.
       GL2C_EA_RDREQ_128B_sum = sum(GL2C_EA_RDREQ_128B,16)
 
-  gpu-agent0 : GL2C_MC_RDREQ_sum : Number of GL2C/EA read requests (either 32-byte or 64-byte or 128-byte). Sum over GL2C instances.
+  gpu-agent1 : GL2C_MC_RDREQ_sum : Number of GL2C/EA read requests (either 32-byte or 64-byte or 128-byte). Sum over GL2C instances.
       GL2C_MC_RDREQ_sum = sum(GL2C_MC_RDREQ,16)
 
-  gpu-agent0 : GL2C_MC_WRREQ_sum : Number of transactions (either 32-byte or 64-byte) going over the GL2C_MC_wrreq interface. Sum over GL2C instances.
+  gpu-agent1 : GL2C_MC_WRREQ_sum : Number of transactions (either 32-byte or 64-byte) going over the GL2C_MC_wrreq interface. Sum over GL2C instances.
       GL2C_MC_WRREQ_sum = sum(GL2C_MC_WRREQ,16)
 
-  gpu-agent0 : GL2C_EA_WRREQ_64B_sum : Number of 64-byte transactions going (64-byte write or CMPSWAP) over the GL2C_EA_wrreq interface. Sum over GL2C instances.
+  gpu-agent1 : GL2C_EA_WRREQ_64B_sum : Number of 64-byte transactions going (64-byte write or CMPSWAP) over the GL2C_EA_wrreq interface. Sum over GL2C instances.
       GL2C_EA_WRREQ_64B_sum = sum(GL2C_EA_WRREQ_64B,16)
 
-  gpu-agent0 : GL2C_WRREQ_STALL_max : Number of cycles a write request was stalled. Max over GL2C instances.
+  gpu-agent1 : GL2C_WRREQ_STALL_max : Number of cycles a write request was stalled. Max over GL2C instances.
       GL2C_WRREQ_STALL_max = max(GL2C_MC_WRREQ_STALL,16)
 
-  gpu-agent0 : L2CacheHit : The percentage of fetch, write, atomic, and other instructions that hit the data in L2 cache. Value range: 0% (no hit) to 100% (optimal).
+  gpu-agent1 : L2CacheHit : The percentage of fetch, write, atomic, and other instructions that hit the data in L2 cache. Value range: 0% (no hit) to 100% (optimal).
       L2CacheHit = 100*sum(GL2C_HIT,16)/(sum(GL2C_HIT,16)+sum(GL2C_MISS,16))
 
-  gpu-agent0 : FETCH_SIZE : The total kilobytes fetched from the video memory. This is measured with all extra fetches and any cache or memory effects taken into account.
+  gpu-agent1 : FETCH_SIZE : The total kilobytes fetched from the video memory. This is measured with all extra fetches and any cache or memory effects taken into account.
       FETCH_SIZE = (GL2C_EA_RDREQ_32B_sum*32+GL2C_EA_RDREQ_64B_sum*64+GL2C_EA_RDREQ_96B_sum*96+GL2C_EA_RDREQ_128B_sum*128)/1024
 
-  gpu-agent0 : WriteUnitStalled : The percentage of GPUTime the Write unit is stalled. Value range: 0% to 100% (bad).
+  gpu-agent1 : WriteUnitStalled : The percentage of GPUTime the Write unit is stalled. Value range: 0% to 100% (bad).
       WriteUnitStalled = 100*GL2C_WRREQ_STALL_max/GRBM_GUI_ACTIVE
 
-  gpu-agent0 : LDSBankConflict : The percentage of GPUTime LDS is stalled by bank conflicts. Value range: 0% (optimal) to 100% (bad).
+  gpu-agent1 : LDSBankConflict : The percentage of GPUTime LDS is stalled by bank conflicts. Value range: 0% (optimal) to 100% (bad).
       LDSBankConflict = 100*SQC_LDS_BANK_CONFLICT/SQC_LDS_IDX_ACTIVE
 
-  gpu-agent0 : GPUBusy : The percentage of time GPU was busy.
+  gpu-agent1 : GPUBusy : The percentage of time GPU was busy.
       GPUBusy = 100*GRBM_GUI_ACTIVE/GRBM_COUNT
 
-  gpu-agent0 : Wavefronts : Total wavefronts.
+  gpu-agent1 : Wavefronts : Total wavefronts.
       Wavefronts = SQ_WAVES
 
-  gpu-agent0 : VALUInsts : The average number of vector ALU instructions executed per work-item (affected by flow control).
+  gpu-agent1 : VALUInsts : The average number of vector ALU instructions executed per work-item (affected by flow control).
       VALUInsts = SQ_INSTS_VALU/SQ_WAVES
 
-  gpu-agent0 : SALUInsts : The average number of scalar ALU instructions executed per work-item (affected by flow control).
+  gpu-agent1 : SALUInsts : The average number of scalar ALU instructions executed per work-item (affected by flow control).
       SALUInsts = SQ_INSTS_SALU/SQ_WAVES
 
-  gpu-agent0 : SFetchInsts : The average number of scalar fetch instructions from the video memory executed per work-item (affected by flow control).
+  gpu-agent1 : SFetchInsts : The average number of scalar fetch instructions from the video memory executed per work-item (affected by flow control).
       SFetchInsts = SQ_INSTS_SMEM/SQ_WAVES
 
-  gpu-agent0 : GDSInsts : The average number of GDS read or GDS write instructions executed per work item (affected by flow control).
+  gpu-agent1 : GDSInsts : The average number of GDS read or GDS write instructions executed per work item (affected by flow control).
       GDSInsts = SQ_INSTS_GDS/SQ_WAVES
 
-  gpu-agent0 : MemUnitBusy : The percentage of GPUTime the memory unit is active. The result includes the stall time (MemUnitStalled). This is measured with all extra fetches and writes and any cache or memory effects taken into account. Value range: 0% to 100% (fetch-bound).
+  gpu-agent1 : MemUnitBusy : The percentage of GPUTime the memory unit is active. The result includes the stall time (MemUnitStalled). This is measured with all extra fetches and writes and any cache or memory effects taken into account. Value range: 0% to 100% (fetch-bound).
       MemUnitBusy = 100*max(TA_TA_BUSY,16)/GRBM_GUI_ACTIVE/SE_NUM
 
-  gpu-agent0 : ALUStalledByLDS : The percentage of GPUTime ALU units are stalled by the LDS input queue being full or the output queue being not ready. If there are LDS bank conflicts, reduce them. Otherwise, try reducing the number of LDS accesses if possible. Value range: 0% (optimal) to 100% (bad).
+  gpu-agent1 : ALUStalledByLDS : The percentage of GPUTime ALU units are stalled by the LDS input queue being full or the output queue being not ready. If there are LDS bank conflicts, reduce them. Otherwise, try reducing the number of LDS accesses if possible. Value range: 0% (optimal) to 100% (bad).
       ALUStalledByLDS = 100*SQ_WAIT_INST_LDS*4/SQ_WAVES/GRBM_GUI_ACTIVE
 
 ROCPRofiler: 0 contexts collected
@@ -15631,7 +15631,7 @@ $$a_{0}=\frac{23.95}{1.6} \approx 15$$<p>Shown below is a roofline plot of <stro
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="Performance-measurement-with-NVIDIA-tools">Performance measurement with NVIDIA tools<a class="anchor-link" href="#Performance-measurement-with-NVIDIA-tools">&#182;</a></h2><p>HIP applications that use the CUDA backend (when CUDA is available and the environment variable <code>HIP_PLATFORM</code> is set to <code>nvidia</code>) have access to the NVIDIA performance measurement tools such as <a href="https://developer.nvidia.com/nsight-systems">NVIDIA Nsight Systems</a> and <a href="https://developer.nvidia.com/nsight-compute">NVIDIA Nsight Compute</a>. Here we briefly cover how to use these tools.</p>
-<h3 id="Tracing-with-Nsight-Systems">Tracing with Nsight Systems<a class="anchor-link" href="#Tracing-with-Nsight-Systems">&#182;</a></h3><p>The command line application <strong>nsys</strong> can collect traces on <strong>mat_mult_profiling.exe</strong>. Make sure you have re-compiled <strong>mat_mult_profiling.exe</strong> with the <code>$HIP_PLATFORM</code> environment variable set to <code>nvidia</code>.</p>
+<h3 id="Tracing-with-Nsight-Systems">Tracing with Nsight Systems<a class="anchor-link" href="#Tracing-with-Nsight-Systems">&#182;</a></h3><p>The command line application <strong>nsys</strong> can collect traces on <strong>mat_mult_profiling.exe</strong>. Make sure you have re-compiled <strong>mat_mult_profiling.exe</strong> with the <code>HIP_PLATFORM</code> environment variable set to <code>nvidia</code>.</p>
 
 </div>
 </div>
