@@ -210,16 +210,16 @@ void h_report_on_device(int device_id) {
     std::printf("\t%-40s %s\n","name:", prop.name);
 
     // Size of global memory
-    std::printf("\t%-40s %lu MB\n","global memory size:",prop.totalGlobalMem/(1000000));
+    std::printf("\t%-40s %lu MB\n","global memory size:", prop.totalGlobalMem/(1000000));
 
     // Maximum number of registers per block
-    std::printf("\t%-40s %d \n","available registers per block:",prop.regsPerBlock);
+    std::printf("\t%-40s %d \n","available registers per block:", prop.regsPerBlock);
 
     // Maximum shared memory size per block
-    std::printf("\t%-40s %lu KB\n","maximum shared memory size per block:",prop.sharedMemPerBlock/(1000));
+    std::printf("\t%-40s %lu KB\n","maximum shared memory size per block:", prop.sharedMemPerBlock/(1000));
 
     // Maximum pitch size for memory copies (MB)
-    std::printf("\t%-40s %lu MB\n","maximum pitch size for memory copies:",prop.memPitch/(1000000));
+    std::printf("\t%-40s %lu MB\n","maximum pitch size for memory copies:", prop.memPitch/(1000000));
 
     // Print out the maximum number of threads along a dimension of a block
     std::printf("\t%-40s (", "max block size:");
