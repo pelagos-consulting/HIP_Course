@@ -11,14 +11,7 @@ endif
 
 # Compiler locations
 CXX=hipcc
-CXXFLAGS=-g -fopenmp
-
-# Debugging instructions
-ifeq ($(DEBUG), true)
-    CXXFLAGS:=-O1 -ggdb $(CXXFLAGS)
-else
-    CXXFLAGS:=$(CXXFLAGS) -O2
-endif
+CXXFLAGS=-fopenmp
 
 # Miscellaneous include flags for base compilation 
 BASE_INC_FLAGS=-I../include
@@ -26,11 +19,20 @@ BASE_INC_FLAGS=-I../include
 # Miscellaneous library flags for base compilation
 BASE_LIB_FLAGS=
 
-# Flags for CUDA platform
-ifeq ($(HIP_PLATFORM), nvidia)    
-    CXXFLAGS=-O2 -Xcompiler -fopenmp
+ifeq ($(HIP_PLATFORM), nvidia)
+    # Flags for CUDA platform
+    CXXFLAGS:=-Xcompiler $(CXXFLAGS)
     ifeq ($(DEBUG), true)
-        CXXFLAGS=-g -G $(CXXFLAGS)
+        CXXFLAGS:=-g -G $(CXXFLAGS)
+    else
+        CXXFLAGS:=-g -O2 $(CXXFLAGS) 
     endif
     BASE_LIB_FLAGS:=-lgomp $(BASE_LIB_FLAGS)
+else
+    # Normal compilation
+    ifeq ($(DEBUG), true)
+        CXXFLAGS:=-O1 -g -ggdb $(CXXFLAGS)
+    else
+        CXXFLAGS:=-g -O2 $(CXXFLAGS)
+    endif
 endif

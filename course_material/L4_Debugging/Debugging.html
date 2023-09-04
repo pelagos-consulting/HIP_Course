@@ -14652,7 +14652,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make clean<span class="p">;</span> make mat_mult_bug.exe<span class="p">;</span> ./mat_mult_bug.exe
@@ -14678,17 +14678,17 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>rm -r *.exe
-hipcc -O1 -ggdb -g -fopenmp -I../include mat_mult_bug.cpp -o mat_mult_bug.exe 
+hipcc -g -G -O2 -Xcompiler -fopenmp -I../include mat_mult_bug.cpp -o mat_mult_bug.exe -lgomp 
 Device id: 0
-	name:                                    
-	global memory size:                      536 MB
+	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
+	global memory size:                      6226 MB
 	available registers per block:           65536 
-	maximum shared memory size per block:    65 KB
-	maximum pitch size for memory copies:    536 MB
-	max block size:                          (1024,1024,1024)
+	maximum shared memory size per block:    49 KB
+	maximum pitch size for memory copies:    2147 MB
+	max block size:                          (1024,1024,64)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,2147483647,2147483647)
-Maximum error (infinity norm) is: 8.91506e+21
+	max Grid size:                           (2147483647,65535,65535)
+Maximum error (infinity norm) is: 5.31128
 </pre>
 </div>
 </div>
