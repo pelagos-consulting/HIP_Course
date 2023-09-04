@@ -2,7 +2,8 @@
 pmc: TCC_HIT_sum, TCC_MISS_sum
 
 # Total video memory fetched and written
-pmc: FETCH_SIZE, WRITE_SIZE
+pmc: FETCH_SIZE
+pmc: WRITE_SIZE
 
 # Percentage of time the GPU was busy, total wavefronts executed
 pmc: GPUBusy, Wavefronts
