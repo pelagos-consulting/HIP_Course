@@ -15122,7 +15122,7 @@ Maximum error (infinity norm) is: 5.31128
 <p>is intended to compile the file <a href="mat_mult_bug.cpp">mat_mult_bug.cpp</a> with debugging support, however we use the <code>-O1</code> flag to avoid the compiler bug.</p>
 
 <pre><code>hipcc -O1 -ggdb mat_mult_bug.cpp -o mat_mult_bug.exe</code></pre>
-<h3 id="Running-ROCGDB">Running ROCGDB<a class="anchor-link" href="#Running-ROCGDB">&#182;</a></h3><p>Within ROCGDB for GPU archicectures there is the concept of <strong>threads</strong> and <strong>lanes</strong>. A <em>thread</em> is charge of a wavefront, which is executed on a compute unit, and a lane is a shader core core that executes the instructions in parallel as part of a wavefront.</p>
+<h3 id="Running-ROCGDB">Running ROCGDB<a class="anchor-link" href="#Running-ROCGDB">&#182;</a></h3><p>Within ROCGDB for GPU architectures there is the concept of <strong>threads</strong> and <strong>lanes</strong>. A <em>thread</em> is charge of a wavefront, which is executed on a compute unit, and a lane is a shader core core that executes the instructions in parallel as part of a wavefront.</p>
 <p>We execute <strong>rocgdb</strong> for <strong>mat_mult_bug.exe</strong> as follows:</p>
 <div class="highlight"><pre><span></span>rocgdb --args ./mat_mult_bug.exe
 </pre></div>
@@ -15213,7 +15213,13 @@ run</code></pre>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>At the time of writing ROCGDB doesn't appear to support printing private kernel variables from within a lane. According to <a href="https://github.com/ROCm-Developer-Tools/ROCgdb/issues/14#issuecomment-1423581387">this source on Github</a>, printing kernel variables is <strong>hopefully</strong> going to be introduced with a future version. Until this feature is available we can either use <strong>printf</strong> from within a kernel or <strong>view variables by examining register contents</strong> directly. Here is how to use registers to see what we need.</p>
+<p>Now we step through lines of code with the command <code>n</code> and print variables.</p>
+<div class="highlight"><pre><span></span>n
+n
+print i1
+print i0
+</pre></div>
+<p>It should then become clear that i0 and i1 are going beyond the bounds of the array C and we need to insert a guard condition.</p>
 <h4 id="Viewing-register-contents">Viewing register contents<a class="anchor-link" href="#Viewing-register-contents">&#182;</a></h4><p>We turn on the view of assembly code to see which registers are being worked with.</p>
 <div class="highlight"><pre><span></span><span class="nb">set</span>  disassemble-next-line on
 </pre></div>
@@ -15264,10 +15270,10 @@ $18 = {8.96831017e-44, 9.10844002e-44, 9.24856986e-44, 9.38869971e-44, 9.5288295
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Enable-memory-accesss-checking">Enable memory accesss checking<a class="anchor-link" href="#Enable-memory-accesss-checking">&#182;</a></h3><p>Within GDB the command</p>
+<h3 id="Enable-memory-accesss-checking">Enable memory accesss checking<a class="anchor-link" href="#Enable-memory-accesss-checking">&#182;</a></h3><p>Within GDB, the command</p>
 <div class="highlight"><pre><span></span><span class="nb">set</span> amdgpu precise-memory on
 </pre></div>
-<p>will turn on checking for memory access violations</p>
+<p>will turn on checking for memory access violations. This didn't seem to pick up the error on Setonix however.</p>
 
 </div>
 </div>
