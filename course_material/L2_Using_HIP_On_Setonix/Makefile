@@ -18,7 +18,7 @@ CC_LDFLAGS=$(BASE_LIB_FLAGS)
 HIPCC_CFLAGS=-ggdb -fopenmp $(BASE_INC_FLAGS) -I${MPICH_DIR}/include --offload-arch=gfx90a $(shell CC --cray-print-opts=cflags)
 
 # Linker flags for hipcc on AMD platform
-HIPCC_LDFLAGS=-L$(MPICH_DIR)/lib -lmpi $(PE_MPICH_GTL_DIR_amd_gfx90a) $(PE_MPICH_GTL_LIBS_amd_gfx90a) $(shell CC --cray-print-opts=libs) $(BASE_LIB_FLAGS)
+HIPCC_LDFLAGS=--offload-arch=gfx90a -L$(MPICH_DIR)/lib -lmpi $(PE_MPICH_GTL_DIR_amd_gfx90a) $(PE_MPICH_GTL_LIBS_amd_gfx90a) $(shell CC --cray-print-opts=libs) $(BASE_LIB_FLAGS)
 
 # Compile the kernel source only with hipcc
 %.o : %.hip.cpp
