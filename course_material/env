@@ -19,6 +19,7 @@ BASE_INC_FLAGS=-I../include
 # Miscellaneous library flags for base compilation
 BASE_LIB_FLAGS=
 
+# Select the right platform
 ifeq ($(HIP_PLATFORM), nvidia)
     # Flags for CUDA platform
     CXXFLAGS:=-Xcompiler $(CXXFLAGS)
@@ -35,4 +36,9 @@ else
     else
         CXXFLAGS:=-g -O2 $(CXXFLAGS)
     endif
+endif
+
+# Special flags for Setonix
+ifeq ($(findstring setonix,$(SLURM_SUBMIT_HOST)),setonix)
+    CXXFLAGS:=--offload-arch=gfx90a $(CXXFLAGS)
 endif
