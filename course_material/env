@@ -32,7 +32,7 @@ ifeq ($(HIP_PLATFORM), nvidia)
 else
     # Normal compilation
     ifeq ($(DEBUG), true)
-        CXXFLAGS:=-O1 -g -ggdb $(CXXFLAGS)
+        CXXFLAGS:=-O0 -g -ggdb $(CXXFLAGS)
     else
         CXXFLAGS:=-g -O2 $(CXXFLAGS)
     endif
