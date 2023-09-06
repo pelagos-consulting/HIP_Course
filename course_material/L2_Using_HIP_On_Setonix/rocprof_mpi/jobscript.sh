@@ -4,18 +4,15 @@
 #SBATCH --partition=gpu            # Using the gpu partition
 #SBATCH --ntasks=2                 # Total number of tasks
 #SBATCH --ntasks-per-node=2        # Set this for 1 mpi task per compute device
-#SBATCH --cpus-per-task=8          # How many OpenMP threads per MPI task
-#SBATCH --threads-per-core=1       # How many omp threads per core
 #SBATCH --gpus-per-task=1          # How many HIP compute devices to allocate to a task
 #SBATCH --gpu-bind=closest         # Bind each MPI taks to the nearest GPU
-#SBATCH --mem=4000M                # Indicate the amount of memory per node when asking for share resources
 #SBATCH --time=01:00:00
 
 module swap PrgEnv-gnu PrgEnv-cray
 module load craype-accel-amd-gfx90a
 module load rocm
 
-export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK   #To define the number of OpenMP threads available per MPI task, in this case it will be 8
+export OMP_NUM_THREADS=8   #To define the number of OpenMP threads available per MPI task, in this case it will always be 8
 export OMP_PLACES=cores     #To bind to cores 
 export OMP_PROC_BIND=close  #To bind (fix) threads (allocating them as close as possible). This option works together with the "places" indicated above, then: allocates threads in closest cores.
  
