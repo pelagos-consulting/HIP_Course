@@ -14640,17 +14640,23 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>rm -r *.exe
-hipcc -g -fopenmp -O2 -I../include mat_elementwise.cpp -o mat_elementwise.exe 
-hipcc -g -fopenmp -O2 -I../include mat_elementwise_answer.cpp -o mat_elementwise_answer.exe 
+hipcc -g -O2 -Xcompiler -fopenmp  -I../include mat_elementwise.cpp -o mat_elementwise.exe -lgomp 
+<span class="ansi-bold">mat_elementwise.cpp(32)</span>: <span class="ansi-magenta-intense-fg ansi-bold">warning</span> #177-D: variable <span class="ansi-bold">&#34;i0&#34;</span> was declared but never referenced
+
+<span class="ansi-bold">mat_elementwise.cpp(33)</span>: <span class="ansi-magenta-intense-fg ansi-bold">warning</span> #177-D: variable <span class="ansi-bold">&#34;i1&#34;</span> was declared but never referenced
+
+<span class="ansi-bold">mat_elementwise.cpp(50)</span>: <span class="ansi-magenta-intense-fg ansi-bold">warning</span> #177-D: variable <span class="ansi-bold">&#34;num_devices&#34;</span> was declared but never referenced
+
+hipcc -g -O2 -Xcompiler -fopenmp  -I../include mat_elementwise_answer.cpp -o mat_elementwise_answer.exe -lgomp 
 Device id: 0
-	name:                                    
-	global memory size:                      536 MB
+	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
+	global memory size:                      6226 MB
 	available registers per block:           65536 
-	maximum shared memory size per block:    65 KB
-	maximum pitch size for memory copies:    536 MB
-	max block size:                          (1024,1024,1024)
+	maximum shared memory size per block:    49 KB
+	maximum pitch size for memory copies:    2147 MB
+	max block size:                          (1024,1024,64)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,2147483647,2147483647)
+	max Grid size:                           (2147483647,65535,65535)
 The output array F_h (as computed with HIP) is
 ----
 |  4.50e-01  1.70e-01  2.77e-01  2.21e-02 |
@@ -14748,14 +14754,14 @@ The residual (F_answer_h-F_h) is
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>make: Nothing to be done for &#39;all&#39;.
 Device id: 0
-	name:                                    
-	global memory size:                      536 MB
+	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
+	global memory size:                      6226 MB
 	available registers per block:           65536 
-	maximum shared memory size per block:    65 KB
-	maximum pitch size for memory copies:    536 MB
-	max block size:                          (1024,1024,1024)
+	maximum shared memory size per block:    49 KB
+	maximum pitch size for memory copies:    2147 MB
+	max block size:                          (1024,1024,64)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,2147483647,2147483647)
+	max Grid size:                           (2147483647,65535,65535)
 The output array F_h (as computed with HIP) is
 ----
 |  0.00e+00  0.00e+00  0.00e+00  0.00e+00 |
@@ -14896,7 +14902,7 @@ The residual (F_answer_h-F_h) is
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>make<span class="p">;</span> ./mat_elementwise.exe
@@ -14921,16 +14927,22 @@ The residual (F_answer_h-F_h) is
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>make: Nothing to be done for &#39;all&#39;.
+<pre>hipcc -g -O2 -Xcompiler -fopenmp  -I../include mat_elementwise.cpp -o mat_elementwise.exe -lgomp 
+<span class="ansi-bold">mat_elementwise.cpp(32)</span>: <span class="ansi-magenta-intense-fg ansi-bold">warning</span> #177-D: variable <span class="ansi-bold">&#34;i0&#34;</span> was declared but never referenced
+
+<span class="ansi-bold">mat_elementwise.cpp(33)</span>: <span class="ansi-magenta-intense-fg ansi-bold">warning</span> #177-D: variable <span class="ansi-bold">&#34;i1&#34;</span> was declared but never referenced
+
+<span class="ansi-bold">mat_elementwise.cpp(50)</span>: <span class="ansi-magenta-intense-fg ansi-bold">warning</span> #177-D: variable <span class="ansi-bold">&#34;num_devices&#34;</span> was declared but never referenced
+
 Device id: 0
-	name:                                    
-	global memory size:                      536 MB
+	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
+	global memory size:                      6226 MB
 	available registers per block:           65536 
-	maximum shared memory size per block:    65 KB
-	maximum pitch size for memory copies:    536 MB
-	max block size:                          (1024,1024,1024)
+	maximum shared memory size per block:    49 KB
+	maximum pitch size for memory copies:    2147 MB
+	max block size:                          (1024,1024,64)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,2147483647,2147483647)
+	max Grid size:                           (2147483647,65535,65535)
 The output array F_h (as computed with HIP) is
 ----
 |  0.00e+00  0.00e+00  0.00e+00  0.00e+00 |
