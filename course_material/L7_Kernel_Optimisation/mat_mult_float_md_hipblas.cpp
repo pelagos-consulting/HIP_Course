@@ -19,6 +19,9 @@ Written by Dr Toby M. Potter
 // Bring in the hipblas header files
 #include <hipblas/hipblas.h>
 
+// Bring in OpenMP functions
+#include "omp.h"
+
 typedef float float_type;
 
 int main(int argc, char** argv) {
@@ -36,15 +39,10 @@ int main(int argc, char** argv) {
     // Helper function to acquire devices
     // This sets the default device
     h_acquire_devices(&num_devices, dev_index);
-    
-    // Initialize hipblas
-    hipblasHandle_t hb_handle;
-    hipblasStatus_t hb_status = hipblasCreate(&hb_handle);
-    if (hb_status != HIPBLAS_STATUS_SUCCESS) {
-        std::printf("Failed to initialise hipBlas\n");
-         exit(EXIT_FAILURE); 
-    }
-    
+
+    // Set the number of OpenMP threads
+    omp_set_num_threads((int)num_devices);
+        
     // Report on the device in use
     h_report_on_device(dev_index);
     
@@ -85,6 +83,9 @@ int main(int argc, char** argv) {
     size_t nbytes_A_slab = slab_len*N1_A*sizeof(float_type);
     size_t nbytes_C_slab = slab_len*N1_C*sizeof(float_type);
 
+    // Initialize hipblas
+    hipblasHandle_t* hb_handles=(hipblasHandle_t*)calloc((size_t)num_devices, sizeof(hipblasHandle_t));
+
     // Arrays of device allocations for each device
     float_type** As_d = (float_type**)calloc((size_t)num_devices, sizeof(float_type*));
     float_type** As_slab_d = (float_type**)calloc((size_t)num_devices, sizeof(float_type*));
@@ -101,8 +102,15 @@ int main(int argc, char** argv) {
         H_ERRCHK(hipMalloc((void**)&As_slab_d[i], nbytes_A_slab));
         H_ERRCHK(hipMalloc((void**)&Cs_slab_d[i], nbytes_C_slab));
 
-        H_ERRCHK(hipMemcpy(As_d[s], A_h, nbytes_A, hipMemcpyHostToDevice));
+        H_ERRCHK(hipMemcpy(As_d[i], A_h, nbytes_A, hipMemcpyHostToDevice));
         H_ERRCHK(hipMemcpy(Bs_d[i], B_h, nbytes_B, hipMemcpyHostToDevice));
+
+        // Initialise hipblas for that device
+        hipblasStatus_t hb_status = hipblasCreate(&hb_handles[i]);
+        if (hb_status != HIPBLAS_STATUS_SUCCESS) {
+            std::printf("Failed to initialise hipBlas\n");
+            exit(EXIT_FAILURE); 
+        }
     }
    
     //// Step 5. 1. Upload matrices A_h and B_h from the host //// 
@@ -169,7 +177,7 @@ int main(int argc, char** argv) {
         // for col_major arrays this is dimension 0
 
         // Iterate over slabs
-        #pragma omp parallel for shared(command_queues, As_d, Bs_d, Cs_slab_d, C_h, N0_C, N1_C, kernel_times) default(none) schedule(dynamic,1)  
+        #pragma omp parallel for shared(As_d, As_slab_d, Bs_d, Cs_slab_d, C_h, N1_A, N0_C, N1_C, nslabs, slab_len, alpha, beta, hb_handles) default(none) schedule(dynamic,1)   
         for (int s=0; s<nslabs; s++) {
 
             // Get the thread ID
@@ -177,22 +185,34 @@ int main(int argc, char** argv) {
             H_ERRCHK(hipSetDevice(tid));
 
             // Copy memory to As_slab_d from As_d
-            // GOT TO HERE
+            hipMemcpy3DParms copy_parms = {0};
 
-            hb_status = hipblasSgemm(
-                hb_handle, // hipblas handle  
+            // Source pointer
+            copy_parms.srcPtr = make_hipPitchedPtr(As_d[tid], N1_A*sizeof(float_type), N1_A, N0_C);
+            // Source position
+            copy_parms.srcPos = make_hipPos(0, s*slab_len, 0);
+            // Destination pointer
+            copy_parms.dstPtr = make_hipPitchedPtr(As_slab_d[tid], N1_A*sizeof(float_type), N1_A, slab_len);
+            // Extent
+            copy_parms.extent = make_hipExtent(N1_A*sizeof(float_type), slab_len, 1);
+            copy_parms.kind = hipMemcpyDeviceToDevice;
+            // Perform the copy
+            H_ERRCHK(hipMemcpy3D(&copy_parms));
+
+            hipblasStatus_t hb_status = hipblasSgemm(
+                hb_handles[tid], // hipblas handle  
                 HIPBLAS_OP_N, // what operation to apply to A (none)
                 HIPBLAS_OP_N, // what operation to apply to B (none)
                 (int)N1_C, // number of rows in C_{col_major} -> number of columns in C_{row_major}
-                (int)N0_C, // number of columns in C_{col_major} -> number of rows in C_{row_major}
+                (int)slab_len, // number of columns in C_{col_major} -> number of rows in C_{row_major}
                 (int)N1_A, // number of columns in A_{col_major} -> number of rows in B_{row_major}
                 &alpha, // Constant
-                B_d, // Normally A_{col_major} -> B^{T}_{col_major} -> B_{row_major}
+                Bs_d[tid], // Normally A_{col_major} -> B^{T}_{col_major} -> B_{row_major}
                 (int)N1_C, // Leading dimension for B_{row_major} 
-                A_d, // Normally B_{col_major} -> A^{T}_{col_major} -> A_{row_major}
+                As_slab_d[tid], // Normally B_{col_major} -> A^{T}_{col_major} -> A_{row_major}
                 (int)N1_A, // Leading dimension for A_{row_major}
                 &beta, // Constant
-                C_d, // Pointer to memory for C_{row_major}
+                Cs_slab_d[tid], // Pointer to memory for C_{row_major}
                 (int)N1_C // Leading dimension for C_{row_major}
             );
     
@@ -204,10 +224,23 @@ int main(int argc, char** argv) {
             // Wait for any commands to complete on the compute device
             H_ERRCHK(hipDeviceSynchronize());
 
-            // Copy portion of memory back to C_h
-            // GOT TO HERE
+            // Copy portion of C back to host
 
-        }
+            // Source pointer
+            copy_parms.srcPtr = make_hipPitchedPtr(Cs_slab_d[tid], N1_C*sizeof(float_type), N1_C, slab_len);
+            // Source position
+            copy_parms.srcPos = make_hipPos(0, 0, 0);
+            // Destination pointer
+            copy_parms.dstPtr = make_hipPitchedPtr(C_h, N1_C*sizeof(float_type), N1_C, N0_C);
+            // Destination pointer
+            copy_parms.dstPos = make_hipPos(0, s*slab_len, 0);
+            // Extent 
+            copy_parms.extent = make_hipExtent(N1_C*sizeof(float_type), slab_len, 1);
+            // Kind
+            copy_parms.kind = hipMemcpyDeviceToHost;
+            // Perform the copy
+            H_ERRCHK(hipMemcpy3D(&copy_parms));
+        } // End parallel region
 
         // Stop the clock
         auto t2 = std::chrono::high_resolution_clock::now();
@@ -225,11 +258,7 @@ int main(int argc, char** argv) {
         
         avg_time_ms+=time_ms;
     }           
-        
-    //// Step 7. Copy the buffer for matrix C_d //// 
-    //// on the device back to C_h on the host ////
-    H_ERRCHK(hipMemcpy((void*)C_h, (const void*)C_d, nbytes_C, hipMemcpyDeviceToHost));
-    
+            
     //// Step 8. Test the computed matrix **C_h** against a known answer
     
     // Compute the serial solution using the matrix helper library
@@ -281,6 +310,9 @@ int main(int argc, char** argv) {
         // Memory for a slab
         H_ERRCHK(hipFree(As_slab_d[i]));
         H_ERRCHK(hipFree(Cs_slab_d[i]));
+
+        // Uninitialise hipblas
+        hipblasDestroy(hb_handles[i]);
     }
 
     // Clean up host memory
@@ -291,13 +323,12 @@ int main(int argc, char** argv) {
     free(As_d);
     free(Bs_d);
     free(As_slab_d);
-    free(Bs_slab_d);
+    free(Cs_slab_d);
+
+    free(hb_handles);
 
     // Free the answer matrix
     free(C_answer_h);
-    
-    // Uninitialise hipblas
-    hipblasDestroy(hb_handle);
     
     // Reset compute devices
     h_reset_devices(num_devices);

@@ -14,7 +14,8 @@ TARGETS=mat_mult_float.exe \
 		mat_mult_tile_shared_A_vector.exe \
 		mat_mult_tile_shared_B_vector.exe \
 		mat_mult_tile_shared_AB_vector.exe \
-		mat_mult_float_hipblas.exe        
+		mat_mult_float_hipblas.exe \
+		mat_mult_float_md_hipblas.exe
 #		vector_types.exe \
 #		atomics.exe \
 #		mat_elementwise.exe \
