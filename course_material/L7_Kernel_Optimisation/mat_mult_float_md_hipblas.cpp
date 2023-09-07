@@ -181,7 +181,7 @@ int main(int argc, char** argv) {
 
         // Iterate over slabs
         #pragma omp parallel for shared(As_d, As_slab_d, Bs_d, Cs_slab_d, C_h, N1_A, N0_C, N1_C, nslabs, slab_len, alpha, beta, hb_handles) default(none) schedule(dynamic,1)   
-        for (int s=0; s<nslabs; s++) {
+        for (size_t s=0; s<nslabs; s++) {
 
             // Get the thread ID
             int tid = omp_get_thread_num();
@@ -193,7 +193,7 @@ int main(int argc, char** argv) {
             // Source pointer
             copy_parms.srcPtr = make_hipPitchedPtr(As_d[tid], N1_A*sizeof(float_type), N1_A, N0_C);
             // Source position
-            copy_parms.srcPos = make_hipPos(0, s*slab_len, 0);
+            copy_parms.srcPos = make_hipPos(0, (size_t)(s*slab_len), 0);
             // Destination pointer
             copy_parms.dstPtr = make_hipPitchedPtr(As_slab_d[tid], N1_A*sizeof(float_type), N1_A, slab_len);
             // Extent
@@ -238,7 +238,7 @@ int main(int argc, char** argv) {
             // Destination pointer
             copy_parms.dstPos = make_hipPos(0, s*slab_len, 0);
             // Extent 
-            copy_parms.extent = make_hipExtent(N1_C*sizeof(float_type), slab_len, 1);
+            copy_parms.extent = make_hipExtent(N1_C*sizeof(float), slab_len, 1);
             // Kind
             copy_parms.kind = hipMemcpyDeviceToHost;
             // Perform the copy

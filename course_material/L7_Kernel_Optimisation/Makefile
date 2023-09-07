@@ -1,3 +1,5 @@
+DEBUG=true
+
 # Include general environment variables
 include ../env
 
