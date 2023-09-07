@@ -71,7 +71,7 @@ __global__ void mat_mult_shared_A (
     
     // A is of size (N0_C, N1_A)
     // B is of size (N1_A, N1_C)
-    // shared_B is of size (L1, N1_A)
+    // shared_A is of size (L0, N1_A)
     // C is of size (N0_C, N1_C)
     
     // i0 and i1 represent the coordinates in Matrix C 

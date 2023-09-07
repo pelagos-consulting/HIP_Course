@@ -64,7 +64,7 @@ __global__ void mat_mult_shared_A_vector (
     
     // A is of size (N0_C, N1_A)
     // B is of size (N1_A, N1_C)
-    // shared_B is of size (L1, N1_A)
+    // shared_A is of size (L0, N1_A)
     // C is of size (N0_C, N1_C)
     
     // i0 and i1 represent the coordinates in Matrix C 
@@ -121,10 +121,15 @@ __global__ void mat_mult_shared_A_vector (
             scratch.z = Bn_i1[2*N1_C];
             scratch.w = Bn_i1[3*N1_C];
             
-            // Loop across row s0 of shared_A
-            // and down column i1 of B
-            temp += shared_A[s0*N1_A_v+n]*scratch;
-            
+            // Perform the dot product using shared memory
+#ifdef __HIP_PLATFORM_NVIDIA__
+            temp.x += shared_A[s0*N1_A_v+n].x*scratch.x;
+            temp.y += shared_A[s0*N1_A_v+n].y*scratch.y;
+            temp.z += shared_A[s0*N1_A_v+n].z*scratch.z;
+            temp.w += shared_A[s0*N1_A_v+n].w*scratch.w;
+#else
+            temp+=shared_A[s0*N1_A_v+n]*scratch;
+#endif
         } 
         
         // Number of rows in C is same as number of rows in A

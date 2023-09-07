@@ -105,14 +105,14 @@ int main(int argc, char** argv) {
         hipHostMalloc(
             (void**)&A_h, 
             nbytes_A, 
-            hipHostMallocDefault | hipHostMallocNumaUser
+            hipHostMallocDefault 
         )
     );
     H_ERRCHK(
         hipHostMalloc(
             (void**)&B_h, 
             nbytes_B,
-            hipHostMallocDefault | hipHostMallocNumaUser
+            hipHostMallocDefault 
         )
     );
     
