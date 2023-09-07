@@ -66,7 +66,10 @@ int main(int argc, char** argv) {
     // Allocate memory for the host arrays
     float_type* A_h = (float_type*)h_alloc(nbytes_A);
     float_type* B_h = (float_type*)h_alloc(nbytes_B);
-    float_type* C_h = (float_type*)h_alloc(nbytes_C);
+
+    // Host memory 
+    float_type* C_h;
+    H_ERRCHK(hipHostMalloc((void**)&C_h, nbytes_C));
 
     // Fill the host arrays with random numbers 
     // using the matrix helper library
@@ -318,7 +321,7 @@ int main(int argc, char** argv) {
     // Clean up host memory
     free(A_h);
     free(B_h);
-    free(C_h);
+    H_ERRCHK(hipHostFreefree(C_h));
     
     free(As_d);
     free(Bs_d);
