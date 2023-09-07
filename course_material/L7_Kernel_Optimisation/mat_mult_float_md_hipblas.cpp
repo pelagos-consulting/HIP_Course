@@ -321,7 +321,7 @@ int main(int argc, char** argv) {
     // Clean up host memory
     free(A_h);
     free(B_h);
-    H_ERRCHK(hipHostFreefree(C_h));
+    H_ERRCHK(hipHostFree(C_h));
     
     free(As_d);
     free(Bs_d);
