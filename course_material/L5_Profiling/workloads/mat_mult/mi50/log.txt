@@ -1,0 +1,214 @@
+RPL: on '230904_172328' from '/opt/rocm-5.6.0' in '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling'
+RPL: profiling '""./mat_mult_profiling.exe -o mat_mult.csv""'
+RPL: input file '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling/workloads/mat_mult/mi50/perfmon/pmc_perf_10.txt'
+RPL: output dir '/tmp/rpl_data_230904_172328_181408'
+RPL: result dir '/tmp/rpl_data_230904_172328_181408/input0_results_230904_172328'
+ERROR: rocprofiler_open(), Initialize(), input metric 'TCC_ATOMIC[0]' is not supported on this hardware: gfx906
+
+/usr/bin/rocprof: line 297: 181573 Aborted                 (core dumped) ""./mat_mult_profiling.exe -o mat_mult.csv""
+Profiling error found: ''
+RPL: on '230904_172329' from '/opt/rocm-5.6.0' in '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling'
+RPL: profiling '""./mat_mult_profiling.exe -o mat_mult.csv""'
+RPL: input file '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling/workloads/mat_mult/mi50/perfmon/timestamps.txt'
+RPL: output dir '/tmp/rpl_data_230904_172329_181582'
+RPL: result dir '/tmp/rpl_data_230904_172329_181582/input0_results_230904_172329'
+ROCProfiler: input from "/tmp/rpl_data_230904_172329_181582/input0.xml"
+  gpu_index = 
+  kernel = 
+  range = 
+  0 metrics
+Device id: 0
+	name:                                    AMD Radeon VII
+	global memory size:                      17163 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    65 KB
+	maximum pitch size for memory copies:    2147 MB
+	max block size:                          (1024,1024,1024)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,2147483647,2147483647)
+Time for event "memcpy": 1.081 ms (1469.98 MB/s)
+Time for event "mat_mult kernel": 0.825 ms
+Maximum error (infinity norm) is: 2.28882e-05
+
+ROCPRofiler: 1 contexts collected, output directory /tmp/rpl_data_230904_172329_181582/input0_results_230904_172329
+File '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling/workloads/mat_mult/mi50/timestamps.csv' is generating
+RPL: on '230904_172329' from '/opt/rocm-5.6.0' in '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling'
+RPL: profiling '""./mat_mult_profiling.exe -o mat_mult.csv""'
+RPL: input file '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling/workloads/mat_mult/mi50/perfmon/pmc_perf_12.txt'
+RPL: output dir '/tmp/rpl_data_230904_172329_181770'
+RPL: result dir '/tmp/rpl_data_230904_172329_181770/input0_results_230904_172329'
+ERROR: rocprofiler_open(), Initialize(), input metric 'TCC_EA_RDREQ_IO_CREDIT_STALL[0]' is not supported on this hardware: gfx906
+
+/usr/bin/rocprof: line 297: 181935 Aborted                 (core dumped) ""./mat_mult_profiling.exe -o mat_mult.csv""
+Profiling error found: ''
+RPL: on '230904_172330' from '/opt/rocm-5.6.0' in '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling'
+RPL: profiling '""./mat_mult_profiling.exe -o mat_mult.csv""'
+RPL: input file '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling/workloads/mat_mult/mi50/perfmon/pmc_perf_14.txt'
+RPL: output dir '/tmp/rpl_data_230904_172330_181944'
+RPL: result dir '/tmp/rpl_data_230904_172330_181944/input0_results_230904_172330'
+ERROR: rocprofiler_open(), Initialize(), input metric 'TCC_READ[0]' is not supported on this hardware: gfx906
+
+/usr/bin/rocprof: line 297: 182109 Aborted                 (core dumped) ""./mat_mult_profiling.exe -o mat_mult.csv""
+Profiling error found: ''
+RPL: on '230904_172330' from '/opt/rocm-5.6.0' in '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling'
+RPL: profiling '""./mat_mult_profiling.exe -o mat_mult.csv""'
+RPL: input file '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling/workloads/mat_mult/mi50/perfmon/pmc_perf_11.txt'
+RPL: output dir '/tmp/rpl_data_230904_172330_182118'
+RPL: result dir '/tmp/rpl_data_230904_172330_182118/input0_results_230904_172330'
+ERROR: rocprofiler_open(), Initialize(), input metric 'TCC_EA_RDREQ_DRAM_CREDIT_STALL[0]' is not supported on this hardware: gfx906
+
+/usr/bin/rocprof: line 297: 182283 Aborted                 (core dumped) ""./mat_mult_profiling.exe -o mat_mult.csv""
+Profiling error found: ''
+RPL: on '230904_172331' from '/opt/rocm-5.6.0' in '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling'
+RPL: profiling '""./mat_mult_profiling.exe -o mat_mult.csv""'
+RPL: input file '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling/workloads/mat_mult/mi50/perfmon/pmc_perf_3.txt'
+RPL: output dir '/tmp/rpl_data_230904_172331_182294'
+RPL: result dir '/tmp/rpl_data_230904_172331_182294/input0_results_230904_172331'
+ERROR: rocprofiler_open(), Initialize(), input metric 'SQC_DCACHE_REQ_READ_2' is not supported on this hardware: gfx906
+
+/usr/bin/rocprof: line 297: 182459 Aborted                 (core dumped) ""./mat_mult_profiling.exe -o mat_mult.csv""
+Profiling error found: ''
+RPL: on '230904_172331' from '/opt/rocm-5.6.0' in '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling'
+RPL: profiling '""./mat_mult_profiling.exe -o mat_mult.csv""'
+RPL: input file '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling/workloads/mat_mult/mi50/perfmon/SQ_INST_LEVEL_VMEM.txt'
+RPL: output dir '/tmp/rpl_data_230904_172331_182468'
+RPL: result dir '/tmp/rpl_data_230904_172331_182468/input0_results_230904_172331'
+ERROR: rocprofiler_open(), Initialize(), input metric 'SQ_INSTS_VMEM' is not supported on this hardware: gfx906
+
+/usr/bin/rocprof: line 297: 182633 Aborted                 (core dumped) ""./mat_mult_profiling.exe -o mat_mult.csv""
+Profiling error found: ''
+RPL: on '230904_172332' from '/opt/rocm-5.6.0' in '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling'
+RPL: profiling '""./mat_mult_profiling.exe -o mat_mult.csv""'
+RPL: input file '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling/workloads/mat_mult/mi50/perfmon/pmc_perf_4.txt'
+RPL: output dir '/tmp/rpl_data_230904_172332_182642'
+RPL: result dir '/tmp/rpl_data_230904_172332_182642/input0_results_230904_172332'
+ERROR: rocprofiler_open(), Initialize(), input metric 'SQ_INSTS_EXP_GDS' is not supported on this hardware: gfx906
+
+/usr/bin/rocprof: line 297: 182807 Aborted                 (core dumped) ""./mat_mult_profiling.exe -o mat_mult.csv""
+Profiling error found: ''
+RPL: on '230904_172332' from '/opt/rocm-5.6.0' in '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling'
+RPL: profiling '""./mat_mult_profiling.exe -o mat_mult.csv""'
+RPL: input file '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling/workloads/mat_mult/mi50/perfmon/pmc_perf_0.txt'
+RPL: output dir '/tmp/rpl_data_230904_172332_182816'
+RPL: result dir '/tmp/rpl_data_230904_172332_182816/input0_results_230904_172332'
+ERROR: rocprofiler_open(), Initialize(), input metric 'SQ_CYCLES' is not supported on this hardware: gfx906
+
+/usr/bin/rocprof: line 297: 182981 Aborted                 (core dumped) ""./mat_mult_profiling.exe -o mat_mult.csv""
+Profiling error found: ''
+RPL: on '230904_172333' from '/opt/rocm-5.6.0' in '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling'
+RPL: profiling '""./mat_mult_profiling.exe -o mat_mult.csv""'
+RPL: input file '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling/workloads/mat_mult/mi50/perfmon/SQ_INST_LEVEL_SMEM.txt'
+RPL: output dir '/tmp/rpl_data_230904_172333_182990'
+RPL: result dir '/tmp/rpl_data_230904_172333_182990/input0_results_230904_172333'
+ERROR: rocprofiler_open(), Initialize(), input metric 'SQ_INST_LEVEL_SMEM' is not supported on this hardware: gfx906
+
+/usr/bin/rocprof: line 297: 183155 Aborted                 (core dumped) ""./mat_mult_profiling.exe -o mat_mult.csv""
+Profiling error found: ''
+RPL: on '230904_172333' from '/opt/rocm-5.6.0' in '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling'
+RPL: profiling '""./mat_mult_profiling.exe -o mat_mult.csv""'
+RPL: input file '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling/workloads/mat_mult/mi50/perfmon/SQ_LEVEL_WAVES.txt'
+RPL: output dir '/tmp/rpl_data_230904_172333_183166'
+RPL: result dir '/tmp/rpl_data_230904_172333_183166/input0_results_230904_172333'
+ERROR: rocprofiler_open(), Initialize(), input metric 'CPC_ME1_BUSY_FOR_PACKET_DECODE' is not supported on this hardware: gfx906
+
+/usr/bin/rocprof: line 297: 183331 Aborted                 (core dumped) ""./mat_mult_profiling.exe -o mat_mult.csv""
+Profiling error found: ''
+RPL: on '230904_172334' from '/opt/rocm-5.6.0' in '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling'
+RPL: profiling '""./mat_mult_profiling.exe -o mat_mult.csv""'
+RPL: input file '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling/workloads/mat_mult/mi50/perfmon/pmc_perf_15.txt'
+RPL: output dir '/tmp/rpl_data_230904_172334_183340'
+RPL: result dir '/tmp/rpl_data_230904_172334_183340/input0_results_230904_172334'
+ERROR: rocprofiler_open(), Initialize(), input metric 'TCC_TOO_MANY_EA_WRREQS_STALL[0]' is not supported on this hardware: gfx906
+
+/usr/bin/rocprof: line 297: 183505 Aborted                 (core dumped) ""./mat_mult_profiling.exe -o mat_mult.csv""
+Profiling error found: ''
+RPL: on '230904_172334' from '/opt/rocm-5.6.0' in '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling'
+RPL: profiling '""./mat_mult_profiling.exe -o mat_mult.csv""'
+RPL: input file '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling/workloads/mat_mult/mi50/perfmon/pmc_perf_13.txt'
+RPL: output dir '/tmp/rpl_data_230904_172334_183514'
+RPL: result dir '/tmp/rpl_data_230904_172334_183514/input0_results_230904_172334'
+ERROR: rocprofiler_open(), Initialize(), input metric 'TCC_EA_WRREQ_DRAM_CREDIT_STALL[0]' is not supported on this hardware: gfx906
+
+/usr/bin/rocprof: line 297: 183679 Aborted                 (core dumped) ""./mat_mult_profiling.exe -o mat_mult.csv""
+Profiling error found: ''
+RPL: on '230904_172335' from '/opt/rocm-5.6.0' in '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling'
+RPL: profiling '""./mat_mult_profiling.exe -o mat_mult.csv""'
+RPL: input file '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling/workloads/mat_mult/mi50/perfmon/pmc_perf_6.txt'
+RPL: output dir '/tmp/rpl_data_230904_172335_183688'
+RPL: result dir '/tmp/rpl_data_230904_172335_183688/input0_results_230904_172335'
+ERROR: rocprofiler_open(), Initialize(), input metric 'SQ_ACTIVE_INST_MISC' is not supported on this hardware: gfx906
+
+/usr/bin/rocprof: line 297: 183853 Aborted                 (core dumped) ""./mat_mult_profiling.exe -o mat_mult.csv""
+Profiling error found: ''
+RPL: on '230904_172335' from '/opt/rocm-5.6.0' in '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling'
+RPL: profiling '""./mat_mult_profiling.exe -o mat_mult.csv""'
+RPL: input file '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling/workloads/mat_mult/mi50/perfmon/pmc_perf_7.txt'
+RPL: output dir '/tmp/rpl_data_230904_172335_183862'
+RPL: result dir '/tmp/rpl_data_230904_172335_183862/input0_results_230904_172335'
+ERROR: rocprofiler_open(), Initialize(), input metric 'SQ_LDS_ADDR_CONFLICT' is not supported on this hardware: gfx906
+
+/usr/bin/rocprof: line 297: 184027 Aborted                 (core dumped) ""./mat_mult_profiling.exe -o mat_mult.csv""
+Profiling error found: ''
+RPL: on '230904_172336' from '/opt/rocm-5.6.0' in '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling'
+RPL: profiling '""./mat_mult_profiling.exe -o mat_mult.csv""'
+RPL: input file '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling/workloads/mat_mult/mi50/perfmon/pmc_perf_2.txt'
+RPL: output dir '/tmp/rpl_data_230904_172336_184036'
+RPL: result dir '/tmp/rpl_data_230904_172336_184036/input0_results_230904_172336'
+ERROR: rocprofiler_open(), Initialize(), input metric 'SQC_DCACHE_INPUT_VALID_READYB' is not supported on this hardware: gfx906
+
+/usr/bin/rocprof: line 297: 184201 Aborted                 (core dumped) ""./mat_mult_profiling.exe -o mat_mult.csv""
+Profiling error found: ''
+RPL: on '230904_172336' from '/opt/rocm-5.6.0' in '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling'
+RPL: profiling '""./mat_mult_profiling.exe -o mat_mult.csv""'
+RPL: input file '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling/workloads/mat_mult/mi50/perfmon/SQ_INST_LEVEL_LDS.txt'
+RPL: output dir '/tmp/rpl_data_230904_172336_184210'
+RPL: result dir '/tmp/rpl_data_230904_172336_184210/input0_results_230904_172336'
+ERROR: rocprofiler_open(), Initialize(), input metric 'SQ_INST_LEVEL_LDS' is not supported on this hardware: gfx906
+
+/usr/bin/rocprof: line 297: 184375 Aborted                 (core dumped) ""./mat_mult_profiling.exe -o mat_mult.csv""
+Profiling error found: ''
+RPL: on '230904_172337' from '/opt/rocm-5.6.0' in '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling'
+RPL: profiling '""./mat_mult_profiling.exe -o mat_mult.csv""'
+RPL: input file '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling/workloads/mat_mult/mi50/perfmon/pmc_perf_9.txt'
+RPL: output dir '/tmp/rpl_data_230904_172337_184384'
+RPL: result dir '/tmp/rpl_data_230904_172337_184384/input0_results_230904_172337'
+ERROR: rocprofiler_open(), Initialize(), input metric 'TCP_PENDING_STALL_CYCLES_sum' is not supported on this hardware: gfx906
+
+/usr/bin/rocprof: line 297: 184549 Aborted                 (core dumped) ""./mat_mult_profiling.exe -o mat_mult.csv""
+Profiling error found: ''
+RPL: on '230904_172337' from '/opt/rocm-5.6.0' in '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling'
+RPL: profiling '""./mat_mult_profiling.exe -o mat_mult.csv""'
+RPL: input file '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling/workloads/mat_mult/mi50/perfmon/pmc_perf_1.txt'
+RPL: output dir '/tmp/rpl_data_230904_172337_184558'
+RPL: result dir '/tmp/rpl_data_230904_172337_184558/input0_results_230904_172337'
+ERROR: rocprofiler_open(), Initialize(), input metric 'SQC_TC_DATA_ATOMIC_REQ' is not supported on this hardware: gfx906
+
+/usr/bin/rocprof: line 297: 184723 Aborted                 (core dumped) ""./mat_mult_profiling.exe -o mat_mult.csv""
+Profiling error found: ''
+RPL: on '230904_172338' from '/opt/rocm-5.6.0' in '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling'
+RPL: profiling '""./mat_mult_profiling.exe -o mat_mult.csv""'
+RPL: input file '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling/workloads/mat_mult/mi50/perfmon/pmc_perf_5.txt'
+RPL: output dir '/tmp/rpl_data_230904_172338_184732'
+RPL: result dir '/tmp/rpl_data_230904_172338_184732/input0_results_230904_172338'
+ERROR: rocprofiler_open(), Initialize(), input metric 'SQ_WAIT_INST_ANY' is not supported on this hardware: gfx906
+
+/usr/bin/rocprof: line 297: 184897 Aborted                 (core dumped) ""./mat_mult_profiling.exe -o mat_mult.csv""
+Profiling error found: ''
+RPL: on '230904_172338' from '/opt/rocm-5.6.0' in '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling'
+RPL: profiling '""./mat_mult_profiling.exe -o mat_mult.csv""'
+RPL: input file '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling/workloads/mat_mult/mi50/perfmon/SQ_IFETCH_LEVEL.txt'
+RPL: output dir '/tmp/rpl_data_230904_172338_184906'
+RPL: result dir '/tmp/rpl_data_230904_172338_184906/input0_results_230904_172338'
+ERROR: rocprofiler_open(), Initialize(), input metric 'SQ_IFETCH' is not supported on this hardware: gfx906
+
+/usr/bin/rocprof: line 297: 185071 Aborted                 (core dumped) ""./mat_mult_profiling.exe -o mat_mult.csv""
+Profiling error found: ''
+RPL: on '230904_172339' from '/opt/rocm-5.6.0' in '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling'
+RPL: profiling '""./mat_mult_profiling.exe -o mat_mult.csv""'
+RPL: input file '/home/jupyter-toby/HIP_Course/course_material/L5_Profiling/workloads/mat_mult/mi50/perfmon/pmc_perf_8.txt'
+RPL: output dir '/tmp/rpl_data_230904_172339_185080'
+RPL: result dir '/tmp/rpl_data_230904_172339_185080/input0_results_230904_172339'
+ERROR: rocprofiler_open(), Initialize(), input metric 'SQ_ITEMS' is not supported on this hardware: gfx906
+
+/usr/bin/rocprof: line 297: 185245 Aborted                 (core dumped) ""./mat_mult_profiling.exe -o mat_mult.csv""
+Profiling error found: ''
