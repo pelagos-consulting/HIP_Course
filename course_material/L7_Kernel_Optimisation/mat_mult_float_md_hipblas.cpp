@@ -197,6 +197,9 @@ int main(int argc, char** argv) {
             // Get the thread ID
             int tid = omp_get_thread_num();
             H_ERRCHK(hipSetDevice(tid));
+            
+            // Print slab id and thread id
+            std::printf("Computing slab %d of %d with thread %d\n", s+1, nslabs, tid);
 
             // Wait for any commands to complete on the compute device
             H_ERRCHK(hipDeviceSynchronize());
