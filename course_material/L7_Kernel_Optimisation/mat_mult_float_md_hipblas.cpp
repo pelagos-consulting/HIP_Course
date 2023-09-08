@@ -83,7 +83,7 @@ int main(int argc, char** argv) {
     //// A_d, B_d, and C_d on the compute device ////
 
     //// How many elements are there in a slab
-    size_t slab_len = 64;
+    size_t slab_len = 128;
     size_t nslabs = N0_C/slab_len;
     assert(N0_C%slab_len==0);
     size_t nbytes_A_slab = slab_len*N1_A*sizeof(float_type);

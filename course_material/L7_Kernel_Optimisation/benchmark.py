@@ -42,7 +42,8 @@ experiments = {
     "Tile shared A vector" : "mat_mult_tile_shared_A_vector.exe",
     "Tile shared B" : "mat_mult_tile_shared_B.exe",
     "Tile shared B vector" : "mat_mult_tile_shared_B_vector.exe",
-    "HIPBlas" : "mat_mult_float_hipblas.exe"
+    "HIPBlas" : "mat_mult_float_hipblas.exe",
+    "HIPBlas MD" : "mat_mult_float_md_hipblas.exe"
 }
 
 # Make up the input specification
@@ -52,7 +53,7 @@ for exp, executable in experiments.items():
         for i in indices:
             label=f"{exp} ({d.upper()})[{i}]"
             cmds=f"{executable} {i}"
-            if exp=="HIPBlas":
+            if "HIPBlas" in exp:
                 inputSpec[label]=Exp(cmds, local0=2**(np.arange(0,1,1)), local1=2**(np.arange(0,1,1)))
             else:
                 inputSpec[label]=Exp(cmds)
