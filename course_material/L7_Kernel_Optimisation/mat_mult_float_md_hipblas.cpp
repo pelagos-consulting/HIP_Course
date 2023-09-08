@@ -69,7 +69,13 @@ int main(int argc, char** argv) {
 
     // Host memory 
     float_type* C_h;
-    H_ERRCHK(hipHostMalloc((void**)&C_h, nbytes_C));
+    H_ERRCHK(
+        hipHostMalloc(
+            (void**)&C_h, 
+            nbytes_C, 
+            hipHostMallocNonCoherent | hipHostMallocPortable | hipHostMallocWriteCombined
+        )
+    );
 
     // Fill the host arrays with random numbers 
     // using the matrix helper library
@@ -94,6 +100,7 @@ int main(int argc, char** argv) {
     float_type** As_slab_d = (float_type**)calloc((size_t)num_devices, sizeof(float_type*));
     float_type** Bs_d = (float_type**)calloc((size_t)num_devices, sizeof(float_type*));
     float_type** Cs_slab_d = (float_type**)calloc((size_t)num_devices, sizeof(float_type*));
+    float_type** Cs_d = (float_type**)calloc((size_t)num_devices, sizeof(float_type*));
 
     for (int i=0; i<num_devices; i++) {
         // Choose the device to use
@@ -114,6 +121,9 @@ int main(int argc, char** argv) {
             std::printf("Failed to initialise hipBlas\n");
             exit(EXIT_FAILURE); 
         }
+
+        // Map C_h into the memory space of each device 
+        H_ERRCHK(hipHostGetDevicePointer((void**)&Cs_d[i], C_h, 0));
     }
    
     //// Step 5. 1. Upload matrices A_h and B_h from the host //// 
@@ -180,27 +190,34 @@ int main(int argc, char** argv) {
         // for col_major arrays this is dimension 0
 
         // Iterate over slabs
-        #pragma omp parallel for shared(As_d, As_slab_d, Bs_d, Cs_slab_d, C_h, N1_A, N0_C, N1_C, nslabs, slab_len, alpha, beta, hb_handles) default(none) schedule(dynamic,1)   
+        #pragma omp parallel for shared(As_d, As_slab_d, Bs_d, Cs_slab_d, Cs_d, N1_A, N0_C, N1_C, nslabs, slab_len, alpha, beta, hb_handles) default(none) schedule(dynamic,1)   
         for (size_t s=0; s<nslabs; s++) {
 
             // Get the thread ID
             int tid = omp_get_thread_num();
             H_ERRCHK(hipSetDevice(tid));
 
-            // Copy memory to As_slab_d from As_d
-            hipMemcpy3DParms copy_parms = {0};
-
-            // Source pointer
-            copy_parms.srcPtr = make_hipPitchedPtr(As_d[tid], N1_A*sizeof(float_type), N1_A, N0_C);
-            // Source position
-            copy_parms.srcPos = make_hipPos(0, (size_t)(s*slab_len), 0);
-            // Destination pointer
-            copy_parms.dstPtr = make_hipPitchedPtr(As_slab_d[tid], N1_A*sizeof(float_type), N1_A, slab_len);
-            // Extent
-            copy_parms.extent = make_hipExtent(N1_A*sizeof(float_type), slab_len, 1);
-            copy_parms.kind = hipMemcpyDeviceToDevice;
-            // Perform the copy
-            H_ERRCHK(hipMemcpy3D(&copy_parms));
+            // Wait for any commands to complete on the compute device
+            H_ERRCHK(hipDeviceSynchronize());
+            
+            // Size of the source region
+            dim3 dims_src = { (uint32_t)N1_A, (uint32_t)N0_C, 1 };
+            dim3 dims_dst = { (uint32_t)N1_A, (uint32_t)slab_len, 1 };
+            // Region to copy
+            dim3 region = { (uint32_t)N1_A, (uint32_t)slab_len, 1 };
+            // Starting offset to copy from 
+            size_t offset_src = s*slab_len*N1_A;
+            size_t offset_dst = 0; 
+  
+            // Copy a slab from A ready for work
+            h_memcpy3D(
+                As_slab_d[tid], dims_dst,
+                As_d[tid], dims_src,
+                region, 0,
+                offset_dst, offset_src
+            );
+            
+            // Now call the matrix multiplication
 
             hipblasStatus_t hb_status = hipblasSgemm(
                 hb_handles[tid], // hipblas handle  
@@ -223,26 +240,24 @@ int main(int argc, char** argv) {
                 std::printf("Failed to run hipBlas function.\n");
                 exit(EXIT_FAILURE); 
             }
-    
-            // Wait for any commands to complete on the compute device
-            H_ERRCHK(hipDeviceSynchronize());
 
             // Copy portion of C back to host
-
-            // Source pointer
-            copy_parms.srcPtr = make_hipPitchedPtr(Cs_slab_d[tid], N1_C*sizeof(float_type), N1_C, slab_len);
-            // Source position
-            copy_parms.srcPos = make_hipPos(0, 0, 0);
-            // Destination pointer
-            copy_parms.dstPtr = make_hipPitchedPtr(C_h, N1_C*sizeof(float_type), N1_C, N0_C);
-            // Destination pointer
-            copy_parms.dstPos = make_hipPos(0, s*slab_len, 0);
-            // Extent 
-            copy_parms.extent = make_hipExtent(N1_C*sizeof(float), slab_len, 1);
-            // Kind
-            copy_parms.kind = hipMemcpyDeviceToHost;
-            // Perform the copy
-            H_ERRCHK(hipMemcpy3D(&copy_parms));
+            dims_src.x = (uint32_t)N1_C;
+            dims_src.y = (uint32_t)slab_len;
+            dims_dst.x = (uint32_t)N1_C;
+            dims_dst.y = (uint32_t)N0_C;
+            region.x = N1_C;
+            region.y = (uint32_t)slab_len;
+            offset_src = 0;
+            offset_dst = s*slab_len*N1_C;
+            
+            // Call a memcpy from Cs_slab_d to Cs_d
+            h_memcpy3D(
+                Cs_d[tid], dims_dst,
+                Cs_slab_d[tid], dims_src,
+                region, 0,
+                offset_dst, offset_src
+            );
         } // End parallel region
 
         // Stop the clock
@@ -327,6 +342,7 @@ int main(int argc, char** argv) {
     free(Bs_d);
     free(As_slab_d);
     free(Cs_slab_d);
+    free(Cs_d);
 
     free(hb_handles);
 

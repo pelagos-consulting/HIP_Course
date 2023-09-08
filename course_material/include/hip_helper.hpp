@@ -678,3 +678,83 @@ void h_optimise_block(
         std::printf("Time for kernel was %.3f ms\n", experiment_msec);
     }
 }
+
+template <class T>
+__global__ void h_copy_kernel3D(
+        // Destination array
+        T* dst,
+        // Source array
+        T* src,
+        // starting offset for dst
+        size_t offset_dst, 
+        // starting offset for src
+        size_t offset_src,
+        // size of 3 fastest dimensions of dst (nelements, npencils, nplanes)
+        dim3 dims_dst, 
+        // size of 3 fastest dimensions of src (nelements, npencils, nplanes)
+        dim3 dims_src, 
+        // Size of the 3D region to copy (nelements, npencils, nplanes)
+        dim3 region) {
+    
+    // Get the x, y, z coordinates within the grid
+    size_t z = blockIdx.z * blockDim.z + threadIdx.z;
+    size_t y = blockIdx.y * blockDim.y + threadIdx.y;
+    size_t x = blockIdx.x * blockDim.x + threadIdx.x;
+    
+    if ((x<region.x) && (y<region.y) && (z<region.z))  {
+        // Perform the actual copy
+        dst[offset_dst+x + y*dims_dst.x + z*dims_dst.x*dims_dst.y] = \
+        src[offset_src+x + y*dims_src.x + z*dims_src.x*dims_src.y];
+    }
+}
+
+
+/// Function to perform a 3D memory copy
+/// either between allocations on a device
+/// or between host and device if the host memory
+/// is pinned and mapped or managed
+template <class T>
+void h_memcpy3D(
+        // Can be pinned or managed host memory
+        T* dst, 
+        // Size of dst allocation, in units of (nelements, npencils, nplanes)
+        dim3 dims_dst, 
+        T* src,
+        // Size of src allocation, in units of (nelements, npencils, nplanes)
+        dim3 dims_src,
+        // Size of the region to copy in units of (nelements, npencils, nplanes)
+        dim3 region,
+        // Stream to perform the copy in
+        hipStream_t stream,
+        // Starting offsets (in elements) for dst and src
+        size_t offset_dst=0,
+        size_t offset_src=0) {
+    
+    // Copy square regions
+    dim3 block_size = {16,4,1};
+    
+    // Make the block size 1D
+    if (region.y<=1) {
+        block_size.x = 64;
+        block_size.y = 1;
+    }
+    
+    // Number of blocks in the kernel
+    dim3 grid_nblocks;
+    
+    // Choose the number of blocks so that Grid fits within it.
+    h_fit_blocks(&grid_nblocks, region, block_size);
+    
+    // Run the kernel to copy things
+    hipLaunchKernelGGL(h_copy_kernel3D, 
+            grid_nblocks, 
+            block_size, 0, stream, 
+            dst, src,
+            offset_dst, offset_src,
+            dims_dst, dims_src,
+            region
+    );
+    
+    // Check the status of the kernel launch
+    H_ERRCHK(hipGetLastError());
+}
