@@ -42,9 +42,6 @@ int main(int argc, char** argv) {
 
     // Set the number of OpenMP threads
     omp_set_num_threads((int)num_devices);
-        
-    // Report on the device in use
-    h_report_on_device(dev_index);
     
     // We are going to do a simple array multiplication for this example, 
     // using raw binary files for input and output
@@ -105,6 +102,10 @@ int main(int argc, char** argv) {
     for (int i=0; i<num_devices; i++) {
         // Choose the device to use
         H_ERRCHK(hipSetDevice(i));
+        
+        // Report on the device in use
+        h_report_on_device(i);
+        
         H_ERRCHK(hipMalloc((void**)&As_d[i], nbytes_A));
         H_ERRCHK(hipMalloc((void**)&Bs_d[i], nbytes_B));
 
