@@ -199,7 +199,7 @@ int main(int argc, char** argv) {
             H_ERRCHK(hipSetDevice(tid));
             
             // Print slab id and thread id
-            std::printf("Computing slab %d of %d with thread %d\n", s+1, nslabs, tid);
+            std::printf("Computing slab %zu of %zu with thread %d\n", s+1, nslabs, tid);
 
             // Wait for any commands to complete on the compute device
             H_ERRCHK(hipDeviceSynchronize());
