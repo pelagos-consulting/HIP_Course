@@ -13,7 +13,7 @@ all: $(TARGETS)
 
 # General compilation step
 %.exe: %.cu
-	$(CXX) $(CXXFLAGS) $< -o $@ 
+	$(CXX) $(CXXFLAGS) $< -o $@ -lcuda
 
 # Clean step
 clean:

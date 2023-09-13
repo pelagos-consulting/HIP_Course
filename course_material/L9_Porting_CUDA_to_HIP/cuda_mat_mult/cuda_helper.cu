@@ -709,6 +709,9 @@ void h_optimise_block(
     }
 }
 
+/// Kernel to implement a 3D asynchronous copy
+/// Works with host memory too if that memory
+/// is either managed or both pinned and mapped
 template <class T>
 __global__ void h_copy_kernel3D(
         // Destination array
@@ -775,24 +778,13 @@ void h_memcpy3D(
     // Choose the number of blocks so that Grid fits within it.
     h_fit_blocks(&grid_nblocks, region, block_size);
     
-    void** kernel_args = {0};
-    kernel_args[0]=&dst;
-    kernel_args[1]=&src;    
-    kernel_args[2]=&offset_dst;
-    kernel_args[3]=&offset_src;
-    kernel_args[4]=&dims_dst;
-    kernel_args[5]=&dims_src;
-    kernel_args[6]=&region;
-    
-    // Run the kernel to copy things
-    H_ERRCHK(cudaLaunchKernel(
-        (const void*)h_copy_kernel3D,
-        grid_nblocks,
-        block_size,
-        kernel_args,
-        (size_t)0,
-        stream
-    ));
-    
-    
+    // Have to use Chevron syntax in order to pick up
+    // template arguments
+    h_copy_kernel3D<<<grid_nblocks, block_size, 0, stream>>>(
+        dst, src, 
+        offset_dst, offset_src,
+        dims_dst,
+        dims_src,
+        region
+    );  
 }
