@@ -14579,7 +14579,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Porting-CUDA-programs-to-HIP">Porting CUDA programs to HIP<a class="anchor-link" href="#Porting-CUDA-programs-to-HIP">&#182;</a></h1>
+<h1 id="Porting-CUDA-programs-to-HIP">Porting CUDA programs to HIP<a class="anchor-link" href="#Porting-CUDA-programs-to-HIP">&#182;</a></h1><p>HIP API calls are designed to closely match their CUDA equivalents. This enables HIP to function as a thin layer over CUDA and allows for reasonably easy porting of CUDA code to HIP code. The ROCM library provides two different tools <strong>hipify-perl</strong> and <strong>hipify-clang</strong> to help with the porting process. The tool <strong>hipify-perl</strong> using perl to perform an intelligent search and replace of cuda calls with hip calls, while the <strong>hipify-clang</strong> tool uses the clang preprocessor to produce a high quality port. The perl-based method is better for quick ports of small codes, while the clang-based method is intended for ports of large codebases but needs access to all the header files used in the compilation of the CUDA code.</p>
+
 </div>
 </div>
 </div>
@@ -14590,7 +14591,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Setup-and-installation">Setup and installation<a class="anchor-link" href="#Setup-and-installation">&#182;</a></h2>
+<h2 id="Setup-and-installation">Setup and installation<a class="anchor-link" href="#Setup-and-installation">&#182;</a></h2><p>From <a href="https://sep5.readthedocs.io/en/latest/Programming_Guides/HIP-porting-guide.html">this source</a> it is recommended to attempt porting on a machine that has access to both CUDA and HIP libraries. This usually means doing the port on a machine with an NVIDIA GPU. Then one can try porting portions of the code at a time and compare results.</p>
+
 </div>
 </div>
 </div>
@@ -14601,7 +14603,13 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Porting-methods">Porting methods<a class="anchor-link" href="#Porting-methods">&#182;</a></h2><h3 id="Porting-with-hipify-perl">Porting with hipify-perl<a class="anchor-link" href="#Porting-with-hipify-perl">&#182;</a></h3><h3 id="Porting-with-hipify-inplace">Porting with hipify-inplace<a class="anchor-link" href="#Porting-with-hipify-inplace">&#182;</a></h3>
+<h2 id="Trial-setup">Trial setup<a class="anchor-link" href="#Trial-setup">&#182;</a></h2><p>There are two sub-directories in this module:</p>
+<ul>
+<li>cuda_mat_mult</li>
+<li>hip_mat_mult</li>
+</ul>
+<p>In the directory <strong>cuda_mat_mult</strong> is a CUDA version of the HIP matrix multiplication code in <strong>hip_mat_mult</strong>. It was manually ported from HIP to CUDA. We are going to use the HIP tools to try and port back the CUDA code to HIP code.</p>
+
 </div>
 </div>
 </div>
@@ -14612,7 +14620,31 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="API-differences-between-CUDA-and-HIP">API differences between CUDA and HIP<a class="anchor-link" href="#API-differences-between-CUDA-and-HIP">&#182;</a></h2>
+<h2 id="Porting-methods">Porting methods<a class="anchor-link" href="#Porting-methods">&#182;</a></h2><p>Available porting tools are <strong>hipify-perl</strong> and <strong>hipify-clang</strong>. Hipify-perl is a perl-based search and replace tool, whereas hipify-clang is a clang preprocessor based tool.</p>
+<ul>
+<li>hipexamine.sh</li>
+<li>hipexamine-perl.sh</li>
+<li>hipconvertinplace.sh</li>
+<li>hipconvertinplace-perl.sh</li>
+<li>hipify-perl</li>
+<li>hipify-clang</li>
+</ul>
+<h3 id="Learnings">Learnings<a class="anchor-link" href="#Learnings">&#182;</a></h3><ul>
+<li>Need to have all the headers available</li>
+</ul>
+<h3 id="Porting-with-hipify-perl">Porting with hipify-perl<a class="anchor-link" href="#Porting-with-hipify-perl">&#182;</a></h3><h3 id="Porting-with-hipify-inplace">Porting with hipify-inplace<a class="anchor-link" href="#Porting-with-hipify-inplace">&#182;</a></h3>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="API-differences-between-CUDA-and-HIP">API differences between CUDA and HIP<a class="anchor-link" href="#API-differences-between-CUDA-and-HIP">&#182;</a></h2><p>CUDA has the notion of a driver API and a runtime API.</p>
+
 </div>
 </div>
 </div>
