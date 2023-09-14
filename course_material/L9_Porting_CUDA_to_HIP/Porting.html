@@ -14579,7 +14579,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Porting-CUDA-programs-to-HIP">Porting CUDA programs to HIP<a class="anchor-link" href="#Porting-CUDA-programs-to-HIP">&#182;</a></h1><p>HIP API calls are designed to closely match their CUDA equivalents. This enables HIP to function as a thin layer over CUDA and allows for reasonably easy porting of CUDA code to HIP code. The ROCM library provides two different tools <strong>hipify-perl</strong> and <strong>hipify-clang</strong> to help with the porting process. The tool <strong>hipify-perl</strong> using perl to perform an intelligent search and replace of cuda calls with hip calls, while the <strong>hipify-clang</strong> tool uses the clang preprocessor to produce a high quality port. The perl-based method is better for quick ports of small codes, while the clang-based method is intended for ports of large codebases but needs access to all the header files used in the compilation of the CUDA code.</p>
+<h1 id="Porting-CUDA-programs-to-HIP">Porting CUDA programs to HIP<a class="anchor-link" href="#Porting-CUDA-programs-to-HIP">&#182;</a></h1><p>HIP API calls are designed to closely match their CUDA equivalents. This enables HIP to function as a thin layer over CUDA and allows for reasonably easy porting of CUDA code to HIP code. Often it is just a matter of replacing <strong>cuda -&gt; hip</strong> in the function calls. The ROCM library provides two different tools <strong>hipify-perl</strong> and <strong>hipify-clang</strong> to help with the porting process. The tool <strong>hipify-perl</strong> is robust and uses perl to perform an intelligent search and replace of cuda calls with hip calls, while the <strong>hipify-clang</strong> tool uses the clang preprocessor to produce a high quality port. The perl-based method is better for quick ports of small codes, while the clang-based method is intended for ports of large codebases. The hipify-clang tool is much more picky though and fails easily unless it has access to all the header files used in the compilation of the CUDA code.</p>
 
 </div>
 </div>
@@ -14591,7 +14591,60 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Setup-and-installation">Setup and installation<a class="anchor-link" href="#Setup-and-installation">&#182;</a></h2><p>From <a href="https://sep5.readthedocs.io/en/latest/Programming_Guides/HIP-porting-guide.html">this source</a> it is recommended to attempt porting on a machine that has access to both CUDA and HIP libraries. This usually means doing the port on a machine with an NVIDIA GPU. Then one can try porting portions of the code at a time and compare results.</p>
+<h2 id="Setup-and-installation">Setup and installation<a class="anchor-link" href="#Setup-and-installation">&#182;</a></h2><p>From <a href="https://sep5.readthedocs.io/en/latest/Programming_Guides/HIP-porting-guide.html">this source</a> it is recommended to attempt porting on a machine that has access to both CUDA and HIP libraries. This usually means doing the port on a machine with an NVIDIA GPU. Then one can try porting portions of the code at a time and compare results. For best results with hipify-clang you need to have a version of CUDA that is compatible with your installed version of hipify-clang.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>hipify-clang --version
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>AMD LLVM version 16.0.0git
+  Optimized build.
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Here is a page which describes compatibility between CUDA and hipify-clang.</p>
+<p><a href="https://rocm.docs.amd.com/projects/HIPIFY/en/latest/hipify-clang.html">HIPIFY Documentation</a></p>
 
 </div>
 </div>
@@ -14620,7 +14673,736 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Porting-methods">Porting methods<a class="anchor-link" href="#Porting-methods">&#182;</a></h2><p>Available porting tools are <strong>hipify-perl</strong> and <strong>hipify-clang</strong>. Hipify-perl is a perl-based search and replace tool, whereas hipify-clang is a clang preprocessor based tool.</p>
+<h2 id="Porting-techniques">Porting techniques<a class="anchor-link" href="#Porting-techniques">&#182;</a></h2><h2 id="Examine-the-code-for-porting-potential">Examine the code for porting potential<a class="anchor-link" href="#Examine-the-code-for-porting-potential">&#182;</a></h2><p>We use the scripts <strong>hipexamine-perl.sh</strong> or <strong>hipexamine.sh</strong> to recursively search through a directory and examine the potential for porting a code. Note the summary that is produced for each file.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>hipexamine-perl.sh cuda_mat_mult -exclude-dirs<span class="o">=</span>cuda_mat_mult/.ipynb_checkpoints
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>  warning: cuda_mat_mult/cuda_helper.cu:480: removed identifier &#34;cudaLaunch&#34; since CUDA 10.1
+
+[HIPIFY] info: file &#39;cuda_mat_mult/cuda_helper.cu&#39; statistics:
+  CONVERTED refs count: 55
+  TOTAL lines of code: 789
+  WARNINGS: 1
+[HIPIFY] info: CONVERTED refs by names:
+  CUDA_SUCCESS =&gt; hipSuccess: 4
+  CUresult =&gt; hipError_t: 4
+  cuGetErrorString =&gt; hipDrvGetErrorString: 1
+  cuInit =&gt; hipInit: 1
+  cuda.h =&gt; hip/hip_runtime.h: 2
+  cudaDevAttrManagedMemory =&gt; hipDeviceAttributeManagedMemory: 1
+  cudaDeviceGetAttribute =&gt; hipDeviceGetAttribute: 1
+  cudaDeviceProp =&gt; hipDeviceProp_t: 2
+  cudaDeviceReset =&gt; hipDeviceReset: 1
+  cudaDeviceSynchronize =&gt; hipDeviceSynchronize: 1
+  cudaError_t =&gt; hipError_t: 4
+  cudaEventCreate =&gt; hipEventCreate: 2
+  cudaEventDestroy =&gt; hipEventDestroy: 2
+  cudaEventElapsedTime =&gt; hipEventElapsedTime: 1
+  cudaEventRecord =&gt; hipEventRecord: 3
+  cudaEventSynchronize =&gt; hipEventSynchronize: 2
+  cudaEvent_t =&gt; hipEvent_t: 3
+  cudaGetDevice =&gt; hipGetDevice: 1
+  cudaGetDeviceCount =&gt; hipGetDeviceCount: 2
+  cudaGetDeviceProperties =&gt; hipGetDeviceProperties: 2
+  cudaGetErrorString =&gt; hipGetErrorString: 2
+  cudaLaunchKernel =&gt; hipLaunchKernel: 1
+  cudaSetDevice =&gt; hipSetDevice: 3
+  cudaStreamCreateWithFlags =&gt; hipStreamCreateWithFlags: 1
+  cudaStreamDefault =&gt; hipStreamDefault: 1
+  cudaStreamDestroy =&gt; hipStreamDestroy: 1
+  cudaStreamNonBlocking =&gt; hipStreamNonBlocking: 1
+  cudaStream_t =&gt; hipStream_t: 7
+  cudaSuccess =&gt; hipSuccess: 4
+  cuda_runtime.h =&gt; hip/hip_runtime.h: 2
+  warning: cuda_mat_mult/mat_mult.cu:139: removed identifier &#34;cudaLaunch&#34; since CUDA 10.1
+
+[HIPIFY] info: file &#39;cuda_mat_mult/mat_mult.cu&#39; statistics:
+  CONVERTED refs count: 15
+  TOTAL lines of code: 193
+  WARNINGS: 1
+[HIPIFY] info: CONVERTED refs by names:
+  cudaDeviceSynchronize =&gt; hipDeviceSynchronize: 1
+  cudaFree =&gt; hipFree: 3
+  cudaGetLastError =&gt; hipGetLastError: 1
+  cudaLaunchKernel =&gt; hipLaunchKernel: 1
+  cudaMalloc =&gt; hipMalloc: 3
+  cudaMemcpy =&gt; hipMemcpy: 3
+  cudaMemcpyDeviceToHost =&gt; hipMemcpyDeviceToHost: 1
+  cudaMemcpyHostToDevice =&gt; hipMemcpyHostToDevice: 2
+
+[HIPIFY] info: file &#39;GLOBAL&#39; statistics:
+  CONVERTED refs count: 70
+  TOTAL lines of code: 1165
+  WARNINGS: 2
+[HIPIFY] info: CONVERTED refs by names:
+  CUDA_SUCCESS =&gt; hipSuccess: 4
+  CUresult =&gt; hipError_t: 4
+  cuGetErrorString =&gt; hipDrvGetErrorString: 1
+  cuInit =&gt; hipInit: 1
+  cuda.h =&gt; hip/hip_runtime.h: 2
+  cudaDevAttrManagedMemory =&gt; hipDeviceAttributeManagedMemory: 1
+  cudaDeviceGetAttribute =&gt; hipDeviceGetAttribute: 1
+  cudaDeviceProp =&gt; hipDeviceProp_t: 2
+  cudaDeviceReset =&gt; hipDeviceReset: 1
+  cudaDeviceSynchronize =&gt; hipDeviceSynchronize: 2
+  cudaError_t =&gt; hipError_t: 4
+  cudaEventCreate =&gt; hipEventCreate: 2
+  cudaEventDestroy =&gt; hipEventDestroy: 2
+  cudaEventElapsedTime =&gt; hipEventElapsedTime: 1
+  cudaEventRecord =&gt; hipEventRecord: 3
+  cudaEventSynchronize =&gt; hipEventSynchronize: 2
+  cudaEvent_t =&gt; hipEvent_t: 3
+  cudaFree =&gt; hipFree: 3
+  cudaGetDevice =&gt; hipGetDevice: 1
+  cudaGetDeviceCount =&gt; hipGetDeviceCount: 2
+  cudaGetDeviceProperties =&gt; hipGetDeviceProperties: 2
+  cudaGetErrorString =&gt; hipGetErrorString: 2
+  cudaGetLastError =&gt; hipGetLastError: 1
+  cudaLaunchKernel =&gt; hipLaunchKernel: 2
+  cudaMalloc =&gt; hipMalloc: 3
+  cudaMemcpy =&gt; hipMemcpy: 3
+  cudaMemcpyDeviceToHost =&gt; hipMemcpyDeviceToHost: 1
+  cudaMemcpyHostToDevice =&gt; hipMemcpyHostToDevice: 2
+  cudaSetDevice =&gt; hipSetDevice: 3
+  cudaStreamCreateWithFlags =&gt; hipStreamCreateWithFlags: 1
+  cudaStreamDefault =&gt; hipStreamDefault: 1
+  cudaStreamDestroy =&gt; hipStreamDestroy: 1
+  cudaStreamNonBlocking =&gt; hipStreamNonBlocking: 1
+  cudaStream_t =&gt; hipStream_t: 7
+  cudaSuccess =&gt; hipSuccess: 4
+  cuda_runtime.h =&gt; hip/hip_runtime.h: 2
+
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>hipexamine.sh ./cuda_mat_mult 
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>warning: CUDA version is newer than the latest partially supported version 11.8
+warning: CUDA version is newer than the latest partially supported version 11.8
+error: unsupported architecture &#39;nvptx64&#39; for host compilation
+<span class="ansi-magenta-intense-fg ansi-bold">warning: </span><span class="ansi-bold">CUDA version is newer than the latest partially supported version 11.8 [-Wunknown-cuda-version]</span>
+<span class="ansi-bold">/tmp/cuda_helper.cu-059629.hip:95:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">unknown type name &#39;SYSTEM_INFO&#39;</span>
+    SYSTEM_INFO sys_info;
+<span class="ansi-green-intense-fg ansi-bold">    ^
+</span><span class="ansi-bold">/tmp/cuda_helper.cu-059629.hip:381:20: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier &#39;_aligned_malloc&#39;; did you mean &#39;aligned_alloc&#39;?</span>
+    void* buffer = _aligned_malloc(nbytes, alignment);
+<span class="ansi-green-intense-fg ansi-bold">                   ^~~~~~~~~~~~~~~
+</span><span class="ansi-green-fg">                   aligned_alloc
+</span><span class="ansi-bold">/usr/include/stdlib.h:592:14: </span><span class="ansi-black-intense-fg ansi-bold">note: </span>&#39;aligned_alloc&#39; declared here
+extern void *aligned_alloc (size_t __alignment, size_t __size)
+<span class="ansi-green-intense-fg ansi-bold">             ^
+</span><span class="ansi-bold">/tmp/cuda_helper.cu-059629.hip:383:11: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">redefinition of &#39;buffer&#39;</span>
+    void* buffer = aligned_alloc(alignment, nbytes);
+<span class="ansi-green-intense-fg ansi-bold">          ^
+</span><span class="ansi-bold">/tmp/cuda_helper.cu-059629.hip:381:11: </span><span class="ansi-black-intense-fg ansi-bold">note: </span>previous definition is here
+    void* buffer = _aligned_malloc(nbytes, alignment);
+<span class="ansi-green-intense-fg ansi-bold">          ^
+</span>3 errors generated when compiling for host.
+Error while processing /tmp/cuda_helper.cu-059629.hip.
+
+[HIPIFY] info: file &#39;./cuda_mat_mult/cuda_helper.cu&#39; statistics:
+
+  ERROR: Statistics is invalid due to failed hipification.
+
+  CONVERTED refs count: 52
+  UNCONVERTED refs count: 0
+  CONVERSION %: 100.0
+  REPLACED bytes: 814
+  TOTAL bytes: 24629
+  CHANGED lines of code: 48
+  TOTAL lines of code: 789
+  CODE CHANGED (in bytes) %: 3.3
+  CODE CHANGED (in lines) %: 6.1
+  TIME ELAPSED s: 0.46
+[HIPIFY] info: CONVERTED refs by type:
+  error: 3
+  init: 1
+  device: 11
+  stream: 2
+  event: 9
+  execution: 1
+  include_cuda_main_header: 2
+  type: 16
+  numeric_literal: 5
+  define: 2
+[HIPIFY] info: CONVERTED refs by API:
+  CUDA Driver API: 7
+  CUDA RT API: 45
+[HIPIFY] info: CONVERTED refs by names:
+  CUDA_SUCCESS: 2
+  CUresult: 2
+  cuGetErrorString: 1
+  cuInit: 1
+  cuda.h: 1
+  cudaDevAttrManagedMemory: 1
+  cudaDeviceGetAttribute: 1
+  cudaDeviceProp: 2
+  cudaDeviceReset: 1
+  cudaDeviceSynchronize: 1
+  cudaError_t: 2
+  cudaEventCreate: 2
+  cudaEventDestroy: 2
+  cudaEventElapsedTime: 1
+  cudaEventRecord: 2
+  cudaEventSynchronize: 2
+  cudaEvent_t: 3
+  cudaGetDevice: 1
+  cudaGetDeviceCount: 2
+  cudaGetDeviceProperties: 2
+  cudaGetErrorString: 2
+  cudaLaunchKernel: 1
+  cudaSetDevice: 3
+  cudaStreamCreateWithFlags: 1
+  cudaStreamDefault: 1
+  cudaStreamDestroy: 1
+  cudaStreamNonBlocking: 1
+  cudaStream_t: 7
+  cudaSuccess: 2
+  cuda_runtime.h: 1
+<span class="ansi-magenta-intense-fg ansi-bold">warning: </span><span class="ansi-bold">CUDA version is newer than the latest partially supported version 11.8 [-Wunknown-cuda-version]</span>
+
+[HIPIFY] info: file &#39;./cuda_mat_mult/mat_mult.cu&#39; statistics:
+  CONVERTED refs count: 14
+  UNCONVERTED refs count: 0
+  CONVERSION %: 100.0
+  REPLACED bytes: 187
+  TOTAL bytes: 6060
+  CHANGED lines of code: 12
+  TOTAL lines of code: 193
+  CODE CHANGED (in bytes) %: 3.1
+  CODE CHANGED (in lines) %: 6.2
+  TIME ELAPSED s: 0.55
+[HIPIFY] info: CONVERTED refs by type:
+  error: 1
+  device: 1
+  memory: 9
+  numeric_literal: 3
+[HIPIFY] info: CONVERTED refs by API:
+  CUDA RT API: 14
+[HIPIFY] info: CONVERTED refs by names:
+  cudaDeviceSynchronize: 1
+  cudaFree: 3
+  cudaGetLastError: 1
+  cudaMalloc: 3
+  cudaMemcpy: 3
+  cudaMemcpyDeviceToHost: 1
+  cudaMemcpyHostToDevice: 2
+<span class="ansi-magenta-intense-fg ansi-bold">warning: </span><span class="ansi-bold">CUDA version is newer than the latest partially supported version 11.8 [-Wunknown-cuda-version]</span>
+
+[HIPIFY] info: file &#39;./cuda_mat_mult/mat_size.hpp&#39; statistics:
+  CONVERTED refs count: 0
+  UNCONVERTED refs count: 0
+  CONVERSION %: 0.0
+  REPLACED bytes: 0
+  TOTAL bytes: 107
+  CHANGED lines of code: 1
+  TOTAL lines of code: 3
+  CODE CHANGED (in bytes) %: 0.0
+  CODE CHANGED (in lines) %: 33.3
+  TIME ELAPSED s: 0.19
+<span class="ansi-magenta-intense-fg ansi-bold">warning: </span><span class="ansi-bold">CUDA version is newer than the latest partially supported version 11.8 [-Wunknown-cuda-version]</span>
+<span class="ansi-bold">/tmp/mat_helper.hpp-26d772.hip:162:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier &#39;assert&#39;</span>
+    assert(len0_src&gt;=K0);
+<span class="ansi-green-intense-fg ansi-bold">    ^
+</span><span class="ansi-bold">/tmp/mat_helper.hpp-26d772.hip:163:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier &#39;assert&#39;</span>
+    assert(len1_src&gt;=K1);    
+<span class="ansi-green-intense-fg ansi-bold">    ^
+</span>2 errors generated when compiling for host.
+Error while processing /tmp/mat_helper.hpp-26d772.hip.
+
+[HIPIFY] info: file &#39;./cuda_mat_mult/mat_helper.hpp&#39; statistics:
+
+  ERROR: Statistics is invalid due to failed hipification.
+
+  CONVERTED refs count: 0
+  UNCONVERTED refs count: 0
+  CONVERSION %: 0.0
+  REPLACED bytes: 0
+  TOTAL bytes: 4497
+  CHANGED lines of code: 1
+  TOTAL lines of code: 180
+  CODE CHANGED (in bytes) %: 0.0
+  CODE CHANGED (in lines) %: 0.6
+  TIME ELAPSED s: 0.47
+
+[HIPIFY] info: file &#39;GLOBAL&#39; statistics:
+
+  ERROR: Statistics is invalid due to failed hipification.
+
+  CONVERTED refs count: 66
+  UNCONVERTED refs count: 0
+  CONVERSION %: 100.0
+  REPLACED bytes: 1001
+  TOTAL bytes: 35293
+  CHANGED lines of code: 62
+  TOTAL lines of code: 1165
+  CODE CHANGED (in bytes) %: 2.8
+  CODE CHANGED (in lines) %: 5.3
+  TIME ELAPSED s: 1.67
+[HIPIFY] info: CONVERTED refs by type:
+  error: 4
+  init: 1
+  device: 12
+  memory: 9
+  stream: 2
+  event: 9
+  execution: 1
+  include_cuda_main_header: 2
+  type: 16
+  numeric_literal: 8
+  define: 2
+[HIPIFY] info: CONVERTED refs by API:
+  CUDA Driver API: 7
+  CUDA RT API: 59
+[HIPIFY] info: CONVERTED refs by names:
+  CUDA_SUCCESS: 2
+  CUresult: 2
+  cuGetErrorString: 1
+  cuInit: 1
+  cuda.h: 1
+  cudaDevAttrManagedMemory: 1
+  cudaDeviceGetAttribute: 1
+  cudaDeviceProp: 2
+  cudaDeviceReset: 1
+  cudaDeviceSynchronize: 2
+  cudaError_t: 2
+  cudaEventCreate: 2
+  cudaEventDestroy: 2
+  cudaEventElapsedTime: 1
+  cudaEventRecord: 2
+  cudaEventSynchronize: 2
+  cudaEvent_t: 3
+  cudaFree: 3
+  cudaGetDevice: 1
+  cudaGetDeviceCount: 2
+  cudaGetDeviceProperties: 2
+  cudaGetErrorString: 2
+  cudaGetLastError: 1
+  cudaLaunchKernel: 1
+  cudaMalloc: 3
+  cudaMemcpy: 3
+  cudaMemcpyDeviceToHost: 1
+  cudaMemcpyHostToDevice: 2
+  cudaSetDevice: 3
+  cudaStreamCreateWithFlags: 1
+  cudaStreamDefault: 1
+  cudaStreamDestroy: 1
+  cudaStreamNonBlocking: 1
+  cudaStream_t: 7
+  cudaSuccess: 2
+  cuda_runtime.h: 1
+
+[HIPIFY] info: TOTAL statistics:
+  CONVERTED files: 2
+  PROCESSED files: 4
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Porting-inplace">Porting inplace<a class="anchor-link" href="#Porting-inplace">&#182;</a></h3><p>Both the <strong>hipconvertinplace-perl.sh</strong> and <strong>hipconvertinplace.sh</strong> scripts have the ability to convert a code tree inplace. The additional option <strong>-hip-kernel-execution-syntax</strong> replaces CUDA triple chevron kernel calls with the equivalent call to <strong>hipLaunchKernelGGL</strong> macro.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[38]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>rm -rf temp_mat_mult<span class="p">;</span> cp -r cuda_mat_mult temp_mat_mult 
+<span class="o">!</span>hipconvertinplace-perl.sh temp_mat_mult -exclude-dirs<span class="o">=</span>temp_mat_mult/.ipynb_checkpoints -hip-kernel-execution-syntax
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>  warning: temp_mat_mult/mat_mult.cu:139: removed identifier &#34;cudaLaunch&#34; since CUDA 10.1
+
+[HIPIFY] info: file &#39;temp_mat_mult/mat_mult.cu&#39; statistics:
+  CONVERTED refs count: 16
+  TOTAL lines of code: 193
+  WARNINGS: 1
+[HIPIFY] info: CONVERTED refs by names:
+  cudaDeviceSynchronize =&gt; hipDeviceSynchronize: 1
+  cudaFree =&gt; hipFree: 3
+  cudaGetLastError =&gt; hipGetLastError: 1
+  cudaLaunchKernel =&gt; hipLaunchKernel: 1
+  cudaMalloc =&gt; hipMalloc: 3
+  cudaMemcpy =&gt; hipMemcpy: 3
+  cudaMemcpyDeviceToHost =&gt; hipMemcpyDeviceToHost: 1
+  cudaMemcpyHostToDevice =&gt; hipMemcpyHostToDevice: 2
+  warning: temp_mat_mult/cuda_helper.cu:480: removed identifier &#34;cudaLaunch&#34; since CUDA 10.1
+
+[HIPIFY] info: file &#39;temp_mat_mult/cuda_helper.cu&#39; statistics:
+  CONVERTED refs count: 56
+  TOTAL lines of code: 789
+  WARNINGS: 1
+[HIPIFY] info: CONVERTED refs by names:
+  CUDA_SUCCESS =&gt; hipSuccess: 4
+  CUresult =&gt; hipError_t: 4
+  cuGetErrorString =&gt; hipDrvGetErrorString: 1
+  cuInit =&gt; hipInit: 1
+  cuda.h =&gt; hip/hip_runtime.h: 2
+  cudaDevAttrManagedMemory =&gt; hipDeviceAttributeManagedMemory: 1
+  cudaDeviceGetAttribute =&gt; hipDeviceGetAttribute: 1
+  cudaDeviceProp =&gt; hipDeviceProp_t: 2
+  cudaDeviceReset =&gt; hipDeviceReset: 1
+  cudaDeviceSynchronize =&gt; hipDeviceSynchronize: 1
+  cudaError_t =&gt; hipError_t: 4
+  cudaEventCreate =&gt; hipEventCreate: 2
+  cudaEventDestroy =&gt; hipEventDestroy: 2
+  cudaEventElapsedTime =&gt; hipEventElapsedTime: 1
+  cudaEventRecord =&gt; hipEventRecord: 3
+  cudaEventSynchronize =&gt; hipEventSynchronize: 2
+  cudaEvent_t =&gt; hipEvent_t: 3
+  cudaGetDevice =&gt; hipGetDevice: 1
+  cudaGetDeviceCount =&gt; hipGetDeviceCount: 2
+  cudaGetDeviceProperties =&gt; hipGetDeviceProperties: 2
+  cudaGetErrorString =&gt; hipGetErrorString: 2
+  cudaLaunchKernel =&gt; hipLaunchKernel: 1
+  cudaSetDevice =&gt; hipSetDevice: 3
+  cudaStreamCreateWithFlags =&gt; hipStreamCreateWithFlags: 1
+  cudaStreamDefault =&gt; hipStreamDefault: 1
+  cudaStreamDestroy =&gt; hipStreamDestroy: 1
+  cudaStreamNonBlocking =&gt; hipStreamNonBlocking: 1
+  cudaStream_t =&gt; hipStream_t: 7
+  cudaSuccess =&gt; hipSuccess: 4
+  cuda_runtime.h =&gt; hip/hip_runtime.h: 2
+
+[HIPIFY] info: file &#39;GLOBAL&#39; statistics:
+  CONVERTED refs count: 72
+  TOTAL lines of code: 1165
+  WARNINGS: 2
+[HIPIFY] info: CONVERTED refs by names:
+  CUDA_SUCCESS =&gt; hipSuccess: 4
+  CUresult =&gt; hipError_t: 4
+  cuGetErrorString =&gt; hipDrvGetErrorString: 1
+  cuInit =&gt; hipInit: 1
+  cuda.h =&gt; hip/hip_runtime.h: 2
+  cudaDevAttrManagedMemory =&gt; hipDeviceAttributeManagedMemory: 1
+  cudaDeviceGetAttribute =&gt; hipDeviceGetAttribute: 1
+  cudaDeviceProp =&gt; hipDeviceProp_t: 2
+  cudaDeviceReset =&gt; hipDeviceReset: 1
+  cudaDeviceSynchronize =&gt; hipDeviceSynchronize: 2
+  cudaError_t =&gt; hipError_t: 4
+  cudaEventCreate =&gt; hipEventCreate: 2
+  cudaEventDestroy =&gt; hipEventDestroy: 2
+  cudaEventElapsedTime =&gt; hipEventElapsedTime: 1
+  cudaEventRecord =&gt; hipEventRecord: 3
+  cudaEventSynchronize =&gt; hipEventSynchronize: 2
+  cudaEvent_t =&gt; hipEvent_t: 3
+  cudaFree =&gt; hipFree: 3
+  cudaGetDevice =&gt; hipGetDevice: 1
+  cudaGetDeviceCount =&gt; hipGetDeviceCount: 2
+  cudaGetDeviceProperties =&gt; hipGetDeviceProperties: 2
+  cudaGetErrorString =&gt; hipGetErrorString: 2
+  cudaGetLastError =&gt; hipGetLastError: 1
+  cudaLaunchKernel =&gt; hipLaunchKernel: 2
+  cudaMalloc =&gt; hipMalloc: 3
+  cudaMemcpy =&gt; hipMemcpy: 3
+  cudaMemcpyDeviceToHost =&gt; hipMemcpyDeviceToHost: 1
+  cudaMemcpyHostToDevice =&gt; hipMemcpyHostToDevice: 2
+  cudaSetDevice =&gt; hipSetDevice: 3
+  cudaStreamCreateWithFlags =&gt; hipStreamCreateWithFlags: 1
+  cudaStreamDefault =&gt; hipStreamDefault: 1
+  cudaStreamDestroy =&gt; hipStreamDestroy: 1
+  cudaStreamNonBlocking =&gt; hipStreamNonBlocking: 1
+  cudaStream_t =&gt; hipStream_t: 7
+  cudaSuccess =&gt; hipSuccess: 4
+  cuda_runtime.h =&gt; hip/hip_runtime.h: 2
+
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>If we examine the source tree we see that every source file that has been hipified has been first copied to a file with suffix <code>*.prehip</code>. Then the converted code is overwritten in place of the old file.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[40]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>ls -l temp_mat_mult
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>total 2380
+-rw-rw-r-- 1 toby toby  262144 Sep 14 15:34 array_A.dat
+-rw-rw-r-- 1 toby toby  262144 Sep 14 15:34 array_B.dat
+-rw-rw-r-- 1 toby toby  262144 Sep 14 15:34 array_C.dat
+-rw-rw-r-- 1 toby toby   24660 Sep 14 15:34 cuda_helper.cu
+-rw-rw-r-- 1 toby toby   24629 Sep 14 15:34 cuda_helper.cu.prehip
+-rw-rw-r-- 1 toby toby     273 Sep 14 15:34 Makefile
+-rw-rw-r-- 1 toby toby    4497 Sep 14 15:34 mat_helper.hpp
+-rw-rw-r-- 1 toby toby    4497 Sep 14 15:34 mat_helper.hpp.prehip
+-rw-rw-r-- 1 toby toby    6090 Sep 14 15:34 mat_mult.cu
+-rw-rw-r-- 1 toby toby    6060 Sep 14 15:34 mat_mult.cu.prehip
+-rwxrwxr-x 1 toby toby 1545672 Sep 14 15:34 mat_mult.exe
+-rw-rw-r-- 1 toby toby     107 Sep 14 15:34 mat_size.hpp
+-rw-rw-r-- 1 toby toby     107 Sep 14 15:34 mat_size.hpp.prehip
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>We try copying the Makefile from hip_mat_mult to see if the conversion has worked.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[41]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="nb">cd</span> temp_mat_mult<span class="p">;</span> make clean<span class="p">;</span> make <span class="nv">CXX</span><span class="o">=</span><span class="s2">"hipcc"</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>rm -r *.exe
+hipcc -g -O2  mat_mult.cu -o mat_mult.exe -lcuda
+<span class="ansi-bold">cuda_helper.cu(54)</span>: <span class="ansi-red-intense-fg ansi-bold">error</span>: function <span class="ansi-bold">&#34;h_errchk&#34;</span> has already been defined
+  void h_errchk(hipError_t errcode, const char* message) {
+       ^
+
+1 error detected in the compilation of &#34;mat_mult.cu&#34;.
+make: *** [Makefile:16: mat_mult.exe] Error 2
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[37]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="nb">cd</span> temp_mat_mult<span class="p">;</span> ./mat_mult.exe
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>Device id: 0
+	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
+	global memory size:                      6226 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    49 KB
+	maximum pitch size for memory copies:    2147 MB
+	max block size:                          (1024,1024,64)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,65535,65535)
+Error, cuda runtime api call failed at mat_mult.cu:148, error string is: unknown error
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>In the original file <strong>cuda_helper.cu</strong> we had overloaded the <strong>h_errchk</strong> function to accept errorcodes of type <strong>CUResult</strong> and <strong>cudaError_t</strong>. With the conversion to HIP the errorcode has been replaced with just <strong>hipError_t</strong>. Therefore we need to manually delete the duplicate <strong>h_errchk</strong> function.</p>
+
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Available porting tools are <strong>hipify-perl</strong> and <strong>hipify-clang</strong>. Hipify-perl is a perl-based search and replace tool, whereas hipify-clang is a clang preprocessor based tool.</p>
 <ul>
 <li>hipexamine.sh</li>
 <li>hipexamine-perl.sh</li>
