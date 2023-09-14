@@ -8,13 +8,13 @@
 ///
 
 // Windows specific header instructions
-#if defined(_WIN32) || defined(_WIN64)
-    #define NOMINMAX
-    #include <windows.h>
-    #include <malloc.h>
-#else
-    #include <unistd.h>
-#endif
+//#if defined(_WIN32) || defined(_WIN64)
+//    #define NOMINMAX
+//    #include <windows.h>
+//    #include <malloc.h>
+//#else
+#include <unistd.h>
+//#endif
 
 #include <iostream>
 #include <cstdio>
