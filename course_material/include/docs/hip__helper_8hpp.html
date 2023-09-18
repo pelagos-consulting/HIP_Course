@@ -71,10 +71,12 @@ $(function() {
 
 <p>Helper functions for HIP.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;iostream&gt;</code><br />
+<div class="textblock"><code>#include &lt;unistd.h&gt;</code><br />
+<code>#include &lt;iostream&gt;</code><br />
 <code>#include &lt;cstdio&gt;</code><br />
 <code>#include &lt;cstdlib&gt;</code><br />
 <code>#include &lt;map&gt;</code><br />
+<code>#include &lt;new&gt;</code><br />
 <code>#include &lt;cassert&gt;</code><br />
 <code>#include &lt;cstring&gt;</code><br />
 <code>#include &lt;cmath&gt;</code><br />
@@ -86,17 +88,19 @@ Include dependency graph for hip_helper.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="hip__helper_8hpp__incl.png" border="0" usemap="#ahip__helper_8hpp" alt=""/></div>
 <map name="ahip__helper_8hpp" id="ahip__helper_8hpp">
-<area shape="rect" title="Helper functions for HIP." alt="" coords="381,5,499,32"/>
-<area shape="rect" title=" " alt="" coords="5,80,85,107"/>
-<area shape="rect" title=" " alt="" coords="109,80,171,107"/>
-<area shape="rect" title=" " alt="" coords="195,80,261,107"/>
-<area shape="rect" title=" " alt="" coords="285,80,336,107"/>
-<area shape="rect" title=" " alt="" coords="360,80,429,107"/>
-<area shape="rect" title=" " alt="" coords="453,80,520,107"/>
-<area shape="rect" title=" " alt="" coords="545,80,607,107"/>
-<area shape="rect" title=" " alt="" coords="632,80,699,107"/>
-<area shape="rect" title=" " alt="" coords="723,80,789,107"/>
-<area shape="rect" title=" " alt="" coords="813,80,949,107"/>
+<area shape="rect" title="Helper functions for HIP." alt="" coords="467,5,584,32"/>
+<area shape="rect" title=" " alt="" coords="5,80,80,107"/>
+<area shape="rect" title=" " alt="" coords="104,80,184,107"/>
+<area shape="rect" title=" " alt="" coords="208,80,269,107"/>
+<area shape="rect" title=" " alt="" coords="294,80,359,107"/>
+<area shape="rect" title=" " alt="" coords="384,80,435,107"/>
+<area shape="rect" title=" " alt="" coords="459,80,509,107"/>
+<area shape="rect" title=" " alt="" coords="533,80,603,107"/>
+<area shape="rect" title=" " alt="" coords="627,80,693,107"/>
+<area shape="rect" title=" " alt="" coords="718,80,781,107"/>
+<area shape="rect" title=" " alt="" coords="805,80,872,107"/>
+<area shape="rect" title=" " alt="" coords="896,80,963,107"/>
+<area shape="rect" title=" " alt="" coords="987,80,1123,107"/>
 </map>
 </div>
 </div>
@@ -104,6 +108,9 @@ Include dependency graph for hip_helper.hpp:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:a5e315765b407b6d55c716aacd3d729d3"><td class="memItemLeft" align="right" valign="top"><a id="a5e315765b407b6d55c716aacd3d729d3"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>FAULTY_TIME</b>&#160;&#160;&#160;-1.0</td></tr>
+<tr class="separator:a5e315765b407b6d55c716aacd3d729d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a576ec48a9bb2ce0f04cb7de06ca64281"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#a576ec48a9bb2ce0f04cb7de06ca64281">H_ERRCHK</a>(cmd)</td></tr>
 <tr class="memdesc:a576ec48a9bb2ce0f04cb7de06ca64281"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro to check error codes.  <a href="hip__helper_8hpp.html#a576ec48a9bb2ce0f04cb7de06ca64281">More...</a><br /></td></tr>
 <tr class="separator:a576ec48a9bb2ce0f04cb7de06ca64281"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -158,10 +165,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip_
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#aebe2dd0bf256ab42059ac3f3ac69b825">h_release_devices</a> (int num_devices)</td></tr>
 <tr class="memdesc:aebe2dd0bf256ab42059ac3f3ac69b825"><td class="mdescLeft">&#160;</td><td class="mdescRight">Release compute devices. <br /></td></tr>
 <tr class="separator:aebe2dd0bf256ab42059ac3f3ac69b825"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a366fcc5bd10302e98aefb296d976e8d1"><td class="memItemLeft" align="right" valign="top"><a id="a366fcc5bd10302e98aefb296d976e8d1"></a>
-hipStream_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#a366fcc5bd10302e98aefb296d976e8d1">h_create_streams</a> (size_t nstreams, int blocking)</td></tr>
-<tr class="memdesc:a366fcc5bd10302e98aefb296d976e8d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a number of streams. <br /></td></tr>
-<tr class="separator:a366fcc5bd10302e98aefb296d976e8d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb7ae6595b28c0d9c878f9e212f1ae9b"><td class="memItemLeft" align="right" valign="top"><a id="aeb7ae6595b28c0d9c878f9e212f1ae9b"></a>
+hipStream_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#aeb7ae6595b28c0d9c878f9e212f1ae9b">h_create_streams</a> (size_t nstreams, int synchronise)</td></tr>
+<tr class="memdesc:aeb7ae6595b28c0d9c878f9e212f1ae9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a number of streams. <br /></td></tr>
+<tr class="separator:aeb7ae6595b28c0d9c878f9e212f1ae9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2134191226c4beaad0d5b4c3a5338210"><td class="memItemLeft" align="right" valign="top"><a id="a2134191226c4beaad0d5b4c3a5338210"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#a2134191226c4beaad0d5b4c3a5338210">h_release_streams</a> (size_t nstreams, hipStream_t *streams)</td></tr>
 <tr class="memdesc:a2134191226c4beaad0d5b4c3a5338210"><td class="mdescLeft">&#160;</td><td class="mdescRight">Release streams that were created. <br /></td></tr>
@@ -196,6 +203,13 @@ float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip
 <tr class="separator:ae5dea353f5f5be7a44b575cd2f9d13c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d5582ab821d5731efab05fd3a7aef6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#a2d5582ab821d5731efab05fd3a7aef6e">h_optimise_block</a> (int argc, char **argv, const void *kernel_function, void **kernel_args, dim3 global_size, dim3 *default_block_size, size_t nstats, float prior_times, void(*prep_kernel_function)(const void *, void **, dim3, dim3, size_t *, void **), void **prep_kernel_args)</td></tr>
 <tr class="separator:a2d5582ab821d5731efab05fd3a7aef6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0eb9aced259361cb9ae48e6d3abf06d"><td class="memTemplParams" colspan="2"><a id="af0eb9aced259361cb9ae48e6d3abf06d"></a>
+template&lt;class T &gt; </td></tr>
+<tr class="memitem:af0eb9aced259361cb9ae48e6d3abf06d"><td class="memTemplItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>h_copy_kernel3D</b> (T *dst, T *src, size_t offset_dst, size_t offset_src, dim3 dims_dst, dim3 dims_src, dim3 region)</td></tr>
+<tr class="separator:af0eb9aced259361cb9ae48e6d3abf06d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a599c7c96531b63708d0c15c2555d3c53"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a599c7c96531b63708d0c15c2555d3c53"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="hip__helper_8hpp.html#a599c7c96531b63708d0c15c2555d3c53">h_memcpy3D</a> (T *dst, dim3 dims_dst, T *src, dim3 dims_src, dim3 region, hipStream_t stream, size_t offset_dst=0, size_t offset_src=0)</td></tr>
+<tr class="separator:a599c7c96531b63708d0c15c2555d3c53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Helper functions for HIP. </p>
@@ -227,6 +241,73 @@ float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hip
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a599c7c96531b63708d0c15c2555d3c53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a599c7c96531b63708d0c15c2555d3c53">&#9670;&nbsp;</a></span>h_memcpy3D()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void h_memcpy3D </td>
+          <td>(</td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dim3&#160;</td>
+          <td class="paramname"><em>dims_dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dim3&#160;</td>
+          <td class="paramname"><em>dims_src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dim3&#160;</td>
+          <td class="paramname"><em>region</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">hipStream_t&#160;</td>
+          <td class="paramname"><em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>offset_dst</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>offset_src</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Function to perform a 3D memory copy either between allocations on a device or between host and device if the host memory is pinned and mapped or managed </p>
+
+</div>
+</div>
 <a id="a2d5582ab821d5731efab05fd3a7aef6e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2d5582ab821d5731efab05fd3a7aef6e">&#9670;&nbsp;</a></span>h_optimise_block()</h2>
 
