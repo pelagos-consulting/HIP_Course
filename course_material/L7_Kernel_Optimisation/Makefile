@@ -3,6 +3,7 @@ include ../env
 
 # List of applications to target
 TARGETS=mat_mult_float.exe \
+		mat_mult_float_restrict.exe \
 		mat_mult_double.exe \
 		mat_mult_AT.exe \
 		mat_mult_BT.exe \

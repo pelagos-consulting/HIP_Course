@@ -31,6 +31,7 @@ dev_types={"gpu" : dev_indices_gpu}
 experiments = {
     "Double precision" : "mat_mult_double.exe",
     "Single precision" : "mat_mult_float.exe",
+    "Single with restrict" : "mat_mult_float_restrict.exe",
     #"Prefetch on A" : "mat_mult_prefetch.exe",
     "Shared A" : "mat_mult_shared_A.exe",
     "Shared B" : "mat_mult_shared_B.exe",
