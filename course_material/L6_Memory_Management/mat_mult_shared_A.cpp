@@ -163,7 +163,7 @@ int main(int argc, char** argv) {
     float temp_coeffs[NCOEFFS] = {1};
     H_ERRCHK(
         hipMemcpyToSymbol(
-            coeffs, 
+            HIP_SYMBOL(coeffs), 
             temp_coeffs, 
             NCOEFFS*sizeof(float)
         )

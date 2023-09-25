@@ -1,3 +1,5 @@
+
+#include <hip/hip_runtime.h>
 // Define the size of the arrays to be computed
 #define NCOLS_A 256
 #define NROWS_C 256

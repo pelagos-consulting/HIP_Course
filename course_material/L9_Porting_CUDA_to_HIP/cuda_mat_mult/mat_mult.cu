@@ -136,11 +136,8 @@ int main(int argc, char** argv) {
     // Amount of shared memory to use in the kernel
     size_t sharedMemBytes=0;
     
-    // Launch the kernel using cudaLaunchKernel method
+    // Launch the kernel using CUDA triple Chevron syntax
     // Use 0 when choosing the default (null) stream
-    
-    // Alternatively, launch the kernel using CUDA triple Chevron syntax
-    // which is not valid ANSI C++ syntax
     mat_mult<<<grid_nblocks, block_size, sharedMemBytes, 0>>>(A_d, B_d, C_d, N1_A, N0_C, N1_C);
     
     // Check the status of the kernel launch

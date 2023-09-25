@@ -3,17 +3,16 @@
 
 CXX=nvcc
 CXXFLAGS=-g -O2 
+LIBFLAGS=-lcuda
 
 # List of applications to target
 TARGETS=mat_mult.exe
 
 all: $(TARGETS)
 
-# Kernel dependencies
-
 # General compilation step
 %.exe: %.cu
-	$(CXX) $(CXXFLAGS) $< -o $@ -lcuda
+	$(CXX) $(CXXFLAGS) $< -o $@ $(LIBFLAGS)
 
 # Clean step
 clean:

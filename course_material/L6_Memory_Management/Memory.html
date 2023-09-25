@@ -15674,12 +15674,12 @@ Maximum error (infinity norm) is: 1.14441e-05
 <div class="highlight"><pre><span></span><span class="c1">// Define some constant memory</span>
 <span class="n">__constant__</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">coeffs</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span><span class="w"></span>
 </pre></div>
-<h4 id="Write-access-from-the-host">Write access from the host<a class="anchor-link" href="#Write-access-from-the-host">&#182;</a></h4><p>Within the main program we use the function <strong>hipMemcpyToSymbol</strong> to copy memory from the main program to the allocated constant memory.</p>
+<h4 id="Write-access-from-the-host">Write access from the host<a class="anchor-link" href="#Write-access-from-the-host">&#182;</a></h4><p>Within the main program we use the function <strong>hipMemcpyToSymbol</strong> to copy memory from the main program to the allocated constant memory. From this <a href="https://rocm.docs.amd.com/projects/HIP/en/develop/user_guide/hip_porting_guide.html">source</a> the destination pointer for the copy needs to be encased in the macro <strong>HIP_SYMBOL</strong>.</p>
 <div class="highlight"><pre><span></span><span class="c1">// Copy memory to the coefficients</span>
 <span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">temp_coeffs</span><span class="p">[</span><span class="n">NCOEFFS</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">};</span><span class="w"></span>
 <span class="w">    </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="w"></span>
 <span class="w">        </span><span class="n">hipMemcpyToSymbol</span><span class="p">(</span><span class="w"></span>
-<span class="w">            </span><span class="n">coeffs</span><span class="p">,</span><span class="w"> </span>
+<span class="w">            </span><span class="n">HIP_SYMBOL</span><span class="p">(</span><span class="n">coeffs</span><span class="p">),</span><span class="w"> </span>
 <span class="w">            </span><span class="n">temp_coeffs</span><span class="p">,</span><span class="w"> </span>
 <span class="w">            </span><span class="n">NCOEFFS</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="w"></span>
 <span class="w">        </span><span class="p">)</span><span class="w"></span>
@@ -16521,6 +16521,18 @@ Counter has been incremented 65536 out of 65536 times
 
 </div>
 
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="Heads-up-for-fine-grained-memory">Heads up for fine-grained memory<a class="anchor-link" href="#Heads-up-for-fine-grained-memory">&#182;</a></h4><p>As a heads up, some users have encountered silent failures when trying to use unsafe atomics with fine-grained memory access.</p>
+
+</div>
+</div>
+</div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
