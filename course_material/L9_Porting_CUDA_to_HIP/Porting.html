@@ -16114,7 +16114,8 @@ Maximum error (infinity norm) is: 1.52588e-05
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="API-differences-between-CUDA-and-HIP">API differences between CUDA and HIP<a class="anchor-link" href="#API-differences-between-CUDA-and-HIP">&#182;</a></h2><p>CUDA has the notion of a driver API and a runtime API. HIP combines the two into one API and then supports a subset of the combined API.</p>
+<h2 id="Learnings-for-the-porting-process">Learnings for the porting process<a class="anchor-link" href="#Learnings-for-the-porting-process">&#182;</a></h2><h3 id="API-differences-between-CUDA-and-HIP">API differences between CUDA and HIP<a class="anchor-link" href="#API-differences-between-CUDA-and-HIP">&#182;</a></h3><p>CUDA has the notion of a driver API and a runtime API. HIP combines the two into one API and then supports a subset of the combined API. Context managment in HIP is deprecated.</p>
+<h3 id="Tips-for-managing-large-kernels">Tips for managing large kernels<a class="anchor-link" href="#Tips-for-managing-large-kernels">&#182;</a></h3><h3 id="%23">#<a class="anchor-link" href="#%23">&#182;</a></h3><h4 id="Relocatable-device-code">Relocatable device code<a class="anchor-link" href="#Relocatable-device-code">&#182;</a></h4><p>From <a href="https://docs.amd.com/projects/HIP/en/latest/user_guide/hip_porting_driver_api.html">this source</a> The linker option <code>–fgpu-rdc</code> allows for kernels to call functions that are compiled for different translation units. At the <a href="https://pawsey.org.au/event/pacer-conference-2023-pcon23-registration/">Pawsey P'Con 23 Hackathon</a> a team found that the use of this flag generated excessively long link times.</p>
 
 </div>
 </div>
