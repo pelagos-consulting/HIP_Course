@@ -2,7 +2,8 @@
 # Applications
 
 CXX=nvcc
-CXXFLAGS=-g -O2 
+# The -x cu flag is to tell nvcc to treat cpp files as cu files
+CXXFLAGS=-g -O2 -x cu
 LIBFLAGS=-lcuda
 
 # List of applications to target
@@ -11,7 +12,7 @@ TARGETS=mat_mult.exe
 all: $(TARGETS)
 
 # General compilation step
-%.exe: %.cu
+%.exe: %.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@ $(LIBFLAGS)
 
 # Clean step

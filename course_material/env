@@ -31,6 +31,8 @@ ifeq ($(HIP_PLATFORM), nvidia)
     BASE_LIB_FLAGS:=-lgomp $(BASE_LIB_FLAGS)
 else
     # Normal compilation
+    CXXFLAGS:=-Rpass-analysis=kernel-resource-usage $(CXXFLAGS)
+
     ifeq ($(DEBUG), true)
         CXXFLAGS:=-O0 -g -ggdb $(CXXFLAGS)
     else

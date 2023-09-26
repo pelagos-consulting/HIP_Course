@@ -14,7 +14,7 @@ Written by Dr Toby M. Potter
 #include "mat_helper.hpp"
 
 // Bring in helper header to manage boilerplate code
-#include "cuda_helper.cu"
+#include "cuda_helper.hpp"
 
 // standard matrix multiply kernel 
 __global__ void mat_mult (
