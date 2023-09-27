@@ -14592,7 +14592,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Setup-and-installation">Setup and installation<a class="anchor-link" href="#Setup-and-installation">&#182;</a></h2><p>From <a href="https://sep5.readthedocs.io/en/latest/Programming_Guides/HIP-porting-guide.html">this source</a> it is recommended to attempt porting on a machine that has access to both CUDA and HIP libraries. This usually means doing the port on a machine with an NVIDIA GPU. Then one can try porting portions of the code at a time and compare results. For best results with hipify-clang you need to have a version of CUDA that is compatible with your installed version of hipify-clang.</p>
+<h2 id="Setup-and-installation">Setup and installation<a class="anchor-link" href="#Setup-and-installation">&#182;</a></h2><p>From <a href="https://sep5.readthedocs.io/en/latest/Programming_Guides/HIP-porting-guide.html">this source</a> it is recommended to attempt porting on a machine that has access to both CUDA and HIP libraries. This usually means doing the port on a machine with an NVIDIA GPU. Then one can try porting portions of the code at a time and compare results. For best results during porting you need to have a version of CUDA that is compatible with your installed version of hipify-clang. The table at <a href="https://rocm.docs.amd.com/projects/HIPIFY/en/latest/hipify-clang.html">this resource</a> provides information on which version of <strong>hipify-clang</strong> is compatible with which version of CUDA.</p>
+<p>Once the code is ported and you are running the ported code on AMD hardware it is important to be aware that HIP functions may try to access ROCM libraries on the backend without prior warning of this dependency. It is then a good idea to make sure you have a complete installation of ROCM in addition to having a version of ROCM that is API compatible with your code's version of CUDA.</p>
 
 </div>
 </div>
@@ -15958,13 +15959,49 @@ Maximum error (infinity norm) is: 1.52588e-05
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Learnings-from-the-porting-process">Learnings from the porting process<a class="anchor-link" href="#Learnings-from-the-porting-process">&#182;</a></h2><h3 id="API-differences-between-CUDA-and-HIP">API differences between CUDA and HIP<a class="anchor-link" href="#API-differences-between-CUDA-and-HIP">&#182;</a></h3><p>CUDA has the notion of a driver API and a runtime API. HIP combines the two into one API and then supports a subset of the combined API. Context managment in HIP is deprecated.</p>
-<h3 id="Tips-for-managing-large-kernels">Tips for managing large kernels<a class="anchor-link" href="#Tips-for-managing-large-kernels">&#182;</a></h3><h4 id="Register-pressure-on-ported-kernels">Register pressure on ported kernels<a class="anchor-link" href="#Register-pressure-on-ported-kernels">&#182;</a></h4><p>Due to compiler and runtime maturity, experience with recent hackathons has shown that the NVIDIA software stack is currently better able to handle kernels with large numbers of registers. When porting to AMD hardware there is likely to be fewer registers available per thread before occupancy is affected. See some of the tips in Lesson 7 on <a href="../L7_Kernel_Optimisation/Optimisation.ipynb">optimising kernels</a> to try and reduce register pressure.</p>
+<h2 id="Case-studies-in-porting-codes">Case studies in porting codes<a class="anchor-link" href="#Case-studies-in-porting-codes">&#182;</a></h2><h3 id="Visualising-shipwrecks">Visualising shipwrecks<a class="anchor-link" href="#Visualising-shipwrecks">&#182;</a></h3><p>From <a href="https://blogs.nvidia.com/blog/2022/11/18/3d-shipwrecks-perth/">this resource</a></p>
+<ul>
+<li>Open source visualisation software that uses CUDA.</li>
+<li>Fragility between CUDA and HIP API's.</li>
+<li>Some CUDA functions were just wrappers that call other CUDA functions and thus were unable to be ported.</li>
+<li>HIP functions would call ROCM functions on an AMD backend. It was a trial and error process to work out what ROCM libraries were requried.</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Learnings-from-the-porting-process">Learnings from the porting process<a class="anchor-link" href="#Learnings-from-the-porting-process">&#182;</a></h2><h3 id="Architectural-differences">Architectural differences<a class="anchor-link" href="#Architectural-differences">&#182;</a></h3><h4 id="Thread-team-size">Thread team size<a class="anchor-link" href="#Thread-team-size">&#182;</a></h4><p>From <a href="https://www.researchgate.net/publication/342464640_Preparing_Ginkgo_for_AMD_GPUs_--_A_Testimonial_on_Porting_CUDA_Code_to_HIP">Yuhsiang et al (2020)</a> the primary architectural difference between AMD and NVIDIA is AMD's use of 64 threads in a thread team versus 32 threads for NVIDIA devices.</p>
+<h4 id="Available-registers-at-peak-occupancy">Available registers at peak occupancy<a class="anchor-link" href="#Available-registers-at-peak-occupancy">&#182;</a></h4><p>We saw from Lesson 7 that the MI250X GPU may have fewer available registers per kernel thread in order to maintain peak occupancy. Combined with difference in compiler and runtime maturity, this may mean that a kernel running on AMD hardware may not achieve the same occupancy as it did on NVIDIA hardware. The tool Omniperf is good at showing the occupancy of your kernels. If you see reduced occupancy in ported code then see some of the tips in Lesson 7 on <a href="../L7_Kernel_Optimisation/Optimisation.ipynb">optimising kernels</a> to try and reduce register pressure.</p>
+<h3 id="API-differences-between-CUDA-and-HIP">API differences between CUDA and HIP<a class="anchor-link" href="#API-differences-between-CUDA-and-HIP">&#182;</a></h3><p>CUDA has the notion of a driver API and a runtime API. HIP combines the two into one API and then supports a subset of the combined API. Context managment in HIP is deprecated.</p>
+<h3 id="Tips-for-managing-large-kernels">Tips for managing large kernels<a class="anchor-link" href="#Tips-for-managing-large-kernels">&#182;</a></h3><h4 id="Register-pressure">Register pressure<a class="anchor-link" href="#Register-pressure">&#182;</a></h4><p>Achieving good occupancy is essential for hiding latencies in fetching memory. With large kernels register pressure is likely to reduce occupancy, because when kernel threads consume too many registers then the number of active thread teams must be reduced in order to accommodate the resource request. See Lesson 7 on <a href="../L7_Kernel_Optimisation/Optimisation.ipynb">optimising kernels</a> for tips on reducing register pressure.</p>
 <h4 id="Relocatable-device-code">Relocatable device code<a class="anchor-link" href="#Relocatable-device-code">&#182;</a></h4><p>From <a href="https://docs.amd.com/projects/HIP/en/latest/user_guide/hip_porting_driver_api.html">this source</a> The linker option <code>–fgpu-rdc</code> allows for kernels to call functions that are compiled for different translation units. At the <a href="https://pawsey.org.au/event/pacer-conference-2023-pcon23-registration/">Pawsey P'Con 23 Hackathon</a> a team found that the use of this flag generated excessively long link times.</p>
 
 </div>
 </div>
 </div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
 </div>
 </body>
 
