@@ -15959,12 +15959,16 @@ Maximum error (infinity norm) is: 1.52588e-05
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Case-studies-in-porting-codes">Case studies in porting codes<a class="anchor-link" href="#Case-studies-in-porting-codes">&#182;</a></h2><h3 id="Visualising-shipwrecks">Visualising shipwrecks<a class="anchor-link" href="#Visualising-shipwrecks">&#182;</a></h3><p>From <a href="https://blogs.nvidia.com/blog/2022/11/18/3d-shipwrecks-perth/">this resource</a></p>
+<h2 id="Case-studies-in-porting-codes">Case studies in porting codes<a class="anchor-link" href="#Case-studies-in-porting-codes">&#182;</a></h2><h3 id="Visualising-shipwrecks">Visualising shipwrecks<a class="anchor-link" href="#Visualising-shipwrecks">&#182;</a></h3><p>From <a href="https://blogs.nvidia.com/blog/2022/11/18/3d-shipwrecks-perth/">this resource</a> researchers at Curtin University are using open source visualisation software to render 3D environments of shipwrecks. Some feedback from their work was:</p>
 <ul>
-<li>Open source visualisation software that uses CUDA.</li>
-<li>Fragility between CUDA and HIP API's.</li>
+<li>Fragility between CUDA and HIP API's. One had to have a version of ROCM that closely matches the CUDA library.</li>
 <li>Some CUDA functions were just wrappers that call other CUDA functions and thus were unable to be ported.</li>
 <li>HIP functions would call ROCM functions on an AMD backend. It was a trial and error process to work out what ROCM libraries were requried.</li>
+</ul>
+<h3 id="FiCoS">FiCoS<a class="anchor-link" href="#FiCoS">&#182;</a></h3><p>From <a href="https://gitlab.com/andrea-tango/ficos">this github site</a> FiCoS is a simulator for biochemical networks. It uses CUDA to solve Ordinary Differential Equations (ODE's) in parallel over a GPU. As the project is quite small the <strong>hipconvertinplace-perl.sh</strong> script was used to easily port the code. During compilation I encountered numerous errors of the following type:</p>
+<ul>
+<li>Arrays of the data type <strong>hipDoubleComplex</strong> was incompatible with required input arguments <strong>hipBlasDoubleComplex</strong> for hibBlas routines  when trying to use the NVIDIA backend. This was not an issue with the AMD backend.</li>
+<li>Dynamic parallelism an issue when trying to use the AMD backend.</li>
 </ul>
 
 </div>
@@ -15979,9 +15983,13 @@ Maximum error (infinity norm) is: 1.52588e-05
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="Learnings-from-the-porting-process">Learnings from the porting process<a class="anchor-link" href="#Learnings-from-the-porting-process">&#182;</a></h2><h3 id="Architectural-differences">Architectural differences<a class="anchor-link" href="#Architectural-differences">&#182;</a></h3><h4 id="Thread-team-size">Thread team size<a class="anchor-link" href="#Thread-team-size">&#182;</a></h4><p>From <a href="https://www.researchgate.net/publication/342464640_Preparing_Ginkgo_for_AMD_GPUs_--_A_Testimonial_on_Porting_CUDA_Code_to_HIP">Yuhsiang et al (2020)</a> the primary architectural difference between AMD and NVIDIA is AMD's use of 64 threads in a thread team versus 32 threads for NVIDIA devices.</p>
 <h4 id="Available-registers-at-peak-occupancy">Available registers at peak occupancy<a class="anchor-link" href="#Available-registers-at-peak-occupancy">&#182;</a></h4><p>We saw from Lesson 7 that the MI250X GPU may have fewer available registers per kernel thread in order to maintain peak occupancy. Combined with difference in compiler and runtime maturity, this may mean that a kernel running on AMD hardware may not achieve the same occupancy as it did on NVIDIA hardware. The tool Omniperf is good at showing the occupancy of your kernels. If you see reduced occupancy in ported code then see some of the tips in Lesson 7 on <a href="../L7_Kernel_Optimisation/Optimisation.ipynb">optimising kernels</a> to try and reduce register pressure.</p>
-<h3 id="API-differences-between-CUDA-and-HIP">API differences between CUDA and HIP<a class="anchor-link" href="#API-differences-between-CUDA-and-HIP">&#182;</a></h3><p>CUDA has the notion of a driver API and a runtime API. HIP combines the two into one API and then supports a subset of the combined API. Context managment in HIP is deprecated.</p>
-<h3 id="Tips-for-managing-large-kernels">Tips for managing large kernels<a class="anchor-link" href="#Tips-for-managing-large-kernels">&#182;</a></h3><h4 id="Register-pressure">Register pressure<a class="anchor-link" href="#Register-pressure">&#182;</a></h4><p>Achieving good occupancy is essential for hiding latencies in fetching memory. With large kernels register pressure is likely to reduce occupancy, because when kernel threads consume too many registers then the number of active thread teams must be reduced in order to accommodate the resource request. See Lesson 7 on <a href="../L7_Kernel_Optimisation/Optimisation.ipynb">optimising kernels</a> for tips on reducing register pressure.</p>
-<h4 id="Relocatable-device-code">Relocatable device code<a class="anchor-link" href="#Relocatable-device-code">&#182;</a></h4><p>From <a href="https://docs.amd.com/projects/HIP/en/latest/user_guide/hip_porting_driver_api.html">this source</a> The linker option <code>–fgpu-rdc</code> allows for kernels to call functions that are compiled for different translation units. At the <a href="https://pawsey.org.au/event/pacer-conference-2023-pcon23-registration/">Pawsey P'Con 23 Hackathon</a> a team found that the use of this flag generated excessively long link times.</p>
+<h3 id="API-differences-between-CUDA-and-HIP">API differences between CUDA and HIP<a class="anchor-link" href="#API-differences-between-CUDA-and-HIP">&#182;</a></h3><p>CUDA has the notion of a driver API and a runtime API. HIP combines the two into one API and then supports a subset of the combined API. This <a href="https://rocm.docs.amd.com/projects/HIP/en/latest/user_guide/faq.html#what-apis-and-features-does-hip-support">table</a> has the most up-to-date listing of features that are supported and not supported in HIP. In particular, here are some notable points of difference between CUDA and HIP.</p>
+<ul>
+<li>Launching kernels from kernels (dynamic parallelism) is not supported in HIP. Avoid using this design pattern in cross-platform code.</li>
+<li>Context management is deprecated in HIP.</li>
+<li>Graphics interopability with OpenGL is not yet supported.</li>
+</ul>
+<h2 id="Miscellaneous-tips">Miscellaneous tips<a class="anchor-link" href="#Miscellaneous-tips">&#182;</a></h2><h3 id="Relocatable-device-code">Relocatable device code<a class="anchor-link" href="#Relocatable-device-code">&#182;</a></h3><p>From <a href="https://docs.amd.com/projects/HIP/en/latest/user_guide/hip_porting_driver_api.html">this source</a> The linker option <code>–fgpu-rdc</code> allows for kernels to call functions that are compiled for different translation units. At the <a href="https://pawsey.org.au/event/pacer-conference-2023-pcon23-registration/">Pawsey P'Con 23 Hackathon</a> a team found that the use of this flag generated excessively long link times.</p>
 
 </div>
 </div>
