@@ -14661,14 +14661,14 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="General-porting-process">General porting process<a class="anchor-link" href="#General-porting-process">&#182;</a></h2><p>The general porting process proceeds as follows:</p>
 <ol>
-<li>Compile with CUDA to verify that the program compiles</li>
-<li>Run a hipify tool to convert sources<ul>
+<li>Compile with CUDA to verify that the program compiles.</li>
+<li>Run a hipify tool to convert sources.<ul>
 <li>Use the flag <code>-hip-kernel-execution-syntax</code> to convert CUDA kernel launch syntax to HIP kernel launch syntax.</li>
 </ul>
 </li>
-<li>Adjust the compilation environment to use <strong>hipcc</strong></li>
-<li>Fix compilation errors<ul>
-<li>Can be the most difficult part of porting!</li>
+<li>Adjust the compilation environment to use <strong>hipcc</strong>.</li>
+<li>Fix compilation errors.<ul>
+<li>It can be the most difficult part of porting!</li>
 <li>Use environment variable <code>HIP_PLATFORM=nvidia</code> or <code>HIP_PLATFORM=amd</code> to switch between backends.</li>
 <li>Preprocessor directives can separate CUDA code from hip-clang code.<ul>
 <li>Use the directive <code>__HIP_PLATFORM_NVIDIA__</code> for CUDA-specific code.</li>
@@ -14677,12 +14677,12 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </li>
 </ul>
 </li>
-<li>Verify code correctness<ul>
+<li>Verify code correctness.<ul>
 <li>Test on CUDA and AMD architectures to ensure portability</li>
 </ul>
 </li>
-<li>Re-tune optimisations for new architecture</li>
-<li>Document the changes made</li>
+<li>Re-tune optimisations for new architecture, but only once you know everything works!</li>
+<li>Document the changes made.</li>
 </ol>
 <p>The step of running the <strong>hipify</strong> tool is the <strong>easiest part</strong> of the process.  If the code uses simple and well-supported CUDA API calls then this has the greatest chance of succeeding. If the codebase contains CUDA-specific complexity, or relies on functionality that is no longer supported by recent version of CUDA, then the level of difficulty in porting can increase <strong>dramatically</strong>. Adjusting the compilation environment for <strong>hipcc</strong> often requires knowledge of  build tools, usually this means a working knowledge of <strong>make</strong> or <strong>cmake</strong>.
 Familiarity with C++ and what the compiler warnings and errors mean is then crucial to massaging the codebase to accept the new compiler.</p>
