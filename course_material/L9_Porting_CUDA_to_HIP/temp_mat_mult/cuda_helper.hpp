@@ -50,6 +50,35 @@ void h_errchk(hipError_t errcode, const char* message) {
     }
 }
 
+/// Examine an error code and exit if necessary - driver API version
+void h_errchk(hipError_t errcode, const char* message) {
+
+    if (errcode != hipSuccess) { 
+        char* errstring;
+        hipError_t status = hipDrvGetErrorString(errcode, (const char**)&errstring); 
+        
+        if (status != hipSuccess) {
+        
+            std::fprintf( 
+                stderr, 
+                "Error, cuda driver api call failed at %s, error string is: %s\n", 
+                message, 
+                errstring 
+            );
+            
+        } else {
+            std::fprintf( 
+                stderr, 
+                "Error, cuda driver api call failed at %s, error code :%d is unknown\n", 
+                message, 
+                errcode 
+            );
+        
+        }
+        exit(EXIT_FAILURE); 
+    }
+}
+
 /// Macro to check error codes.
 #define H_ERRCHK(cmd) \
 {\
