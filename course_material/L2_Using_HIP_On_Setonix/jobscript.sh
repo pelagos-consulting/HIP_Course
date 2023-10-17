@@ -24,4 +24,4 @@ make clean
 make
 
 # Run a job with task placement and $BIND_OPTIONS
-srun -N $SLURM_JOB_NUM_NODES -n 8 -c 8 ./hello_jobstep.exe | sort
+srun -N $SLURM_JOB_NUM_NODES -n 8 -c 8 --gpus-per-node=8 --gpus-per-task=1 ./hello_jobstep.exe | sort
