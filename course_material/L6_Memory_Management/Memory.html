@@ -8420,12 +8420,12 @@ Maximum error (infinity norm) is: 1.14441e-05
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Private-memory">Private memory<a class="anchor-link" href="#Private-memory">¶</a></h3><p>Private memory (sometimes known as local memory in HIP/CUDA terminology) is the default storage space for variables created inside a running kernel. This memory is only available to the thread that allocates it. For example, in the <strong>mat_mult_shared_A</strong> kernel in <a href="mat_mult_shared_A.cpp">mat_mult_shared_A.cpp</a> we declare a private variable <strong>temp</strong> for use in the matrix dot products.</p>
+<h3 id="Private-memory">Private memory<a class="anchor-link" href="#Private-memory">¶</a></h3><p>Private memory (sometimes known as local memory in HIP/CUDA terminology) is the default storage space for variables created inside a running kernel. This memory is only available to the thread that allocates it. For example, in the <strong>mat_mult_shared_A</strong> kernel in <a href="mat_mult_shared_A.cpp">mat_mult_shared_A.cpp</a> we declare a private variable <strong>temp</strong> to accumulate the dot product in matrix multiplication.</p>
 <div class="highlight"><pre><span></span><span class="c1">// Scratch variable</span>
 <span class="w">    </span><span class="c1">// Demonstrate copying from constant memory</span>
 <span class="w">    </span><span class="n">float_type</span><span class="w"> </span><span class="n">temp</span><span class="o">=</span><span class="mf">0.0</span><span class="o">*</span><span class="n">coeffs</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
 </pre></div>
-<p>Private memory is usually allocated from the fastest register memory on the device, but the  amount of available register memory per thread is <strong>fairly low</strong> (on the order of 100 variables). If a kernel uses more register memory than there are variables, then register memory can spill over into global memory at the cost of performance. One can query the number of available 32-bit registers per block using a call to <strong>hipGetDeviceProperties</strong> as in the function <strong>h_report_on_device</strong> in <a href="../include/hip_helper.hpp"></a>hip_helper.hpp.</p>
+<p>Private memory is usually allocated from the fastest register memory on the device, but the  amount of available register memory per thread is <strong>fairly low</strong> (on the order of 10-100 32-bit slots if every thread is active). If a kernel uses more register memory than there is available, then the number of active threads must be reduced, then if that is not sufficient, register memory can spill over into global memory at the cost of performance. One can query the maximum possible number of available 32-bit registers per block using a call to <strong>hipGetDeviceProperties</strong> as in the function <strong>h_report_on_device</strong> in <a href="../include/hip_helper.hpp"></a>hip_helper.hpp.</p>
 <div class="highlight"><pre><span></span><span class="c1">// Report some information on a compute device</span>
 <span class="w">    </span><span class="n">hipDeviceProp_t</span><span class="w"> </span><span class="n">prop</span><span class="p">;</span>
 
@@ -8435,6 +8435,11 @@ Maximum error (infinity norm) is: 1.14441e-05
 <span class="w">    </span><span class="c1">// Maximum number of registers per block</span>
 <span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\t</span><span class="s">%-40s %d </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="s">"available registers per block:"</span><span class="p">,</span><span class="n">prop</span><span class="p">.</span><span class="n">regsPerBlock</span><span class="p">);</span>
 </pre></div>
+<p>There is another property called <code>maxThreadsPerMultiProcessor</code>, which is the total number of threads that <em>can possibly be active</em> on a compute unit at any time.</p>
+<div class="highlight"><pre><span></span><span class="c1">// Maximum number of threads per Compute Unit or Multiprocessor</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\t</span><span class="s">%-40s %d </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="s">"max threads per SM/CU:"</span><span class="p">,</span><span class="w"> </span><span class="n">prop</span><span class="p">.</span><span class="n">maxThreadsPerMultiProcessor</span><span class="p">);</span>
+</pre></div>
+<p>If we divide take the ratio <code>regsPerBlock/maxThreadsPerMultiProcessor</code> then we have an indication of how many registers are available to a kernel if every thread on a compute unit is active (full occupancy) is achieved.</p>
 </div>
 </div>
 </div>
