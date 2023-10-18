@@ -221,6 +221,9 @@ void h_report_on_device(int device_id) {
     // Maximum shared memory size per block
     std::printf("\t%-40s %lu KB\n","maximum shared memory size per block:", prop.sharedMemPerBlock/(1000));
 
+    // Maximum Shared memory size per Compute Unit/Multiprocessor
+    std::printf("\t%-40s %lu KB\n","maximum shared memory size per SM or CU:", prop.maxSharedMemoryPerMultiProcessor/(1000));
+
     // Maximum pitch size for memory copies (MB)
     std::printf("\t%-40s %lu MB\n","maximum pitch size for memory copies:", prop.memPitch/(1000000));
 

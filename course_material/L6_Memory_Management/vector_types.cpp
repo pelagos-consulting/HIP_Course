@@ -19,7 +19,10 @@ int main(int argc, char** argv) {
     std::printf("Size of int1: %zu\n", sizeof(int1));
     std::printf("Size of long1: %zu\n", sizeof(long1));    
     std::printf("Size of longlong1: %zu\n", sizeof(longlong1));
-    std::printf("Size of float1: %zu\n", sizeof(float1));    
+    std::printf("Size of float1: %zu\n", sizeof(float1));
+    std::printf("Size of float2: %zu\n", sizeof(float2));
+    std::printf("Size of float3: %zu\n", sizeof(float3));
+    std::printf("Size of float4: %zu\n", sizeof(float4));  
     std::printf("Size of double1: %zu\n", sizeof(double1));
 
     // One way to make a vector type

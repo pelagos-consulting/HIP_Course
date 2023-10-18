@@ -11,7 +11,7 @@ endif
 
 # Compiler locations
 CXX=hipcc
-CXXFLAGS=-fopenmp -fPIC
+CXXFLAGS=-fopenmp
 
 # Miscellaneous include flags for base compilation 
 BASE_INC_FLAGS=-I../include
