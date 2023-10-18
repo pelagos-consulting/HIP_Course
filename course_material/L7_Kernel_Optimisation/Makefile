@@ -17,20 +17,32 @@ TARGETS=mat_mult_float.exe \
 		mat_mult_tile_shared_AB_vector.exe \
 		mat_mult_float_hipblas.exe \
 		mat_mult_float_md_hipblas.exe
-#		vector_types.exe \
-#		atomics.exe \
-#		mat_elementwise.exe \
-#		mat_elementwise_answer.exe        
+
+# Select the right platform
+ifeq ($(HIP_PLATFORM), nvidia)
+	# pass
+	ANALYSIS_FLAGS=
+else
+    # Normal compilation
+    ANALYSIS_FLAGS=-Rpass-analysis=kernel-resource-usage
+endif
 
 all: $(TARGETS)
 
 # General compilation step
-%.exe: %.cpp
-	$(CXX) $(CXXFLAGS) $(BASE_INC_FLAGS) $< -o $@ $(BASE_LIB_FLAGS)
+%.o: %.cpp
+	$(CXX) -c $(CXXFLAGS) $(ANALYSIS_FLAGS) $(BASE_INC_FLAGS) $< -o $@ 
 
-# Special compilation flag for hipblas codes
-%hipblas.exe: %hipblas.cpp
-	$(CXX) $(CXXFLAGS) $(BASE_INC_FLAGS) $< -o $@ $(BASE_LIB_FLAGS) -lhipblas
+# General linking step
+%.exe: %.o
+	$(CXX) $(CXXFLAGS) $< -o $@ $(BASE_LIB_FLAGS)
+
+# Special compilation for hipblas codes
+%hipblas.o: %hipblas.cpp
+	$(CXX) -c $(CXXFLAGS) $(ANALYSIS_FLAGS) $(BASE_INC_FLAGS) $< -o $@ 
+
+%hipblas.exe: %hipblas.o
+	$(CXX) $(CXXFLAGS) $< -o $@ $(BASE_LIB_FLAGS) -lhipblas
 
 # Clean step
 clean:
