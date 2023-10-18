@@ -214,6 +214,9 @@ void h_report_on_device(int device_id) {
 
     // Maximum number of registers per block
     std::printf("\t%-40s %d \n","available registers per block:", prop.regsPerBlock);
+    
+    // Maximum number of threads per Compute Unit or Multiprocessor
+    std::printf("\t%-40s %d \n","max threads per SM or CU:", prop.maxThreadsPerMultiProcessor);
 
     // Maximum shared memory size per block
     std::printf("\t%-40s %lu KB\n","maximum shared memory size per block:", prop.sharedMemPerBlock/(1000));
