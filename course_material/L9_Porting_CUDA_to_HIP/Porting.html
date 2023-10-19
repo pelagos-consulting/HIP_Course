@@ -7482,9 +7482,9 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Porting-CUDA-programs-to-HIP">Porting CUDA programs to HIP<a class="anchor-link" href="#Porting-CUDA-programs-to-HIP">¶</a></h1><p>HIP API calls are designed to closely match their CUDA equivalents. This enables HIP to function as a thin layer over CUDA and allows for reasonably easy porting of CUDA code to HIP code. Often it is just a matter of replacing <strong>cuda -&gt; hip</strong> in the function calls. The ROCM suite provides two different tools <strong>hipify-perl</strong> and <strong>hipify-clang</strong> to help with the porting process. The tool <strong>hipify-perl</strong> is robust and uses perl to perform an intelligent (meaning it is aware of the CUDA and HIP API differences) search and replace of cuda calls with hip calls, while the <strong>hipify-clang</strong> tool uses the clang preprocessor and is intended to produce a high quality port. The perl-based method is better for quick ports of small codes, while the clang-based method is intended for ports of large codebases. The hipify-clang tool is more <strong>fragile</strong> though and fails easily unless it has access to all the header files used in the compilation of the CUDA code.</p>
+<h1 id="Porting-CUDA-programs-to-HIP">Porting CUDA programs to HIP<a class="anchor-link" href="#Porting-CUDA-programs-to-HIP">¶</a></h1><p>HIP API calls are designed to closely match their CUDA equivalents. This enables HIP to function as a thin layer over CUDA and allows for reasonably easy porting of CUDA code to HIP code. Often it is just a matter of replacing <strong>cuda -&gt; hip</strong> in the function calls, but not always. The ROCM suite provides two different tools <strong>hipify-perl</strong> and <strong>hipify-clang</strong> to help with the porting process. The tool <strong>hipify-perl</strong> is robust and uses perl to perform an intelligent (meaning it is aware of the CUDA and HIP API differences) search and replace of cuda calls with hip calls, while the <strong>hipify-clang</strong> tool uses the clang preprocessor and is intended to produce a high quality port. The perl-based method is better for quick ports of small codes, while the clang-based method is intended for ports of large codebases. The hipify-clang tool is more <strong>fragile</strong> though and fails easily unless it has access to all the header files used in the compilation of the CUDA code.</p>
 <h2 id="Supported-API's">Supported API's<a class="anchor-link" href="#Supported-API's">¶</a></h2><p>The hipify tools will port a majority of CUDA calls as well as calls to CUDA libraries like <strong>cuBLAS</strong>. Tables in <a href="https://github.com/ROCm-Developer-Tools/HIPIFY/blob/amd-staging/docs/supported_apis.md">this Github site</a> provides some guidance as to what is supported.</p>
-<h2 id="Documentation-on-porting">Documentation on porting<a class="anchor-link" href="#Documentation-on-porting">¶</a></h2><p>The documentation from AMD at this <a href="https://rocm.docs.amd.com/projects/HIP/en/develop/user_guide/hip_porting_guide.html">site</a> provides in depth knowledge about the porting process and preprocessor directives. The guide below is intended to provde complementary information to the official documentation.</p>
+<h2 id="Documentation-on-porting">Documentation on porting<a class="anchor-link" href="#Documentation-on-porting">¶</a></h2><p>The documentation from AMD at this <a href="https://rocm.docs.amd.com/projects/HIP/en/develop/user_guide/hip_porting_guide.html">site</a> provides in-depth knowledge about the porting process and preprocessor directives. The guide below is intended to provde complementary information to the official documentation.</p>
 </div>
 </div>
 </div>
@@ -7495,8 +7495,8 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Setup-and-installation">Setup and installation<a class="anchor-link" href="#Setup-and-installation">¶</a></h2><p>From <a href="https://sep5.readthedocs.io/en/latest/Programming_Guides/HIP-porting-guide.html">this source</a> it is recommended to attempt porting on a machine that has access to both CUDA and HIP libraries. This usually means doing the port on a machine with an NVIDIA GPU. Then one can try porting portions of the code at a time and compare results. For best results during porting you need to have a version of CUDA that is compatible with your installed version of hipify-clang. The table at <a href="https://rocm.docs.amd.com/projects/HIPIFY/en/latest/hipify-clang.html">this resource</a> provides information on which version of <strong>hipify-clang</strong> is compatible with which version of CUDA.</p>
-<p>Once the code is ported and you are running the ported code on AMD hardware it is important to be aware that HIP functions may try to access ROCm libraries on the backend without prior warning of this dependency. It is then a good idea to make sure you have a complete installation of ROCm in addition to having a version of ROCm that is API compatible with your code's version of CUDA.</p>
+<h2 id="Setup-and-installation">Setup and installation<a class="anchor-link" href="#Setup-and-installation">¶</a></h2><p>From <a href="https://sep5.readthedocs.io/en/latest/Programming_Guides/HIP-porting-guide.html">this source</a> it is recommended to attempt porting on a machine that has access to both CUDA and HIP libraries. This usually means doing the port on a machine with an NVIDIA GPU and access to CUDA. Then one can try porting portions of the code at a time and compare results. For best results during porting you need to have a version of CUDA that is compatible with your installed version of hipify-clang. The table at <a href="https://rocm.docs.amd.com/projects/HIPIFY/en/latest/hipify-clang.html">this resource</a> provides information on which version of <strong>hipify-clang</strong> is compatible with which version of CUDA.</p>
+<p>Once the code is ported and compiles with the HIP compiler, it is important to be aware that HIP functions may try to access ROCm libraries on the backend without prior warning of this dependency. It is then a good idea to make sure you have a complete installation of ROCm, in addition to having a version of ROCm that is API compatible with your code's version of CUDA.</p>
 <p>It is also important to be aware that some HIP libraries like <strong>hipBLAS</strong> are built to use the corresponding library from ROCm by default. If you need to use these libaries with a CUDA backend you might need to recompile those libraries for use with CUDA.</p>
 <p>The code below shows what version of hipify-clang that you are using.</p>
 </div>
@@ -7507,7 +7507,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>hipify-clang<span class="w"> </span>--version
@@ -7537,7 +7537,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Here is a page which describes compatibility between CUDA and your version of hipify-clang. <a href="https://rocm.docs.amd.com/projects/HIPIFY/en/latest/hipify-clang.html">HIPIFY Documentation</a></p>
+<p>The <a href="https://rocm.docs.amd.com/projects/HIPIFY/en/latest/hipify-clang.html">HIPIFY Documentation</a> describes compatibility between CUDA and your version of hipify-clang.</p>
 </div>
 </div>
 </div>
@@ -7576,7 +7576,7 @@ a.anchor-link {
 <li>Re-tune optimisations for new architecture, but only once you know everything works!</li>
 <li>Document the changes made.</li>
 </ol>
-<p>The step of running the <strong>hipify</strong> tool is the <strong>easiest part</strong> of the process.  If the code uses simple and well-supported CUDA API calls then this has the greatest chance of succeeding. If the codebase contains CUDA-specific complexity, or relies on functionality that is no longer supported by recent version of CUDA, then the level of difficulty in porting can increase <strong>dramatically</strong>. Adjusting the compilation environment for <strong>hipcc</strong> often requires knowledge of  build tools, usually this means a working knowledge of <strong>make</strong> or <strong>cmake</strong>.
+<p>The step of running the <strong>hipify</strong> tool is the <strong>easiest part</strong> of the process.  If the code uses simple and well-supported CUDA API calls, then this has the greatest chance of succeeding. If the codebase contains CUDA-specific complexity, or relies on functionality that is no longer supported by recent version of CUDA, then the level of difficulty in porting can increase <strong>dramatically</strong>. Adjusting the compilation environment for <strong>hipcc</strong> often requires knowledge of  build tools, usually this means a working knowledge of <strong>make</strong> or <strong>cmake</strong>.
 Familiarity with C++ and what the compiler warnings and errors mean is then crucial to massaging the codebase to accept the new compiler.</p>
 </div>
 </div>
@@ -7597,7 +7597,7 @@ Familiarity with C++ and what the compiler warnings and errors mean is then cruc
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [28]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="nb">cd</span><span class="w"> </span>cuda_mat_mult<span class="p">;</span><span class="w"> </span>make<span class="w"> </span>clean<span class="p">;</span><span class="w"> </span>make<span class="p">;</span><span class="w"> </span>./mat_mult.exe
@@ -7614,7 +7614,7 @@ Familiarity with C++ and what the compiler warnings and errors mean is then cruc
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>rm -r *.exe
-nvcc -g -O2 -x cu mat_mult.cpp -o mat_mult.exe -lcuda
+nvcc -g -O2 -Xcompiler -fopenmp -x cu mat_mult.cpp -o mat_mult.exe -lcuda -lgomp
 Device id: 0
 	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
 	global memory size:                      6226 MB
@@ -7646,7 +7646,7 @@ Maximum error (infinity norm) is: 1.52588e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [29]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>ls<span class="w"> </span>cuda_mat_mult
@@ -7676,7 +7676,7 @@ array_B.dat  cuda_helper.hpp  mat_helper.hpp  mat_mult.exe
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Ordinarily CUDA sources would need to end in <code>.cu</code> otherwise the <code>nvcc</code> compiler won't interpret them as CUDA source files. However since I have specified the <code>-x cu</code> flag then <code>nvcc</code> treats them as CUDA source.</p>
+<p>Ordinarily CUDA source files would need to end in <code>.cu</code> otherwise the <code>nvcc</code> compiler won't interpret them as CUDA source. However since the <code>-x cu</code> flag is in the makefile then <code>nvcc</code> treats them as CUDA source.</p>
 </div>
 </div>
 </div>
@@ -7696,7 +7696,7 @@ array_B.dat  cuda_helper.hpp  mat_helper.hpp  mat_mult.exe
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [19]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [30]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>mkdir<span class="w"> </span>-p<span class="w"> </span>temp_mat_mult<span class="p">;</span><span class="w"> </span>cp<span class="w"> </span>-r<span class="w"> </span>cuda_mat_mult/*<span class="w"> </span>temp_mat_mult/<span class="w"> </span>
@@ -7743,7 +7743,7 @@ array_B.dat  cuda_helper.hpp  mat_helper.hpp  mat_mult.exe
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [20]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [31]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="nb">cd</span><span class="w"> </span>temp_mat_mult<span class="p">;</span><span class="w"> </span>hipify-perl<span class="w"> </span>-hip-kernel-execution-syntax<span class="w"> </span>mat_mult.cpp
@@ -7962,7 +7962,7 @@ int main(int argc, char** argv) {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>If we use the <code>-inplace</code> flag, <strong>hipify-perl</strong> copies the file <a href="temp_mat_mult/mat_mult.cpp">mat_mult.cpp</a> first to <a href="temp_mat_mult/mat_mult.cpp.prehip">mat_mult.cpp.prehip</a> <strong>if that file doesn't already exist</strong>. Then it performs the conversion from <a href="temp_mat_mult/mat_mult.cpp.prehip">mat_mult.cpp.prehip</a> to <a href="temp_mat_mult/mat_mult.cpp">mat_mult.cpp</a>.</p>
+<p>If we use the <code>-inplace</code> flag, <strong>hipify-perl</strong> copies the file <a href="temp_mat_mult/mat_mult.cpp">mat_mult.cpp</a> first to <a href="temp_mat_mult/mat_mult.cpp.prehip">mat_mult.cpp.prehip</a> <strong>if that file doesn't already exist</strong>. Then it performs the conversion from <a href="temp_mat_mult/mat_mult.cpp.prehip">mat_mult.cpp.prehip</a> to <a href="temp_mat_mult/mat_mult.cpp">mat_mult.cpp</a>. You can make changes to <code>*.prehip</code> files and run the conversion as many times as you wish.</p>
 </div>
 </div>
 </div>
@@ -7971,7 +7971,7 @@ int main(int argc, char** argv) {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [32]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="nb">cd</span><span class="w"> </span>temp_mat_mult<span class="p">;</span><span class="w"> </span>hipify-perl<span class="w"> </span>-inplace<span class="w"> </span>-print-stats<span class="w"> </span>-hip-kernel-execution-syntax<span class="w"> </span>mat_mult.cpp
@@ -8012,7 +8012,7 @@ int main(int argc, char** argv) {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Subsequent edits to <a href="temp_mat_mult/mat_mult.cpp.prehip">mat_mult.cpp.prehip</a> will be propagated across to <a href="temp_mat_mult/mat_mult.cpp">mat_mult.cpp</a>. This allows for an iterative porting process. Use the <code>--help</code> flag for more porting options.</p>
+<p>Subsequent edits to <a href="temp_mat_mult/mat_mult.cpp.prehip">mat_mult.cpp.prehip</a> will be propagated across to <a href="temp_mat_mult/mat_mult.cpp">mat_mult.cpp</a>. This allows for an iterative porting process. Use the <code>--help</code> flag on hipify commands for more porting options.</p>
 </div>
 </div>
 </div>
@@ -8032,7 +8032,7 @@ int main(int argc, char** argv) {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [33]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>hipexamine-perl.sh<span class="w"> </span>cuda_mat_mult<span class="w"> </span>-exclude-dirs<span class="o">=</span><span class="s2">".ipynb_checkpoints"</span>
@@ -8175,10 +8175,10 @@ int main(int argc, char** argv) {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [34]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>hipexamine.sh<span class="w"> </span>./cuda_mat_mult<span class="w"> </span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="nb">cd</span><span class="w"> </span>cuda_mat_mult<span class="p">;</span><span class="w"> </span>hipexamine.sh<span class="w"> </span>.<span class="w"> </span>-I.
 </pre></div>
 </div>
 </div>
@@ -8194,7 +8194,7 @@ int main(int argc, char** argv) {
 <pre>warning: CUDA version is newer than the latest partially supported version 11.8
 <span class="ansi-magenta-intense-fg ansi-bold">warning: </span><span class="ansi-bold">CUDA version is newer than the latest partially supported version 11.8 [-Wunknown-cuda-version]</span>
 
-[HIPIFY] info: file './cuda_mat_mult/mat_mult.cpp' statistics:
+[HIPIFY] info: file './mat_mult.cpp' statistics:
   CONVERTED refs count: 14
   UNCONVERTED refs count: 0
   CONVERSION %: 100.0
@@ -8204,7 +8204,7 @@ int main(int argc, char** argv) {
   TOTAL lines of code: 190
   CODE CHANGED (in bytes) %: 3.1
   CODE CHANGED (in lines) %: 6.3
-  TIME ELAPSED s: 0.63
+  TIME ELAPSED s: 0.60
 [HIPIFY] info: CONVERTED refs by type:
   error: 1
   device: 1
@@ -8221,40 +8221,220 @@ int main(int argc, char** argv) {
   cudaMemcpyDeviceToHost: 1
   cudaMemcpyHostToDevice: 2
 <span class="ansi-magenta-intense-fg ansi-bold">warning: </span><span class="ansi-bold">CUDA version is newer than the latest partially supported version 11.8 [-Wunknown-cuda-version]</span>
-<span class="ansi-bold">/tmp/mat_mult-checkpoint.cpp-f04c0e.hip:11:10: </span><span class="ansi-red-intense-fg ansi-bold">fatal error: </span><span class="ansi-bold">'mat_size.hpp' file not found</span>
-#include "mat_size.hpp"
-<span class="ansi-green-intense-fg ansi-bold">         ^~~~~~~~~~~~~~
-</span>Stack dump without symbol names (ensure you have llvm-symbolizer in your PATH or set the environment var `LLVM_SYMBOLIZER_PATH` to point to it):
-0  hipify-clang 0x00000000023c3016
-1  hipify-clang 0x00000000023c0914
-2  libc.so.6    0x00007f3a05842520
-3  hipify-clang 0x0000000000a12510
-4  hipify-clang 0x00000000019b74f1
-5  hipify-clang 0x00000000019c8016
-6  hipify-clang 0x00000000019c9881
-7  hipify-clang 0x00000000019ca6b8
-8  hipify-clang 0x0000000001984a6d
-9  hipify-clang 0x0000000001a03f37
-10 hipify-clang 0x0000000000bea1af
-11 hipify-clang 0x0000000000bf69f2
-12 hipify-clang 0x0000000000c792d6
-13 hipify-clang 0x0000000000c5e635
-14 hipify-clang 0x0000000000bf77e7
-15 hipify-clang 0x0000000000bf90a6
-16 hipify-clang 0x0000000000be9bca
-17 hipify-clang 0x0000000000a12343
-18 hipify-clang 0x0000000000a7e259
-19 hipify-clang 0x0000000000a928b1
-20 hipify-clang 0x0000000000be9334
-21 hipify-clang 0x0000000000be21f5
-22 hipify-clang 0x0000000000be5588
-23 hipify-clang 0x0000000000be77a0
-24 hipify-clang 0x0000000000bdf8c7
-25 hipify-clang 0x0000000000a26ebf
-26 libc.so.6    0x00007f3a05829d90
-27 libc.so.6    0x00007f3a05829e40 __libc_start_main + 128
-28 hipify-clang 0x00000000009c7265
-/opt/rocm-5.6.1/bin/hipexamine.sh: line 23: 24412 Segmentation fault      (core dumped) $SCRIPT_DIR/hipify-clang -examine $hipify_args `$PRIV_SCRIPT_DIR/findcode.sh $SEARCH_DIR` -- -x cuda $clang_args
+
+[HIPIFY] info: file './.ipynb_checkpoints/mat_mult-checkpoint.cpp' statistics:
+  CONVERTED refs count: 14
+  UNCONVERTED refs count: 0
+  CONVERSION %: 100.0
+  REPLACED bytes: 187
+  TOTAL bytes: 5944
+  CHANGED lines of code: 12
+  TOTAL lines of code: 190
+  CODE CHANGED (in bytes) %: 3.1
+  CODE CHANGED (in lines) %: 6.3
+  TIME ELAPSED s: 0.54
+[HIPIFY] info: CONVERTED refs by type:
+  error: 1
+  device: 1
+  memory: 9
+  numeric_literal: 3
+[HIPIFY] info: CONVERTED refs by API:
+  CUDA RT API: 14
+[HIPIFY] info: CONVERTED refs by names:
+  cudaDeviceSynchronize: 1
+  cudaFree: 3
+  cudaGetLastError: 1
+  cudaMalloc: 3
+  cudaMemcpy: 3
+  cudaMemcpyDeviceToHost: 1
+  cudaMemcpyHostToDevice: 2
+<span class="ansi-magenta-intense-fg ansi-bold">warning: </span><span class="ansi-bold">CUDA version is newer than the latest partially supported version 11.8 [-Wunknown-cuda-version]</span>
+
+[HIPIFY] info: file './mat_size.hpp' statistics:
+  CONVERTED refs count: 0
+  UNCONVERTED refs count: 0
+  CONVERSION %: 0.0
+  REPLACED bytes: 0
+  TOTAL bytes: 107
+  CHANGED lines of code: 1
+  TOTAL lines of code: 3
+  CODE CHANGED (in bytes) %: 0.0
+  CODE CHANGED (in lines) %: 33.3
+  TIME ELAPSED s: 0.19
+<span class="ansi-magenta-intense-fg ansi-bold">warning: </span><span class="ansi-bold">CUDA version is newer than the latest partially supported version 11.8 [-Wunknown-cuda-version]</span>
+<span class="ansi-bold">/tmp/mat_helper.hpp-de5cdf.hip:162:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier 'assert'</span>
+    assert(len0_src&gt;=K0);
+<span class="ansi-green-intense-fg ansi-bold">    ^
+</span><span class="ansi-bold">/tmp/mat_helper.hpp-de5cdf.hip:163:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier 'assert'</span>
+    assert(len1_src&gt;=K1);    
+<span class="ansi-green-intense-fg ansi-bold">    ^
+</span>2 errors generated when compiling for host.
+Error while processing /tmp/mat_helper.hpp-de5cdf.hip.
+
+[HIPIFY] info: file './mat_helper.hpp' statistics:
+
+  ERROR: Statistics is invalid due to failed hipification.
+
+  CONVERTED refs count: 0
+  UNCONVERTED refs count: 0
+  CONVERSION %: 0.0
+  REPLACED bytes: 0
+  TOTAL bytes: 4497
+  CHANGED lines of code: 1
+  TOTAL lines of code: 180
+  CODE CHANGED (in bytes) %: 0.0
+  CODE CHANGED (in lines) %: 0.6
+  TIME ELAPSED s: 0.47
+<span class="ansi-magenta-intense-fg ansi-bold">warning: </span><span class="ansi-bold">CUDA version is newer than the latest partially supported version 11.8 [-Wunknown-cuda-version]</span>
+<span class="ansi-bold">/tmp/cuda_helper.hpp-091be2.hip:95:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">unknown type name 'SYSTEM_INFO'</span>
+    SYSTEM_INFO sys_info;
+<span class="ansi-green-intense-fg ansi-bold">    ^
+</span><span class="ansi-bold">/tmp/cuda_helper.hpp-091be2.hip:381:20: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier '_aligned_malloc'; did you mean 'aligned_alloc'?</span>
+    void* buffer = _aligned_malloc(nbytes, alignment);
+<span class="ansi-green-intense-fg ansi-bold">                   ^~~~~~~~~~~~~~~
+</span><span class="ansi-green-fg">                   aligned_alloc
+</span><span class="ansi-bold">/usr/include/stdlib.h:592:14: </span><span class="ansi-black-intense-fg ansi-bold">note: </span>'aligned_alloc' declared here
+extern void *aligned_alloc (size_t __alignment, size_t __size)
+<span class="ansi-green-intense-fg ansi-bold">             ^
+</span><span class="ansi-bold">/tmp/cuda_helper.hpp-091be2.hip:383:11: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">redefinition of 'buffer'</span>
+    void* buffer = aligned_alloc(alignment, nbytes);
+<span class="ansi-green-intense-fg ansi-bold">          ^
+</span><span class="ansi-bold">/tmp/cuda_helper.hpp-091be2.hip:381:11: </span><span class="ansi-black-intense-fg ansi-bold">note: </span>previous definition is here
+    void* buffer = _aligned_malloc(nbytes, alignment);
+<span class="ansi-green-intense-fg ansi-bold">          ^
+</span>3 errors generated when compiling for host.
+Error while processing /tmp/cuda_helper.hpp-091be2.hip.
+
+[HIPIFY] info: file './cuda_helper.hpp' statistics:
+
+  ERROR: Statistics is invalid due to failed hipification.
+
+  CONVERTED refs count: 52
+  UNCONVERTED refs count: 0
+  CONVERSION %: 100.0
+  REPLACED bytes: 814
+  TOTAL bytes: 24629
+  CHANGED lines of code: 48
+  TOTAL lines of code: 789
+  CODE CHANGED (in bytes) %: 3.3
+  CODE CHANGED (in lines) %: 6.1
+  TIME ELAPSED s: 0.43
+[HIPIFY] info: CONVERTED refs by type:
+  error: 3
+  init: 1
+  device: 11
+  stream: 2
+  event: 9
+  execution: 1
+  include_cuda_main_header: 2
+  type: 16
+  numeric_literal: 5
+  define: 2
+[HIPIFY] info: CONVERTED refs by API:
+  CUDA Driver API: 7
+  CUDA RT API: 45
+[HIPIFY] info: CONVERTED refs by names:
+  CUDA_SUCCESS: 2
+  CUresult: 2
+  cuGetErrorString: 1
+  cuInit: 1
+  cuda.h: 1
+  cudaDevAttrManagedMemory: 1
+  cudaDeviceGetAttribute: 1
+  cudaDeviceProp: 2
+  cudaDeviceReset: 1
+  cudaDeviceSynchronize: 1
+  cudaError_t: 2
+  cudaEventCreate: 2
+  cudaEventDestroy: 2
+  cudaEventElapsedTime: 1
+  cudaEventRecord: 2
+  cudaEventSynchronize: 2
+  cudaEvent_t: 3
+  cudaGetDevice: 1
+  cudaGetDeviceCount: 2
+  cudaGetDeviceProperties: 2
+  cudaGetErrorString: 2
+  cudaLaunchKernel: 1
+  cudaSetDevice: 3
+  cudaStreamCreateWithFlags: 1
+  cudaStreamDefault: 1
+  cudaStreamDestroy: 1
+  cudaStreamNonBlocking: 1
+  cudaStream_t: 7
+  cudaSuccess: 2
+  cuda_runtime.h: 1
+
+[HIPIFY] info: file 'GLOBAL' statistics:
+
+  ERROR: Statistics is invalid due to failed hipification.
+
+  CONVERTED refs count: 80
+  UNCONVERTED refs count: 0
+  CONVERSION %: 100.0
+  REPLACED bytes: 1188
+  TOTAL bytes: 41121
+  CHANGED lines of code: 74
+  TOTAL lines of code: 1352
+  CODE CHANGED (in bytes) %: 2.9
+  CODE CHANGED (in lines) %: 5.5
+  TIME ELAPSED s: 2.23
+[HIPIFY] info: CONVERTED refs by type:
+  error: 5
+  init: 1
+  device: 13
+  memory: 18
+  stream: 2
+  event: 9
+  execution: 1
+  include_cuda_main_header: 2
+  type: 16
+  numeric_literal: 11
+  define: 2
+[HIPIFY] info: CONVERTED refs by API:
+  CUDA Driver API: 7
+  CUDA RT API: 73
+[HIPIFY] info: CONVERTED refs by names:
+  CUDA_SUCCESS: 2
+  CUresult: 2
+  cuGetErrorString: 1
+  cuInit: 1
+  cuda.h: 1
+  cudaDevAttrManagedMemory: 1
+  cudaDeviceGetAttribute: 1
+  cudaDeviceProp: 2
+  cudaDeviceReset: 1
+  cudaDeviceSynchronize: 3
+  cudaError_t: 2
+  cudaEventCreate: 2
+  cudaEventDestroy: 2
+  cudaEventElapsedTime: 1
+  cudaEventRecord: 2
+  cudaEventSynchronize: 2
+  cudaEvent_t: 3
+  cudaFree: 6
+  cudaGetDevice: 1
+  cudaGetDeviceCount: 2
+  cudaGetDeviceProperties: 2
+  cudaGetErrorString: 2
+  cudaGetLastError: 2
+  cudaLaunchKernel: 1
+  cudaMalloc: 6
+  cudaMemcpy: 6
+  cudaMemcpyDeviceToHost: 2
+  cudaMemcpyHostToDevice: 4
+  cudaSetDevice: 3
+  cudaStreamCreateWithFlags: 1
+  cudaStreamDefault: 1
+  cudaStreamDestroy: 1
+  cudaStreamNonBlocking: 1
+  cudaStream_t: 7
+  cudaSuccess: 2
+  cuda_runtime.h: 1
+
+[HIPIFY] info: TOTAL statistics:
+  CONVERTED files: 3
+  PROCESSED files: 5
 </pre>
 </div>
 </div>
@@ -8277,7 +8457,7 @@ int main(int argc, char** argv) {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [35]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>hipconvertinplace-perl.sh<span class="w"> </span>temp_mat_mult<span class="w"> </span>-hip-kernel-execution-syntax
@@ -8306,13 +8486,16 @@ int main(int argc, char** argv) {
   cudaMemcpy =&gt; hipMemcpy: 3
   cudaMemcpyDeviceToHost =&gt; hipMemcpyDeviceToHost: 1
   cudaMemcpyHostToDevice =&gt; hipMemcpyHostToDevice: 2
-  warning: temp_mat_mult/cuda_helper.hpp:451: removed identifier "cudaLaunch" since CUDA 10.1
+  warning: temp_mat_mult/cuda_helper.hpp:480: removed identifier "cudaLaunch" since CUDA 10.1
 
 [HIPIFY] info: file 'temp_mat_mult/cuda_helper.hpp' statistics:
-  CONVERTED refs count: 51
-  TOTAL lines of code: 760
+  CONVERTED refs count: 56
+  TOTAL lines of code: 789
   WARNINGS: 1
 [HIPIFY] info: CONVERTED refs by names:
+  CUDA_SUCCESS =&gt; hipSuccess: 4
+  CUresult =&gt; hipError_t: 4
+  cuGetErrorString =&gt; hipDrvGetErrorString: 1
   cuInit =&gt; hipInit: 1
   cuda.h =&gt; hip/hip_runtime.h: 2
   cudaDevAttrManagedMemory =&gt; hipDeviceAttributeManagedMemory: 1
@@ -8320,7 +8503,7 @@ int main(int argc, char** argv) {
   cudaDeviceProp =&gt; hipDeviceProp_t: 2
   cudaDeviceReset =&gt; hipDeviceReset: 1
   cudaDeviceSynchronize =&gt; hipDeviceSynchronize: 1
-  cudaError_t =&gt; hipError_t: 2
+  cudaError_t =&gt; hipError_t: 4
   cudaEventCreate =&gt; hipEventCreate: 2
   cudaEventDestroy =&gt; hipEventDestroy: 2
   cudaEventElapsedTime =&gt; hipEventElapsedTime: 1
@@ -8338,14 +8521,17 @@ int main(int argc, char** argv) {
   cudaStreamDestroy =&gt; hipStreamDestroy: 1
   cudaStreamNonBlocking =&gt; hipStreamNonBlocking: 1
   cudaStream_t =&gt; hipStream_t: 7
-  cudaSuccess =&gt; hipSuccess: 2
+  cudaSuccess =&gt; hipSuccess: 4
   cuda_runtime.h =&gt; hip/hip_runtime.h: 2
 
 [HIPIFY] info: file 'GLOBAL' statistics:
-  CONVERTED refs count: 66
-  TOTAL lines of code: 1133
+  CONVERTED refs count: 71
+  TOTAL lines of code: 1162
   WARNINGS: 1
 [HIPIFY] info: CONVERTED refs by names:
+  CUDA_SUCCESS =&gt; hipSuccess: 4
+  CUresult =&gt; hipError_t: 4
+  cuGetErrorString =&gt; hipDrvGetErrorString: 1
   cuInit =&gt; hipInit: 1
   cuda.h =&gt; hip/hip_runtime.h: 2
   cudaDevAttrManagedMemory =&gt; hipDeviceAttributeManagedMemory: 1
@@ -8353,7 +8539,7 @@ int main(int argc, char** argv) {
   cudaDeviceProp =&gt; hipDeviceProp_t: 2
   cudaDeviceReset =&gt; hipDeviceReset: 1
   cudaDeviceSynchronize =&gt; hipDeviceSynchronize: 2
-  cudaError_t =&gt; hipError_t: 2
+  cudaError_t =&gt; hipError_t: 4
   cudaEventCreate =&gt; hipEventCreate: 2
   cudaEventDestroy =&gt; hipEventDestroy: 2
   cudaEventElapsedTime =&gt; hipEventElapsedTime: 1
@@ -8377,7 +8563,7 @@ int main(int argc, char** argv) {
   cudaStreamDestroy =&gt; hipStreamDestroy: 1
   cudaStreamNonBlocking =&gt; hipStreamNonBlocking: 1
   cudaStream_t =&gt; hipStream_t: 7
-  cudaSuccess =&gt; hipSuccess: 2
+  cudaSuccess =&gt; hipSuccess: 4
   cuda_runtime.h =&gt; hip/hip_runtime.h: 2
 
 </pre>
@@ -8392,7 +8578,7 @@ int main(int argc, char** argv) {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="Porting-inplace-with-hipify-clang">Porting inplace with hipify-clang<a class="anchor-link" href="#Porting-inplace-with-hipify-clang">¶</a></h4><p>Here is the same port with <strong>hipify-clang</strong>. I have commented it out because it doesn't produce a high quality port without access to all the necessary include files.</p>
+<h4 id="Porting-inplace-with-hipify-clang">Porting inplace with hipify-clang<a class="anchor-link" href="#Porting-inplace-with-hipify-clang">¶</a></h4><p>Here is the same port with <strong>hipify-clang</strong>. I have commented it out because it doesn't produce a port without access to all the necessary include files.</p>
 </div>
 </div>
 </div>
@@ -8401,7 +8587,7 @@ int main(int argc, char** argv) {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [36]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="ch">#!hipconvertinplace.sh temp_mat_mult -hip-kernel-execution-syntax</span>
@@ -8437,7 +8623,7 @@ int main(int argc, char** argv) {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [37]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>ls<span class="w"> </span>-l<span class="w"> </span>temp_mat_mult
@@ -8454,19 +8640,19 @@ int main(int argc, char** argv) {
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>total 2380
--rw-rw-r-- 1 toby toby  262144 Oct  4 16:15 array_A.dat
--rw-rw-r-- 1 toby toby  262144 Oct  4 16:15 array_B.dat
--rw-rw-r-- 1 toby toby  262144 Oct  4 16:15 array_C.dat
--rw-rw-r-- 1 toby toby   24660 Oct  4 16:19 cuda_helper.hpp
--rw-rw-r-- 1 toby toby   24629 Oct  4 16:19 cuda_helper.hpp.prehip
--rw-rw-r-- 1 toby toby     341 Oct  4 16:15 Makefile
--rw-rw-r-- 1 toby toby    4497 Oct  4 16:19 mat_helper.hpp
--rw-rw-r-- 1 toby toby    4497 Oct  4 16:19 mat_helper.hpp.prehip
--rw-rw-r-- 1 toby toby    5975 Oct  4 16:19 mat_mult.cpp
--rw-rw-r-- 1 toby toby    5944 Oct  4 16:16 mat_mult.cpp.prehip
--rwxrwxr-x 1 toby toby 1545520 Oct  4 16:15 mat_mult.exe
--rw-rw-r-- 1 toby toby     107 Oct  4 16:19 mat_size.hpp
--rw-rw-r-- 1 toby toby     107 Oct  4 16:19 mat_size.hpp.prehip
+-rw-r--r-- 1 toby toby  262144 Oct 19 15:21 array_A.dat
+-rw-r--r-- 1 toby toby  262144 Oct 19 15:21 array_B.dat
+-rw-r--r-- 1 toby toby  262144 Oct 19 15:21 array_C.dat
+-rw-r--r-- 1 toby toby   24660 Oct 19 15:23 cuda_helper.hpp
+-rw-r--r-- 1 toby toby   24629 Oct 19 15:23 cuda_helper.hpp.prehip
+-rw-r--r-- 1 toby toby     561 Oct 19 15:21 Makefile
+-rw-r--r-- 1 toby toby    4497 Oct 19 15:23 mat_helper.hpp
+-rw-r--r-- 1 toby toby    4497 Oct 19 15:23 mat_helper.hpp.prehip
+-rw-r--r-- 1 toby toby    5975 Oct 19 15:23 mat_mult.cpp
+-rw-r--r-- 1 toby toby    5944 Oct 19 15:22 mat_mult.cpp.prehip
+-rwxr-xr-x 1 toby toby 1545744 Oct 19 15:21 mat_mult.exe
+-rw-r--r-- 1 toby toby     107 Oct 19 15:23 mat_size.hpp
+-rw-r--r-- 1 toby toby     107 Oct 19 15:23 mat_size.hpp.prehip
 </pre>
 </div>
 </div>
@@ -8488,10 +8674,10 @@ int main(int argc, char** argv) {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [28]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [38]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="nb">cd</span><span class="w"> </span>temp_mat_mult<span class="p">;</span><span class="w"> </span>make<span class="w"> </span>clean<span class="p">;</span><span class="w"> </span>make<span class="w"> </span><span class="nv">CXX</span><span class="o">=</span><span class="s2">"hipcc"</span><span class="w"> </span><span class="nv">LIBFLAGS</span><span class="o">=</span><span class="s2">""</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="nb">cd</span><span class="w"> </span>temp_mat_mult<span class="p">;</span><span class="w"> </span>make<span class="w"> </span>clean<span class="p">;</span><span class="w"> </span>make<span class="w"> </span><span class="nv">CXX</span><span class="o">=</span><span class="s2">"hipcc"</span>
 </pre></div>
 </div>
 </div>
@@ -8505,109 +8691,16 @@ int main(int argc, char** argv) {
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>rm -r *.exe
-rm: cannot remove '*.exe': No such file or directory
-make: *** [Makefile:20: clean] Error 1
-hipcc -g -O2 -x cu mat_mult.cpp -o mat_mult.exe 
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipMemcpyToArray(hipArray*, size_t, size_t, const void*, size_t, hipMemcpyKind)</span>’:
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:1814:48:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">cudaError_t cudaMemcpyToArray(cudaArray_t, size_t, size_t, const void*, size_t, cudaMemcpyKind)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 1814 |     return hipCUDAErrorTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(</span>
-      |                               <span class="ansi-magenta-intense-fg ansi-bold">~~~~</span>             <span class="ansi-magenta-intense-fg ansi-bold">^</span>                                        
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime_api.h:7717:46:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
- 7717 | extern __CUDA_DEPRECATED __host__ cudaError_t<span class="ansi-cyan-intense-fg ansi-bold"> CUDARTAPI cudaMe</span>mcpyToArray(cudaArray_t dst, size_t wOffset, size_t hOffset, const void *src, size_t count, enum cudaMemcpyKind kind);
-      |                                              <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipMemcpyFromArray(void*, hipArray_const_t, size_t, size_t, size_t, hipMemcpyKind)</span>’:
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:1821:50:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">cudaError_t cudaMemcpyFromArray(void*, cudaArray_const_t, size_t, size_t, size_t, cudaMemcpyKind)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 1821 |     return hipCUDAErrorTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cudaMemcpyFromArray(dst, srcArray, wOffset, hOffset, count,</span>
-      |                               <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>  
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime_api.h:7759:46:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
- 7759 | extern __CUDA_DEPRECATED __host__ cudaError_t<span class="ansi-cyan-intense-fg ansi-bold"> CUDARTAPI cudaMemc</span>pyFromArray(void *dst, cudaArray_const_t src, size_t wOffset, size_t hOffset, size_t count, enum cudaMemcpyKind kind);
-      |                                              <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipCtxDetach(hipCtx_t)</span>’:
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:2667:41:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult cuCtxDetach(CUcontext)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 2667 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuCtxDetach(</span>ctx));
-      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~^~~~~</span>
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:6307:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
- 6307 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuCtxDetach</span>(CUcontext ctx);
-      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipDeviceComputeCapability(int*, int*, hipDevice_t)</span>’:
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:2675:55:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult cuDeviceComputeCapability(int*, int*, CUdevice)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 2675 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuDeviceComputeCapability(major, minor, dev</span>ice));
-      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:4910:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
- 4910 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuDeviceComputeCapability</span>(int *major, int *minor, CUdevice dev);
-      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipModuleGetTexRef(CUtexref_st**, hipModule_t, const char*)</span>’:
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:2741:47:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult cuModuleGetTexRef(CUtexref_st**, CUmodule, const char*)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 2741 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuModuleGetTexRef(pTexRef, hmod, n</span>ame));
-      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:6821:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
- 6821 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuModuleGetTexRef</span>(CUtexref *pTexRef, CUmodule hmod, const char *name);
-      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipLaunchCooperativeKernelMultiDevice(hipLaunchParams*, int, unsigned int)</span>’:
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:2869:69:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">cudaError_t cudaLaunchCooperativeKernelMultiDevice(cudaLaunchParams*, unsigned int, unsigned int)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 2869 | rn hipCUDAErrorTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cudaLaunchCooperativeKernelMultiDevice(launchParamsList, numDevices, fl</span>ags));
-      |                       <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
-
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime_api.h:4377:46:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
- 4377 | extern __CUDA_DEPRECATED __host__ cudaError_t<span class="ansi-cyan-intense-fg ansi-bold"> CUDARTAPI cudaLaunchCooperativeKernel</span>MultiDevice(struct cudaLaunchParams *launchParamsList, unsigned int numDevices, unsigned int flags  __dv(0));
-      |                                              <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipModuleLaunchCooperativeKernelMultiDevice(hipFunctionLaunchParams*, unsigned int, unsigned int)</span>’:
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:2876:66:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult cuLaunchCooperativeKernelMultiDevice(CUDA_LAUNCH_PARAMS*, unsigned int, unsigned int)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 2876 | eturn hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuLaunchCooperativeKernelMultiDevice(launchParamsList,</span>
-      |                         <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~</span>               
-
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:15803:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
-15803 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuLaunchCooperativeKernelMultiDevice</span>(CUDA_LAUNCH_PARAMS *launchParamsList, unsigned int numDevices, unsigned int flags);
-      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipTexRefSetAddressMode(CUtexref, int, CUaddress_mode)</span>’:
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3157:52:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult cuTexRefSetAddressMode(CUtexref, int, CUaddress_mode)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 3157 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuTexRefSetAddressMode(hTexRef,dim,a</span>m));
-      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:19556:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
-19556 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuTexRefSetAddressMode</span>(CUtexref hTexRef, int dim, CUaddress_mode am);
-      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipTexRefSetFilterMode(CUtexref, CUfilter_mode)</span>’:
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3161:51:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult cuTexRefSetFilterMode(CUtexref, CUfilter_mode)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 3161 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuTexRefSetFilterMode(hTexRef,</span>fm));
-      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~</span>
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:19592:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
-19592 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuTexRefSetFilterMode</span>(CUtexref hTexRef, CUfilter_mode fm);
-      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipTexRefSetAddress(size_t*, CUtexref, hipDeviceptr_t, size_t)</span>’:
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3165:51:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult cuTexRefSetAddress_v2(size_t*, CUtexref, CUdeviceptr, size_t)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 3165 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuTexRefSetAddress(ByteOffset,hTexRef,dptr,bytes));</span>
-      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:19426:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
-19426 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuTexRefSetAddress(si</span>ze_t *ByteOffset, CUtexref hTexRef, CUdeviceptr dptr, size_t bytes);
-      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipTexRefSetAddress2D(CUtexref, const CUDA_ARRAY_DESCRIPTOR*, hipDeviceptr_t, size_t)</span>’:
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3169:53:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult cuTexRefSetAddress2D_v3(CUtexref, const CUDA_ARRAY_DESCRIPTOR*, CUdeviceptr, size_t)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 3169 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuTexRefSetAddress2D(hTexRef,desc,dptr,Pitch));</span>
-      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:19481:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
-19481 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuTexRefSetAddress2D(CU</span>texref hTexRef, const CUDA_ARRAY_DESCRIPTOR *desc, CUdeviceptr dptr, size_t Pitch);
-      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipTexRefSetFormat(CUtexref, CUarray_format, int)</span>’:
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3173:47:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult cuTexRefSetFormat(CUtexref, CUarray_format, int)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 3173 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuTexRefSetFormat(hTexRef,fmt,NumPackedComponent</span>s));
-      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:19513:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
-19513 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuTexRefSetFormat</span>(CUtexref hTexRef, CUarray_format fmt, int NumPackedComponents);
-      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipTexRefSetFlags(CUtexref, unsigned int)</span>’:
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3177:46:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult cuTexRefSetFlags(CUtexref, unsigned int)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 3177 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuTexRefSetFlags(hTexRef,Fla</span>gs));
-      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:19792:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
-19792 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuTexRefSetFlags</span>(CUtexref hTexRef, unsigned int Flags);
-      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipTexRefSetArray(CUtexref, CUarray, unsigned int)</span>’:
-<span class="ansi-bold">/opt/rocm-5.6.1/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3181:46:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult cuTexRefSetArray(CUtexref, CUarray, unsigned int)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 3181 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuTexRefSetArray(hTexRef,hArray,Flag</span>s));
-      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:19350:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
-19350 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuTexRefSetArray</span>(CUtexref hTexRef, CUarray hArray, unsigned int Flags);
-      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~</span>
+hipcc -g -O2 -fopenmp mat_mult.cpp -o mat_mult.exe 
+In file included from mat_mult.cpp:18:
+<span class="ansi-bold">./cuda_helper.hpp:54:6: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">redefinition of 'h_errchk'</span>
+void h_errchk(hipError_t errcode, const char* message) {
+<span class="ansi-green-intense-fg ansi-bold">     ^
+</span><span class="ansi-bold">./cuda_helper.hpp:39:6: </span><span class="ansi-black-intense-fg ansi-bold">note: </span>previous definition is here
+void h_errchk(hipError_t errcode, const char* message) {
+<span class="ansi-green-intense-fg ansi-bold">     ^
+</span>1 error generated when compiling for gfx1035.
+make: *** [Makefile:24: mat_mult.exe] Error 1
 </pre>
 </div>
 </div>
@@ -8629,11 +8722,11 @@ hipcc -g -O2 -x cu mat_mult.cpp -o mat_mult.exe
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [29]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [40]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="nb">cd</span><span class="w"> </span>temp_mat_mult<span class="p">;</span><span class="w"> </span>hipify-perl<span class="w"> </span>-inplace<span class="w"> </span>-hip-kernel-execution-syntax<span class="w"> </span>cuda_helper.hpp
-<span class="o">!</span><span class="nb">cd</span><span class="w"> </span>temp_mat_mult<span class="p">;</span><span class="w"> </span>make<span class="w"> </span><span class="nv">CXX</span><span class="o">=</span><span class="s2">"hipcc"</span><span class="w"> </span><span class="nv">LIBFLAGS</span><span class="o">=</span><span class="s2">""</span><span class="p">;</span><span class="w"> </span>./mat_mult.exe
+<span class="o">!</span><span class="nb">cd</span><span class="w"> </span>temp_mat_mult<span class="p">;</span><span class="w"> </span>make<span class="w"> </span><span class="nv">CXX</span><span class="o">=</span><span class="s2">"hipcc"</span><span class="p">;</span><span class="w"> </span>./mat_mult.exe
 </pre></div>
 </div>
 </div>
@@ -8646,17 +8739,17 @@ hipcc -g -O2 -x cu mat_mult.cpp -o mat_mult.exe
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>  warning: cuda_helper.hpp:451: removed identifier "cudaLaunch" since CUDA 10.1
+<pre>  warning: cuda_helper.hpp:452: removed identifier "cudaLaunch" since CUDA 10.1
 make: Nothing to be done for 'all'.
 Device id: 0
-	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
-	global memory size:                      6226 MB
+	name:                                    AMD Radeon Graphics
+	global memory size:                      536 MB
 	available registers per block:           65536 
-	maximum shared memory size per block:    49 KB
-	maximum pitch size for memory copies:    2147 MB
-	max block size:                          (1024,1024,64)
+	maximum shared memory size per block:    65 KB
+	maximum pitch size for memory copies:    402 MB
+	max block size:                          (1024,1024,1024)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,65535,65535)
+	max Grid size:                           (2147483647,2147483647,2147483647)
 Maximum error (infinity norm) is: 1.52588e-05
 </pre>
 </div>
@@ -8681,16 +8774,16 @@ Maximum error (infinity norm) is: 1.52588e-05
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Case-studies-in-porting-codes">Case studies in porting codes<a class="anchor-link" href="#Case-studies-in-porting-codes">¶</a></h2><p>Apart from the toy example above it is informative to try porting some real-world applications and see what learnings can be derived from the process. Here are a few dot points that stood out from.</p>
+<h2 id="Case-studies-in-porting-codes">Case studies in porting codes<a class="anchor-link" href="#Case-studies-in-porting-codes">¶</a></h2><p>Apart from the toy example above, it is informative to try porting some real-world applications and see what learnings can be derived from the process. Here are a few dot points that stood out from.</p>
 <h3 id="Visualising-shipwrecks">Visualising shipwrecks<a class="anchor-link" href="#Visualising-shipwrecks">¶</a></h3><p>From <a href="https://blogs.nvidia.com/blog/2022/11/18/3d-shipwrecks-perth/">this resource</a> researchers at Curtin University are using open source visualisation software to render 3D environments of shipwrecks. Some feedback from their work was:</p>
 <ul>
-<li>Fragility between CUDA and HIP API's. One had to have a version of ROCm that closely matches the CUDA library.</li>
+<li>Fragility between CUDA and HIP API's. They had to have a version of ROCm that closely matches the CUDA library.</li>
 <li>Some CUDA functions were just wrappers that call other CUDA functions and thus were unable to be ported.</li>
 <li>HIP functions would call ROCm functions on an AMD backend. It was a trial and error process to work out what ROCm libraries were requried.</li>
 </ul>
 <h3 id="FiCoS">FiCoS<a class="anchor-link" href="#FiCoS">¶</a></h3><p>From <a href="https://gitlab.com/andrea-tango/ficos">this github site</a> FiCoS is a simulator for biochemical networks. It uses CUDA to solve Ordinary Differential Equations (ODE's) in parallel over a GPU. As the project is quite small the <strong>hipconvertinplace-perl.sh</strong> script was used to easily port the code. During compilation I encountered numerous errors of the following type:</p>
 <ul>
-<li>Arrays of the data type <strong>hipDoubleComplex</strong> was incompatible with required input arguments <strong>hipBlasDoubleComplex</strong> for hibBlas routines  when trying to use the NVIDIA backend. This was not an issue with the AMD backend.</li>
+<li>Arrays of the data type <strong>hipDoubleComplex</strong> were incompatible with required input arguments of type <strong>hipBlasDoubleComplex</strong> for hibBlas routines when trying to use the NVIDIA backend. This was not an issue with the AMD backend.</li>
 <li>Dynamic parallelism (kernels launching kernels) is a design feature that is employed in this code. Dynamic parallelism is not supported on the AMD backend, which means that the codebase must be refactored in order to use AMD.</li>
 </ul>
 <h3 id="CURC">CURC<a class="anchor-link" href="#CURC">¶</a></h3><p><a href="https://github.com/BioinfoSZU/CURC">CURC</a> is a CUDA-based bioinformatics tool to compress and decompress genome information from FASTQ files.</p>
@@ -8709,7 +8802,7 @@ Maximum error (infinity norm) is: 1.52588e-05
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Learnings-from-the-porting-process">Learnings from the porting process<a class="anchor-link" href="#Learnings-from-the-porting-process">¶</a></h2><h3 id="Code-complexity-can-be-an-enemy-of-progress!">Code complexity can be an enemy of progress!<a class="anchor-link" href="#Code-complexity-can-be-an-enemy-of-progress!">¶</a></h3><p>The quest for greater performance often comes at the price of greater complexity. Porting efforts in the case studies were often thwarted because I would encounter assembly code or esoteric CUDA features like texture reference calls that are no longer supported by CUDA or HIP. When developing codes it is important to weigh in tradeoffs between small increases in efficiency versus the developer cost of maintaining this complexity.</p>
+<h2 id="Learnings-from-the-porting-process">Learnings from the porting process<a class="anchor-link" href="#Learnings-from-the-porting-process">¶</a></h2><h3 id="Code-complexity-can-be-an-enemy-of-progress!">Code complexity can be an enemy of progress!<a class="anchor-link" href="#Code-complexity-can-be-an-enemy-of-progress!">¶</a></h3><p>The quest for greater performance often comes at the price of greater complexity. Porting efforts in the case studies were often thwarted because I would encounter assembly code or esoteric CUDA features like texture reference calls that are no longer supported by either CUDA or HIP. When developing codes it is important to weigh in tradeoffs between small increases in efficiency versus the developer cost of maintaining this complexity.</p>
 <h3 id="Naming-conventions">Naming conventions<a class="anchor-link" href="#Naming-conventions">¶</a></h3><p>Vendor diversity is good for business. This means that vendors will change, as will the  functions used to access the accelerator hardware. Therefore incorporating the words <code>cuda</code> or <code>hip</code>, or even <code>gpu</code> in function or class names isn't going to port well to new platforms, and may confuse future porting tools.</p>
 <h3 id="Hardware-differences-between-GPU's">Hardware differences between GPU's<a class="anchor-link" href="#Hardware-differences-between-GPU's">¶</a></h3><h4 id="Thread-team-size">Thread team size<a class="anchor-link" href="#Thread-team-size">¶</a></h4><p>From <a href="https://www.researchgate.net/publication/342464640_Preparing_Ginkgo_for_AMD_GPUs_--_A_Testimonial_on_Porting_CUDA_Code_to_HIP">Yuhsiang et al (2020)</a> the primary architectural difference between AMD and NVIDIA is AMD's use of 64 threads in a thread team versus 32 threads for NVIDIA devices.</p>
 <h4 id="Available-registers-at-peak-occupancy">Available registers at peak occupancy<a class="anchor-link" href="#Available-registers-at-peak-occupancy">¶</a></h4><p>We saw from Lesson 7 that the MI250X GPU may have fewer available registers per kernel thread in order to maintain peak occupancy. Combined with difference in compiler and runtime maturity, this may mean that a kernel running on AMD hardware may not achieve the same occupancy as it did on NVIDIA hardware. The tool Omniperf is good at showing the occupancy of your kernels. If you see reduced occupancy in ported code then see some of the tips in Lesson 7 on <a href="../L7_Kernel_Optimisation/Optimisation.ipynb"></a>optimising kernels to try and reduce register pressure.</p>

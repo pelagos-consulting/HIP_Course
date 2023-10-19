@@ -50,6 +50,7 @@ void h_errchk(hipError_t errcode, const char* message) {
     }
 }
 
+
 /// Macro to check error codes.
 #define H_ERRCHK(cmd) \
 {\
