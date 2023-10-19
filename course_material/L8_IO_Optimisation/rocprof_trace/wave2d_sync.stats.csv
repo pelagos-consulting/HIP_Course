@@ -1,3 +1,3 @@
 "Name","Calls","TotalDurationNs","AverageNs","Percentage"
-"wave2d_4o(float*, float*, float*, float*, unsigned long, unsigned long, float, float, float, unsigned long, unsigned long, float) [clone .kd]",640,9316847,14557,99.39133144433008
-"__amd_rocclr_fillBufferAligned.kd",3,57056,19018,0.6086685556699275
+"wave2d_4o(float*, float*, float*, float*, unsigned long, unsigned long, float, float, float, unsigned long, unsigned long, float) [clone .kd]",640,8455988,13212,99.58349403599308
+"__amd_rocclr_fillBufferAligned.kd",3,35367,11789,0.41650596400692236
