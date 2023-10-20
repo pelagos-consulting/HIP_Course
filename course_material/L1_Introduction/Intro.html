@@ -7768,6 +7768,10 @@ a.anchor-link {
 <div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>course_material/L1_Introduction
 hipcc<span class="w"> </span>-I../include<span class="w"> </span>hello_devices.cpp<span class="w"> </span>-o<span class="w"> </span>hello_devices.exe
 </pre></div>
+<p>You might need to specify a <code>--offload-arch</code> parameter to compile code for the GPU architecture being used. This command works for the GPU's on Setonix.</p>
+<div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>course_material/L1_Introduction
+hipcc<span class="w"> </span>--offload-arch<span class="o">=</span>gfx90a<span class="w"> </span>-I../include<span class="w"> </span>hello_devices.cpp<span class="w"> </span>-o<span class="w"> </span>hello_devices.exe
+</pre></div>
 <h3 id="Switching-between-AMD-and-NVIDIA-backends">Switching between AMD and NVIDIA backends<a class="anchor-link" href="#Switching-between-AMD-and-NVIDIA-backends">¶</a></h3><p>The <strong>HIP_PLATFORM</strong> environment variable determines which backend is used. If you specify</p>
 <div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">HIP_PLATFORM</span><span class="o">=</span>amd
 </pre></div>
