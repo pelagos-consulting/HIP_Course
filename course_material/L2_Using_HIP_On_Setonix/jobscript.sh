@@ -12,7 +12,7 @@ module load craype-accel-amd-gfx90a
 module load rocm
 
 export MPICH_GPU_SUPPORT_ENABLED=1 # Enable GPU-aware MPI communication
-export OMP_NUM_THREADS=8    # Set the number of OpenMP threads per MPI task
+export OMP_NUM_THREADS=8    # Set the number of OpenMP threads <= number of cores requested per node
 export OMP_PLACES=cores     #To bind to cores 
 export OMP_PROC_BIND=close  #To bind (fix) threads (allocating them as close as possible). This option works together with the "places" indicated above, then: allocates threads in closest cores.
  
