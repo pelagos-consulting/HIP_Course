@@ -14,7 +14,7 @@ ifeq ($(CXX), hipcc)
 
         # Special flags for Setonix
         ifeq ($(findstring setonix,$(SLURM_SUBMIT_HOST)),setonix)
-            CXXFLAGS="--offload-arch=gfx90a $(CXXFLAGS)"
+                CXXFLAGS:=--offload-arch=gfx90a $(CXXFLAGS)
         endif
     endif
 endif
