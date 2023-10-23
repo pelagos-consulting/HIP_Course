@@ -81,10 +81,7 @@ int main(int argc, char** argv) {
     size_t nbytes_output=nbytes_input;
     
     // Allocate storage for the output 
-    float_type* images_out = (float_type*)h_alloc(
-        nbytes_output, 
-        (size_t)BYTE_ALIGNMENT
-    );
+    float_type* images_out = (float_type*)h_alloc(nbytes_output);
     
     // Assume that images_in will have dimensions 
     // (NIMAGES, N0, N1) and will have row-major ordering

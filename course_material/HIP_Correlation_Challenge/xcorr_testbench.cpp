@@ -70,10 +70,7 @@ int main(int argc, char** argv) {
     
     // Allocate storage for the input and fill
     // with pseudorandom numbers
-    float_type* image_in = (float_type*)h_alloc(
-        nbytes_image, 
-        (size_t)BYTE_ALIGNMENT
-    ); 
+    float_type* image_in = (float_type*)h_alloc(nbytes_image); 
     m_random(image_in, N0, N1);
     
     // scale up random numbers for debugging purposes
@@ -83,16 +80,10 @@ int main(int argc, char** argv) {
     
     
     // Allocate storage for the output 
-    float_type* image_out = (float_type*)h_alloc(
-        nbytes_image, 
-        (size_t)BYTE_ALIGNMENT
-    );
+    float_type* image_out = (float_type*)h_alloc(nbytes_image);
  
     // Allocate storage for the test image
-    float_type* image_test = (float_type*)h_alloc(
-        nbytes_image, 
-        (size_t)BYTE_ALIGNMENT
-    );
+    float_type* image_test = (float_type*)h_alloc(nbytes_image);
     
     // Make the image kernel
     float_type image_kern[K0*K1] = {-1,-1,-1,\

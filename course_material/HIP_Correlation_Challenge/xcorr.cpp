@@ -64,8 +64,7 @@ int main(int argc, char** argv) {
     
     // Allocate storage for the output 
     float_type* images_out = (float_type*)h_alloc(
-        nbytes_output, 
-        (size_t)BYTE_ALIGNMENT
+        nbytes_output
     );
     
     // Assume that images_in will have dimensions 
