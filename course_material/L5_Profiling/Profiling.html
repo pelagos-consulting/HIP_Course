@@ -7636,18 +7636,20 @@ a.anchor-link {
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>rm -r *.exe
-hipcc -g -O2 -Xcompiler -fopenmp  -I../include mat_mult_profiling.cpp -o mat_mult_profiling.exe -lgomp 
+hipcc -g -O2 -fopenmp -I../include mat_mult_profiling.cpp -o mat_mult_profiling.exe 
 Device id: 0
-	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
-	global memory size:                      6226 MB
+	name:                                    AMD Radeon Graphics
+	global memory size:                      536 MB
 	available registers per block:           65536 
-	maximum shared memory size per block:    49 KB
-	maximum pitch size for memory copies:    2147 MB
-	max block size:                          (1024,1024,64)
+	max threads per SM or CU:                2048 
+	maximum shared memory size per block:    65 KB
+	maximum shared memory size per SM or CU: 65 KB
+	maximum pitch size for memory copies:    402 MB
+	max block size:                          (1024,1024,1024)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,65535,65535)
-Time for event "memcpy": 0.831 ms (1912.36 MB/s)
-Time for event "mat_mult kernel": 0.469 ms
+	max Grid size:                           (2147483647,2147483647,2147483647)
+Time for event "memcpy": 1.383 ms (1149.35 MB/s)
+Time for event "mat_mult kernel": 5.734 ms
 Maximum error (infinity norm) is: 2.28882e-05
 </pre>
 </div>
@@ -7687,39 +7689,41 @@ Maximum error (infinity norm) is: 2.28882e-05
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>RPL: on '230518_135904' from '/opt/rocm-5.4.3' in '/home/toby/Pelagos/Projects/HIP_Course/course_material/L5_Profiling'
+<pre>RPL: on '231023_141829' from '/opt/rocm-5.6.1' in '/home/toby/Pelagos/Projects/HIP_Course/course_material/L5_Profiling'
 RPL: profiling '"./mat_mult_profiling.exe"'
 RPL: input file ''
-RPL: output dir '/tmp/rpl_data_230518_135904_15162'
-RPL: result dir '/tmp/rpl_data_230518_135904_15162/input_results_230518_135904'
-ROCProfiler: input from "/tmp/rpl_data_230518_135904_15162/input.xml"
+RPL: output dir '/tmp/rpl_data_231023_141829_17083'
+RPL: result dir '/tmp/rpl_data_231023_141829_17083/input_results_231023_141829'
+ROCProfiler: input from "/tmp/rpl_data_231023_141829_17083/input.xml"
   0 metrics
-ROCtracer (15187):
+ROCtracer (17104):
     HSA-trace(*)
     HSA-activity-trace()
     HIP-trace(*)
 Device id: 0
-	name:                                    
+	name:                                    AMD Radeon Graphics
 	global memory size:                      536 MB
 	available registers per block:           65536 
+	max threads per SM or CU:                2048 
 	maximum shared memory size per block:    65 KB
-	maximum pitch size for memory copies:    536 MB
+	maximum shared memory size per SM or CU: 65 KB
+	maximum pitch size for memory copies:    402 MB
 	max block size:                          (1024,1024,1024)
 	max threads in a block:                  1024
 	max Grid size:                           (2147483647,2147483647,2147483647)
-Time for event "memcpy": 0.160 ms (9905.99 MB/s)
-Time for event "mat_mult kernel": 3.420 ms
+Time for event "memcpy": 1.177 ms (1349.82 MB/s)
+Time for event "mat_mult kernel": 3.405 ms
 Maximum error (infinity norm) is: 2.28882e-05
 
-ROCPRofiler: 1 contexts collected, output directory /tmp/rpl_data_230518_135904_15162/input_results_230518_135904
+ROCPRofiler: 1 contexts collected, output directory /tmp/rpl_data_231023_141829_17083/input_results_231023_141829
 hsa_copy_deps: 1
-scan hsa API data 5319:5320                                                                                                    hsa_copy_deps: 0
+scan hsa API data 557:558                                                                                                    hsa_copy_deps: 0
 scan hip API data 45:46                                                                                                    File 'rocprof_trace/result.csv' is generating
 File 'rocprof_trace/result.stats.csv' is generating
 dump json 0:1                                                                                                    
 File 'rocprof_trace/result.json' is generating
 File 'rocprof_trace/result.hsa_stats.csv' is generating
-dump json 5320:5321                                                                                                    
+dump json 558:559                                                                                                    
 File 'rocprof_trace/result.json' is generating
 File 'rocprof_trace/result.copy_stats.csv' is generating
 dump json 2:3                                                                                                    
@@ -7839,7 +7843,7 @@ File 'rocprof_trace/result.json' is generating
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>RPL: on '230904_171204' from '/opt/rocm-5.6.0' in '/home/toby/Pelagos/Projects/HIP_Course/course_material/L5_Profiling'
+<pre>RPL: on '231023_141837' from '/opt/rocm-5.6.1' in '/home/toby/Pelagos/Projects/HIP_Course/course_material/L5_Profiling'
 Derived metrics:
 
   gpu-agent1 : GPU_UTIL : Percentage of the time that GUI is active
