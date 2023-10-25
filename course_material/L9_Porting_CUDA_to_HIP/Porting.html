@@ -7743,7 +7743,7 @@ array_B.dat  cuda_helper.hpp  mat_helper.hpp  mat_mult.exe
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="nb">cd</span><span class="w"> </span>temp_mat_mult<span class="p">;</span><span class="w"> </span>hipify-perl<span class="w"> </span>-hip-kernel-execution-syntax<span class="w"> </span>mat_mult.cpp
@@ -7971,7 +7971,7 @@ int main(int argc, char** argv) {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="nb">cd</span><span class="w"> </span>temp_mat_mult<span class="p">;</span><span class="w"> </span>hipify-perl<span class="w"> </span>-inplace<span class="w"> </span>-print-stats<span class="w"> </span>-hip-kernel-execution-syntax<span class="w"> </span>mat_mult.cpp
@@ -8032,7 +8032,7 @@ int main(int argc, char** argv) {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>hipexamine-perl.sh<span class="w"> </span>cuda_mat_mult<span class="w"> </span>-exclude-dirs<span class="o">=</span><span class="s2">".ipynb_checkpoints"</span>
@@ -8111,10 +8111,11 @@ int main(int argc, char** argv) {
   cudaStream_t =&gt; hipStream_t: 7
   cudaSuccess =&gt; hipSuccess: 4
   cuda_runtime.h =&gt; hip/hip_runtime.h: 2
+  warning: cuda_mat_mult/.ipynb_checkpoints/cuda_helper-checkpoint.hpp:480: removed identifier "cudaLaunch" since CUDA 10.1
 
-[HIPIFY] info: file 'GLOBAL' statistics:
-  CONVERTED refs count: 83
-  TOTAL lines of code: 1352
+[HIPIFY] info: file 'cuda_mat_mult/.ipynb_checkpoints/cuda_helper-checkpoint.hpp' statistics:
+  CONVERTED refs count: 55
+  TOTAL lines of code: 789
   WARNINGS: 1
 [HIPIFY] info: CONVERTED refs by names:
   CUDA_SUCCESS =&gt; hipSuccess: 4
@@ -8126,7 +8127,7 @@ int main(int argc, char** argv) {
   cudaDeviceGetAttribute =&gt; hipDeviceGetAttribute: 1
   cudaDeviceProp =&gt; hipDeviceProp_t: 2
   cudaDeviceReset =&gt; hipDeviceReset: 1
-  cudaDeviceSynchronize =&gt; hipDeviceSynchronize: 3
+  cudaDeviceSynchronize =&gt; hipDeviceSynchronize: 1
   cudaError_t =&gt; hipError_t: 4
   cudaEventCreate =&gt; hipEventCreate: 2
   cudaEventDestroy =&gt; hipEventDestroy: 2
@@ -8134,17 +8135,11 @@ int main(int argc, char** argv) {
   cudaEventRecord =&gt; hipEventRecord: 3
   cudaEventSynchronize =&gt; hipEventSynchronize: 2
   cudaEvent_t =&gt; hipEvent_t: 3
-  cudaFree =&gt; hipFree: 6
   cudaGetDevice =&gt; hipGetDevice: 1
   cudaGetDeviceCount =&gt; hipGetDeviceCount: 2
   cudaGetDeviceProperties =&gt; hipGetDeviceProperties: 2
   cudaGetErrorString =&gt; hipGetErrorString: 2
-  cudaGetLastError =&gt; hipGetLastError: 2
   cudaLaunchKernel =&gt; hipLaunchKernel: 1
-  cudaMalloc =&gt; hipMalloc: 6
-  cudaMemcpy =&gt; hipMemcpy: 6
-  cudaMemcpyDeviceToHost =&gt; hipMemcpyDeviceToHost: 2
-  cudaMemcpyHostToDevice =&gt; hipMemcpyHostToDevice: 4
   cudaSetDevice =&gt; hipSetDevice: 3
   cudaStreamCreateWithFlags =&gt; hipStreamCreateWithFlags: 1
   cudaStreamDefault =&gt; hipStreamDefault: 1
@@ -8153,6 +8148,48 @@ int main(int argc, char** argv) {
   cudaStream_t =&gt; hipStream_t: 7
   cudaSuccess =&gt; hipSuccess: 4
   cuda_runtime.h =&gt; hip/hip_runtime.h: 2
+
+[HIPIFY] info: file 'GLOBAL' statistics:
+  CONVERTED refs count: 138
+  TOTAL lines of code: 2141
+  WARNINGS: 2
+[HIPIFY] info: CONVERTED refs by names:
+  CUDA_SUCCESS =&gt; hipSuccess: 8
+  CUresult =&gt; hipError_t: 8
+  cuGetErrorString =&gt; hipDrvGetErrorString: 2
+  cuInit =&gt; hipInit: 2
+  cuda.h =&gt; hip/hip_runtime.h: 4
+  cudaDevAttrManagedMemory =&gt; hipDeviceAttributeManagedMemory: 2
+  cudaDeviceGetAttribute =&gt; hipDeviceGetAttribute: 2
+  cudaDeviceProp =&gt; hipDeviceProp_t: 4
+  cudaDeviceReset =&gt; hipDeviceReset: 2
+  cudaDeviceSynchronize =&gt; hipDeviceSynchronize: 4
+  cudaError_t =&gt; hipError_t: 8
+  cudaEventCreate =&gt; hipEventCreate: 4
+  cudaEventDestroy =&gt; hipEventDestroy: 4
+  cudaEventElapsedTime =&gt; hipEventElapsedTime: 2
+  cudaEventRecord =&gt; hipEventRecord: 6
+  cudaEventSynchronize =&gt; hipEventSynchronize: 4
+  cudaEvent_t =&gt; hipEvent_t: 6
+  cudaFree =&gt; hipFree: 6
+  cudaGetDevice =&gt; hipGetDevice: 2
+  cudaGetDeviceCount =&gt; hipGetDeviceCount: 4
+  cudaGetDeviceProperties =&gt; hipGetDeviceProperties: 4
+  cudaGetErrorString =&gt; hipGetErrorString: 4
+  cudaGetLastError =&gt; hipGetLastError: 2
+  cudaLaunchKernel =&gt; hipLaunchKernel: 2
+  cudaMalloc =&gt; hipMalloc: 6
+  cudaMemcpy =&gt; hipMemcpy: 6
+  cudaMemcpyDeviceToHost =&gt; hipMemcpyDeviceToHost: 2
+  cudaMemcpyHostToDevice =&gt; hipMemcpyHostToDevice: 4
+  cudaSetDevice =&gt; hipSetDevice: 6
+  cudaStreamCreateWithFlags =&gt; hipStreamCreateWithFlags: 2
+  cudaStreamDefault =&gt; hipStreamDefault: 2
+  cudaStreamDestroy =&gt; hipStreamDestroy: 2
+  cudaStreamNonBlocking =&gt; hipStreamNonBlocking: 2
+  cudaStream_t =&gt; hipStream_t: 14
+  cudaSuccess =&gt; hipSuccess: 8
+  cuda_runtime.h =&gt; hip/hip_runtime.h: 4
 
 </pre>
 </div>
@@ -8175,7 +8212,7 @@ int main(int argc, char** argv) {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="nb">cd</span><span class="w"> </span>cuda_mat_mult<span class="p">;</span><span class="w"> </span>hipexamine.sh<span class="w"> </span>.<span class="w"> </span>-I.
@@ -8204,7 +8241,7 @@ int main(int argc, char** argv) {
   TOTAL lines of code: 190
   CODE CHANGED (in bytes) %: 3.1
   CODE CHANGED (in lines) %: 6.3
-  TIME ELAPSED s: 0.60
+  TIME ELAPSED s: 0.77
 [HIPIFY] info: CONVERTED refs by type:
   error: 1
   device: 1
@@ -8232,7 +8269,7 @@ int main(int argc, char** argv) {
   TOTAL lines of code: 190
   CODE CHANGED (in bytes) %: 3.1
   CODE CHANGED (in lines) %: 6.3
-  TIME ELAPSED s: 0.57
+  TIME ELAPSED s: 0.67
 [HIPIFY] info: CONVERTED refs by type:
   error: 1
   device: 1
@@ -8260,16 +8297,16 @@ int main(int argc, char** argv) {
   TOTAL lines of code: 3
   CODE CHANGED (in bytes) %: 0.0
   CODE CHANGED (in lines) %: 33.3
-  TIME ELAPSED s: 0.20
+  TIME ELAPSED s: 0.21
 <span class="ansi-magenta-intense-fg ansi-bold">warning: </span><span class="ansi-bold">CUDA version is newer than the latest partially supported version 11.8 [-Wunknown-cuda-version]</span>
-<span class="ansi-bold">/tmp/mat_helper.hpp-5e03f2.hip:162:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier 'assert'</span>
+<span class="ansi-bold">/tmp/mat_helper.hpp-f7fbeb.hip:162:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier 'assert'</span>
     assert(len0_src&gt;=K0);
 <span class="ansi-green-intense-fg ansi-bold">    ^
-</span><span class="ansi-bold">/tmp/mat_helper.hpp-5e03f2.hip:163:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier 'assert'</span>
+</span><span class="ansi-bold">/tmp/mat_helper.hpp-f7fbeb.hip:163:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier 'assert'</span>
     assert(len1_src&gt;=K1);    
 <span class="ansi-green-intense-fg ansi-bold">    ^
 </span>2 errors generated when compiling for host.
-Error while processing /tmp/mat_helper.hpp-5e03f2.hip.
+Error while processing /tmp/mat_helper.hpp-f7fbeb.hip.
 
 [HIPIFY] info: file './mat_helper.hpp' statistics:
 
@@ -8284,26 +8321,26 @@ Error while processing /tmp/mat_helper.hpp-5e03f2.hip.
   TOTAL lines of code: 180
   CODE CHANGED (in bytes) %: 0.0
   CODE CHANGED (in lines) %: 0.6
-  TIME ELAPSED s: 0.51
+  TIME ELAPSED s: 0.55
 <span class="ansi-magenta-intense-fg ansi-bold">warning: </span><span class="ansi-bold">CUDA version is newer than the latest partially supported version 11.8 [-Wunknown-cuda-version]</span>
-<span class="ansi-bold">/tmp/cuda_helper.hpp-45d2ce.hip:95:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">unknown type name 'SYSTEM_INFO'</span>
+<span class="ansi-bold">/tmp/cuda_helper.hpp-6e7f2a.hip:95:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">unknown type name 'SYSTEM_INFO'</span>
     SYSTEM_INFO sys_info;
 <span class="ansi-green-intense-fg ansi-bold">    ^
-</span><span class="ansi-bold">/tmp/cuda_helper.hpp-45d2ce.hip:381:20: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier '_aligned_malloc'; did you mean 'aligned_alloc'?</span>
+</span><span class="ansi-bold">/tmp/cuda_helper.hpp-6e7f2a.hip:381:20: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier '_aligned_malloc'; did you mean 'aligned_alloc'?</span>
     void* buffer = _aligned_malloc(nbytes, alignment);
 <span class="ansi-green-intense-fg ansi-bold">                   ^~~~~~~~~~~~~~~
 </span><span class="ansi-green-fg">                   aligned_alloc
 </span><span class="ansi-bold">/usr/include/stdlib.h:592:14: </span><span class="ansi-black-intense-fg ansi-bold">note: </span>'aligned_alloc' declared here
 extern void *aligned_alloc (size_t __alignment, size_t __size)
 <span class="ansi-green-intense-fg ansi-bold">             ^
-</span><span class="ansi-bold">/tmp/cuda_helper.hpp-45d2ce.hip:383:11: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">redefinition of 'buffer'</span>
+</span><span class="ansi-bold">/tmp/cuda_helper.hpp-6e7f2a.hip:383:11: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">redefinition of 'buffer'</span>
     void* buffer = aligned_alloc(alignment, nbytes);
 <span class="ansi-green-intense-fg ansi-bold">          ^
-</span><span class="ansi-bold">/tmp/cuda_helper.hpp-45d2ce.hip:381:11: </span><span class="ansi-black-intense-fg ansi-bold">note: </span>previous definition is here
+</span><span class="ansi-bold">/tmp/cuda_helper.hpp-6e7f2a.hip:381:11: </span><span class="ansi-black-intense-fg ansi-bold">note: </span>previous definition is here
     void* buffer = _aligned_malloc(nbytes, alignment);
 <span class="ansi-green-intense-fg ansi-bold">          ^
 </span>3 errors generated when compiling for host.
-Error while processing /tmp/cuda_helper.hpp-45d2ce.hip.
+Error while processing /tmp/cuda_helper.hpp-6e7f2a.hip.
 
 [HIPIFY] info: file './cuda_helper.hpp' statistics:
 
@@ -8318,7 +8355,86 @@ Error while processing /tmp/cuda_helper.hpp-45d2ce.hip.
   TOTAL lines of code: 789
   CODE CHANGED (in bytes) %: 3.3
   CODE CHANGED (in lines) %: 6.1
-  TIME ELAPSED s: 0.46
+  TIME ELAPSED s: 0.51
+[HIPIFY] info: CONVERTED refs by type:
+  error: 3
+  init: 1
+  device: 11
+  stream: 2
+  event: 9
+  execution: 1
+  include_cuda_main_header: 2
+  type: 16
+  numeric_literal: 5
+  define: 2
+[HIPIFY] info: CONVERTED refs by API:
+  CUDA Driver API: 7
+  CUDA RT API: 45
+[HIPIFY] info: CONVERTED refs by names:
+  CUDA_SUCCESS: 2
+  CUresult: 2
+  cuGetErrorString: 1
+  cuInit: 1
+  cuda.h: 1
+  cudaDevAttrManagedMemory: 1
+  cudaDeviceGetAttribute: 1
+  cudaDeviceProp: 2
+  cudaDeviceReset: 1
+  cudaDeviceSynchronize: 1
+  cudaError_t: 2
+  cudaEventCreate: 2
+  cudaEventDestroy: 2
+  cudaEventElapsedTime: 1
+  cudaEventRecord: 2
+  cudaEventSynchronize: 2
+  cudaEvent_t: 3
+  cudaGetDevice: 1
+  cudaGetDeviceCount: 2
+  cudaGetDeviceProperties: 2
+  cudaGetErrorString: 2
+  cudaLaunchKernel: 1
+  cudaSetDevice: 3
+  cudaStreamCreateWithFlags: 1
+  cudaStreamDefault: 1
+  cudaStreamDestroy: 1
+  cudaStreamNonBlocking: 1
+  cudaStream_t: 7
+  cudaSuccess: 2
+  cuda_runtime.h: 1
+<span class="ansi-magenta-intense-fg ansi-bold">warning: </span><span class="ansi-bold">CUDA version is newer than the latest partially supported version 11.8 [-Wunknown-cuda-version]</span>
+<span class="ansi-bold">/tmp/cuda_helper-checkpoint.hpp-6eeed8.hip:95:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">unknown type name 'SYSTEM_INFO'</span>
+    SYSTEM_INFO sys_info;
+<span class="ansi-green-intense-fg ansi-bold">    ^
+</span><span class="ansi-bold">/tmp/cuda_helper-checkpoint.hpp-6eeed8.hip:381:20: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier '_aligned_malloc'; did you mean 'aligned_alloc'?</span>
+    void* buffer = _aligned_malloc(nbytes, alignment);
+<span class="ansi-green-intense-fg ansi-bold">                   ^~~~~~~~~~~~~~~
+</span><span class="ansi-green-fg">                   aligned_alloc
+</span><span class="ansi-bold">/usr/include/stdlib.h:592:14: </span><span class="ansi-black-intense-fg ansi-bold">note: </span>'aligned_alloc' declared here
+extern void *aligned_alloc (size_t __alignment, size_t __size)
+<span class="ansi-green-intense-fg ansi-bold">             ^
+</span><span class="ansi-bold">/tmp/cuda_helper-checkpoint.hpp-6eeed8.hip:383:11: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">redefinition of 'buffer'</span>
+    void* buffer = aligned_alloc(alignment, nbytes);
+<span class="ansi-green-intense-fg ansi-bold">          ^
+</span><span class="ansi-bold">/tmp/cuda_helper-checkpoint.hpp-6eeed8.hip:381:11: </span><span class="ansi-black-intense-fg ansi-bold">note: </span>previous definition is here
+    void* buffer = _aligned_malloc(nbytes, alignment);
+<span class="ansi-green-intense-fg ansi-bold">          ^
+</span>3 errors generated when compiling for host.
+Error while processing /tmp/cuda_helper-checkpoint.hpp-6eeed8.hip.
+
+[HIPIFY] info: file './.ipynb_checkpoints/cuda_helper-checkpoint.hpp' statistics:
+
+  ERROR: Statistics is invalid due to failed hipification.
+
+  CONVERTED refs count: 52
+  UNCONVERTED refs count: 0
+  CONVERSION %: 100.0
+  REPLACED bytes: 814
+  TOTAL bytes: 24629
+  CHANGED lines of code: 48
+  TOTAL lines of code: 789
+  CODE CHANGED (in bytes) %: 3.3
+  CODE CHANGED (in lines) %: 6.1
+  TIME ELAPSED s: 0.50
 [HIPIFY] info: CONVERTED refs by type:
   error: 3
   init: 1
@@ -8369,72 +8485,72 @@ Error while processing /tmp/cuda_helper.hpp-45d2ce.hip.
 
   ERROR: Statistics is invalid due to failed hipification.
 
-  CONVERTED refs count: 80
+  CONVERTED refs count: 132
   UNCONVERTED refs count: 0
   CONVERSION %: 100.0
-  REPLACED bytes: 1188
-  TOTAL bytes: 41121
-  CHANGED lines of code: 74
-  TOTAL lines of code: 1352
-  CODE CHANGED (in bytes) %: 2.9
-  CODE CHANGED (in lines) %: 5.5
-  TIME ELAPSED s: 2.34
+  REPLACED bytes: 2002
+  TOTAL bytes: 65750
+  CHANGED lines of code: 122
+  TOTAL lines of code: 2141
+  CODE CHANGED (in bytes) %: 3.0
+  CODE CHANGED (in lines) %: 5.7
+  TIME ELAPSED s: 3.21
 [HIPIFY] info: CONVERTED refs by type:
-  error: 5
-  init: 1
-  device: 13
+  error: 8
+  init: 2
+  device: 24
   memory: 18
-  stream: 2
-  event: 9
-  execution: 1
-  include_cuda_main_header: 2
-  type: 16
-  numeric_literal: 11
-  define: 2
+  stream: 4
+  event: 18
+  execution: 2
+  include_cuda_main_header: 4
+  type: 32
+  numeric_literal: 16
+  define: 4
 [HIPIFY] info: CONVERTED refs by API:
-  CUDA Driver API: 7
-  CUDA RT API: 73
+  CUDA Driver API: 14
+  CUDA RT API: 118
 [HIPIFY] info: CONVERTED refs by names:
-  CUDA_SUCCESS: 2
-  CUresult: 2
-  cuGetErrorString: 1
-  cuInit: 1
-  cuda.h: 1
-  cudaDevAttrManagedMemory: 1
-  cudaDeviceGetAttribute: 1
-  cudaDeviceProp: 2
-  cudaDeviceReset: 1
-  cudaDeviceSynchronize: 3
-  cudaError_t: 2
-  cudaEventCreate: 2
-  cudaEventDestroy: 2
-  cudaEventElapsedTime: 1
-  cudaEventRecord: 2
-  cudaEventSynchronize: 2
-  cudaEvent_t: 3
+  CUDA_SUCCESS: 4
+  CUresult: 4
+  cuGetErrorString: 2
+  cuInit: 2
+  cuda.h: 2
+  cudaDevAttrManagedMemory: 2
+  cudaDeviceGetAttribute: 2
+  cudaDeviceProp: 4
+  cudaDeviceReset: 2
+  cudaDeviceSynchronize: 4
+  cudaError_t: 4
+  cudaEventCreate: 4
+  cudaEventDestroy: 4
+  cudaEventElapsedTime: 2
+  cudaEventRecord: 4
+  cudaEventSynchronize: 4
+  cudaEvent_t: 6
   cudaFree: 6
-  cudaGetDevice: 1
-  cudaGetDeviceCount: 2
-  cudaGetDeviceProperties: 2
-  cudaGetErrorString: 2
+  cudaGetDevice: 2
+  cudaGetDeviceCount: 4
+  cudaGetDeviceProperties: 4
+  cudaGetErrorString: 4
   cudaGetLastError: 2
-  cudaLaunchKernel: 1
+  cudaLaunchKernel: 2
   cudaMalloc: 6
   cudaMemcpy: 6
   cudaMemcpyDeviceToHost: 2
   cudaMemcpyHostToDevice: 4
-  cudaSetDevice: 3
-  cudaStreamCreateWithFlags: 1
-  cudaStreamDefault: 1
-  cudaStreamDestroy: 1
-  cudaStreamNonBlocking: 1
-  cudaStream_t: 7
-  cudaSuccess: 2
-  cuda_runtime.h: 1
+  cudaSetDevice: 6
+  cudaStreamCreateWithFlags: 2
+  cudaStreamDefault: 2
+  cudaStreamDestroy: 2
+  cudaStreamNonBlocking: 2
+  cudaStream_t: 14
+  cudaSuccess: 4
+  cuda_runtime.h: 2
 
 [HIPIFY] info: TOTAL statistics:
   CONVERTED files: 3
-  PROCESSED files: 5
+  PROCESSED files: 6
 </pre>
 </div>
 </div>
@@ -8457,7 +8573,7 @@ Error while processing /tmp/cuda_helper.hpp-45d2ce.hip.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>hipconvertinplace-perl.sh<span class="w"> </span>temp_mat_mult<span class="w"> </span>-hip-kernel-execution-syntax
@@ -8486,13 +8602,29 @@ Error while processing /tmp/cuda_helper.hpp-45d2ce.hip.
   cudaMemcpy =&gt; hipMemcpy: 3
   cudaMemcpyDeviceToHost =&gt; hipMemcpyDeviceToHost: 1
   cudaMemcpyHostToDevice =&gt; hipMemcpyHostToDevice: 2
-  warning: temp_mat_mult/cuda_helper.hpp:452: removed identifier "cudaLaunch" since CUDA 10.1
+
+[HIPIFY] info: file 'temp_mat_mult/.ipynb_checkpoints/mat_mult-checkpoint.cpp' statistics:
+  CONVERTED refs count: 15
+  TOTAL lines of code: 190
+  WARNINGS: 0
+[HIPIFY] info: CONVERTED refs by names:
+  cudaDeviceSynchronize =&gt; hipDeviceSynchronize: 1
+  cudaFree =&gt; hipFree: 3
+  cudaGetLastError =&gt; hipGetLastError: 1
+  cudaMalloc =&gt; hipMalloc: 3
+  cudaMemcpy =&gt; hipMemcpy: 3
+  cudaMemcpyDeviceToHost =&gt; hipMemcpyDeviceToHost: 1
+  cudaMemcpyHostToDevice =&gt; hipMemcpyHostToDevice: 2
+  warning: temp_mat_mult/cuda_helper.hpp:480: removed identifier "cudaLaunch" since CUDA 10.1
 
 [HIPIFY] info: file 'temp_mat_mult/cuda_helper.hpp' statistics:
-  CONVERTED refs count: 51
-  TOTAL lines of code: 761
+  CONVERTED refs count: 56
+  TOTAL lines of code: 789
   WARNINGS: 1
 [HIPIFY] info: CONVERTED refs by names:
+  CUDA_SUCCESS =&gt; hipSuccess: 4
+  CUresult =&gt; hipError_t: 4
+  cuGetErrorString =&gt; hipDrvGetErrorString: 1
   cuInit =&gt; hipInit: 1
   cuda.h =&gt; hip/hip_runtime.h: 2
   cudaDevAttrManagedMemory =&gt; hipDeviceAttributeManagedMemory: 1
@@ -8500,7 +8632,7 @@ Error while processing /tmp/cuda_helper.hpp-45d2ce.hip.
   cudaDeviceProp =&gt; hipDeviceProp_t: 2
   cudaDeviceReset =&gt; hipDeviceReset: 1
   cudaDeviceSynchronize =&gt; hipDeviceSynchronize: 1
-  cudaError_t =&gt; hipError_t: 2
+  cudaError_t =&gt; hipError_t: 4
   cudaEventCreate =&gt; hipEventCreate: 2
   cudaEventDestroy =&gt; hipEventDestroy: 2
   cudaEventElapsedTime =&gt; hipEventElapsedTime: 1
@@ -8518,46 +8650,49 @@ Error while processing /tmp/cuda_helper.hpp-45d2ce.hip.
   cudaStreamDestroy =&gt; hipStreamDestroy: 1
   cudaStreamNonBlocking =&gt; hipStreamNonBlocking: 1
   cudaStream_t =&gt; hipStream_t: 7
-  cudaSuccess =&gt; hipSuccess: 2
+  cudaSuccess =&gt; hipSuccess: 4
   cuda_runtime.h =&gt; hip/hip_runtime.h: 2
 
 [HIPIFY] info: file 'GLOBAL' statistics:
-  CONVERTED refs count: 66
-  TOTAL lines of code: 1134
+  CONVERTED refs count: 86
+  TOTAL lines of code: 1352
   WARNINGS: 1
 [HIPIFY] info: CONVERTED refs by names:
+  CUDA_SUCCESS =&gt; hipSuccess: 4
+  CUresult =&gt; hipError_t: 4
+  cuGetErrorString =&gt; hipDrvGetErrorString: 1
   cuInit =&gt; hipInit: 1
   cuda.h =&gt; hip/hip_runtime.h: 2
   cudaDevAttrManagedMemory =&gt; hipDeviceAttributeManagedMemory: 1
   cudaDeviceGetAttribute =&gt; hipDeviceGetAttribute: 1
   cudaDeviceProp =&gt; hipDeviceProp_t: 2
   cudaDeviceReset =&gt; hipDeviceReset: 1
-  cudaDeviceSynchronize =&gt; hipDeviceSynchronize: 2
-  cudaError_t =&gt; hipError_t: 2
+  cudaDeviceSynchronize =&gt; hipDeviceSynchronize: 3
+  cudaError_t =&gt; hipError_t: 4
   cudaEventCreate =&gt; hipEventCreate: 2
   cudaEventDestroy =&gt; hipEventDestroy: 2
   cudaEventElapsedTime =&gt; hipEventElapsedTime: 1
   cudaEventRecord =&gt; hipEventRecord: 3
   cudaEventSynchronize =&gt; hipEventSynchronize: 2
   cudaEvent_t =&gt; hipEvent_t: 3
-  cudaFree =&gt; hipFree: 3
+  cudaFree =&gt; hipFree: 6
   cudaGetDevice =&gt; hipGetDevice: 1
   cudaGetDeviceCount =&gt; hipGetDeviceCount: 2
   cudaGetDeviceProperties =&gt; hipGetDeviceProperties: 2
   cudaGetErrorString =&gt; hipGetErrorString: 2
-  cudaGetLastError =&gt; hipGetLastError: 1
+  cudaGetLastError =&gt; hipGetLastError: 2
   cudaLaunchKernel =&gt; hipLaunchKernel: 1
-  cudaMalloc =&gt; hipMalloc: 3
-  cudaMemcpy =&gt; hipMemcpy: 3
-  cudaMemcpyDeviceToHost =&gt; hipMemcpyDeviceToHost: 1
-  cudaMemcpyHostToDevice =&gt; hipMemcpyHostToDevice: 2
+  cudaMalloc =&gt; hipMalloc: 6
+  cudaMemcpy =&gt; hipMemcpy: 6
+  cudaMemcpyDeviceToHost =&gt; hipMemcpyDeviceToHost: 2
+  cudaMemcpyHostToDevice =&gt; hipMemcpyHostToDevice: 4
   cudaSetDevice =&gt; hipSetDevice: 3
   cudaStreamCreateWithFlags =&gt; hipStreamCreateWithFlags: 1
   cudaStreamDefault =&gt; hipStreamDefault: 1
   cudaStreamDestroy =&gt; hipStreamDestroy: 1
   cudaStreamNonBlocking =&gt; hipStreamNonBlocking: 1
   cudaStream_t =&gt; hipStream_t: 7
-  cudaSuccess =&gt; hipSuccess: 2
+  cudaSuccess =&gt; hipSuccess: 4
   cuda_runtime.h =&gt; hip/hip_runtime.h: 2
 
 </pre>
@@ -8617,7 +8752,7 @@ Error while processing /tmp/cuda_helper.hpp-45d2ce.hip.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>ls<span class="w"> </span>-l<span class="w"> </span>temp_mat_mult
@@ -8633,20 +8768,20 @@ Error while processing /tmp/cuda_helper.hpp-45d2ce.hip.
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>total 2372
--rw-r--r-- 1 toby toby  262144 Oct 19 17:42 array_A.dat
--rw-r--r-- 1 toby toby  262144 Oct 19 17:42 array_B.dat
--rw-r--r-- 1 toby toby  262144 Oct 19 17:42 array_C.dat
--rw-r--r-- 1 toby toby   23836 Oct 19 17:43 cuda_helper.hpp
--rw-r--r-- 1 toby toby   23809 Oct 19 15:24 cuda_helper.hpp.prehip
--rw-r--r-- 1 toby toby     561 Oct 19 17:42 Makefile
--rw-r--r-- 1 toby toby    4497 Oct 19 17:43 mat_helper.hpp
--rw-r--r-- 1 toby toby    4497 Oct 19 15:23 mat_helper.hpp.prehip
--rw-r--r-- 1 toby toby    5975 Oct 19 17:43 mat_mult.cpp
--rw-r--r-- 1 toby toby    5944 Oct 19 15:22 mat_mult.cpp.prehip
--rwxr-xr-x 1 toby toby 1545744 Oct 19 17:42 mat_mult.exe
--rw-r--r-- 1 toby toby     107 Oct 19 17:43 mat_size.hpp
--rw-r--r-- 1 toby toby     107 Oct 19 15:23 mat_size.hpp.prehip
+<pre>total 2380
+-rw-r--r-- 1 toby toby  262144 Oct 25 15:22 array_A.dat
+-rw-r--r-- 1 toby toby  262144 Oct 25 15:22 array_B.dat
+-rw-r--r-- 1 toby toby  262144 Oct 25 15:22 array_C.dat
+-rw-r--r-- 1 toby toby   24660 Oct 25 15:36 cuda_helper.hpp
+-rw-r--r-- 1 toby toby   24629 Oct 25 15:36 cuda_helper.hpp.prehip
+-rw-r--r-- 1 toby toby     738 Oct 25 15:22 Makefile
+-rw-r--r-- 1 toby toby    4497 Oct 25 15:36 mat_helper.hpp
+-rw-r--r-- 1 toby toby    4497 Oct 25 15:36 mat_helper.hpp.prehip
+-rw-r--r-- 1 toby toby    5975 Oct 25 15:36 mat_mult.cpp
+-rw-r--r-- 1 toby toby    5944 Oct 25 15:29 mat_mult.cpp.prehip
+-rwxr-xr-x 1 toby toby 1545760 Oct 25 15:22 mat_mult.exe
+-rw-r--r-- 1 toby toby     107 Oct 25 15:36 mat_size.hpp
+-rw-r--r-- 1 toby toby     107 Oct 25 15:36 mat_size.hpp.prehip
 </pre>
 </div>
 </div>
@@ -8668,7 +8803,7 @@ Error while processing /tmp/cuda_helper.hpp-45d2ce.hip.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="nb">cd</span><span class="w"> </span>temp_mat_mult<span class="p">;</span><span class="w"> </span>make<span class="w"> </span>clean<span class="p">;</span><span class="w"> </span>make<span class="w"> </span><span class="nv">CXX</span><span class="o">=</span><span class="s2">"hipcc"</span>
@@ -8686,6 +8821,15 @@ Error while processing /tmp/cuda_helper.hpp-45d2ce.hip.
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>rm -r *.exe
 hipcc -g -O2 -fopenmp mat_mult.cpp -o mat_mult.exe 
+In file included from mat_mult.cpp:18:
+<span class="ansi-bold">./cuda_helper.hpp:54:6: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">redefinition of 'h_errchk'</span>
+void h_errchk(hipError_t errcode, const char* message) {
+<span class="ansi-green-intense-fg ansi-bold">     ^
+</span><span class="ansi-bold">./cuda_helper.hpp:39:6: </span><span class="ansi-black-intense-fg ansi-bold">note: </span>previous definition is here
+void h_errchk(hipError_t errcode, const char* message) {
+<span class="ansi-green-intense-fg ansi-bold">     ^
+</span>1 error generated when compiling for gfx1035.
+make: *** [Makefile:29: mat_mult.exe] Error 1
 </pre>
 </div>
 </div>
@@ -8707,7 +8851,7 @@ hipcc -g -O2 -fopenmp mat_mult.cpp -o mat_mult.exe
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Run this after modifying cuda_helper.hpp.prehip</span>
@@ -8725,8 +8869,8 @@ hipcc -g -O2 -fopenmp mat_mult.cpp -o mat_mult.exe
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>  warning: cuda_helper.hpp:452: removed identifier "cudaLaunch" since CUDA 10.1
-make: Nothing to be done for 'all'.
+<pre>  warning: cuda_helper.hpp:451: removed identifier "cudaLaunch" since CUDA 10.1
+hipcc -g -O2 -fopenmp mat_mult.cpp -o mat_mult.exe 
 Device id: 0
 	name:                                    AMD Radeon Graphics
 	global memory size:                      536 MB

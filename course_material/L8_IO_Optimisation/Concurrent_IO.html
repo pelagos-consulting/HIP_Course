@@ -7797,7 +7797,7 @@ hipcc -g -O2 -fopenmp -I../include layer_cake_answers.cpp -o layer_cake_answers.
 	max Grid size:                           (2147483647,2147483647,2147483647)
 dt=0.001166, Vmax=343.000000
 dt=0.00116618, fm=34.3, Vmax=343, dt2=1.35998e-06
-The synchronous calculation took 40.116000 milliseconds.
+The synchronous calculation took 52.128000 milliseconds.
 </pre>
 </div>
 </div>
@@ -7883,14 +7883,14 @@ The synchronous calculation took 40.116000 milliseconds.
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>RPL: on '231019_115535' from '/opt/rocm-5.6.1' in '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation'
+<pre>RPL: on '231025_142656' from '/opt/rocm-5.6.1' in '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation'
 RPL: profiling '"./wave2d_sync.exe"'
 RPL: input file ''
-RPL: output dir '/tmp/rpl_data_231019_115535_15760'
-RPL: result dir '/tmp/rpl_data_231019_115535_15760/input_results_231019_115535'
-ROCProfiler: input from "/tmp/rpl_data_231019_115535_15760/input.xml"
+RPL: output dir '/tmp/rpl_data_231025_142656_20399'
+RPL: result dir '/tmp/rpl_data_231025_142656_20399/input_results_231025_142656'
+ROCProfiler: input from "/tmp/rpl_data_231025_142656_20399/input.xml"
   0 metrics
-ROCtracer (15780):
+ROCtracer (20420):
     HSA-trace(*)
     HSA-activity-trace()
     HIP-trace(*)
@@ -7907,17 +7907,17 @@ Device id: 0
 	max Grid size:                           (2147483647,2147483647,2147483647)
 dt=0.001166, Vmax=343.000000
 dt=0.00116618, fm=34.3, Vmax=343, dt2=1.35998e-06
-The synchronous calculation took 49.713000 milliseconds.
+The synchronous calculation took 68.777000 milliseconds.
 
-ROCPRofiler: 643 contexts collected, output directory /tmp/rpl_data_231019_115535_15760/input_results_231019_115535
+ROCPRofiler: 643 contexts collected, output directory /tmp/rpl_data_231025_142656_20399/input_results_231025_142656
 hsa_copy_deps: 1
-scan hsa API data 18973:18974                                                                                                    hsa_copy_deps: 0
+scan hsa API data 18975:18976                                                                                                    hsa_copy_deps: 0
 scan hip API data 3222:3223                                                                                                    File '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_sync.csv' is generating
 File '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_sync.stats.csv' is generating
 dump json 642:643                                                                                                    
 File '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_sync.json' is generating
 File '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_sync.hsa_stats.csv' is generating
-dump json 19616:19617                                                                                                    
+dump json 19618:19619                                                                                                    
 File '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_sync.json' is generating
 File '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_sync.copy_stats.csv' is generating
 dump json 637:638                                                                                                    
@@ -7925,14 +7925,14 @@ File '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/
 File '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_sync.hip_stats.csv' is generating
 dump json 3222:3223                                                                                                    
 File '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_sync.json' is generating
-RPL: on '231019_115538' from '/opt/rocm-5.6.1' in '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation'
+RPL: on '231025_142658' from '/opt/rocm-5.6.1' in '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation'
 RPL: profiling '"./wave2d_async_streams.exe"'
 RPL: input file ''
-RPL: output dir '/tmp/rpl_data_231019_115538_15836'
-RPL: result dir '/tmp/rpl_data_231019_115538_15836/input_results_231019_115538'
-ROCProfiler: input from "/tmp/rpl_data_231019_115538_15836/input.xml"
+RPL: output dir '/tmp/rpl_data_231025_142658_20505'
+RPL: result dir '/tmp/rpl_data_231025_142658_20505/input_results_231025_142658'
+ROCProfiler: input from "/tmp/rpl_data_231025_142658_20505/input.xml"
   0 metrics
-ROCtracer (15856):
+ROCtracer (20525):
     HSA-trace(*)
     HSA-activity-trace()
     HIP-trace(*)
@@ -7949,17 +7949,17 @@ Device id: 0
 	max Grid size:                           (2147483647,2147483647,2147483647)
 dt=0.001166, Vmax=343.000000
 dt=0.00116618, fm=34.3, Vmax=343, dt2=1.35998e-06
-The asynchronous calculation took 29.280000 milliseconds.
+The asynchronous calculation took 35.852000 milliseconds.
 
-ROCPRofiler: 1282 contexts collected, output directory /tmp/rpl_data_231019_115538_15836/input_results_231019_115538
+ROCPRofiler: 1282 contexts collected, output directory /tmp/rpl_data_231025_142658_20505/input_results_231025_142658
 hsa_copy_deps: 1
-scan hsa API data 26865:26866                                                                                                    hsa_copy_deps: 0
+scan hsa API data 26919:26920                                                                                                    hsa_copy_deps: 0
 scan hip API data 7085:7086                                                                                                    File '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_async_streams.csv' is generating
 File '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_async_streams.stats.csv' is generating
 dump json 1281:1282                                                                                                    
 File '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_async_streams.json' is generating
 File '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_async_streams.hsa_stats.csv' is generating
-dump json 28147:28148                                                                                                    
+dump json 28201:28202                                                                                                    
 File '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_async_streams.json' is generating
 File '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_async_streams.copy_stats.csv' is generating
 dump json 0:1                                                                                                    
@@ -7967,14 +7967,14 @@ File '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/
 File '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_async_streams.hip_stats.csv' is generating
 dump json 7085:7086                                                                                                    
 File '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_async_streams.json' is generating
-RPL: on '231019_115541' from '/opt/rocm-5.6.1' in '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation'
+RPL: on '231025_142702' from '/opt/rocm-5.6.1' in '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation'
 RPL: profiling '"./wave2d_async_events.exe"'
 RPL: input file ''
-RPL: output dir '/tmp/rpl_data_231019_115541_15912'
-RPL: result dir '/tmp/rpl_data_231019_115541_15912/input_results_231019_115541'
-ROCProfiler: input from "/tmp/rpl_data_231019_115541_15912/input.xml"
+RPL: output dir '/tmp/rpl_data_231025_142702_20584'
+RPL: result dir '/tmp/rpl_data_231025_142702_20584/input_results_231025_142702'
+ROCProfiler: input from "/tmp/rpl_data_231025_142702_20584/input.xml"
   0 metrics
-ROCtracer (15932):
+ROCtracer (20604):
     HSA-trace(*)
     HSA-activity-trace()
     HIP-trace(*)
@@ -7991,17 +7991,17 @@ Device id: 0
 	max Grid size:                           (2147483647,2147483647,2147483647)
 dt=0.001166, Vmax=343.000000
 dt=0.00116618, fm=34.3, Vmax=343, dt2=1.35998e-06
-The asynchronous calculation took 24.118000 milliseconds.
+The asynchronous calculation took 30.842000 milliseconds.
 
-ROCPRofiler: 1282 contexts collected, output directory /tmp/rpl_data_231019_115541_15912/input_results_231019_115541
+ROCPRofiler: 1282 contexts collected, output directory /tmp/rpl_data_231025_142702_20584/input_results_231025_142702
 hsa_copy_deps: 1
-scan hsa API data 27963:27964                                                                                                    hsa_copy_deps: 0
+scan hsa API data 28083:28084                                                                                                    hsa_copy_deps: 0
 scan hip API data 7082:7083                                                                                                    File '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_async_events.csv' is generating
 File '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_async_events.stats.csv' is generating
 dump json 1281:1282                                                                                                    
 File '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_async_events.json' is generating
 File '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_async_events.hsa_stats.csv' is generating
-dump json 29245:29246                                                                                                    
+dump json 29365:29366                                                                                                    
 File '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_async_events.json' is generating
 File '/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/rocprof_trace/wave2d_async_events.copy_stats.csv' is generating
 dump json 0:1                                                                                                    
@@ -8187,7 +8187,7 @@ Device id: 0
 	max Grid size:                           (2147483647,2147483647,2147483647)
 dt=0.001166, Vmax=343.000000
 dt=0.00116618, fm=34.3, Vmax=343, dt2=1.35998e-06
-The asynchronous calculation took 25.011000 milliseconds.
+The asynchronous calculation took 28.522000 milliseconds.
 </pre>
 </div>
 </div>
@@ -8398,7 +8398,7 @@ Device id: 0
 	max Grid size:                           (2147483647,2147483647,2147483647)
 dt=0.001166, Vmax=343.000000
 dt=0.00116618, fm=34.3, Vmax=343, dt2=1.35998e-06
-The asynchronous calculation took 22.420000 milliseconds.
+The asynchronous calculation took 26.816000 milliseconds.
 </pre>
 </div>
 </div>
