@@ -13,6 +13,11 @@ add_executable (hello_devices.exe
 # Link in other libraries
 target_link_libraries(hello_devices.exe ${kernel_libs})                    
 
+set_target_properties(hello_devices.exe
+	PROPERTIES LINKER_LANGUAGE CXX
+)   
+
+
 # Install the target
 install(TARGETS hello_devices.exe DESTINATION bin)
 
