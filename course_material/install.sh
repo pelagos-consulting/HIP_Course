@@ -8,7 +8,7 @@ source $script_path/env
 # Make the directory to build in
 mkdir -p $script_path/build
 
-rm -rf $script_path/build/*
+#rm -rf $script_path/build/*
 
 cd $script_path/build
 

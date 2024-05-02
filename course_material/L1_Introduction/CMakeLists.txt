@@ -14,7 +14,7 @@ add_executable (hello_devices.exe
 target_link_libraries(hello_devices.exe ${kernel_libs})                    
 
 set_target_properties(hello_devices.exe
-	PROPERTIES LINKER_LANGUAGE CXX
+	PROPERTIES LINKER_LANGUAGE ${linker_lang}
 )   
 
 

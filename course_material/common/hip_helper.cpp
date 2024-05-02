@@ -705,8 +705,8 @@ void h_memcpy3D(
         // Stream to perform the copy in
         hipStream_t stream,
         // Starting offsets (in elements) for dst and src
-        size_t offset_dst=0,
-        size_t offset_src=0) {
+        size_t offset_dst,
+        size_t offset_src) {
     
     // Copy square regions
     dim3 block_size = {16,4,1};

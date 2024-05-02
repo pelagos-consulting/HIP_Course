@@ -1,6 +1,6 @@
 #/bin/bash
 
-module load cmake/3.24.3 rocm/5.4.3
+module load gcc rocm cuda
 
 # Get the directory that this file is located in
 COURSE_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
@@ -15,10 +15,10 @@ RUN_DIR=$INSTALL_DIR/bin
 export PATH=$PATH:$RUN_DIR
 
 # Set the platform, amd or nvidia
-export HIP_PLATFORM=amd
+export HIP_PLATFORM=nvidia
 
 # Must set the GPU architecture here, i.e sm_86, gfx90a, gfx1035 
-export GPU_ARCH=gfx90a
+export GPU_ARCH=sm_86
 
 # Set the build type, options are DEBUG, COVERAGE, PROFILE, RELEASE
 export BUILD_TYPE=DEBUG

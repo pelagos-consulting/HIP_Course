@@ -1,6 +1,6 @@
 #/bin/bash
 
-module load cmake/3.24.3 rocm/5.4.3
+module load cmake/3.24.3 rocm/5.4.3 craype-accel-amd-gfx90a
 
 # Get the directory that this file is located in
 COURSE_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )

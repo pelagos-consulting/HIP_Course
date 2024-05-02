@@ -17,7 +17,6 @@ project(hip_course VERSION 1.0.0
 message(${CMAKE_CXX_COMPILER_ID})
 
 # Default CXX compiler flags for different compilers
-# CXX compiler flags
 if( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     set(CMAKE_CXX_FLAGS "-fPIC -fopenmp -pthread")
     set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -Wall -Wextra -pedantic")
@@ -38,11 +37,16 @@ endif()
 
 # ------ dependencies section ------ #
 
+find_package(MPI REQUIRED)
+
 # HIP
 find_package(hip REQUIRED)
 
 # Set language for kernel code
 set(kernel_lang HIP)
+
+# Set language for linking most C++ sources
+set(linker_lang CXX)
 
 # Set libraries for kernel code
 set(kernel_libs hip::device)
@@ -93,3 +97,5 @@ endif()
 
 # Example Codes
 add_subdirectory(${CMAKE_SOURCE_DIR}/L1_Introduction)
+add_subdirectory(${CMAKE_SOURCE_DIR}/L2_Using_HIP_On_Setonix)
+add_subdirectory(${CMAKE_SOURCE_DIR}/L2_Using_HIP_On_Setonix/rocprof_mpi)
