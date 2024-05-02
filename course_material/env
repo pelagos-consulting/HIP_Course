@@ -1,44 +1,22 @@
+#/bin/bash
 
+# Get the directory that this file is located in
+COURSE_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-# Detect the OS in use
-ifeq ($(OS),Windows_NT) 
-    detected_OS := Windows
-else
-    detected_OS := $(shell sh -c 'uname 2>/dev/null || echo Unknown')
-endif
+# Set the installation directory
+INSTALL_DIR=$COURSE_DIR/install
 
-# Default flags
+# Set the runtime directory
+RUN_DIR=$INSTALL_DIR/bin
 
-# Compiler locations
-CXX=hipcc
-CXXFLAGS=-fopenmp
+# Change the path
+export PATH=$PATH:$RUN_DIR
 
-# Miscellaneous include flags for base compilation 
-BASE_INC_FLAGS=-I../include
+# Set the platform, amd or nvidia
+export HIP_PLATFORM=amd
 
-# Miscellaneous library flags for base compilation
-BASE_LIB_FLAGS=
+# Must set the GPU architecture here, i.e sm_86, gfx90a, gfx1035 
+export GPU_ARCH=gfx90a
 
-# Select the right platform
-ifeq ($(HIP_PLATFORM), nvidia)
-    # Flags for CUDA platform
-    CXXFLAGS:=-Xcompiler $(CXXFLAGS)
-    ifeq ($(DEBUG), true)
-        CXXFLAGS:=-g -G $(CXXFLAGS)
-    else
-        CXXFLAGS:=-g -O2 $(CXXFLAGS) 
-    endif
-    BASE_LIB_FLAGS:=-lgomp $(BASE_LIB_FLAGS)
-else
-    # Normal compilation
-    ifeq ($(DEBUG), true)
-        CXXFLAGS:=-O0 -g -ggdb $(CXXFLAGS)
-    else
-        CXXFLAGS:=-g -O2 $(CXXFLAGS)
-    endif
-endif
-
-# Special flags for Setonix
-ifeq ($(findstring setonix,$(SLURM_SUBMIT_HOST)),setonix)
-    CXXFLAGS:=--offload-arch=gfx90a $(CXXFLAGS)
-endif
+# Set the build type, options are DEBUG, COVERAGE, PROFILE, RELEASE
+export BUILD_TYPE=DEBUG

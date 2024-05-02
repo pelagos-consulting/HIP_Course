@@ -5,33 +5,13 @@
 ///
 /// Written by Dr. Toby Potter 
 /// for the Commonwealth Scientific and Industrial Research Organisation of Australia (CSIRO).
-///
+/// https://www.pelagos-consulting.com
+/// tobympotter@gmail.com
 
-// Windows specific header instructions
-#if defined(_WIN32) || defined(_WIN64)
-    #define NOMINMAX
-    #include <windows.h>
-    #include <malloc.h>
-#else
-    #include <unistd.h>
-#endif
+/// This file is licensed under the Creative Commons Attribution 3.0 Unported License.
+/// To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/ or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
-#include <iostream>
-#include <cstdio>
-#include <cstdlib>
-#include <map>
-#include <new>
-#include <cassert>
-#include <cstring>
-#include <cmath>
-#include <chrono>
-#include <cstdint>
-
-// Import the HIP header
-#include <hip/hip_runtime.h>
-
-// Time to use for faulty runs
-#define FAULTY_TIME -1.0
+#include "hip_helper.hpp"
 
 /// Examine an error code and exit if necessary.
 void h_errchk(hipError_t errcode, const char* message) {
@@ -46,14 +26,6 @@ void h_errchk(hipError_t errcode, const char* message) {
         ); 
         exit(EXIT_FAILURE); 
     }
-}
-
-/// Macro to check error codes.
-#define H_ERRCHK(cmd) \
-{\
-    std::string file = __FILE__;\
-    std::string mesg = file + ":" + std::to_string(__LINE__);\
-    h_errchk(cmd, mesg.c_str());\
 }
 
 /// Get the L1 cache line size
