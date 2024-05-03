@@ -23,7 +23,7 @@ if( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_DEBUG} --coverage")
     set(CMAKE_CXX_FLAGS_PROFILE "-pg -O3")
     set(CMAKE_CXX_FLAGS_RELEASE "-g -O3")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lgomp -lpthread")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp -lpthread")
 endif()
 
 if( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
@@ -32,7 +32,7 @@ if( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_DEBUG} --coverage")
     set(CMAKE_CXX_FLAGS_PROFILE "-pg -O3")
     set(CMAKE_CXX_FLAGS_RELEASE "-g -O3")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lomp -lpthread")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp -lpthread")
 endif()
 
 # ------ dependencies section ------ #
@@ -95,7 +95,12 @@ endif()
 
 # ----- end dependencies section ----- #
 
+# Set common directory a the destination for all includes
+include_directories(common)
+
 # Example Codes
+add_subdirectory(${CMAKE_SOURCE_DIR}/common)
 add_subdirectory(${CMAKE_SOURCE_DIR}/L1_Introduction)
 add_subdirectory(${CMAKE_SOURCE_DIR}/L2_Using_HIP_On_Setonix)
 add_subdirectory(${CMAKE_SOURCE_DIR}/L2_Using_HIP_On_Setonix/rocprof_mpi)
+add_subdirectory(${CMAKE_SOURCE_DIR}/L3_Matrix_Multiplication)
