@@ -16,6 +16,7 @@ Written by Dr Toby M. Potter
 // Bring in helper header to manage boilerplate code
 #include "hip_helper.hpp"
 
+
 // standard matrix multiply kernel 
 __global__ void mat_mult (
         float* A, 

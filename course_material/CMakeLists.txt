@@ -100,7 +100,9 @@ include_directories(common)
 
 # Make sure the all target doesn't get brought in for install
 set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+##set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+##set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_INSTALL_PREFIX}/bin)
 
 # Example Codes
 add_subdirectory(${CMAKE_SOURCE_DIR}/common)
@@ -108,3 +110,4 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/L1_Introduction)
 add_subdirectory(${CMAKE_SOURCE_DIR}/L2_Using_HIP_On_Setonix)
 add_subdirectory(${CMAKE_SOURCE_DIR}/L2_Using_HIP_On_Setonix/rocprof_mpi)
 add_subdirectory(${CMAKE_SOURCE_DIR}/L3_Matrix_Multiplication)
+add_subdirectory(${CMAKE_SOURCE_DIR}/L4_Debugging)
