@@ -98,6 +98,10 @@ endif()
 # Set common directory a the destination for all includes
 include_directories(common)
 
+# Make sure the all target doesn't get brought in for install
+set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
 # Example Codes
 add_subdirectory(${CMAKE_SOURCE_DIR}/common)
 add_subdirectory(${CMAKE_SOURCE_DIR}/L1_Introduction)
