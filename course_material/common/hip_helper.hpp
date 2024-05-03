@@ -14,7 +14,8 @@
 #ifndef HIP_HELPER
 #define HIP_HELPER
 
-typedef double float_type;
+typedef float float_type;
+typedef float4 float_vec_type;
 
 // Windows specific header instructions
 #if defined(_WIN32) || defined(_WIN64)

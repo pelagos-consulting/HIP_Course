@@ -17,9 +17,6 @@ Written by Dr Toby M. Potter
 // Bring in helper header to manage boilerplate code
 #include "hip_helper.hpp"
 
-typedef float float_type;
-typedef float4 float_vec_type;
-
 // Device function to get the start and end values
 // for filling a shared memory array
 __device__ void get_start_end(

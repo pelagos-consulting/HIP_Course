@@ -3,9 +3,7 @@ set(headers ${CMAKE_CURRENT_SOURCE_DIR}/mat_size.hpp)
 
 # Compile all targets in this directory using a loop
 set(targets 
-    mat_mult_bug
-    mat_mult_memcheck
-    mat_mult_printf
+    mat_mult_profiling
 )
 
 foreach(target ${targets})
@@ -18,15 +16,6 @@ foreach(target ${targets})
         ${CMAKE_CURRENT_SOURCE_DIR}/${target}.cpp
         ${headers}
     )
-
-    # Set debugging flags for CUDA or AMD
-    if (CUDAToolkit_FOUND)
-        # Add debugging compile flags for CUDA
-        target_compile_options(${target}.exe PRIVATE -g -O0)
-    else()
-        # Add debugging compile flags for HIP
-        target_compile_options(${target}.exe PRIVATE -g -ggdb -O1)
-    endif()
 
     # Link in other libraries
     target_link_libraries(${target}.exe hip_helper ${kernel_libs})                    

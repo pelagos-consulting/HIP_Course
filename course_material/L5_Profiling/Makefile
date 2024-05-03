@@ -1,6 +1,6 @@
 
 # Include general environment variables
-include ../env
+include ../env_old
 
 # List of applications to target
 TARGETS=mat_mult_profiling.exe mat_elementwise.exe mat_elementwise_answer.exe
