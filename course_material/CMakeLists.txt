@@ -45,7 +45,7 @@ find_package(hip REQUIRED)
 # Set language for kernel code
 set(kernel_lang HIP)
 
-# Set language for linking most C++ sources
+# Set this variable as a placeholder language for linking most C++ sources
 set(linker_lang CXX)
 
 # Set libraries for kernel code

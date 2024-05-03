@@ -10,11 +10,11 @@ set(headers ${CMAKE_CURRENT_SOURCE_DIR}/hip_helper.hpp)
 set_source_files_properties(${sources} PROPERTIES LANGUAGE ${kernel_lang})
 
 # Add the hip_helper library as a static library
-add_library (hip_helper 
+add_library(hip_helper 
     ${sources}
     ${headers}
 )                
-
+# Make sure this library links to kernel_libs
 target_link_libraries(hip_helper ${kernel_libs})    
 
 # Install the library as well
