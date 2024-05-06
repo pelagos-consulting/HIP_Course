@@ -18,16 +18,16 @@ message(${CMAKE_CXX_COMPILER_ID})
 
 # Default CXX compiler flags for different compilers
 if( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-    set(CMAKE_CXX_FLAGS "-fPIC -fopenmp -pthread")
-    set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -Wall -Wextra -pedantic")
+    set(CMAKE_CXX_FLAGS "-g -fPIC -fopenmp -pthread")
+    set(CMAKE_CXX_FLAGS_DEBUG "-O0 -Wall -Wextra -pedantic")
     set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_DEBUG} --coverage")
     set(CMAKE_CXX_FLAGS_PROFILE "-pg -O3")
-    set(CMAKE_CXX_FLAGS_RELEASE "-g -O3")
+    set(CMAKE_CXX_FLAGS_RELEASE "-O3")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp -lpthread")
 endif()
 
 if( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    set(CMAKE_CXX_FLAGS "-fPIC -fopenmp -pthread")
+    set(CMAKE_CXX_FLAGS "-g -fPIC -fopenmp -pthread")
     set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -Wall -Wextra -pedantic")
     set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_DEBUG} --coverage")
     set(CMAKE_CXX_FLAGS_PROFILE "-pg -O3")
@@ -71,11 +71,13 @@ if ((DEFINED ENV{HIP_PLATFORM}) AND ($ENV{HIP_PLATFORM} STREQUAL nvidia))
     set(kernel_libs CUDA::cudart CUDA::cuda_driver)
         
     ## Set your CUDA GPU architectures to use here
-    ## This is to make sure nvcc is compiling for the same architecture
-    set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --gpu-architecture=$ENV{GPU_ARCH} -Xcompiler -fopenmp")
-    set(CMAKE_CUDA_FLAGS_DEBUG "-g -G")
+    set(CMAKE_CUDA_ARCHITECTURES $ENV{GPU_ARCH})
+
+    ## CUDA compile flags
+    set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -g -Xcompiler -fopenmp -Xcompiler -fPIC")
+    set(CMAKE_CUDA_FLAGS_DEBUG "-G -O0")
     set(CMAKE_CUDA_FLAGS_PROFILE "-pg -O3")
-    set(CMAKE_CUDA_FLAGS_RELEASE "-g -O3")
+    set(CMAKE_CUDA_FLAGS_RELEASE "-O3")
 
     ## Change global preprocessor defintions for CUDA sources
         
@@ -86,11 +88,14 @@ if ((DEFINED ENV{HIP_PLATFORM}) AND ($ENV{HIP_PLATFORM} STREQUAL nvidia))
 else()
     message("Building for an AMD backend.")
     
-    # Set flags for the compiler that will compile HIP sources
-    set(CMAKE_HIP_FLAGS "${CMAKE_HIP_FLAGS} --offload-arch=$ENV{GPU_ARCH} -fopenmp")
-    set(CMAKE_HIP_FLAGS_DEBUG "-g -ggdb -O1")
+    ## Set your HIP GPU architectures to use here
+    set(CMAKE_HIP_ARCHITECTURES $ENV{GPU_ARCH})
+
+    ## HIP compile flags
+    set(CMAKE_HIP_FLAGS "${CMAKE_HIP_FLAGS} -g -fopenmp")
+    set(CMAKE_HIP_FLAGS_DEBUG "-ggdb -O1")
     set(CMAKE_HIP_FLAGS_PROFILE "-pg -O3")
-    set(CMAKE_HIP_FLAGS_RELEASE "-g -O3")
+    set(CMAKE_HIP_FLAGS_RELEASE "-O3")
 endif()
 
 # ----- end dependencies section ----- #
@@ -113,3 +118,4 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/L3_Matrix_Multiplication)
 add_subdirectory(${CMAKE_SOURCE_DIR}/L4_Debugging)
 add_subdirectory(${CMAKE_SOURCE_DIR}/L5_Profiling)
 add_subdirectory(${CMAKE_SOURCE_DIR}/L6_Memory_Management)
+add_subdirectory(${CMAKE_SOURCE_DIR}/L7_Kernel_Optimisation)
