@@ -15,10 +15,11 @@ RUN_DIR=$INSTALL_DIR/bin
 export PATH=$PATH:$RUN_DIR
 
 # Set the platform, amd or nvidia
-export HIP_PLATFORM=nvidia
+export HIP_PLATFORM=amd
 
 # Must set vendor-specific and semicolon-separated list of GPU architectures to support, i.e 75;86;90 or gfx90a;gfx906;gfx1035 
-export GPU_ARCH="60;61;70;75;80;86;89;90"
+#export GPU_ARCH="60;61;70;75;80;86;89;90"
+export GPU_ARCH="gfx906;gfx908;gfx90a;gfx1035"
 
 # Set the build type, options are DEBUG, COVERAGE, PROFILE, RELEASE
 export BUILD_TYPE=RELEASE
