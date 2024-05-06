@@ -57,6 +57,7 @@ foreach(target ${targets_hipblas})
         ${headers}
     )
 
+    # Add hipblas in the list of things to link to
     target_link_libraries(${target}.exe hip_helper ${kernel_libs} hipblas)
     
     # Set the linker language

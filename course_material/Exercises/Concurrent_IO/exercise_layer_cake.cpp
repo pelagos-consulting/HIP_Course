@@ -7,16 +7,13 @@ Written by Dr Toby M. Potter
 #include <iostream>
 
 // Include the size of arrays to be computed
-#define N0_U 4
-#define N1_U 4
+#include "mat_size.hpp"
 
 // Bring in helper header to manage boilerplate code
 #include "hip_helper.hpp"
 
 // Bring in helper library to manage matrices
 #include "mat_helper.hpp"
-
-typedef float float_type;
 
 // Kernel to solve the wave equation with fourth-order accuracy in space
 __global__ void fill_plane (
@@ -58,10 +55,10 @@ int main(int argc, char** argv) {
     h_report_on_device(dev_index);
     
     // Number of scratch buffers, must be at least 2
-    const size_t nscratch=2;
+    const size_t nscratch=1;
     
     // Number of streams to create
-    const size_t nstream = nscratch;
+    const size_t nstream = 1;
     
     // Create streams that block with null stream
     hipStream_t* streams = h_create_streams(nstream, 1);
@@ -169,17 +166,10 @@ int main(int argc, char** argv) {
     
     for (size_t n=0; n<NT; n++) {
         
-        // Get the active stream
-        active_stream = streams[n%nstream];
-        
-        // Make the stream wait on the compute stream
-        // which was the IO copy from last iteration
-        H_ERRCHK(hipStreamSynchronize(active_stream));
-        
         // Launch the kernel using hipLaunchKernelGGL method
         // Use 0 when choosing the default (null) stream
         hipLaunchKernelGGL(fill_plane, 
-            grid_nblocks, block_size, sharedMemBytes, active_stream,
+            grid_nblocks, block_size, sharedMemBytes, 0,
             U_ds[n%nstream],
             n, N0, N1
         );
@@ -196,41 +186,21 @@ int main(int argc, char** argv) {
         copy_parms.dstPos.z = n;
         
         if (n!=1) {
-        
-            // Copy memory asynchronously
-            H_ERRCHK(
-                hipMemcpy3DAsync(
-                    &copy_parms,
-                    active_stream
-                )
-            );
-
             //H_ERRCHK(
-            //    hipMemcpyAsync(
+            //    hipMemcpy(
             //        &out_h[n*N0*N1],
             //        U_ds[n%nscratch],
             //        nbytes_U,
-            //        hipMemcpyDeviceToHost,
-            //        active_stream
+            //        hipMemcpyDeviceToHost
             //    )
             //);
-            
-            // Record the event to a stream 
-            // (optional, only if you want to use events to sync)
-            H_ERRCHK(
-                hipEventRecord(
-                    events[n%nscratch],
-                    active_stream
-                )
-            );
             
             // Copy memory synchronously
-            //H_ERRCHK(
-            //    hipMemcpy3D(
-            //        &copy_parms
-            //        //streams[copy_index%nscratch]
-            //    )
-            //);
+            H_ERRCHK(
+                hipMemcpy3D(
+                    &copy_parms
+                )
+            );
         }
     }
 
@@ -240,7 +210,7 @@ int main(int argc, char** argv) {
     // Stop the clock
     auto t2 = std::chrono::high_resolution_clock::now();    
     double time_ms = (double)std::chrono::duration_cast<std::chrono::microseconds>(t2-t1).count()/1000.0;
-    printf("The asynchronous calculation took %f milliseconds.\n", time_ms);
+    printf("The synchronous calculation took %f milliseconds.\n", time_ms);
     
     // Write out the result to file
     h_write_binary(out_h, "layer_cake_out.dat", nbytes_out);
@@ -249,8 +219,6 @@ int main(int argc, char** argv) {
     // of the cake for consistency    
     for (size_t n=0; n<NT; n++) {
         size_t offset=n*N0*N1;
-        
-        std::printf("Layer - %zu\n:", n);
     
         // Print the layer in the output array
         m_show_matrix(&out_h[offset], N0, N1);

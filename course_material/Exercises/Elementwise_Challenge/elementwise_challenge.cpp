@@ -7,9 +7,8 @@ Written by Dr Toby M. Potter
 #include <sys/stat.h>
 #include <iostream>
 
-// Define the size of the arrays to be computed - its really small!
-#define NROWS_F 8
-#define NCOLS_F 4
+// Size of the problem
+#include "mat_size.hpp"
 
 // Bring in helper header to manage boilerplate code
 #include "hip_helper.hpp"
@@ -36,7 +35,7 @@ __global__ void mat_elementwise (
     //// To perform Hadamard matrix multiplication ////
   
     // Uncomment for the shortcut answer
-    // #include "step1_kernel.cpp" 
+    // #include "step1_kernel.hpp" 
 
     //// End code: ////
 } 
@@ -56,7 +55,7 @@ int main(int argc, char** argv) {
     //// Call hipSetDevice to set the compute device ///
 
     // Uncomment for the shortcut answer
-    // #include "step2_resources.cpp"
+    // #include "step2_resources.hpp"
         
     //// End code: ////
         
@@ -86,7 +85,7 @@ int main(int argc, char** argv) {
     //// on the compute device ////
 
     // Uncomment for the shortcut answer
-    // #include "step3_device_allocation.cpp"
+    // #include "step3_device_allocation.hpp"
 
     //// End code: ////
 
@@ -96,7 +95,7 @@ int main(int argc, char** argv) {
     //// to D_d and E_d on the compute device //// 
 
     // Uncomment for the shortcut answer
-    // #include "step4_memcpy_todevice.cpp"
+    // #include "step4_memcpy_todevice.hpp"
 
     //// End code:  ////
 
@@ -113,7 +112,7 @@ int main(int argc, char** argv) {
     //// Use hipDeviceSynchronize to wait on the kernel
 
     // Uncomment for the shortcut answer
-    // #include "step5_kernel_launch.cpp"
+    // #include "step5_kernel_launch.hpp"
 
     //// End code:  ////
 
@@ -122,7 +121,7 @@ int main(int argc, char** argv) {
     //// back to F_h on the host ////
 
     // Uncomment for the shortcut answer
-    // #include "step6_memcpy_fromdevice.cpp"
+    // #include "step6_memcpy_fromdevice.hpp"
 
     //// End code: ////
 
@@ -155,7 +154,7 @@ int main(int argc, char** argv) {
     //// Use hipFree to free device memory ////
     
     // Uncomment for the shortcut answer
-    // #include "step7_free_devicemem.cpp"
+    // #include "step7_free_devicemem.hpp"
 
     //// End code: ////
 
@@ -173,7 +172,7 @@ int main(int argc, char** argv) {
     //// Use hipDeviceReset to reset the compute device
 
     //// Uncomment for the shortcut answer
-    // #include "step8_release_resources.cpp"
+    // #include "step8_release_resources.hpp"
 
     //// End code: ////
 }

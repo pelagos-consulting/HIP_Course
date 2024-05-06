@@ -1,6 +1,6 @@
 
 # Include general environment variables
-include ../env
+include ../env_old
 
 # List of applications to target
 TARGETS=wave2d_sync.exe \

@@ -7,9 +7,8 @@ Written by Dr Toby M. Potter
 #include <cmath>
 #include <iostream>
 
-// Define the size of the arrays to be computed
-#define NROWS_F 4
-#define NCOLS_F 8
+// Include the size of the matrix
+#include "mat_size.hpp"
 
 // Bring in helper header to manage boilerplate code
 #include "hip_helper.hpp"

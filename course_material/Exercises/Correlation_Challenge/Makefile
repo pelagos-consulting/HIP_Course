@@ -1,6 +1,6 @@
 
 # Include general environment variables
-include ../env
+include ../../env_make
 
 # List of applications to target
 TARGETS=xcorr_answers.exe xcorr.exe xcorr_testbench.exe xcorr_testbench_answers.exe
