@@ -8,8 +8,7 @@ Written by Dr Toby M. Potter
 #include <iostream>
 
 // Define the size of the arrays to be computed
-#define NROWS_F 512
-#define NCOLS_F 1024
+#include "mat_size.hpp"
 
 // Bring in helper header to manage boilerplate code
 #include "hip_helper.hpp"
@@ -46,7 +45,7 @@ __global__ void mat_hadamard (
 
 int main(int argc, char** argv) {
     
-    //// Step 1. Parse program arguments ////
+    //// Step 1. Parse command line arguments ////
 
     // Parse arguments
     int dev_index = h_parse_args(argc, argv);
@@ -54,7 +53,7 @@ int main(int argc, char** argv) {
     // Number of devices discovered
     int num_devices=0;
     
-    //// Step 2. Discover resources and choose a compute device ////
+    //// Step 2. Device discovery and selection ////
     
     // Helper function to acquire devices
     // This sets the default device
@@ -69,8 +68,8 @@ int main(int argc, char** argv) {
     // D, E, and F are of size (N0_F, N1_F)
     size_t N0_F = NROWS_F, N1_F = NCOLS_F;
 
-    //// Step 3. 1. Construct matrices D_h and E_h on the host 
-    //// and fill them with random numbers ////
+    //// Step 3. Construct matrices D_h, E_h, and F_h on the host 
+    //// fill D_h and E_h with random numbers ////
     
     // Number of bytes in each array
     size_t nbytes_D = N0_F*N1_F*sizeof(float);
@@ -98,6 +97,7 @@ int main(int argc, char** argv) {
 
     //// Step 5. 1. Upload matrices D_h and E_h from the host //// 
     //// to D_d and E_d on the device ////
+    
     H_ERRCHK(hipMemcpy(D_d, D_h, nbytes_D, hipMemcpyHostToDevice));
     H_ERRCHK(hipMemcpy(E_d, E_h, nbytes_E, hipMemcpyHostToDevice));
  
@@ -125,34 +125,56 @@ int main(int argc, char** argv) {
     );
     
     // Alternatively, launch the kernel using CUDA triple Chevron syntax
-    //mat_hadamard<<<grid_nblocks, block_size, 0, 0>>>(D_d, E_d, F_d, N0_F, N1_F);
+    //mat_hadamard<<<grid_nblocks, block_size, sharedMemBytes, 0>>>(D_d, E_d, F_d, N0_F, N1_F);
+    
+    // Check for errors in the kernel launch
+    H_ERRCHK(hipGetLastError());
     
     // Wait for any commands to complete on the compute device
     H_ERRCHK(hipDeviceSynchronize());
 
     //// Step 7. Copy the buffer for matrix F_d //// 
     //// on the device back to F_h on the host ////
+    
+    //// Exercise: Replace the call to hipMemcpy with a 3D copy
+    //// through a call to hipMemcpy3D
+    
     H_ERRCHK(hipMemcpy((void*)F_h, (const void*)F_d, nbytes_F, hipMemcpyDeviceToHost));
     
-    //// Step 8. Test the computed matrix **F_h** against a known answer
+    //// Step 8. Test the computed matrix F_h against a known answer
     
     // Check the answer against a known solution
     float* F_answer_h = (float*)calloc(nbytes_F, 1);
+    float* F_residual_h = (float*)calloc(nbytes_F, 1);
 
     // Compute the known solution
     m_hadamard(D_h, E_h, F_answer_h, N0_F, N1_F);
 
+    // Compute the residual between F_h and F_answer_h
+    m_residual(F_answer_h, F_h, F_residual_h, N0_F, N1_F);
+
+    // Pretty print the output matrices
+    std::cout << "The output array F_h (as computed with HIP) is\n";
+    m_show_matrix(F_h, N0_F, N1_F);
+
+    std::cout << "The CPU solution (F_answer_h) is \n";
+    m_show_matrix(F_answer_h, N0_F, N1_F);
+    
+    std::cout << "The residual (F_answer_h-F_h) is\n";
+    m_show_matrix(F_residual_h, N0_F, N1_F);
+
     // Print the maximum error between matrices
     float max_err = m_max_error(F_h, F_answer_h, N0_F, N1_F);
-
-    //// Step 9. Write the contents of matrices D_h, E_h, and F_h to disk ////
+    
+    //// Step 9. Write the contents of matrices 
+    //// D_h, E_h, and F_h to disk ////
 
     // Write out the result to file
     h_write_binary(D_h, "array_D.dat", nbytes_D);
     h_write_binary(E_h, "array_E.dat", nbytes_E);
     h_write_binary(F_h, "array_F.dat", nbytes_F);
     
-    //// Step 10. Clean up memory alllocations and release resources
+    //// Step 10. Release resources
     
     // Free the HIP buffers
     H_ERRCHK(hipFree(D_d));
@@ -166,6 +188,7 @@ int main(int argc, char** argv) {
 
     // Free the answer and residual matrices
     free(F_answer_h);
+    free(F_residual_h);
     
     // Reset compute devices
     h_reset_devices(num_devices);

@@ -7,9 +7,8 @@ Written by Dr Toby M. Potter
 #include <cmath>
 #include <iostream>
 
-// Define the size of the arrays to be computed
-#define NROWS_F 512
-#define NCOLS_F 1024
+// Include this for array sizes
+#include "mat_size.hpp"
 
 // Bring in helper header to manage boilerplate code
 #include "hip_helper.hpp"
@@ -98,27 +97,8 @@ int main(int argc, char** argv) {
 
     //// Step 5. 1. Upload matrices D_h and E_h from the host //// 
     //// to D_d and E_d on the device ////
-    
-    // Create events for the memory copies and kernel runs
-    hipEvent_t t1=0, t2=0;
-    // Create the events
-    H_ERRCHK(hipEventCreate(&t1));
-    H_ERRCHK(hipEventCreate(&t2));
-
-    // Record the start event into the stream
-    H_ERRCHK(hipEventRecord(t1,0));
-
-    // Memory copies  
     H_ERRCHK(hipMemcpy(D_d, D_h, nbytes_D, hipMemcpyHostToDevice));
     H_ERRCHK(hipMemcpy(E_d, E_h, nbytes_E, hipMemcpyHostToDevice));
-
-    // Record the stop event into the stream
-    H_ERRCHK(hipEventRecord(t2,0));
-
-    // Get the elapsed time in milliseconds
-    // Total number of Bytes copied
-    size_t total_bytes = nbytes_D + nbytes_E;
-    float elapsed_ms = h_get_event_time_ms(t1, t2, "memcpy", &total_bytes);
  
     //// Step 6. Run the kernel to compute F_d ///
     //// from D_d and E_d on the device ////
@@ -133,9 +113,6 @@ int main(int argc, char** argv) {
 
     // Amount of shared memory to use in the kernel
     size_t sharedMemBytes=0;
-
-    // Record the start event into the default stream
-    H_ERRCHK(hipEventRecord(t1,0));
     
     // Launch the kernel using hipLaunchKernelGGL method
     hipLaunchKernelGGL(mat_hadamard, 
@@ -146,12 +123,6 @@ int main(int argc, char** argv) {
             N1_F
     );
     
-    // Record the start event into the default stream
-    H_ERRCHK(hipEventRecord(t2,0));
-
-    // Get the elapsed time in milliseconds
-    elapsed_ms = h_get_event_time_ms(t1, t2, "mat_hadamard", NULL);
-
     // Alternatively, launch the kernel using CUDA triple Chevron syntax
     //mat_hadamard<<<grid_nblocks, block_size, 0, 0>>>(D_d, E_d, F_d, N0_F, N1_F);
     
@@ -182,10 +153,6 @@ int main(int argc, char** argv) {
     
     //// Step 10. Clean up memory alllocations and release resources
     
-    // Destroy events
-    H_ERRCHK(hipEventDestroy(t1));
-    H_ERRCHK(hipEventDestroy(t2));
-
     // Free the HIP buffers
     H_ERRCHK(hipFree(D_d));
     H_ERRCHK(hipFree(E_d));

@@ -8,8 +8,7 @@ Written by Dr Toby M. Potter
 #include <iostream>
 
 // Define the size of the arrays to be computed
-#define NROWS_F 8
-#define NCOLS_F 4
+#include "mat_size.hpp"
 
 // Bring in helper header to manage boilerplate code
 #include "hip_helper.hpp"
@@ -140,7 +139,49 @@ int main(int argc, char** argv) {
     //// Exercise: Replace the call to hipMemcpy with a 3D copy
     //// through a call to hipMemcpy3D
     
-    H_ERRCHK(hipMemcpy((void*)F_h, (const void*)F_d, nbytes_F, hipMemcpyDeviceToHost));
+    hipPitchedPtr F_h_ptr = make_hipPitchedPtr(
+        F_h, // pointer 
+        N1_F*sizeof(float), // pitch - actual pencil width (bytes) 
+        N1_F, // requested pencil width (elements)
+        N0_F // total number of pencils in the allocation (elements)
+    );
+    // For the device
+    hipPitchedPtr F_d_ptr = make_hipPitchedPtr(
+        F_d, // pointer
+        N1_F*sizeof(float), // pitch - actual pencil width (bytes) 
+        N1_F, // requested pencil width (elements)
+        N0_F // total number of pencils (elements)
+    );
+    // Postion within the host array
+    hipPos F_h_pos = make_hipPos(
+        0*sizeof(float), // byte position along a pencil (bytes)
+        0, // starting pencil index (elements)
+        0 // start pencil plane index (elements)
+    );
+    // Postion within the device array
+    hipPos F_d_pos = make_hipPos(
+        0*sizeof(float), // byte position along a pencil (bytes)
+        0, // starting pencil index (elements)
+        0 // starting pencil plane index (elements)
+    );
+    // Choose the region to copy
+    hipExtent extent = make_hipExtent(
+        N1_F*sizeof(float), // width of pencil region to copy (bytes)
+        N0_F, // number of pencils to copy the region from
+        1 // number of pencil planes
+    );
+    
+    // Fill the copy parameters
+    hipMemcpy3DParms copy_parms = {0};
+    copy_parms.srcPtr = F_d_ptr;
+    copy_parms.srcPos = F_d_pos;
+    copy_parms.dstPtr = F_h_ptr;
+    copy_parms.dstPos = F_h_pos;
+    copy_parms.extent = extent;
+    copy_parms.kind = hipMemcpyDeviceToHost;
+    
+    // Run the actual copy
+    H_ERRCHK(hipMemcpy3D(&copy_parms));
     
     //// Step 8. Test the computed matrix F_h against a known answer
     

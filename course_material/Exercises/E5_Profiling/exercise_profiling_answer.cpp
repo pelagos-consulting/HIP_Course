@@ -7,9 +7,8 @@ Written by Dr Toby M. Potter
 #include <cmath>
 #include <iostream>
 
-// Define the size of the arrays to be computed
-#define NROWS_F 8
-#define NCOLS_F 4
+// Include this for array sizes
+#include "mat_size.hpp"
 
 // Bring in helper header to manage boilerplate code
 #include "hip_helper.hpp"
@@ -46,7 +45,7 @@ __global__ void mat_hadamard (
 
 int main(int argc, char** argv) {
     
-    //// Step 1. Parse command line arguments ////
+    //// Step 1. Parse program arguments ////
 
     // Parse arguments
     int dev_index = h_parse_args(argc, argv);
@@ -54,7 +53,7 @@ int main(int argc, char** argv) {
     // Number of devices discovered
     int num_devices=0;
     
-    //// Step 2. Device discovery and selection ////
+    //// Step 2. Discover resources and choose a compute device ////
     
     // Helper function to acquire devices
     // This sets the default device
@@ -69,8 +68,8 @@ int main(int argc, char** argv) {
     // D, E, and F are of size (N0_F, N1_F)
     size_t N0_F = NROWS_F, N1_F = NCOLS_F;
 
-    //// Step 3. Construct matrices D_h, E_h, and F_h on the host 
-    //// fill D_h and E_h with random numbers ////
+    //// Step 3. 1. Construct matrices D_h and E_h on the host 
+    //// and fill them with random numbers ////
     
     // Number of bytes in each array
     size_t nbytes_D = N0_F*N1_F*sizeof(float);
@@ -99,8 +98,26 @@ int main(int argc, char** argv) {
     //// Step 5. 1. Upload matrices D_h and E_h from the host //// 
     //// to D_d and E_d on the device ////
     
+    // Create events for the memory copies and kernel runs
+    hipEvent_t t1=0, t2=0;
+    // Create the events
+    H_ERRCHK(hipEventCreate(&t1));
+    H_ERRCHK(hipEventCreate(&t2));
+
+    // Record the start event into the stream
+    H_ERRCHK(hipEventRecord(t1,0));
+
+    // Memory copies  
     H_ERRCHK(hipMemcpy(D_d, D_h, nbytes_D, hipMemcpyHostToDevice));
     H_ERRCHK(hipMemcpy(E_d, E_h, nbytes_E, hipMemcpyHostToDevice));
+
+    // Record the stop event into the stream
+    H_ERRCHK(hipEventRecord(t2,0));
+
+    // Get the elapsed time in milliseconds
+    // Total number of Bytes copied
+    size_t total_bytes = nbytes_D + nbytes_E;
+    float elapsed_ms = h_get_event_time_ms(t1, t2, "memcpy", &total_bytes);
  
     //// Step 6. Run the kernel to compute F_d ///
     //// from D_d and E_d on the device ////
@@ -115,6 +132,9 @@ int main(int argc, char** argv) {
 
     // Amount of shared memory to use in the kernel
     size_t sharedMemBytes=0;
+
+    // Record the start event into the default stream
+    H_ERRCHK(hipEventRecord(t1,0));
     
     // Launch the kernel using hipLaunchKernelGGL method
     hipLaunchKernelGGL(mat_hadamard, 
@@ -125,100 +145,46 @@ int main(int argc, char** argv) {
             N1_F
     );
     
+    // Record the start event into the default stream
+    H_ERRCHK(hipEventRecord(t2,0));
+
+    // Get the elapsed time in milliseconds
+    elapsed_ms = h_get_event_time_ms(t1, t2, "mat_hadamard", NULL);
+
     // Alternatively, launch the kernel using CUDA triple Chevron syntax
-    //mat_hadamard<<<grid_nblocks, block_size, sharedMemBytes, 0>>>(D_d, E_d, F_d, N0_F, N1_F);
-    
-    // Check for errors in the kernel launch
-    H_ERRCHK(hipGetLastError());
+    //mat_hadamard<<<grid_nblocks, block_size, 0, 0>>>(D_d, E_d, F_d, N0_F, N1_F);
     
     // Wait for any commands to complete on the compute device
     H_ERRCHK(hipDeviceSynchronize());
 
     //// Step 7. Copy the buffer for matrix F_d //// 
     //// on the device back to F_h on the host ////
+    H_ERRCHK(hipMemcpy((void*)F_h, (const void*)F_d, nbytes_F, hipMemcpyDeviceToHost));
     
-    //// Exercise: Replace the call to hipMemcpy with a 3D copy
-    //// through a call to hipMemcpy3D
-    
-    hipPitchedPtr F_h_ptr = make_hipPitchedPtr(
-        F_h, // pointer 
-        N1_F*sizeof(float), // pitch - actual pencil width (bytes) 
-        N1_F, // requested pencil width (elements)
-        N0_F // total number of pencils in the allocation (elements)
-    );
-    // For the device
-    hipPitchedPtr F_d_ptr = make_hipPitchedPtr(
-        F_d, // pointer
-        N1_F*sizeof(float), // pitch - actual pencil width (bytes) 
-        N1_F, // requested pencil width (elements)
-        N0_F // total number of pencils (elements)
-    );
-    // Postion within the host array
-    hipPos F_h_pos = make_hipPos(
-        0*sizeof(float), // byte position along a pencil (bytes)
-        0, // starting pencil index (elements)
-        0 // start pencil plane index (elements)
-    );
-    // Postion within the device array
-    hipPos F_d_pos = make_hipPos(
-        0*sizeof(float), // byte position along a pencil (bytes)
-        0, // starting pencil index (elements)
-        0 // starting pencil plane index (elements)
-    );
-    // Choose the region to copy
-    hipExtent extent = make_hipExtent(
-        N1_F*sizeof(float), // width of pencil region to copy (bytes)
-        N0_F, // number of pencils to copy the region from
-        1 // number of pencil planes
-    );
-    
-    // Fill the copy parameters
-    hipMemcpy3DParms copy_parms = {0};
-    copy_parms.srcPtr = F_d_ptr;
-    copy_parms.srcPos = F_d_pos;
-    copy_parms.dstPtr = F_h_ptr;
-    copy_parms.dstPos = F_h_pos;
-    copy_parms.extent = extent;
-    copy_parms.kind = hipMemcpyDeviceToHost;
-    
-    // Run the actual copy
-    H_ERRCHK(hipMemcpy3D(&copy_parms));
-    
-    //// Step 8. Test the computed matrix F_h against a known answer
+    //// Step 8. Test the computed matrix **F_h** against a known answer
     
     // Check the answer against a known solution
     float* F_answer_h = (float*)calloc(nbytes_F, 1);
-    float* F_residual_h = (float*)calloc(nbytes_F, 1);
 
     // Compute the known solution
     m_hadamard(D_h, E_h, F_answer_h, N0_F, N1_F);
 
-    // Compute the residual between F_h and F_answer_h
-    m_residual(F_answer_h, F_h, F_residual_h, N0_F, N1_F);
-
-    // Pretty print the output matrices
-    std::cout << "The output array F_h (as computed with HIP) is\n";
-    m_show_matrix(F_h, N0_F, N1_F);
-
-    std::cout << "The CPU solution (F_answer_h) is \n";
-    m_show_matrix(F_answer_h, N0_F, N1_F);
-    
-    std::cout << "The residual (F_answer_h-F_h) is\n";
-    m_show_matrix(F_residual_h, N0_F, N1_F);
-
     // Print the maximum error between matrices
     float max_err = m_max_error(F_h, F_answer_h, N0_F, N1_F);
-    
-    //// Step 9. Write the contents of matrices 
-    //// D_h, E_h, and F_h to disk ////
+
+    //// Step 9. Write the contents of matrices D_h, E_h, and F_h to disk ////
 
     // Write out the result to file
     h_write_binary(D_h, "array_D.dat", nbytes_D);
     h_write_binary(E_h, "array_E.dat", nbytes_E);
     h_write_binary(F_h, "array_F.dat", nbytes_F);
     
-    //// Step 10. Release resources
+    //// Step 10. Clean up memory alllocations and release resources
     
+    // Destroy events
+    H_ERRCHK(hipEventDestroy(t1));
+    H_ERRCHK(hipEventDestroy(t2));
+
     // Free the HIP buffers
     H_ERRCHK(hipFree(D_d));
     H_ERRCHK(hipFree(E_d));
@@ -231,7 +197,6 @@ int main(int argc, char** argv) {
 
     // Free the answer and residual matrices
     free(F_answer_h);
-    free(F_residual_h);
     
     // Reset compute devices
     h_reset_devices(num_devices);
