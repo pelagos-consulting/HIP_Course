@@ -2,7 +2,7 @@ import os
 import numpy as np
 import sys
 import json
-sys.path.insert(0, os.path.abspath("../include"))
+sys.path.insert(0, os.path.abspath("../common"))
 from local_opt import LocalOpt
                 
 # Helper class to specify an experiment
@@ -18,7 +18,7 @@ class Exp:
         self.local1 = local1
         self.local2 = local2
         self.cmds = cmds.split()
-        self.cmds[0] = os.path.join(os.getcwd(), self.cmds[0]) 
+        #self.cmds[0] = os.path.join(os.getcwd(), self.cmds[0]) 
 
 ### Modify this section          
 output_file = "benchmark.json"

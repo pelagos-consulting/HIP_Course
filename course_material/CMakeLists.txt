@@ -45,9 +45,6 @@ find_package(hip REQUIRED)
 # Set language for kernel code
 set(kernel_lang HIP)
 
-# Set this variable as a placeholder language for linking most C++ sources
-set(linker_lang CXX)
-
 # Set libraries for kernel code
 set(kernel_libs hip::device)
 
@@ -98,6 +95,9 @@ else()
     set(CMAKE_HIP_FLAGS_RELEASE "-O3")
 endif()
 
+# Set this variable as a placeholder language for linking most C++ sources
+set(linker_lang CXX)
+
 # ----- end dependencies section ----- #
 
 # Set common directory a the destination for all includes
@@ -105,8 +105,8 @@ include_directories(common)
 
 # Make sure the all target doesn't get brought in for install
 set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true)
-set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
-##set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_RPATH};${CMAKE_INSTALL_PREFIX}/lib")
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 ##set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_INSTALL_PREFIX}/bin)
 
 # Example Codes
