@@ -28,6 +28,48 @@ Lessons are in the form of Jupyter notebooks which can be viewed on the student'
 
 ## Installation
 
+The course material uses a CMake build system. You can use either an AMD or NVIDIA backend and will need the following software installed and available:
+
+* A Linux environment with graphics card drivers installed
+* CMake - version 3.21+
+* ROCM - with HipBLAS (this has to be installed regardless of which backend you use)
+* Text editor
+
+In the file [course_material/env](course_material/env) is a BASH script that loads modules, sets environment variables, and sets install and run paths. You **will need** to customise this file for your needs. The main variables that need to be edited are the `HIP_PLATFORM` and `GPU_ARCH` variables. 
+
+Once this is done you can run the [course_material/install.sh](course_material/install.sh) script to install the software into $INSTALL_DIR. When running examples you can source `course_material/env` to set load modules and set paths.
+
+### Linux environment
+
+It is the path of least pain to use a distribution of Linux that ROCM officially supports. Then you can use a package manager to install all the dependencies.
+
+### ROCM
+
+Regardless of which backend you plan to use, the ROCM framework must be available, and a full installation of [ROCM](https://docs.amd.com/) is advised in order to get all the necessary tools like debuggers and profilers. In particular this course needs the following ROCM packages installed and available.
+
+* hip
+* hipblas
+* hipblas-dev
+* rocprofiler
+* rocprofiler-dev
+* rocm-gdb
+* rocm-openmp-sdk
+
+### AMD backend
+
+It is advisable to use an AMD graphics card that ROCM supports. Other AMD GPU's work unofficially, but you can expect the occasional undefined behaviour and things not working like they should. I have had good success with both supported and non-supported graphics cards when I **avoided installing the amdgpu-dkms** package and used the AMD graphics card drivers that are built into the Linux kernel.
+
+Within `course_material/env` you must set `HIP_PLATFORM` to `amd`. Then you need to put into `GPU_ARCH` a semicolon list of GPU architectures that you'd like to build for. For example, on an AMD MI250X the GPU architecture is `gfx90a` and on an AMD MI300 the GPU architecture is `gfx942`. 
+
+### NVIDIA backend
+
+HIP can also use a CUDA backend. In that case install both ROCM and a compatible version of [CUDA](https://developer.nvidia.com/cuda-downloads). Usually a safe choice for CUDA is the prior major release. Then the course may be run on a CUDA backend with a recent NVIDIA graphics card. In such instances set the environment variable `HIP_PLATFORM` to `nvidia` in `course_material/dev`.
+
+```bash
+export HIP_PLATFORM=nvidia
+```
+
+Then within `course_material/dev` set `GPU_ARCH` to a semicolon separated list of GPU architectures you would like to have available. For my NVIDIA RTX 3060 this is just `86`, and on an NVIDIA Tesla T4 it is `75`. You can support more than one architecture.
 
 ### Anaconda Python (optional)
 
@@ -57,29 +99,5 @@ is to enter the created environment, and the command
 conda deactivate
 ```
 will leave the environment.
-
-### ROCM
-
-In order to use the material in this course a full installation of [ROCM](https://docs.amd.com/) is advised. It is the path of least pain to use a distribution of Linux that ROCM officially supports. The AMD utility **amdgpu-install** can install ROCM packages. This command will install the ROCM tools.
-
-```bash
-sudo amdgpu-install -y --usecase=opencl,hip,rocm,openclsdk,hip,hiplibsdk,rocmdevtools,rocmdev
-```
-
-### AMD backend
-
-It is advisable to use an AMD graphics card that ROCM supports. Other AMD GPU's work unofficially, but you can expect the occasional undefined behaviour and things not working like they should.
-
-### NVIDIA backend
-
-HIP can also use a CUDA backend. In that case install both ROCM and a compatible version of [CUDA](https://developer.nvidia.com/cuda-downloads). Usually a safe choice for CUDA is the previous major release. Then the course may be run on a CUDA backend with a recent NVIDIA graphics card. In such instances the environment variable **HIP_PLATFORM** must be set to nvidia.
-
-```bash
-export HIP_PLATFORM=nvidia
-```
-
-### CPU backend
-
-If either the AMD or NVIDIA backend is not available, then the [HIP CPU runtime](https://github.com/ROCm-Developer-Tools/HIP-CPU) is a header-only library that provides a way to develop HIP applications on a CPU. 
 
 

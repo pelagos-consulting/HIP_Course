@@ -1,5 +1,5 @@
 # Include general environment variables
-include ../env
+include ../env_make
 
 # List of applications to target
 TARGETS=mat_mult.exe
