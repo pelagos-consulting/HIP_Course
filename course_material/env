@@ -24,5 +24,5 @@ export GPU_ARCH="gfx906;gfx908;gfx90a;gfx1035"
 # Set the build type, options are DEBUG, COVERAGE, PROFILE, RELEASE
 export BUILD_TYPE=RELEASE
 
-# Essential compiler flags for HIP compiler
+# Force HIP compiler to accept -fPIC
 export HIPFLAGS="-fPIC"

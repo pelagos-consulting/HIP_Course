@@ -2,7 +2,7 @@
 DEBUG=true
 
 # Include general environment variables
-include ../env
+include ../env_make
 
 # List of applications to target
 TARGETS=mat_mult.exe mat_mult_bug.exe mat_mult_memcheck.exe mat_mult_printf.exe mat_elementwise_answer.exe mat_elementwise.exe
