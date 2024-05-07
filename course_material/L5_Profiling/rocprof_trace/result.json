@@ -7454,4 +7454,10 @@
     "Agent2.ISAInfo.ISA1.GridMaxSizeperDimension.z": "4294967295(0xffffffff)",
     "Agent2.ISAInfo.ISA1.FBarrierMaxSize": "32"
   }
-}
+},{"args":{"name":"COPY"},"ph":"M","pid":1,"name":"process_name","sort_index":0}
+,{"args":{"name":"COPY"},"ph":"M","pid":1,"name":"process_name","sort_index":0}
+,{"args":{"name":"COPY"},"ph":"M","pid":1,"name":"process_name","sort_index":0}
+,{"args":{"name":"COPY"},"ph":"M","pid":1,"name":"process_name","sort_index":0}
+,{"args":{"name":"COPY"},"ph":"M","pid":1,"name":"process_name","sort_index":0}
+,{"args":{"name":"COPY"},"ph":"M","pid":1,"name":"process_name","sort_index":0}
+,{"args":{"name":"COPY"},"ph":"M","pid":1,"name":"process_name","sort_index":0}

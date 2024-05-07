@@ -8,6 +8,8 @@ System Timestamp Freq.:  1000.000000MHz
 Sig. Max Wait Duration:  18446744073709551615 (0xFFFFFFFFFFFFFFFF) (timestamp count)
 Machine Model:           LARGE                              
 System Endianness:       LITTLE                             
+Mwaitx:                  DISABLED
+DMAbuf Support:          YES
 
 ==========               
 HSA Agents               
@@ -33,7 +35,7 @@ Agent 1
   Chip ID:                 0(0x0)                             
   ASIC Revision:           0(0x0)                             
   Cacheline Size:          64(0x40)                           
-  Max Clock Freq. (MHz):   3200                               
+  Max Clock Freq. (MHz):   4785                               
   BDFID:                   0                                  
   Internal Node ID:        0                                  
   Compute Unit:            16                                 
@@ -45,21 +47,21 @@ Agent 1
   Pool Info:               
     Pool 1                   
       Segment:                 GLOBAL; FLAGS: FINE GRAINED        
-      Size:                    32090892(0x1e9ab0c) KB             
+      Size:                    32090400(0x1e9a920) KB             
       Allocatable:             TRUE                               
       Alloc Granule:           4KB                                
       Alloc Alignment:         4KB                                
       Accessible by all:       TRUE                               
     Pool 2                   
       Segment:                 GLOBAL; FLAGS: KERNARG, FINE GRAINED
-      Size:                    32090892(0x1e9ab0c) KB             
+      Size:                    32090400(0x1e9a920) KB             
       Allocatable:             TRUE                               
       Alloc Granule:           4KB                                
       Alloc Alignment:         4KB                                
       Accessible by all:       TRUE                               
     Pool 3                   
       Segment:                 GLOBAL; FLAGS: COARSE GRAINED      
-      Size:                    32090892(0x1e9ab0c) KB             
+      Size:                    32090400(0x1e9a920) KB             
       Allocatable:             TRUE                               
       Alloc Granule:           4KB                                
       Alloc Alignment:         4KB                                
@@ -95,6 +97,7 @@ Agent 2
   Shader Engines:          1                                  
   Shader Arrs. per Eng.:   2                                  
   WatchPts on Addr. Ranges:4                                  
+  Coherent Host Access:    FALSE                              
   Features:                KERNEL_DISPATCH 
   Fast F16 Operation:      TRUE                               
   Wavefront Size:          32(0x20)                           
@@ -111,6 +114,9 @@ Agent 2
     y                        4294967295(0xffffffff)             
     z                        4294967295(0xffffffff)             
   Max fbarriers/Workgrp:   32                                 
+  Packet Processor uCode:: 98                                 
+  SDMA engine uCode::      37                                 
+  IOMMU Support::          None                               
   Pool Info:               
     Pool 1                   
       Segment:                 GLOBAL; FLAGS: COARSE GRAINED      
@@ -120,6 +126,13 @@ Agent 2
       Alloc Alignment:         4KB                                
       Accessible by all:       FALSE                              
     Pool 2                   
+      Segment:                 GLOBAL; FLAGS: EXTENDED FINE GRAINED
+      Size:                    524288(0x80000) KB                 
+      Allocatable:             TRUE                               
+      Alloc Granule:           4KB                                
+      Alloc Alignment:         4KB                                
+      Accessible by all:       FALSE                              
+    Pool 3                   
       Segment:                 GROUP                              
       Size:                    64(0x40) KB                        
       Allocatable:             FALSE                              

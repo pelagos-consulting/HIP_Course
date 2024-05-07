@@ -212,5 +212,7 @@ int main(int argc, char** argv) {
     
     // Reset compute devices
     h_reset_devices(num_devices);
+
+    return 0;
 }
 
