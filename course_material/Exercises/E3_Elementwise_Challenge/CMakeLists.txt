@@ -13,8 +13,8 @@ set(headers
 
 # Compile all targets in this directory using a loop
 set(targets 
-    elementwise_challenge
-    elementwise_challenge_answer
+    exercise_elementwise
+    exercise_elementwise_answer
 )
 
 foreach(target ${targets})
