@@ -1,6 +1,7 @@
 #/bin/bash
 
-module load gcc rocm cuda mpich
+module load gcc rocm mpich
+module load cuda
 
 # Get the directory that this file is located in
 COURSE_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
