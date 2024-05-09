@@ -1,6 +1,6 @@
 #!/bin/bash -l
 
-#SBATCH --account=<account>-gpu    # your account
+#SBATCH --account=courses01-gpu    # your account
 #SBATCH --partition=gpu            # Using the gpu partition
 #SBATCH --nodes=1                  # Total number of nodes
 #SBATCH --gres=gpu:8               # The number of GPU's (and associated allocation packs) per node
@@ -24,12 +24,6 @@ make clean
 make
 
 # Run a job with task placement and $BIND_OPTIONS
-srun \
-    --nodes=$SLURM_JOB_NUM_NODES \ # Number of nodes 
-    --ntasks=8 \ # Total number of MPI tasks to request, 
-    \ # should be nodes*allocation_packs/gpus_per_task  
-    --cpus-per-task=8 \ # Number of cores to allocate per task, usually always 8
-    --gres=gpu:8 \ # Number of GCD's (allocation packs per note)
-    --gpus-per-task=1 \ # Number of GPU's per task
-    --gpu-bind=closest \ # Attempt to bind each GPU to the closest chiplet
-    ./hello_jobstep.exe | sort # Application with arguments
+srun --nodes=$SLURM_JOB_NUM_NODES --ntasks=8 --cpus-per-task=8\
+	--gres=gpu:8 --gpus-per-task=1 --gpu-bind=closest\
+	./hello_jobstep.exe | sort 
