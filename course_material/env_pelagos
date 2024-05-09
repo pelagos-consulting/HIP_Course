@@ -1,0 +1,29 @@
+#/bin/bash
+
+module load gcc rocm mpich
+module load cuda
+
+# Get the directory that this file is located in
+COURSE_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+# Set the installation directory
+INSTALL_DIR=$COURSE_DIR/install
+
+# Set the runtime directory -- don't edit this one
+RUN_DIR=$INSTALL_DIR/bin
+
+# Add RUN_DIR to the path
+export PATH=$PATH:$RUN_DIR
+
+# Set the backend to use, amd or nvidia
+export HIP_PLATFORM=amd
+
+# Must set vendor-specific and semicolon-separated list of GPU architectures to support, i.e 75;86;90 or gfx90a;gfx906;gfx1035 
+#export GPU_ARCH="60;61;70;75;80;86;89;90"
+export GPU_ARCH="gfx906;gfx908;gfx90a;gfx1035"
+
+# Set the build type, options are DEBUG, COVERAGE, PROFILE, RELEASE
+export BUILD_TYPE=RELEASE
+
+# Force HIP compiler to accept -fPIC
+export HIPFLAGS="-fPIC"
