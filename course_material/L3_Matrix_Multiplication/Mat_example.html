@@ -7551,7 +7551,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -7597,7 +7597,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span>mat_mult.exe<span class="p">;</span><span class="w"> </span>run<span class="w"> </span>mat_mult.exe
@@ -7618,16 +7618,16 @@ a.anchor-link {
 <span class="ansi-cyan-fg">Install the project...</span>
 -- Install configuration: "RELEASE"
 Device id: 0
-	name:                                    AMD Radeon Graphics
-	global memory size:                      536 MB
+	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
+	global memory size:                      6219 MB
 	available registers per block:           65536 
-	max threads per SM or CU:                2048 
-	maximum shared memory size per block:    65 KB
-	maximum shared memory size per SM or CU: 65 KB
-	maximum pitch size for memory copies:    402 MB
-	max block size:                          (1024,1024,1024)
+	max threads per SM or CU:                1536 
+	maximum shared memory size per block:    49 KB
+	maximum shared memory size per SM or CU: 0 KB
+	maximum pitch size for memory copies:    2147 MB
+	max block size:                          (1024,1024,64)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,65536,65536)
+	max Grid size:                           (2147483647,65535,65535)
 Maximum error (infinity norm) is: 1.52588e-05
 </pre>
 </div>
@@ -7650,7 +7650,7 @@ Maximum error (infinity norm) is: 1.52588e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>ls<span class="w"> </span>*.dat
@@ -7688,7 +7688,7 @@ Maximum error (infinity norm) is: 1.52588e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -7770,7 +7770,7 @@ Maximum error (infinity norm) is: 1.52588e-05
 <li>Write the contents of matrices <strong>A_h</strong>, <strong>B_h</strong>, and <strong>C_h</strong> to disk</li>
 <li>Clean up memory allocations and release resources</li>
 </ol>
-<p>We now walk through every line of the source file <a href="mat_mult.cpp">mat_mult.cpp</a> and explain how everything is working in as much depth as is practical. With HIP there is some boilerplate code and some best practices to be followed. In the following examples we have encapsulated both using helper functions. Each helper function starts with <strong>h_</strong> and is defined in the header file <a href="../include/hip_helper.hpp"></a>hip_helper.hpp. It is helpful to have both the source code of the main program <a href="mat_mult.cpp">mat_mult.cpp</a> and the helper header <a href="../include/hip_helper.hpp"></a>hip_helper.hpp open while we traverse the code.</p>
+<p>We now walk through every line of the source file <a href="mat_mult.cpp">mat_mult.cpp</a> and explain how everything is working in as much depth as is practical. With HIP there is some boilerplate code and some best practices to be followed. In the following examples we have encapsulated both using helper functions. Each helper function starts with <strong>h_</strong> and is defined in the header file <a href="../common/hip_helper.hpp"></a>hip_helper.hpp and in the corresponding library <a href="../common/hip_helper.cpp"></a>hip_helper.cpp. It is helpful to have both the source code of the main program <a href="mat_mult.cpp">mat_mult.cpp</a> and the helper sources <a href="../common/hip_helper.cpp"></a>hip_helper.cpp and <a href="../common/hip_helper.hpp"></a>hip_helper.hpp open while we traverse the code.</p>
 </div>
 </div>
 </div>
@@ -7796,7 +7796,7 @@ Maximum error (infinity norm) is: 1.52588e-05
 <div class="highlight"><pre><span></span><span class="c1">// Bring in helper header to manage boilerplate code</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">"hip_helper.hpp"</span>
 </pre></div>
-<p>In this instance the header <strong>hip_helper.hpp</strong> is located in the <strong>course_material/include</strong> directory. Open the file by clicking on this link to <a href="../include/hip_helper.hpp"></a>hip_helper.hpp.</p>
+<p>In this instance the header <a href="../common/hip_helper.hpp"></a>hip_helper.hpp and the corresponding source file <a href="../common/hip_helper.cpp"></a>hip_helper.cpp are both located in the <strong>course_material/common</strong> directory.</p>
 </div>
 </div>
 </div>
@@ -7838,7 +7838,7 @@ Maximum error (infinity norm) is: 1.52588e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Use the GPU at device index 0</span>
@@ -7856,16 +7856,16 @@ Maximum error (infinity norm) is: 1.52588e-05
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Device id: 0
-	name:                                    AMD Radeon Graphics
-	global memory size:                      536 MB
+	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
+	global memory size:                      6219 MB
 	available registers per block:           65536 
-	max threads per SM or CU:                2048 
-	maximum shared memory size per block:    65 KB
-	maximum shared memory size per SM or CU: 65 KB
-	maximum pitch size for memory copies:    402 MB
-	max block size:                          (1024,1024,1024)
+	max threads per SM or CU:                1536 
+	maximum shared memory size per block:    49 KB
+	maximum shared memory size per SM or CU: 0 KB
+	maximum pitch size for memory copies:    2147 MB
+	max block size:                          (1024,1024,64)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,65536,65536)
+	max Grid size:                           (2147483647,65535,65535)
 Maximum error (infinity norm) is: 1.52588e-05
 </pre>
 </div>
@@ -7877,7 +7877,7 @@ Maximum error (infinity norm) is: 1.52588e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Print some help information</span>
@@ -7937,7 +7937,7 @@ Options:
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
-<p>The following macro, defined as <strong>H_ERRCHK</strong> in <a href="../include/hip_helper.hpp"></a>hip_helper.hpp just calls <strong>h_errchk</strong> with the file and line number information as the message, as shown below:</p>
+<p>The following macro, defined as <strong>H_ERRCHK</strong> in <a href="../common/hip_helper.hpp"></a>hip_helper.hpp just calls <strong>h_errchk</strong> with the file and line number information as the message, as shown below:</p>
 <div class="highlight"><pre><span></span><span class="c1">/// Macro to check error codes.</span>
 <span class="cp">#define H_ERRCHK(cmd) \</span>
 <span class="cp">{\</span>
@@ -8000,7 +8000,7 @@ Options:
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="Examining-h_acquire_devices-in-depth">Examining <strong>h_acquire_devices</strong> in depth<a class="anchor-link" href="#Examining-h_acquire_devices-in-depth">¶</a></h4><p>We now examine the function <strong>h_acquire_devices</strong>, whose source code is in <a href="../include/hip_helper.hpp"></a>hip_helper.hpp.</p>
+<h4 id="Examining-h_acquire_devices-in-depth">Examining <strong>h_acquire_devices</strong> in depth<a class="anchor-link" href="#Examining-h_acquire_devices-in-depth">¶</a></h4><p>We now examine the function <strong>h_acquire_devices</strong>, whose source code is in <a href="../common/hip_helper.cpp"></a>hip_helper.cpp.</p>
 <div class="highlight"><pre><span></span><span class="c1">/// Function to simply acquire devices</span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">h_acquire_devices</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">num_devices</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">default_device_id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="c1">// Initialise HIP </span>
@@ -8057,7 +8057,7 @@ Options:
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h4 id="Compute-device-selection">Compute device selection<a class="anchor-link" href="#Compute-device-selection">¶</a></h4><p>Returning the the <strong>h_acquire_devices</strong> function, after the call to <strong>h_reset_devices</strong>, we use <strong>hipSetDevice</strong> to set the compute device to <strong>default_device_id</strong>.</p>
-<div class="highlight"><pre><span></span><span class="c1">// hip_helper.hpp source </span>
+<div class="highlight"><pre><span></span><span class="c1">// hip_helper.cpp source </span>
 
 <span class="w">    </span><span class="c1">// Set the device</span>
 <span class="w">    </span><span class="n">h_errchk</span><span class="p">(</span><span class="n">hipSetDevice</span><span class="p">(</span><span class="n">default_device_id</span><span class="p">));</span>
@@ -8109,7 +8109,7 @@ Options:
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h4 id="Examining-h_report_on_device-in-depth">Examining <strong>h_report_on_device</strong> in depth<a class="anchor-link" href="#Examining-h_report_on_device-in-depth">¶</a></h4><p>Below is the code for the function <strong>h_report_on_device</strong>. Given an integer device id, the function uses a call to <strong>hipGetDeviceProperties</strong> to fill a structure of type <strong>hipDeviceProp_t</strong> with the properties of the compute device. Then we use dot notation to access the elements of the structure and report back.</p>
-<div class="highlight"><pre><span></span><span class="c1">// hip_helper.hpp source</span>
+<div class="highlight"><pre><span></span><span class="c1">// hip_helper.cpp source</span>
 
 <span class="c1">/// Function to report information on a compute device</span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">h_report_on_device</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">device_id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -8219,7 +8219,7 @@ Options:
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Of course we could have used a call to <strong>new</strong>, <strong>calloc</strong>, or <strong>malloc</strong> to allocate memory for arrays <strong>A_h</strong>, <strong>B_h</strong>, and <strong>C_h</strong> on the host. For teaching purposes we use the helper function <strong>h_alloc</strong> to allocate <code>aligned memory</code> for the arrays instead. Aligned memory helps with enabling vector instructions on the CPU and optimising cache access. Here is the contents of <strong>h_alloc</strong> in <a href="../include/hip_helper.hpp"></a>hip_helper.hpp</p>
+<p>Of course we could have used a call to <strong>new</strong>, <strong>calloc</strong>, or <strong>malloc</strong> to allocate memory for arrays <strong>A_h</strong>, <strong>B_h</strong>, and <strong>C_h</strong> on the host. For teaching purposes we use the helper function <strong>h_alloc</strong> to allocate <code>aligned memory</code> for the arrays instead. Aligned memory helps with enabling vector instructions on the CPU and optimising cache access. Here is the contents of <strong>h_alloc</strong> in <a href="../common/hip_helper.cpp"></a>hip_helper.cpp</p>
 <div class="highlight"><pre><span></span><span class="c1">/// Allocate aligned memory for use on the host</span>
 <span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="nf">h_alloc</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">nbytes</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="c1">// Get the alignment to use by default</span>
@@ -8662,14 +8662,14 @@ Options:
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Step-9.-Write-the-contents-of-matrices-A_h,-B_h,-and-C_h-to-disk">Step 9. Write the contents of matrices <strong>A_h</strong>, <strong>B_h</strong>, and <strong>C_h</strong> to disk<a class="anchor-link" href="#Step-9.-Write-the-contents-of-matrices-A_h,-B_h,-and-C_h-to-disk">¶</a></h3><p>Now we use a helper function <strong>h_write_binary</strong> from <a href="../include/hip_helper.hpp"></a>hip_helper.hpp to write out the contents of arrays <strong>A_h</strong>, <strong>B_h</strong>, and <strong>C_h</strong> to disk.</p>
+<h3 id="Step-9.-Write-the-contents-of-matrices-A_h,-B_h,-and-C_h-to-disk">Step 9. Write the contents of matrices <strong>A_h</strong>, <strong>B_h</strong>, and <strong>C_h</strong> to disk<a class="anchor-link" href="#Step-9.-Write-the-contents-of-matrices-A_h,-B_h,-and-C_h-to-disk">¶</a></h3><p>Now we use a helper function <strong>h_write_binary</strong> from <a href="../common/hip_helper.cpp"></a>hip_helper.cpp to write out the contents of arrays <strong>A_h</strong>, <strong>B_h</strong>, and <strong>C_h</strong> to disk.</p>
 <div class="highlight"><pre><span></span><span class="c1">// Write out the host arrays to file</span>
 <span class="w">    </span><span class="n">h_write_binary</span><span class="p">(</span><span class="n">A_h</span><span class="p">,</span><span class="w"> </span><span class="s">"array_A.dat"</span><span class="p">,</span><span class="w"> </span><span class="n">nbytes_A</span><span class="p">);</span>
 <span class="w">    </span><span class="n">h_write_binary</span><span class="p">(</span><span class="n">B_h</span><span class="p">,</span><span class="w"> </span><span class="s">"array_B.dat"</span><span class="p">,</span><span class="w"> </span><span class="n">nbytes_B</span><span class="p">);</span>
 <span class="w">    </span><span class="n">h_write_binary</span><span class="p">(</span><span class="n">C_h</span><span class="p">,</span><span class="w"> </span><span class="s">"array_C.dat"</span><span class="p">,</span><span class="w"> </span><span class="n">nbytes_C</span><span class="p">);</span>
 </pre></div>
 <p>If we look at the source of <strong>h_write_binary</strong> we just use the standard library functions <strong>fopen</strong>, <strong>fwrite</strong>, and <strong>fclose</strong> to write a data allocation to disk.</p>
-<div class="highlight"><pre><span></span><span class="c1">// hip_helper.hpp source</span>
+<div class="highlight"><pre><span></span><span class="c1">// hip_helper.cpp source</span>
 
 <span class="c1">/// Write binary data to file</span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">h_write_binary</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">filename</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nbytes</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
