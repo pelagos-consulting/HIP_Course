@@ -6,9 +6,7 @@
 #SBATCH --gres:gpu=2               # Number of GPU's per node
 #SBATCH --time=01:00:00
 
-module swap PrgEnv-gnu PrgEnv-cray
-module load craype-accel-amd-gfx90a
-module load rocm/5.2.3
+source ../../env
 
 export OMP_NUM_THREADS=8   #To define the number of OpenMP threads available per MPI task
 export OMP_PLACES=cores     #To bind to cores 
