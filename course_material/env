@@ -17,12 +17,12 @@ else
     module load gcc rocm mpich
 
     if module load cuda 2>/dev/null; then
-        echo "Using the nvidia backend"
+        # We are using the nvidia backend
         export HIP_PLATFORM=nvidia
         # CUDA architectures to support
         export GPU_ARCH="60;61;70;75;80;86;89;90"
     else
-        echo "Using the amd backend"
+        # We are using the AMD backend
         export HIP_PLATFORM=amd
         export GPU_ARCH="gfx906;gfx908;gfx90a;gfx1035"
     fi    
