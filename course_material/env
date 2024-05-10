@@ -1,7 +1,29 @@
 #/bin/bash
 
-module load gcc rocm mpich
-module load cuda
+if [[ $HOSTNAME =~ "setonix" ]]
+then
+    module load rocm/5.4.3 cmake/3.24.3 craype-accel-amd-gfx90a omnitrace/1.10.2 omniperf/1.0.6
+
+    # Extra flags to enable GPU support
+    MPICH_GPU_SUPPORT_ENABLED=1
+
+    export HIP_PLATFORM=amd
+    export GPU_ARCH=gfx90a
+else
+    # Load crucial modules
+    module load gcc rocm mpich
+
+    if module load cuda 2>/dev/null; then
+        echo "Using the nvidia backend"
+        export HIP_PLATFORM=nvidia
+        # CUDA architectures to support
+        export GPU_ARCH="60;61;70;75;80;86;89;90"
+    else
+        echo "Using the amd backend"
+        export HIP_PLATFORM=amd
+        export GPU_ARCH="gfx906;gfx908;gfx90a;gfx1035"
+    fi    
+fi
 
 # Get the directory that this file is located in
 COURSE_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
@@ -15,15 +37,8 @@ RUN_DIR=$INSTALL_DIR/bin
 # Add RUN_DIR to the path
 export PATH=$PATH:$RUN_DIR
 
-# Set the backend to use, amd or nvidia
-export HIP_PLATFORM=amd
-
-# Must set vendor-specific and semicolon-separated list of GPU architectures to support, i.e 75;86;90 or gfx90a;gfx906;gfx1035 
-#export GPU_ARCH="60;61;70;75;80;86;89;90"
-export GPU_ARCH="gfx906;gfx908;gfx90a;gfx1035"
-
 # Set the build type, options are DEBUG, COVERAGE, PROFILE, RELEASE
 export BUILD_TYPE=RELEASE
 
-# Force HIP compiler to accept -fPIC
-export HIPFLAGS="-fPIC"
+# Force HIP compiler to accept -fPIC and -fopenmp
+export HIPFLAGS="-fPIC -fopenmp"
