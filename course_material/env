@@ -16,6 +16,7 @@ else
     # Load crucial modules
     module load gcc rocm mpich
 
+    # Try to load cuda and use that as the deciding factor
     if module load cuda 2>/dev/null; then
         # We are using the nvidia backend
         export HIP_PLATFORM=nvidia
@@ -24,6 +25,7 @@ else
     else
         # We are using the AMD backend
         export HIP_PLATFORM=amd
+        # HIP architectures to support
         export GPU_ARCH="gfx906;gfx908;gfx90a;gfx1035"
     fi    
 fi
