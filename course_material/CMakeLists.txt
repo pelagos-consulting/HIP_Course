@@ -42,15 +42,6 @@ find_package(MPI REQUIRED)
 # HIP
 find_package(hip REQUIRED)
 
-# Set language for kernel code
-set(kernel_lang HIP)
-
-# Set this variable as a placeholder language for linking most C++ sources
-set(linker_lang CXX)
-
-# Set libraries for kernel code
-set(kernel_libs hip::device)
-
 if ((DEFINED ENV{HIP_PLATFORM}) AND ($ENV{HIP_PLATFORM} STREQUAL nvidia))
     message("Building for an NVIDIA backend.")
         
@@ -61,11 +52,9 @@ if ((DEFINED ENV{HIP_PLATFORM}) AND ($ENV{HIP_PLATFORM} STREQUAL nvidia))
     ## Find the CUDA toolkit, 
     ## it must be present if we use HIP_PLATFORM=nvidia 
     find_package(CUDAToolkit REQUIRED)
-        
+
+    ## Set the language for device code
     set(kernel_lang CUDA)
-        
-    ## Append the CUDA toolkit libraries to kernel_libs
-    ##list(APPEND kernel_libs CUDA::cudart CUDA::cuda_driver)
 
     ## Point kernel_libs to the CUDA toolkit libraries
     set(kernel_libs CUDA::cudart CUDA::cuda_driver)
@@ -74,7 +63,7 @@ if ((DEFINED ENV{HIP_PLATFORM}) AND ($ENV{HIP_PLATFORM} STREQUAL nvidia))
     set(CMAKE_CUDA_ARCHITECTURES $ENV{GPU_ARCH})
 
     ## CUDA compile flags
-    set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -g -Xcompiler -fopenmp -Xcompiler -fPIC")
+    set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -g -Xcompiler -fopenmp -Xcompiler -fPIC -Xcompiler")
     set(CMAKE_CUDA_FLAGS_DEBUG "-G -O0")
     set(CMAKE_CUDA_FLAGS_PROFILE "-pg -O3")
     set(CMAKE_CUDA_FLAGS_RELEASE "-O3")
@@ -85,20 +74,31 @@ if ((DEFINED ENV{HIP_PLATFORM}) AND ($ENV{HIP_PLATFORM} STREQUAL nvidia))
     remove_definitions(-D__HIP_PLATFORM_HCC__ -D__HIP_PLATFORM_AMD__)
     ## Replace it with CUDA precprocessor definitions
     add_definitions(-D__HIP_PLATFORM_NVCC__ -D__HIP_PLATFORM_NVIDIA__)  
+
 else()
+
     message("Building for an AMD backend.")
+
+    # Set the language for device code
+    set(kernel_lang HIP)
+
+    # Set libraries for kernel code
+    set(kernel_libs hip::device)
     
     ## Set your HIP GPU architectures to use here
     set(CMAKE_HIP_ARCHITECTURES $ENV{GPU_ARCH})
 
     ## HIP compile flags
-    set(CMAKE_HIP_FLAGS "${CMAKE_HIP_FLAGS} -g -fopenmp")
+    set(CMAKE_HIP_FLAGS "${CMAKE_HIP_FLAGS} -g -fPIC -fopenmp")
     set(CMAKE_HIP_FLAGS_DEBUG "-ggdb -O1")
     set(CMAKE_HIP_FLAGS_PROFILE "-pg -O3")
     set(CMAKE_HIP_FLAGS_RELEASE "-O3")
 endif()
 
 # ----- end dependencies section ----- #
+
+# Set this variable as a placeholder language for linking most C++ sources
+set(linker_lang CXX)
 
 # Set common directory a the destination for all includes
 include_directories(common)
