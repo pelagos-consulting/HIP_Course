@@ -1,2 +1,0 @@
-"Name","Calls","TotalDurationNs","AverageNs","Percentage"
-"mat_mult(float*, float*, float*, unsigned long, unsigned long, unsigned long) [clone .kd]",1,2990629,2990629,100.0
