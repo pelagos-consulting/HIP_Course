@@ -23,5 +23,5 @@ make
 mkdir -p rocprof_counters
 
 # Run the profiling job
-srun -N $SLURM_JOB_NUM_NODES -n 2 -c 8 --gpus-per-task=1 --gpu-bind=closest -c $OMP_NUM_THREADS ./profile.sh
+srun -N $SLURM_JOB_NUM_NODES -n 2 -c 8 --gpus-per-task=1 --gpu-bind=closest ./profile.sh
 
