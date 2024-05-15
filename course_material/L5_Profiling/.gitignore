@@ -1,1 +1,2 @@
-./workloads
+workloads/
+rocprof_trace/
