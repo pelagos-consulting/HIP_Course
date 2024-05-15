@@ -1,9 +1,9 @@
-##!/bin/bash -l
+#!/bin/bash --login
 
-#SBATCH --account=<account>-gpu    # your account
+#SBATCH --account=courses01-gpu    # your account
 #SBATCH --partition=gpu-dev        # Using the gpu-dev partition
 #SBATCH --nodes=1                  # Total number of nodes
-#SBATCH --gres:gpu=2               # Number of GPU's per node
+#SBATCH --gres=gpu:2               # Number of GPU's per node
 #SBATCH --time=01:00:00
 
 source ../../env
@@ -24,4 +24,5 @@ mkdir -p rocprof_counters
 
 # Run the profiling job
 srun -N $SLURM_JOB_NUM_NODES -n 2 -c 8 --gpus-per-task=1 --gpu-bind=closest ./profile.sh
+
 
