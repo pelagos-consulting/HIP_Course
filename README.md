@@ -48,6 +48,7 @@ It is the path of least pain to use a distribution of Linux that ROCM officially
 Regardless of which backend you plan to use, the ROCM framework must be available, and a full installation of [ROCM](https://docs.amd.com/) is advised in order to get all the necessary tools like debuggers and profilers. In particular this course needs the following ROCM packages installed and available.
 
 * hip
+* hip-dev
 * hipblas
 * hipblas-dev
 * rocprofiler
