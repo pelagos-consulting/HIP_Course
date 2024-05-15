@@ -14,7 +14,7 @@ project(hip_course VERSION 1.0.0
     LANGUAGES HIP C CXX
 )
 
-message(${CMAKE_CXX_COMPILER_ID})
+message("Compiler ID is: ${CMAKE_CXX_COMPILER_ID}")
 
 # Default CXX compiler flags for different compilers
 if( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
@@ -63,7 +63,7 @@ if ((DEFINED ENV{HIP_PLATFORM}) AND ($ENV{HIP_PLATFORM} STREQUAL nvidia))
     set(CMAKE_CUDA_ARCHITECTURES $ENV{GPU_ARCH})
 
     ## CUDA compile flags
-    set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -g -Xcompiler -fopenmp -Xcompiler -fPIC -Xcompiler")
+    set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -g -Xcompiler -fopenmp -Xcompiler -fPIC")
     set(CMAKE_CUDA_FLAGS_DEBUG "-G -O0")
     set(CMAKE_CUDA_FLAGS_PROFILE "-pg -O3")
     set(CMAKE_CUDA_FLAGS_RELEASE "-O3")
