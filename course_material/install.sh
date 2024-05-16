@@ -16,7 +16,7 @@ cd $build_dir
 cmake -DCMAKE_INSTALL_MESSAGE=NEVER -DCMAKE_VERBOSE_MAKEFILE=OFF -DCMAKE_RULE_MESSAGES=OFF -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR -DCMAKE_BUILD_TYPE=$BUILD_TYPE $COURSE_DIR/
 
 # Make everything and install
-make -j$(nproc) all install
+make -j $(nproc) all install
 
 # Write a build script
 build_script=${RUN_DIR}/build

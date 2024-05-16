@@ -7,9 +7,7 @@
 #SBATCH --exclusive                # Use this to request all the resources on a node
 #SBATCH --time=00:05:00
 
-module swap PrgEnv-gnu PrgEnv-cray
-module load craype-accel-amd-gfx90a
-module load rocm
+source ../env
 
 export MPICH_GPU_SUPPORT_ENABLED=1 # Enable GPU-aware MPI communication
 export OMP_NUM_THREADS=8    # Set the number of OpenMP threads per task
@@ -20,10 +18,9 @@ export OMP_PROC_BIND=close  # To bind (fix) threads (allocating them as close as
 export FI_CXI_DEFAULT_VNI=$(od -vAn -N4 -tu < /dev/urandom)
 
 # Compile the software
-make clean
-make
+build hello_jobstep.exe
 
 # Run a job with task placement and $BIND_OPTIONS
 srun --nodes=$SLURM_JOB_NUM_NODES --ntasks=8 --cpus-per-task=8\
 	--gres=gpu:8 --gpus-per-task=1 --gpu-bind=closest\
-	./hello_jobstep.exe | sort 
+	hello_jobstep.exe | sort 

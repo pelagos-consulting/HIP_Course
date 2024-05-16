@@ -1,12 +1,10 @@
 #!/bin/bash --login
 
-#SBATCH --account=courses01-gpu    # your account
+#SBATCH --account=<account>-gpu    # your account
 #SBATCH --partition=gpu-dev        # Using the gpu-dev partition
 #SBATCH --nodes=1                  # Total number of nodes
 #SBATCH --gres=gpu:2               # Number of GPU's per node
 #SBATCH --time=01:00:00
-
-echo "Hostname is $HOSTNAME"
 
 source ../../env
 
@@ -16,6 +14,9 @@ export OMP_PROC_BIND=close  #To bind (fix) threads (allocating them as close as 
 
 # Temporal workaround for avoiding Slingshot issues on shared nodes:
 export FI_CXI_DEFAULT_VNI=$(od -vAn -N4 -tu < /dev/urandom)
+
+# Build the application
+build mat_mult_profiling_mpi.exe
 
 # Make the result directory
 mkdir -p rocprof_counters

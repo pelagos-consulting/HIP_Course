@@ -21,7 +21,7 @@ add_executable (${target}
     ${HEADER_FILES}
 )
 # Link in HIP and MPI
-target_link_libraries(${target} ${kernel_libs} MPI::MPI_CXX)
+target_link_libraries(${target} ${kernel_libs} MPI::MPI_CXX $ENV{MPI_EXTRA_LIBS})
 # Include common directories
 target_include_directories(${target} PRIVATE ${PROJECT_SOURCE_DIR}/common)
 # Compile target with CXX compiler
