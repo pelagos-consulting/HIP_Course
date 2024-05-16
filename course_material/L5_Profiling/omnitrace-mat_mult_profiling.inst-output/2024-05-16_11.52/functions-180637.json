@@ -1,0 +1,135 @@
+{
+ "omnitrace": {
+  "functions": {
+   "_Exit": [
+    11897601850601340186
+   ],
+   "abort": [
+    16014859460070068810
+   ],
+   "causal_gotcha": [
+    6798030486211834302
+   ],
+   "exit": [
+    16711936661946036647
+   ],
+   "fork": [
+    10784045628480842107
+   ],
+   "hipDeviceReset": [
+    14590052678664297592
+   ],
+   "hipDeviceSynchronize": [
+    6052093021243339593
+   ],
+   "hipEventCreate": [
+    12912418213297966194
+   ],
+   "hipEventDestroy": [
+    12190779122577250920
+   ],
+   "hipEventElapsedTime": [
+    12363937143919098103
+   ],
+   "hipEventRecord": [
+    4029178042087954827
+   ],
+   "hipEventSynchronize": [
+    7006544935431546471
+   ],
+   "hipFree": [
+    7262846918760572744
+   ],
+   "hipGetDeviceCount": [
+    4936343895467155043
+   ],
+   "hipGetDevicePropertiesR0600": [
+    10749098549880930278
+   ],
+   "hipHostFree": [
+    7692821425143484920
+   ],
+   "hipHostMalloc": [
+    7341243795162515291
+   ],
+   "hipInit": [
+    16926910736509004676
+   ],
+   "hipLaunchKernel": [
+    17927011900381382185
+   ],
+   "hipMalloc": [
+    14361181588555253821
+   ],
+   "hipMemcpy": [
+    16636184903618607827
+   ],
+   "hipSetDevice": [
+    8508826474073980750
+   ],
+   "mat_mult_profiling.inst.exe": [
+    14622888038008173067
+   ],
+   "mbind": [
+    3809147642648803628
+   ],
+   "migrate_pages": [
+    8748301944647776492
+   ],
+   "move_pages": [
+    6610375604690534853
+   ],
+   "numa_alloc": [
+    7113396289054810430
+   ],
+   "numa_alloc_interleaved": [
+    12906658703067614028
+   ],
+   "numa_alloc_local": [
+    12978237997808739
+   ],
+   "numa_alloc_onnode": [
+    16490871746098411226
+   ],
+   "numa_free": [
+    5913693315178689722
+   ],
+   "numa_migrate_pages": [
+    8085933945063061935
+   ],
+   "numa_move_pages": [
+    7197609118176772879
+   ],
+   "numa_realloc": [
+    8142340014522669391
+   ],
+   "omnitrace/process/180637": [
+    9941577552667095620
+   ],
+   "omnitrace/process/180637/thread/0": [
+    1746454206740268252
+   ],
+   "omnitrace/process/180637/thread/2": [
+    377122406068697898
+   ],
+   "pthread_barrier_wait": [
+    17197545726087919686
+   ],
+   "pthread_create": [
+    501283434254352003
+   ],
+   "pthread_gotcha": [
+    7052162594254717710
+   ],
+   "pthread_join": [
+    2814950835389844446
+   ],
+   "quick_exit": [
+    6515642576547909555
+   ],
+   "start_thread": [
+    14526682463026408130
+   ]
+  }
+ }
+}

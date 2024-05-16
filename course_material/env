@@ -7,31 +7,54 @@ then
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${ROCM_PATH}/lib:${ROCM_PATH}/llvm/lib
     export LIBRARY_PATH=$LIBRARY_PATH:${ROCM_PATH}/lib:${ROCM_PATH}/llvm/lib
 
+    export HIP_PLATFORM=amd
+    export GPU_ARCH="gfx90a"
+
     # Extra flags to enable GPU support
     MPICH_GPU_SUPPORT_ENABLED=1
-
-    export HIP_PLATFORM=amd
-    export GPU_ARCH=gfx90a
 
     # Any extra MPI libs here
     export MPI_EXTRA_LIBS="-L${CRAY_MPICH_ROOTDIR}/gtl/lib -lmpi_gtl_hsa"
 
-else
-    # Load crucial modules
-    module load gcc rocm mpich
+elif [[ $HOSTNAME =~ "workshop" ]]
+then
+    # Using the workshop server
+    module load gcc rocm mpich omnitrace omniperf
 
-    # Try to load cuda and use that as the deciding factor
-    if module load cuda 2>/dev/null; then
-        # We are using the nvidia backend
-        export HIP_PLATFORM=nvidia
-        # CUDA architectures to support
-        export GPU_ARCH="60;61;70;75;80;86;89;90"
-    else
-        # We are using the AMD backend
-        export HIP_PLATFORM=amd
-        # HIP architectures to support
-        export GPU_ARCH="gfx906;gfx908;gfx90a;gfx1035"
-    fi    
+    # We are using the AMD backend
+    export HIP_PLATFORM=amd
+    # HIP architectures to support
+    export GPU_ARCH="gfx906"
+
+elif [[ $HOSTNAME =~ "fullcircle" ]]
+then
+    # Using an NVIDIA machine
+    module load gcc rocm mpich cuda
+    
+    export HIP_PLATFORM=nvidia
+    export GPU_ARCH="86"
+
+    #export HIP_PLATFORM=amd
+    #export GPU_ARCH="gfx1035"
+
+else
+    # Locations for ROCM and CUDA
+    export ROCM_PATH=/opt/rocm
+    export CUDA_PATH=/usr/local/cuda
+
+    # Try to make sure nvcc and hipconfig are in the path
+    export PATH=${PATH}:${ROCM_PATH}/bin:${CUDA_PATH}/bin
+    export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${ROCM_PATH}/lib:${CUDA_PATH}/lib64
+    export LIBRARY_PATH=${LIBRARY_PATH}:${ROCM_PATH}/lib:${CUDA_PATH}/lib64
+    export CPATH=${CPATH}:${ROCM_PATH}/include:${CUDA_PATH}/include
+
+    # Use a CUDA backend
+    export HIP_PLATFORM=nvidia
+    export GPU_ARCH="60;61;70;75;80;86;89;90"
+    
+    # Use an AMD backend
+    #export HIP_PLATFORM=amd
+    #export GPU_ARCH="gfx906;gfx908;gfx90a;gfx1035"    
 fi
 
 # Get the directory that this file is located in
