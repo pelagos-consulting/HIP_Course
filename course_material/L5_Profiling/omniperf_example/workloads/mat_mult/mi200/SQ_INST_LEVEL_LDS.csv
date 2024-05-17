@@ -1,2 +1,2 @@
 Index,KernelName,gpu-id,queue-id,queue-index,pid,tid,grd,wgr,lds,scr,vgpr,sgpr,fbar,sig,obj,SQ_INSTS_LDS,SQ_INST_LEVEL_LDS,SQ_ACCUM_PREV_HIRES,DispatchNs,BeginNs,EndNs,CompleteNs
-0,"mat_mult(float*, float*, float*, unsigned long, unsigned long, unsigned long) [clone .kd]",0,0,3,4116,4116,536640,64,0,0,8,32,0,0x0,0x148c80b8d940,0,0,0,678289397219038,678288838478209,678289406773544,678289406775870
+0,"mat_mult(float*, float*, float*, unsigned long, unsigned long, unsigned long) [clone .kd]",0,0,3,128705,128705,536640,64,0,0,8,32,0,0x0,0x1516d8e30780,0,0,0,3287141224284315,3287141232287602,3287141232658004,3287141232660662

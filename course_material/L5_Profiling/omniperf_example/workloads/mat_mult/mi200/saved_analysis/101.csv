@@ -1,12 +1,12 @@
 Info
 mat_mult
-./mat_mult_profiling.exe -o mat_mult.csv
-nid002080
+/scratch/courses01/tpotter/HIP_Course/course_material/install/bin/mat_mult_profiling.exe -o mat_mult.csv
+nid002992
 AMD EPYC 7A53 64-Core Processor
-SUSE Linux Enterprise Server 15 SP3
-5.3.18-150300.59.87_11.0.78-cray_shasta_c
-5.0.2-72
-Fri May 12 11:50:17 2023 (AWST)
+SUSE Linux Enterprise Server 15 SP4
+5.14.21-150400.24.46_12.0.73-cray_shasta_c
+5.2.3-109
+Fri May 17 10:33:04 2024 (AWST)
 gfx90a
 8
 110
