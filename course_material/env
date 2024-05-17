@@ -19,7 +19,7 @@ then
 elif [[ $HOSTNAME =~ "workshop" ]]
 then
     # Using the workshop server
-    module load gcc rocm mpich omnitrace omniperf
+    module load gcc rocm mpich omnitrace omniperf/main
 
     # We are using the AMD backend
     export HIP_PLATFORM=amd
