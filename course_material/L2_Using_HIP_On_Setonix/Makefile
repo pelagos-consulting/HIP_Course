@@ -1,24 +1,20 @@
 
-# Include general environment variables
-include ../env
-
 # List of applications to target
 TARGETS=hello_jobstep.exe hello_devices_mpi.exe hello_devices_mpi_onefile_hipcc.exe hello_devices_mpi_onefile_CC.exe
 
 all: $(TARGETS)
 
 # Compiler flags for C++ compiler
-CC_CFLAGS=-g -fopenmp $(BASE_INC_FLAGS) -D__HIP_ROCclr__ -D__HIP_ARCH_GFX90A__=1 --offload-arch=gfx90a -x hip
+CC_CFLAGS=-x hip -fPIC -D__HIP_ROCclr__ -D__HIP_ARCH_GFX90A__=1 --offload-arch=gfx90a --rocm-path=${ROCM_PATH}
 
 # Linker flags for C++ compiler
-#CC_LDFLAGS=-g --rocm-path=${ROCM_PATH} -L${ROCM_PATH}/lib -lamdhip64 $(BASE_LIB_FLAGS)
-CC_LDFLAGS=$(BASE_LIB_FLAGS)
+CC_LDFLAGS=--rocm-path=${ROCM_PATH} -L${ROCM_PATH}/lib -lamdhip64
 
 # Compiler flags for hipcc on AMD platform
-HIPCC_CFLAGS=-ggdb -fopenmp $(BASE_INC_FLAGS) -I${MPICH_DIR}/include --offload-arch=gfx90a $(shell CC --cray-print-opts=cflags)
+HIPCC_CFLAGS=-fPIC -fopenmp -I${MPICH_DIR}/include --offload-arch=gfx90a 
 
 # Linker flags for hipcc on AMD platform
-HIPCC_LDFLAGS=--offload-arch=gfx90a -L$(MPICH_DIR)/lib -lmpi $(PE_MPICH_GTL_DIR_amd_gfx90a) $(PE_MPICH_GTL_LIBS_amd_gfx90a) $(shell CC --cray-print-opts=libs) $(BASE_LIB_FLAGS)
+HIPCC_LDFLAGS=--offload-arch=gfx90a -L$(MPICH_DIR)/lib -lmpi -L${CRAY_MPICH_ROOTDIR}/gtl/lib -lmpi_gtl_hsa 
 
 # Compile the kernel source only with hipcc
 %.o : %.hip.cpp

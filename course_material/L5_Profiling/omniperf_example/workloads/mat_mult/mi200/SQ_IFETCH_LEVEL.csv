@@ -1,2 +1,2 @@
 Index,KernelName,gpu-id,queue-id,queue-index,pid,tid,grd,wgr,lds,scr,vgpr,sgpr,fbar,sig,obj,GRBM_COUNT,GRBM_GUI_ACTIVE,SQ_WAVES,SQ_IFETCH,SQ_IFETCH_LEVEL,SQ_ACCUM_PREV_HIRES,DispatchNs,BeginNs,EndNs,CompleteNs
-0,"mat_mult(float*, float*, float*, unsigned long, unsigned long, unsigned long) [clone .kd]",0,0,3,4330,4330,536640,64,0,0,8,32,0,0x0,0x14976a98d940,556410,556410,8385,6506760,931077,104355520,678289965644476,678289406773238,678289975385398,678289975387287
+0,"mat_mult(float*, float*, float*, unsigned long, unsigned long, unsigned long) [clone .kd]",0,0,3,128901,128901,536640,64,0,0,8,32,0,0x0,0x14b0bd29c780,570983,570983,8385,4360200,625211,70103232,3287141813648582,3287141821641599,3287141822016321,3287141822019057

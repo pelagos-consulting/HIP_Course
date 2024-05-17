@@ -11,6 +11,11 @@ ifeq ($(CXX), hipcc)
         # Flags for AMD platform
         CXXFLAGS=-g -O2 -fopenmp
         LIBFLAGS=
+
+        # Special flags for Setonix
+        ifeq ($(findstring setonix,$(SLURM_SUBMIT_HOST)),setonix)
+                CXXFLAGS:=--offload-arch=gfx90a $(CXXFLAGS)
+        endif
     endif
 endif
 

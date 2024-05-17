@@ -1,44 +1,76 @@
+#/bin/bash
 
+if [[ $PAWSEY_CLUSTER =~ "setonix" ]]
+then
+    module load rocm/5.2.3 cmake/3.24.3 craype-accel-amd-gfx90a omnitrace/1.10.2 omniperf/1.0.6
 
-# Detect the OS in use
-ifeq ($(OS),Windows_NT) 
-    detected_OS := Windows
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${ROCM_PATH}/lib:${ROCM_PATH}/llvm/lib
+    export LIBRARY_PATH=$LIBRARY_PATH:${ROCM_PATH}/lib:${ROCM_PATH}/llvm/lib
+
+    export HIP_PLATFORM=amd
+    export GPU_ARCH="gfx90a"
+
+    # Extra flags to enable GPU support
+    MPICH_GPU_SUPPORT_ENABLED=1
+
+    # Any extra MPI libs here
+    export MPI_EXTRA_LIBS="-L${CRAY_MPICH_ROOTDIR}/gtl/lib -lmpi_gtl_hsa"
+
+elif [[ $HOSTNAME =~ "workshop" ]]
+then
+    # Using the workshop server
+    module load gcc rocm mpich omnitrace omniperf/1.0.10
+
+    # We are using the AMD backend
+    export HIP_PLATFORM=amd
+    # HIP architectures to support
+    export GPU_ARCH="gfx906"
+
+elif [[ $HOSTNAME =~ "fullcircle" ]]
+then
+    # Using an NVIDIA machine
+    module load gcc rocm mpich cuda
+    
+    export HIP_PLATFORM=nvidia
+    export GPU_ARCH="86"
+
+    #export HIP_PLATFORM=amd
+    #export GPU_ARCH="gfx1035"
+
 else
-    detected_OS := $(shell sh -c 'uname 2>/dev/null || echo Unknown')
-endif
+    # Locations for ROCM and CUDA
+    export ROCM_PATH=/opt/rocm
+    export CUDA_PATH=/usr/local/cuda
 
-# Default flags
+    # Try to make sure nvcc and hipconfig are in the path
+    export PATH=${PATH}:${ROCM_PATH}/bin:${CUDA_PATH}/bin
+    export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${ROCM_PATH}/lib:${CUDA_PATH}/lib64
+    export LIBRARY_PATH=${LIBRARY_PATH}:${ROCM_PATH}/lib:${CUDA_PATH}/lib64
+    export CPATH=${CPATH}:${ROCM_PATH}/include:${CUDA_PATH}/include
 
-# Compiler locations
-CXX=hipcc
-CXXFLAGS=-fopenmp
+    # Use a CUDA backend
+    export HIP_PLATFORM=nvidia
+    export GPU_ARCH="60;61;70;75;80;86;89;90"
+    
+    # Use an AMD backend
+    #export HIP_PLATFORM=amd
+    #export GPU_ARCH="gfx906;gfx908;gfx90a;gfx1035"    
+fi
 
-# Miscellaneous include flags for base compilation 
-BASE_INC_FLAGS=-I../include
+# Get the directory that this file is located in
+COURSE_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-# Miscellaneous library flags for base compilation
-BASE_LIB_FLAGS=
+# Set the installation directory
+INSTALL_DIR=$COURSE_DIR/install
 
-# Select the right platform
-ifeq ($(HIP_PLATFORM), nvidia)
-    # Flags for CUDA platform
-    CXXFLAGS:=-Xcompiler $(CXXFLAGS)
-    ifeq ($(DEBUG), true)
-        CXXFLAGS:=-g -G $(CXXFLAGS)
-    else
-        CXXFLAGS:=-g -O2 $(CXXFLAGS) 
-    endif
-    BASE_LIB_FLAGS:=-lgomp $(BASE_LIB_FLAGS)
-else
-    # Normal compilation
-    ifeq ($(DEBUG), true)
-        CXXFLAGS:=-O0 -g -ggdb $(CXXFLAGS)
-    else
-        CXXFLAGS:=-g -O2 $(CXXFLAGS)
-    endif
-endif
+# Set the runtime directory -- don't edit this one
+RUN_DIR=$INSTALL_DIR/bin
 
-# Special flags for Setonix
-ifeq ($(findstring setonix,$(SLURM_SUBMIT_HOST)),setonix)
-    CXXFLAGS:=--offload-arch=gfx90a $(CXXFLAGS)
-endif
+# Add RUN_DIR to the path
+export PATH=$PATH:$RUN_DIR
+
+# Set the build type, options are DEBUG, COVERAGE, PROFILE, RELEASE
+export BUILD_TYPE=RELEASE
+
+# Force HIP compiler to accept -fPIC and -fopenmp
+export HIPFLAGS="-fPIC -fopenmp"

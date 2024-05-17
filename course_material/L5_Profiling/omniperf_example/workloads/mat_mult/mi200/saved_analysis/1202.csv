@@ -1,5 +1,5 @@
 Metric,Avg,Min,Max,Unit
-Wave Cycles,186192.6626118068,186192.6626118068,186192.6626118068,Cycles/wave
+Wave Cycles,188115.4991055456,188115.4991055456,188115.4991055456,Cycles/wave
 LDS Instrs,0.0,0.0,0.0,Instr per wave
 Bandwidth,0.0,0.0,0.0,Bytes per wave
 Bank Conficts/Access,,,,Conflicts/access

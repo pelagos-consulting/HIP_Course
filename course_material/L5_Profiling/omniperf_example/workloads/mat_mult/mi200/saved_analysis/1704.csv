@@ -1,8 +1,8 @@
-Metric,Type,Transaction,Avg,Min,Max,Unit
-Read - Remote Socket Stall,Remote Socket Stall,Read,0.0,0.0,0.0,Req per wave
-Read - Peer GCD Stall,Peer GCD Stall,Read,0.0,0.0,0.0,Req per wave
-Read - HBM Stall,HBM Stall,Read,0.0,0.0,0.0,Req per wave
-Write - Remote Socket Stall,Remote Socket Stall,Write,0.0,0.0,0.0,Req per wave
-Write - Peer GCD Stall,Peer GCD Stall,Write,0.0,0.0,0.0,Req per wave
-Write - HBM Stall,HBM Stall,Write,0.0,0.0,0.0,Req per wave
-Write - Credit Starvation,Credit Starvation,Write,0.0,0.0,0.0,Req per wave
+Metric,Avg,Min,Max,Unit
+Read - Remote Socket Stall,0.0,0.0,0.0,Req per wave
+Read - Peer GCD Stall,0.0,0.0,0.0,Req per wave
+Read - HBM Stall,0.0,0.0,0.0,Req per wave
+Write - Remote Socket Stall,0.0,0.0,0.0,Req per wave
+Write - Peer GCD Stall,0.0,0.0,0.0,Req per wave
+Write - HBM Stall,0.0,0.0,0.0,Req per wave
+Write - Credit Starvation,0.0,0.0,0.0,Req per wave

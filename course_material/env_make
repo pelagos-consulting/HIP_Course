@@ -1,0 +1,44 @@
+
+
+# Detect the OS in use
+ifeq ($(OS),Windows_NT) 
+    detected_OS := Windows
+else
+    detected_OS := $(shell sh -c 'uname 2>/dev/null || echo Unknown')
+endif
+
+# Default flags
+
+# Compiler locations
+CXX=hipcc
+CXXFLAGS=-fopenmp
+
+# Miscellaneous include flags for base compilation 
+BASE_INC_FLAGS=-I../include
+
+# Miscellaneous library flags for base compilation
+BASE_LIB_FLAGS=
+
+# Select the right platform
+ifeq ($(HIP_PLATFORM), nvidia)
+    # Flags for CUDA platform
+    CXXFLAGS:=-Xcompiler $(CXXFLAGS)
+    ifeq ($(DEBUG), true)
+        CXXFLAGS:=-g -G $(CXXFLAGS)
+    else
+        CXXFLAGS:=-g -O2 $(CXXFLAGS) 
+    endif
+    BASE_LIB_FLAGS:=-lgomp $(BASE_LIB_FLAGS)
+else
+    # Normal compilation
+    ifeq ($(DEBUG), true)
+        CXXFLAGS:=-O0 -g -ggdb $(CXXFLAGS)
+    else
+        CXXFLAGS:=-g -O2 $(CXXFLAGS)
+    endif
+endif
+
+# Special flags for Setonix
+ifeq ($(findstring setonix,$(SLURM_SUBMIT_HOST)),setonix)
+    CXXFLAGS:=--offload-arch=gfx90a $(CXXFLAGS)
+endif

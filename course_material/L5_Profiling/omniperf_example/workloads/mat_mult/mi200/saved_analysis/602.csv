@@ -1,9 +1,9 @@
 Metric,Avg,Min,Max,Unit
-Wave request Failed (CS),197514.0,197514,197514,Cycles
-CS Stall,119598.0,119598,119598,Cycles
-CS Stall Rate,22.272628232704438,22.272628232704438,22.272628232704438,Pct
+Wave request Failed (CS),234005.0,234005,234005,Cycles
+CS Stall,148368.0,148368,148368,Cycles
+CS Stall Rate,27.88620575587165,27.88620575587165,27.88620575587165,Pct
 Scratch Stall,0.0,0,0,Cycles
-Insufficient SIMD Waveslots,6284736.0,6284736,6284736,Simd
+Insufficient SIMD Waveslots,6854208.0,6854208,6854208,Simd
 Insufficient SIMD VGPRs,0.0,0,0,Simd
 Insufficient SIMD SGPRs,0.0,0,0,Simd
 Insufficient CU LDS,0.0,0,0,Cu
