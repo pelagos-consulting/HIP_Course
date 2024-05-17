@@ -28,14 +28,6 @@ void h_errchk(hipError_t errcode, const char* message) {
     }
 }
 
-/// Macro to check error codes.
-#define H_ERRCHK(cmd) \
-{\
-    std::string file = __FILE__;\
-    std::string mesg = file + ":" + std::to_string(__LINE__);\
-    h_errchk(cmd, mesg.c_str());\
-}
-
 /// Get the L1 cache line size
 size_t h_get_cache_line_size() {
     // Get the L1 cache line size
