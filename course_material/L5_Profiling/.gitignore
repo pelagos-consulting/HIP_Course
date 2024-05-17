@@ -1,5 +1,7 @@
 workloads/
 rocprof_trace/
+ncu_counters/
+nsys_trace/
 omnitrace-mat_mult_profiling.inst-output/
 omnitrace-mat_mult_profiling-output/
 omnitrace.cfg
