@@ -186,20 +186,17 @@ int main(int argc, char** argv) {
     );
     
     // Pretty print the matrices
-    std::cout << "Image input" << "\n";
+    std::cout << "Image in" << "\n";
     m_show_matrix(image_in, len0_src, len1_src);    
-    
-    std::cout << "Image CPU" << "\n";
-    m_show_matrix(image_test, len0_src, len1_src);
-    
-    std::cout << "Image HIP" << "\n";
-    m_show_matrix(image_out, len0_src, len1_src);
-    
-    // Get the maximum error between the two
-    m_max_error(image_test, image_out, len0_src, len1_src);
 
     std::cout << "Image kernel" << "\n";
-    m_show_matrix(image_kern, K0, K1);  
+    m_show_matrix(image_kern, K0, K1); 
+    
+    std::cout << "Image out - CPU" << "\n";
+    m_show_matrix(image_test, len0_src, len1_src);
+    
+    std::cout << "Image out - HIP" << "\n";
+    m_show_matrix(image_out, len0_src, len1_src);  
 
     // Write output data to output file
     h_write_binary(image_out, "image_out.dat", nbytes_image);
