@@ -7516,23 +7516,49 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Exercise---building-a-layer-cake">Exercise - building a layer cake<a class="anchor-link" href="#Exercise---building-a-layer-cake">¶</a></h1><p>In this exercise the goal is to optimise an iterative code so that copies are performed concurrently with compute. The code <a href="layer_cake.cpp">layer_cake.cpp</a> is a synchronous application where at each iteration <strong>n</strong> a simple kernel called <strong>fill_plane</strong> fills an on-device allocation in <strong>U_ds</strong> with <strong>n</strong>.</p>
+<h1 id="Exercise---building-a-layer-cake">Exercise - building a layer cake<a class="anchor-link" href="#Exercise---building-a-layer-cake">¶</a></h1><p>In this exercise the goal is to optimise an iterative code so that copies are performed concurrently with compute. The code <a href="exercise_layer_cake.cpp">exercise_layer_cake.cpp</a> is a synchronous application where at each iteration <strong>n</strong> a simple kernel called <strong>fill_plane</strong> fills an on-device allocation in <strong>U_ds</strong> with <strong>n</strong>.</p>
 <p>After the kernel completes, <strong>hipMemcpy3D</strong> is employed to copy the plane to <strong>out_h</strong>, a 3D array of output planes. We avoid copying plane 1 to work around a bug in the AMD implementation of <strong>hipMemcpy3D</strong>. Hopefully this bug will be fixed in the future.</p>
 <p>If we make and run the application we can see that it correctly copies all planes other than plane 1.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=359791e3-d314-48c6-a8e1-78fe4037f67a">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f89ace9a-56f1-4fdb-a8f6-fefdd776cc06">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Add-the-path">Add the path<a class="anchor-link" href="#Add-the-path">¶</a></h2><p>This command puts into the path the commands for building and running the exercise.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=c43a0b06-f295-470b-85ce-34c1f1de8d43">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">subprocess</span><span class="o">,</span> <span class="nn">os</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">'PATH'</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">'PATH'</span><span class="p">]</span><span class="si">}</span><span class="s2">:../../install/bin"</span>
+
+<span class="c1"># At a Bash terminal you need to do this instead</span>
+<span class="c1"># source ../env</span>
 </pre></div>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ce61f221-1084-4c12-93a7-0404b3fa1ff9">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Compile-and-run-the-exercise">Compile and run the exercise<a class="anchor-link" href="#Compile-and-run-the-exercise">¶</a></h2><p>The code <a href="exercise_layer_cake.cpp">exercise_layer_cake.cpp</a> compiles and runs, but it is only a synchronous solution. There is more performance to be gained by implementing an asynchronous IO solution.</p>
 </div>
 </div>
 </div>
@@ -7541,11 +7567,10 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>make
-<span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span><span class="s2">"layer_cake.exe"</span><span class="p">)])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span>exercise_layer_cake.exe<span class="p">;</span><span class="w"> </span>exercise_layer_cake.exe
 </pre></div>
 </div>
 </div>
@@ -7558,19 +7583,22 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>make: Nothing to be done for 'all'.
+<pre>[ 50%] Built target hip_helper
+[100%] Built target exercise_layer_cake.exe
+<span class="ansi-cyan-fg">Install the project...</span>
+-- Install configuration: "RELEASE"
 Device id: 0
-	name:                                    AMD Radeon Graphics
-	global memory size:                      536 MB
+	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
+	global memory size:                      6219 MB
 	available registers per block:           65536 
-	max threads per SM or CU:                2048 
-	maximum shared memory size per block:    65 KB
-	maximum shared memory size per SM or CU: 65 KB
-	maximum pitch size for memory copies:    402 MB
-	max block size:                          (1024,1024,1024)
+	max threads per SM or CU:                1536 
+	maximum shared memory size per block:    49 KB
+	maximum shared memory size per SM or CU: 0 KB
+	maximum pitch size for memory copies:    2147 MB
+	max block size:                          (1024,1024,64)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,2147483647,2147483647)
-The synchronous calculation took 0.407000 milliseconds.
+	max Grid size:                           (2147483647,65535,65535)
+The synchronous calculation took 0.140000 milliseconds.
 ----
 |  0.00e+00  0.00e+00  0.00e+00  0.00e+00 |
 |  0.00e+00  0.00e+00  0.00e+00  0.00e+00 |
@@ -7634,12 +7662,6 @@ The synchronous calculation took 0.407000 milliseconds.
 </pre>
 </div>
 </div>
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[2]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>CompletedProcess(args=['/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/layer_cake.exe'], returncode=0)</pre>
-</div>
-</div>
 </div>
 </div>
 </div>
@@ -7660,7 +7682,7 @@ The synchronous calculation took 0.407000 milliseconds.
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="A-concurrent-solution">A concurrent solution<a class="anchor-link" href="#A-concurrent-solution">¶</a></h2><p>One concurrent solution is located in the file <a href="layer_cake_answers.cpp">layer_cake_answers.cpp</a>. If you get stuck you are welcome to use this solution as inspiration for your own, however there are multiple ways (stream, event, or a combination) in which the necessary synchronisation can be implemented.</p>
+<h2 id="A-concurrent-solution">A concurrent solution<a class="anchor-link" href="#A-concurrent-solution">¶</a></h2><p>One concurrent solution is located in the file <a href="exercise_layer_cake_answers.cpp">exercise_layer_cake_answers.cpp</a>. If you get stuck you are welcome to use this solution as inspiration for your own, however there are multiple ways (stream, event, or a combination) in which the necessary synchronisation can be implemented.</p>
 </div>
 </div>
 </div>
@@ -7669,11 +7691,10 @@ The synchronous calculation took 0.407000 milliseconds.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>make
-<span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span><span class="s2">"layer_cake_answers.exe"</span><span class="p">)])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span>exercise_layer_cake_answers.exe<span class="p">;</span><span class="w"> </span>exercise_layer_cake_answers.exe
 </pre></div>
 </div>
 </div>
@@ -7686,19 +7707,22 @@ The synchronous calculation took 0.407000 milliseconds.
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>make: Nothing to be done for 'all'.
+<pre>[ 50%] Built target hip_helper
+[100%] Built target exercise_layer_cake_answers.exe
+<span class="ansi-cyan-fg">Install the project...</span>
+-- Install configuration: "RELEASE"
 Device id: 0
-	name:                                    AMD Radeon Graphics
-	global memory size:                      536 MB
+	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
+	global memory size:                      6219 MB
 	available registers per block:           65536 
-	max threads per SM or CU:                2048 
-	maximum shared memory size per block:    65 KB
-	maximum shared memory size per SM or CU: 65 KB
-	maximum pitch size for memory copies:    402 MB
-	max block size:                          (1024,1024,1024)
+	max threads per SM or CU:                1536 
+	maximum shared memory size per block:    49 KB
+	maximum shared memory size per SM or CU: 0 KB
+	maximum pitch size for memory copies:    2147 MB
+	max block size:                          (1024,1024,64)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,2147483647,2147483647)
-The asynchronous calculation took 0.898000 milliseconds.
+	max Grid size:                           (2147483647,65535,65535)
+The asynchronous calculation took 0.137000 milliseconds.
 Layer - 0
 :----
 |  0.00e+00  0.00e+00  0.00e+00  0.00e+00 |
@@ -7772,10 +7796,18 @@ Layer - 9
 </pre>
 </div>
 </div>
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[3]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>CompletedProcess(args=['/home/toby/Pelagos/Projects/HIP_Course/course_material/L8_IO_Optimisation/layer_cake_answers.exe'], returncode=0)</pre>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=faffa6e3-e891-4311-8f9d-76434e4c0000">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span> 
+</pre></div>
 </div>
 </div>
 </div>

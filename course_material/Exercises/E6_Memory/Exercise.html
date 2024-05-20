@@ -7534,8 +7534,37 @@ a.anchor-link {
 <li>Write <strong>D_h</strong>, <strong>E_h</strong> and <strong>F_h</strong> to disk.</li>
 <li>Release resources.</li>
 </ol>
-<p>Using rectangular copies is an important skill to master, especially when you are decomposing your problem into sections that are to be handled by different devices. In this exercise we are going enable the elementwise matrix multiplication code to use a <strong>rectangular copy</strong> to copy the memory allocation <strong>F_d</strong> back to the host (<strong>F_h</strong>). The source code to edit is located in <a href="mat_elementwise.cpp">mat_elementwise.cpp</a>.</p>
+<p>Using rectangular copies is an important skill to master, especially when you are decomposing your problem into sections that are to be handled by different devices. In this exercise we are going enable the elementwise matrix multiplication code to use a <strong>rectangular copy</strong> to copy the memory allocation <strong>F_d</strong> back to the host (<strong>F_h</strong>). The source code to edit is located in <a href="exercise_rectcopy.cpp">exercise_rectcopy.cpp</a>.</p>
 <p>The code works fine as it is, however it is only using a 1D memory copy with a call to <strong>hipMemcpy</strong>. For teaching purposes your task is to instrument this program to copy the device memory allocation <strong>F_d</strong> to <strong>F_h</strong> using a call to the rectangular copy function <strong>hipMemcpy3D</strong>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2eafd2ab-4ca7-415f-997e-44f28c7dfa46">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Source-the-path">Source the path<a class="anchor-link" href="#Source-the-path">¶</a></h2><p>This command puts into the path the commands for building and running the exercise.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=5ac68efd-66df-4658-9144-4e8a40b9a9bb">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">'PATH'</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">'PATH'</span><span class="p">]</span><span class="si">}</span><span class="s2">:../../install/bin"</span>
+
+<span class="c1"># At a Bash terminal you need to do this instead</span>
+<span class="c1"># source ../env</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -7546,7 +7575,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Run-the-exercise-code">Run the exercise code<a class="anchor-link" href="#Run-the-exercise-code">¶</a></h2><p>As it stands the code produces the right answer, but it is using a standard contiguous copy to copy <strong>F_d</strong> back to <strong>F_h</strong>.</p>
+<h2 id="Run-the-exercise-code">Run the exercise code<a class="anchor-link" href="#Run-the-exercise-code">¶</a></h2><p>As it stands, the code produces the right answer, but it is using a standard contiguous copy to copy <strong>F_d</strong> back to <strong>F_h</strong>.</p>
 </div>
 </div>
 </div>
@@ -7555,10 +7584,10 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>make<span class="w"> </span>./mat_elementwise.exe<span class="p">;</span><span class="w"> </span>./mat_elementwise.exe
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span>exercise_rectcopy.exe<span class="p">;</span><span class="w"> </span>exercise_rectcopy.exe
 </pre></div>
 </div>
 </div>
@@ -7571,14 +7600,17 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>make: 'mat_elementwise.exe' is up to date.
+<pre>[ 50%] Built target hip_helper
+[100%] Built target exercise_rectcopy.exe
+<span class="ansi-cyan-fg">Install the project...</span>
+-- Install configuration: "RELEASE"
 Device id: 0
 	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
-	global memory size:                      6226 MB
+	global memory size:                      6219 MB
 	available registers per block:           65536 
 	max threads per SM or CU:                1536 
 	maximum shared memory size per block:    49 KB
-	maximum shared memory size per SM or CU: 102 KB
+	maximum shared memory size per SM or CU: 0 KB
 	maximum pitch size for memory copies:    2147 MB
 	max block size:                          (1024,1024,64)
 	max threads in a block:                  1024
@@ -7630,8 +7662,8 @@ Maximum error (infinity norm) is: 0
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="Tasks">Tasks<a class="anchor-link" href="#Tasks">¶</a></h2><ol>
-<li>Load up the documentation for <strong>hipMemcpy3D</strong>.</li>
-<li>In <a href="mat_mult_pitched_mem.cpp">mat_mult_pitched_mem.cpp:197</a> there is an example for performing a rectangular copy using <strong>hipMemcpy3D</strong>. Copy-paste that code to <a href="mat_elementwise.cpp">mat_elementwise.cpp</a> and begin modifications.</li>
+<li>Load up the documentation for <a href="https://rocm.docs.amd.docm">hipMemcpy3D</a>.</li>
+<li>In <a href="../../L6_Memory_Management/mat_mult_pitched_mem.cpp"></a>mat_mult_pitched_mem.cpp:197 there is an example for performing a rectangular copy using <strong>hipMemcpy3D</strong>. Copy-paste that code to <a href="exercise_rectcopy.cpp">exercise_rectcopy.cpp</a> and begin modifications.</li>
 </ol>
 <h3 id="Bonus-task">Bonus task<a class="anchor-link" href="#Bonus-task">¶</a></h3><p>Experiment with the 3D copy, can you change it so that it only copies back a rectangular region inside F_d, leaving a border 1 cell wide all the way around?</p>
 </div>
@@ -7644,7 +7676,7 @@ Maximum error (infinity norm) is: 0
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Answer">Answer<a class="anchor-link" href="#Answer">¶</a></h3><p>You can of course always look at the answer in <a href="mat_elementwise_answer.cpp">mat_elementwise_answer.cpp</a> and run the code. But then try to understand why the solution is working.</p>
+<h3 id="Answer">Answer<a class="anchor-link" href="#Answer">¶</a></h3><p>You can of course always look at the answer in <a href="exercise_rectcopy_answer.cpp">exercise_rectcopy_answer.cpp</a> and run the code. But then try to understand why the solution is working.</p>
 </div>
 </div>
 </div>
@@ -7653,10 +7685,10 @@ Maximum error (infinity norm) is: 0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>make<span class="w"> </span>mat_elementwise_answer.exe<span class="p">;</span><span class="w"> </span>./mat_elementwise_answer.exe
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span>exercise_rectcopy_answer.exe<span class="p">;</span><span class="w"> </span>exercise_rectcopy_answer.exe
 </pre></div>
 </div>
 </div>
@@ -7669,14 +7701,18 @@ Maximum error (infinity norm) is: 0
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>make: 'mat_elementwise_answer.exe' is up to date.
+<pre>[ 50%] Built target hip_helper
+<span class="ansi-magenta-intense-fg ansi-bold">Consolidate compiler generated dependencies of target exercise_rectcopy_answer.exe</span>
+[100%] Built target exercise_rectcopy_answer.exe
+<span class="ansi-cyan-fg">Install the project...</span>
+-- Install configuration: "RELEASE"
 Device id: 0
 	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
-	global memory size:                      6226 MB
+	global memory size:                      6219 MB
 	available registers per block:           65536 
 	max threads per SM or CU:                1536 
 	maximum shared memory size per block:    49 KB
-	maximum shared memory size per SM or CU: 102 KB
+	maximum shared memory size per SM or CU: 0 KB
 	maximum pitch size for memory copies:    2147 MB
 	max block size:                          (1024,1024,64)
 	max threads in a block:                  1024
