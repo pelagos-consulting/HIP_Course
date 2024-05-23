@@ -29,7 +29,7 @@ then
 elif [[ $HOSTNAME =~ "fullcircle" ]]
 then
     # Using an NVIDIA machine
-    module load gcc rocm mpich cuda
+    module load gcc rocm mpich cuda hipblas/6.0.2_nvidia
     
     export HIP_PLATFORM=nvidia
     export GPU_ARCH="86"
@@ -70,7 +70,7 @@ RUN_DIR=$INSTALL_DIR/bin
 export PATH=$PATH:$RUN_DIR
 
 # Set the build type, options are DEBUG, COVERAGE, PROFILE, RELEASE
-export BUILD_TYPE=DEBUG
+export BUILD_TYPE=RELEASE
 
 # Force HIP compiler to accept -fPIC and -fopenmp
 export HIPFLAGS="-fPIC -fopenmp"
