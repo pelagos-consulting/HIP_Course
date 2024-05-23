@@ -70,7 +70,7 @@ RUN_DIR=$INSTALL_DIR/bin
 export PATH=$PATH:$RUN_DIR
 
 # Set the build type, options are DEBUG, COVERAGE, PROFILE, RELEASE
-export BUILD_TYPE=RELEASE
+export BUILD_TYPE=DEBUG
 
 # Force HIP compiler to accept -fPIC and -fopenmp
 export HIPFLAGS="-fPIC -fopenmp"
