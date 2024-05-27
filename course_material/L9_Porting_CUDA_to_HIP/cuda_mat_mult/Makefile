@@ -2,14 +2,14 @@
 
 CXX=nvcc
 # The -x cu flag is to tell nvcc to treat cpp files as cu files
-CXXFLAGS=-g -O2 -Xcompiler -fopenmp -x cu
-LIBFLAGS=-lcuda -lgomp
+CXXFLAGS=-g -O2 -x cu
+LIBFLAGS=-lcuda 
 
 ifeq ($(CXX), hipcc)
     # If not using the NVIDIA backend
     ifneq ($(HIP_PLATFORM),nvidia)
         # Flags for AMD platform
-        CXXFLAGS=-g -O2 -fopenmp
+        CXXFLAGS=-g -O2
         LIBFLAGS=
 
         # Special flags for Setonix
