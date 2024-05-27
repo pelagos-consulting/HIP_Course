@@ -30,10 +30,10 @@ elif [[ $HOSTNAME =~ "fullcircle" ]]
 then
     # Using an NVIDIA machine
     module load gcc rocm mpich cuda hipblas/6.0.2_nvidia
-    
     export HIP_PLATFORM=nvidia
     export GPU_ARCH="86"
 
+    #module load gcc rocm mpich cuda 
     #export HIP_PLATFORM=amd
     #export GPU_ARCH="gfx1035"
 
