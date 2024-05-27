@@ -44,9 +44,9 @@ else
 
     # Try to make sure nvcc and hipconfig are in the path
     export PATH=${PATH}:${ROCM_PATH}/bin:${CUDA_PATH}/bin
-    export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${ROCM_PATH}/lib:${CUDA_PATH}/lib64
-    export LIBRARY_PATH=${LIBRARY_PATH}:${ROCM_PATH}/lib:${CUDA_PATH}/lib64
-    export CPATH=${CPATH}:${ROCM_PATH}/include:${CUDA_PATH}/include
+    export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${ROCM_PATH}/lib:${CUDA_PATH}/lib64:${ROCM_PATH}/llvm/lib
+    export LIBRARY_PATH=${LIBRARY_PATH}:${ROCM_PATH}/lib:${CUDA_PATH}/lib64:${ROCM_PATH}/llvm/lib
+    export CPATH=${CPATH}:${ROCM_PATH}/include:${CUDA_PATH}/include:${ROCM_PATH}/llvm/include
 
     # Use a CUDA backend
     export HIP_PLATFORM=nvidia
