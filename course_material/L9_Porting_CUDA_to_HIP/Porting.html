@@ -7504,7 +7504,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -7536,7 +7536,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [39]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>run<span class="w"> </span>hipify-clang<span class="w"> </span>--version
@@ -7626,7 +7626,7 @@ Familiarity with C++ and what the compiler warnings and errors mean is then cruc
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [40]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="nb">cd</span><span class="w"> </span>cuda_mat_mult<span class="p">;</span><span class="w"> </span>make<span class="w"> </span>clean<span class="p">;</span><span class="w"> </span>make<span class="p">;</span><span class="w"> </span>
@@ -7645,7 +7645,16 @@ Familiarity with C++ and what the compiler warnings and errors mean is then cruc
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>rm -r *.exe
 nvcc -g -O2 -x cu mat_mult.cpp -o mat_mult.exe -lcuda 
-Error, cuda runtime api call failed at cuda_helper.hpp:176, error string is: no CUDA-capable device is detected
+Device id: 0
+	name:                                    Tesla T4
+	global memory size:                      15655 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    49 KB
+	maximum pitch size for memory copies:    2147 MB
+	max block size:                          (1024,1024,64)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,65535,65535)
+Maximum error (infinity norm) is: 1.52588e-05
 </pre>
 </div>
 </div>
@@ -7667,7 +7676,7 @@ Error, cuda runtime api call failed at cuda_helper.hpp:176, error string is: no 
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [41]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>ls<span class="w"> </span>cuda_mat_mult
@@ -7717,7 +7726,7 @@ cuda_helper.hpp  mat_mult.cpp	 mat_size.hpp
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [42]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>mkdir<span class="w"> </span>-p<span class="w"> </span>temp_mat_mult<span class="p">;</span><span class="w"> </span>cp<span class="w"> </span>-r<span class="w"> </span>cuda_mat_mult/*<span class="w"> </span>temp_mat_mult/<span class="w"> </span>
@@ -7764,7 +7773,7 @@ cuda_helper.hpp  mat_mult.cpp	 mat_size.hpp
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [44]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="nb">cd</span><span class="w"> </span>temp_mat_mult<span class="p">;</span><span class="w"> </span>hipify-perl<span class="w"> </span>-hip-kernel-execution-syntax<span class="w"> </span>./mat_mult.cpp
@@ -7992,7 +8001,7 @@ int main(int argc, char** argv) {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [45]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="nb">cd</span><span class="w"> </span>temp_mat_mult<span class="p">;</span><span class="w"> </span>hipify-perl<span class="w"> </span>-inplace<span class="w"> </span>-print-stats<span class="w"> </span>-hip-kernel-execution-syntax<span class="w"> </span>mat_mult.cpp
@@ -8053,7 +8062,7 @@ int main(int argc, char** argv) {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [46]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [28]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>hipexamine-perl.sh<span class="w"> </span>cuda_mat_mult<span class="w"> </span>-exclude-dirs<span class="o">=</span><span class="s2">".ipynb_checkpoints"</span>
@@ -8183,7 +8192,7 @@ int main(int argc, char** argv) {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [48]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [29]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="nb">cd</span><span class="w"> </span>cuda_mat_mult<span class="p">;</span><span class="w"> </span>hipexamine.sh<span class="w"> </span>.<span class="w"> </span>-I.
@@ -8229,24 +8238,24 @@ int main(int argc, char** argv) {
   cudaMemcpyDeviceToHost: 1
   cudaMemcpyHostToDevice: 2
 <span class="ansi-magenta-intense-fg ansi-bold">warning: </span><span class="ansi-bold">CUDA version 11.8 is only partially supported [-Wunknown-cuda-version]</span>
-<span class="ansi-bold">/tmp/cuda_helper.hpp-171f1b.hip:95:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">unknown type name 'SYSTEM_INFO'</span>
+<span class="ansi-bold">/tmp/cuda_helper.hpp-2ed8ce.hip:95:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">unknown type name 'SYSTEM_INFO'</span>
     SYSTEM_INFO sys_info;
 <span class="ansi-green-intense-fg ansi-bold">    ^
-</span><span class="ansi-bold">/tmp/cuda_helper.hpp-171f1b.hip:381:20: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier '_aligned_malloc'; did you mean 'aligned_alloc'?</span>
+</span><span class="ansi-bold">/tmp/cuda_helper.hpp-2ed8ce.hip:381:20: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier '_aligned_malloc'; did you mean 'aligned_alloc'?</span>
     void* buffer = _aligned_malloc(nbytes, alignment);
 <span class="ansi-green-intense-fg ansi-bold">                   ^~~~~~~~~~~~~~~
 </span><span class="ansi-green-fg">                   aligned_alloc
 </span><span class="ansi-bold">/usr/include/stdlib.h:592:14: </span><span class="ansi-black-intense-fg ansi-bold">note: </span>'aligned_alloc' declared here
 extern void *aligned_alloc (size_t __alignment, size_t __size)
 <span class="ansi-green-intense-fg ansi-bold">             ^
-</span><span class="ansi-bold">/tmp/cuda_helper.hpp-171f1b.hip:383:11: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">redefinition of 'buffer'</span>
+</span><span class="ansi-bold">/tmp/cuda_helper.hpp-2ed8ce.hip:383:11: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">redefinition of 'buffer'</span>
     void* buffer = aligned_alloc(alignment, nbytes);
 <span class="ansi-green-intense-fg ansi-bold">          ^
-</span><span class="ansi-bold">/tmp/cuda_helper.hpp-171f1b.hip:381:11: </span><span class="ansi-black-intense-fg ansi-bold">note: </span>previous definition is here
+</span><span class="ansi-bold">/tmp/cuda_helper.hpp-2ed8ce.hip:381:11: </span><span class="ansi-black-intense-fg ansi-bold">note: </span>previous definition is here
     void* buffer = _aligned_malloc(nbytes, alignment);
 <span class="ansi-green-intense-fg ansi-bold">          ^
 </span>3 errors generated when compiling for host.
-Error while processing /tmp/cuda_helper.hpp-171f1b.hip.
+Error while processing /tmp/cuda_helper.hpp-2ed8ce.hip.
 
 [HIPIFY] info: file './cuda_helper.hpp' statistics:
 
@@ -8261,7 +8270,7 @@ Error while processing /tmp/cuda_helper.hpp-171f1b.hip.
   TOTAL lines of code: 789
   CODE CHANGED (in bytes) %: 3.3
   CODE CHANGED (in lines) %: 6.1
-  TIME ELAPSED s: 0.70
+  TIME ELAPSED s: 0.69
 [HIPIFY] info: CONVERTED refs by type:
   error: 3
   init: 1
@@ -8321,14 +8330,14 @@ Error while processing /tmp/cuda_helper.hpp-171f1b.hip.
   CODE CHANGED (in lines) %: 33.3
   TIME ELAPSED s: 0.30
 <span class="ansi-magenta-intense-fg ansi-bold">warning: </span><span class="ansi-bold">CUDA version 11.8 is only partially supported [-Wunknown-cuda-version]</span>
-<span class="ansi-bold">/tmp/mat_helper.hpp-68b040.hip:162:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier 'assert'</span>
+<span class="ansi-bold">/tmp/mat_helper.hpp-573b94.hip:162:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier 'assert'</span>
     assert(len0_src&gt;=K0);
 <span class="ansi-green-intense-fg ansi-bold">    ^
-</span><span class="ansi-bold">/tmp/mat_helper.hpp-68b040.hip:163:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier 'assert'</span>
+</span><span class="ansi-bold">/tmp/mat_helper.hpp-573b94.hip:163:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier 'assert'</span>
     assert(len1_src&gt;=K1);    
 <span class="ansi-green-intense-fg ansi-bold">    ^
 </span>2 errors generated when compiling for host.
-Error while processing /tmp/mat_helper.hpp-68b040.hip.
+Error while processing /tmp/mat_helper.hpp-573b94.hip.
 
 [HIPIFY] info: file './mat_helper.hpp' statistics:
 
@@ -8437,7 +8446,7 @@ Error while processing /tmp/mat_helper.hpp-68b040.hip.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [49]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [30]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>hipconvertinplace-perl.sh<span class="w"> </span>temp_mat_mult<span class="w"> </span>-hip-kernel-execution-syntax
@@ -8567,7 +8576,7 @@ Error while processing /tmp/mat_helper.hpp-68b040.hip.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [50]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [31]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="ch">#!hipconvertinplace.sh temp_mat_mult -hip-kernel-execution-syntax</span>
@@ -8603,7 +8612,7 @@ Error while processing /tmp/mat_helper.hpp-68b040.hip.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [51]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [32]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>ls<span class="w"> </span>-l<span class="w"> </span>temp_mat_mult
@@ -8620,15 +8629,15 @@ Error while processing /tmp/mat_helper.hpp-68b040.hip.
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>total 1612
--rw-r--r-- 1 tpotter unix_users     703 May 27 02:43 Makefile
--rw-r--r-- 1 tpotter unix_users   24217 May 27 02:44 cuda_helper.hpp
+-rw-r--r-- 1 tpotter unix_users     703 May 27 03:16 Makefile
+-rw-r--r-- 1 tpotter unix_users   24217 May 27 03:17 cuda_helper.hpp
 -rw-r--r-- 1 tpotter unix_users   24183 May 27 02:39 cuda_helper.hpp.prehip
--rw-r--r-- 1 tpotter unix_users    4497 May 27 02:45 mat_helper.hpp
+-rw-r--r-- 1 tpotter unix_users    4497 May 27 03:17 mat_helper.hpp
 -rw-r--r-- 1 tpotter unix_users    4497 May 27 02:38 mat_helper.hpp.prehip
--rw-r--r-- 1 tpotter unix_users    5975 May 27 02:44 mat_mult.cpp
+-rw-r--r-- 1 tpotter unix_users    5975 May 27 03:17 mat_mult.cpp
 -rw-r--r-- 1 tpotter unix_users    5944 May 27 02:34 mat_mult.cpp.prehip
--rwxr-xr-x 1 tpotter unix_users 1553880 May 27 02:43 mat_mult.exe
--rw-r--r-- 1 tpotter unix_users     107 May 27 02:44 mat_size.hpp
+-rwxr-xr-x 1 tpotter unix_users 1553880 May 27 03:16 mat_mult.exe
+-rw-r--r-- 1 tpotter unix_users     107 May 27 03:17 mat_size.hpp
 -rw-r--r-- 1 tpotter unix_users     107 May 27 02:38 mat_size.hpp.prehip
 </pre>
 </div>
@@ -8651,7 +8660,7 @@ Error while processing /tmp/mat_helper.hpp-68b040.hip.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [52]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [33]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="nb">cd</span><span class="w"> </span>temp_mat_mult<span class="p">;</span><span class="w"> </span>make<span class="w"> </span>clean<span class="p">;</span><span class="w"> </span>make<span class="w"> </span><span class="nv">CXX</span><span class="o">=</span><span class="s2">"hipcc"</span>
@@ -8815,7 +8824,7 @@ hipcc -g -O2 -x cu mat_mult.cpp -o mat_mult.exe -lcuda
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [34]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Run this after fixing code</span>
@@ -8835,6 +8844,17 @@ hipcc -g -O2 -x cu mat_mult.cpp -o mat_mult.exe -lcuda
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>  warning: cuda_helper.hpp:465: removed identifier "cudaLaunch" since CUDA 10.1
+make: Nothing to be done for 'all'.
+Device id: 0
+	name:                                    Tesla T4
+	global memory size:                      15655 MB
+	available registers per block:           65536 
+	maximum shared memory size per block:    49 KB
+	maximum pitch size for memory copies:    2147 MB
+	max block size:                          (1024,1024,64)
+	max threads in a block:                  1024
+	max Grid size:                           (2147483647,65535,65535)
+Maximum error (infinity norm) is: 1.52588e-05
 </pre>
 </div>
 </div>
