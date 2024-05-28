@@ -1,7 +1,8 @@
 #!/bin/bash -l
 
-#SBATCH --account=<account>-gpu    # your account
+#SBATCH --account=courses01-gpu    # your account
 #SBATCH --partition=gpu            # Using the gpu partition
+#SBATCH --reservation=HIPWorkshop
 #SBATCH --nodes=1                  # Total number of nodes
 #SBATCH --gres=gpu:8               # The number of GPU's (and associated allocation packs) per node
 #SBATCH --exclusive                # Use this to request all the resources on a node
