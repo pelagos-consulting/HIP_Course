@@ -19,9 +19,9 @@ Written by Dr Toby M. Potter
 
 // standard matrix multiply kernel 
 __global__ void mat_mult (
-        float* A, 
-        float* B, 
-        float* C, 
+        float_type* A, 
+        float_type* B, 
+        float_type* C, 
         size_t N1_A, 
         size_t N0_C,
         size_t N1_C) { 
@@ -37,7 +37,7 @@ __global__ void mat_mult (
     size_t i1 = blockIdx.x * blockDim.x + threadIdx.x;
     
     // Scratch variable
-    float temp=0.0f; 
+    float_type temp=0.0f; 
 
     // Guard mechanism to make sure we do not go
     // outside the boundaries of matrix C 
@@ -96,14 +96,14 @@ int main(int argc, char** argv) {
     //// and fill them with random numbers ////
     
     // Number of bytes in each array
-    size_t nbytes_A = N0_C*N1_A*sizeof(float);
-    size_t nbytes_B = N1_A*N1_C*sizeof(float);
-    size_t nbytes_C = N0_C*N1_C*sizeof(float);
+    size_t nbytes_A = N0_C*N1_A*sizeof(float_type);
+    size_t nbytes_B = N1_A*N1_C*sizeof(float_type);
+    size_t nbytes_C = N0_C*N1_C*sizeof(float_type);
 
     // Allocate memory for the host arrays
-    float* A_h = (float*)h_alloc(nbytes_A);
-    float* B_h = (float*)h_alloc(nbytes_B);
-    float* C_h = (float*)h_alloc(nbytes_C);
+    float_type* A_h = (float_type*)h_alloc(nbytes_A);
+    float_type* B_h = (float_type*)h_alloc(nbytes_B);
+    float_type* C_h = (float_type*)h_alloc(nbytes_C);
 
     // Fill the host arrays with random numbers 
     // using the matrix helper library
@@ -113,7 +113,7 @@ int main(int argc, char** argv) {
     //// Step 4. Allocate memory for arrays //// 
     //// A_d, B_d, and C_d on the compute device ////
 
-    float *A_d, *B_d, *C_d;
+    float_type *A_d, *B_d, *C_d;
     H_ERRCHK(hipMalloc((void**)&A_d, nbytes_A));
     H_ERRCHK(hipMalloc((void**)&B_d, nbytes_B));
     H_ERRCHK(hipMalloc((void**)&C_d, nbytes_C));
@@ -165,14 +165,14 @@ int main(int argc, char** argv) {
     //// Step 8. Test the computed matrix **C_h** against a known answer
     
     // Compute the serial solution using the matrix helper library
-    float* C_answer_h = (float*)calloc(nbytes_C, 1);
+    float_type* C_answer_h = (float_type*)calloc(nbytes_C, 1);
     m_mat_mult(A_h, B_h, C_answer_h, N1_A, N0_C, N1_C);
     
     // Uncomment this to check against elementwise matrix multiplication
     // m_hadamard(A_h, B_h, C_answer_h, N0_C, N1_C);
 
     // Print the maximum error between matrices
-    float max_err = m_max_error(C_h, C_answer_h, N0_C, N1_C);
+    float_type max_err = m_max_error(C_h, C_answer_h, N0_C, N1_C);
     
     //// Step 9. Write the contents of matrices A_h, B_h, and C_h to disk ////
 

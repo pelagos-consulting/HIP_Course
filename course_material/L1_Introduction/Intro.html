@@ -7615,7 +7615,7 @@ a.anchor-link {
 <span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
 
 <span class="w">    </span><span class="c1">// Get the absolute value of </span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">gid0</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">length</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">offset</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">length</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="n">dst</span><span class="p">[</span><span class="n">offset</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fabs</span><span class="p">(</span><span class="n">src</span><span class="p">[</span><span class="n">offset</span><span class="p">]);</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>

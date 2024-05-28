@@ -29,7 +29,6 @@ int main(int argc, char** argv) {
     // Initialise HIP explicitly
     H_ERRCHK(hipInit(0));
     
-    // Make sure dev_index is sane
     int num_devices=0;
     H_ERRCHK(hipGetDeviceCount(&num_devices));
     
