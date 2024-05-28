@@ -8196,14 +8196,14 @@ Options:
 <span class="w">    </span><span class="c1">//// and fill them with random numbers ////</span>
 <span class="w">    </span>
 <span class="w">    </span><span class="c1">// Number of bytes in each array</span>
-<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nbytes_A</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">N0_C</span><span class="o">*</span><span class="n">N1_A</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">);</span>
-<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nbytes_B</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">N1_A</span><span class="o">*</span><span class="n">N1_C</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">);</span>
-<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nbytes_C</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">N0_C</span><span class="o">*</span><span class="n">N1_C</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nbytes_A</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">N0_C</span><span class="o">*</span><span class="n">N1_A</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="n">float_type</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nbytes_B</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">N1_A</span><span class="o">*</span><span class="n">N1_C</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="n">float_type</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nbytes_C</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">N0_C</span><span class="o">*</span><span class="n">N1_C</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="n">float_type</span><span class="p">);</span>
 
 <span class="w">    </span><span class="c1">// Allocate memory for the host arrays</span>
-<span class="w">    </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">A_h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">h_alloc</span><span class="p">(</span><span class="n">nbytes_A</span><span class="p">);</span>
-<span class="w">    </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">B_h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">h_alloc</span><span class="p">(</span><span class="n">nbytes_B</span><span class="p">);</span>
-<span class="w">    </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">C_h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">h_alloc</span><span class="p">(</span><span class="n">nbytes_C</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">A_h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">float_type</span><span class="o">*</span><span class="p">)</span><span class="n">h_alloc</span><span class="p">(</span><span class="n">nbytes_A</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">B_h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">float_type</span><span class="o">*</span><span class="p">)</span><span class="n">h_alloc</span><span class="p">(</span><span class="n">nbytes_B</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">C_h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">float_type</span><span class="o">*</span><span class="p">)</span><span class="n">h_alloc</span><span class="p">(</span><span class="n">nbytes_C</span><span class="p">);</span>
 
 <span class="w">    </span><span class="c1">// Fill the host arrays with random numbers </span>
 <span class="w">    </span><span class="c1">// using the matrix helper library</span>
@@ -8349,9 +8349,9 @@ Options:
 <p>The function <strong>mat_mult</strong> in <a href="mat_mult.cpp">mat_mult.cpp</a> is the kernel source, and it is in the same file as the program. We are free to choose how the kernel computes the matrix multiplication. In this instance <strong>we choose to associate</strong> a single kernel instance with every point <strong>(i0, i1)</strong> in matrix C. Here is the kernel source.</p>
 <div class="highlight"><pre><span></span><span class="c1">// standard matrix multiply kernel </span>
 <span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">mat_mult</span><span class="w"> </span><span class="p">(</span>
-<span class="w">        </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">A</span><span class="p">,</span><span class="w"> </span>
-<span class="w">        </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">B</span><span class="p">,</span><span class="w"> </span>
-<span class="w">        </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span>
+<span class="w">        </span><span class="n">float_type</span><span class="o">*</span><span class="w"> </span><span class="n">A</span><span class="p">,</span><span class="w"> </span>
+<span class="w">        </span><span class="n">float_type</span><span class="o">*</span><span class="w"> </span><span class="n">B</span><span class="p">,</span><span class="w"> </span>
+<span class="w">        </span><span class="n">float_type</span><span class="o">*</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span>
 <span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">N1_A</span><span class="p">,</span><span class="w"> </span>
 <span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">N0_C</span><span class="p">,</span>
 <span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">N1_C</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
@@ -8367,7 +8367,7 @@ Options:
 <span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">i1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
 <span class="w">    </span>
 <span class="w">    </span><span class="c1">// Scratch variable</span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">temp</span><span class="o">=</span><span class="mf">0.0f</span><span class="p">;</span><span class="w"> </span>
+<span class="w">    </span><span class="n">float_type</span><span class="w"> </span><span class="n">temp</span><span class="o">=</span><span class="mf">0.0f</span><span class="p">;</span><span class="w"> </span>
 
 <span class="w">    </span><span class="c1">// Guard mechanism to make sure we do not go</span>
 <span class="w">    </span><span class="c1">// outside the boundaries of matrix C </span>
@@ -8397,9 +8397,9 @@ Options:
 <h4 id="The-kernel-line-by-line">The kernel line-by-line<a class="anchor-link" href="#The-kernel-line-by-line">¶</a></h4><p>Now we explain every line of the kernel.</p>
 <h5 id="Kernel-preamble">Kernel preamble<a class="anchor-link" href="#Kernel-preamble">¶</a></h5><p>The definition of our kernel is as follows:</p>
 <div class="highlight"><pre><span></span><span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">mat_mult</span><span class="w"> </span><span class="p">(</span>
-<span class="w">        </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">A</span><span class="p">,</span><span class="w"> </span>
-<span class="w">        </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">B</span><span class="p">,</span><span class="w"> </span>
-<span class="w">        </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span>
+<span class="w">        </span><span class="n">float_type</span><span class="o">*</span><span class="w"> </span><span class="n">A</span><span class="p">,</span><span class="w"> </span>
+<span class="w">        </span><span class="n">float_type</span><span class="o">*</span><span class="w"> </span><span class="n">B</span><span class="p">,</span><span class="w"> </span>
+<span class="w">        </span><span class="n">float_type</span><span class="o">*</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span>
 <span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">N1_A</span><span class="p">,</span><span class="w"> </span>
 <span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">N0_C</span><span class="p">,</span>
 <span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">N1_C</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -8509,7 +8509,7 @@ Options:
 <div class="highlight"><pre><span></span><span class="c1">// mat_mult.cpp source</span>
 
 <span class="w">    </span><span class="c1">// Scratch variable</span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">temp</span><span class="o">=</span><span class="mf">0.0</span><span class="p">;</span><span class="w"> </span>
+<span class="w">    </span><span class="n">float_type</span><span class="w"> </span><span class="n">temp</span><span class="o">=</span><span class="mf">0.0</span><span class="p">;</span><span class="w"> </span>
 
 <span class="w">    </span><span class="c1">// Guard mechanism to make sure we do not go</span>
 <span class="w">    </span><span class="c1">// outside the boundaries of matrix C </span>
@@ -8642,7 +8642,7 @@ Options:
 <div class="highlight"><pre><span></span><span class="c1">// mat_mult.cpp source</span>
 
 <span class="w">    </span><span class="c1">// Compute the serial solution using the matrix helper library</span>
-<span class="w">    </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">C_answer_h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">calloc</span><span class="p">(</span><span class="n">nbytes_C</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">C_answer_h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">float_type</span><span class="o">*</span><span class="p">)</span><span class="n">calloc</span><span class="p">(</span><span class="n">nbytes_C</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
 <span class="w">    </span><span class="n">m_mat_mult</span><span class="p">(</span><span class="n">A_h</span><span class="p">,</span><span class="w"> </span><span class="n">B_h</span><span class="p">,</span><span class="w"> </span><span class="n">C_answer_h</span><span class="p">,</span><span class="w"> </span><span class="n">N1_A</span><span class="p">,</span><span class="w"> </span><span class="n">N0_C</span><span class="p">,</span><span class="w"> </span><span class="n">N1_C</span><span class="p">);</span>
 <span class="w">    </span>
 <span class="w">    </span><span class="c1">// Uncomment this to check against elementwise matrix multiplication</span>

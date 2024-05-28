@@ -7538,7 +7538,7 @@ a.anchor-link {
 <tbody>
 <tr>
 <td style="text-align:left">AMD EPYC 7763</td>
-<td style="text-align:right">1.8</td>
+<td style="text-align:right">3.6</td>
 </tr>
 <tr>
 <td style="text-align:left">AMD Radeon Instinct MI250X</td>
@@ -7812,7 +7812,7 @@ hipcc<span class="w"> </span>--offload-arch<span class="o">=</span>gfx90a<span c
 <p>then <code>hipcc</code> will use the AMD backend, but if you specify</p>
 <div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">HIP_PLATFORM</span><span class="o">=</span>nvidia
 </pre></div>
-<p>then <code>hipcc</code> will use an NVIDIA backend. With an NVIDIA platform you <strong>also need to specify</strong> the <code>--offload-arch</code> compiler flag to <code>hipcc</code>. Values that work are usually <code>sm_&lt;compute_capability&gt;</code>, where <code>&lt;compute_capability&gt;</code> is the CUDA compute capability of your device (without the decimal point). For example my RTX 3060 GPU has CUDA compute capability <code>8.6</code> so I would put <code>--offload-arch=sm_86</code> in the hipcc flags.</p>
+<p>then <code>hipcc</code> will use an NVIDIA backend.</p>
 <blockquote>
 <p><strong>Note:</strong>
 When the NVIDIA backend has had a recent major version change, it is advisable to not use the latest CUDA toolkit, as there can be API changes (such as deprecations) that HIP has yet to catch up with.</p>
