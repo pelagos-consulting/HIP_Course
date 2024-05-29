@@ -7664,7 +7664,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -7693,7 +7693,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span>mat_mult_profiling.exe<span class="p">;</span><span class="w"> </span>run<span class="w"> </span>mat_mult_profiling.exe
@@ -7714,18 +7714,18 @@ a.anchor-link {
 <span class="ansi-cyan-fg">Install the project...</span>
 -- Install configuration: "RELEASE"
 Device id: 0
-	name:                                    AMD Radeon VII
-	global memory size:                      17163 MB
+	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
+	global memory size:                      6219 MB
 	available registers per block:           65536 
-	max threads per SM or CU:                2560 
-	maximum shared memory size per block:    65 KB
-	maximum shared memory size per SM or CU: 65 KB
+	max threads per SM or CU:                1536 
+	maximum shared memory size per block:    49 KB
+	maximum shared memory size per SM or CU: 0 KB
 	maximum pitch size for memory copies:    2147 MB
-	max block size:                          (1024,1024,1024)
+	max block size:                          (1024,1024,64)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,65536,65536)
-Time for event "memcpy": 0.926 ms (1716.70 MB/s)
-Time for event "mat_mult kernel": 0.799 ms
+	max Grid size:                           (2147483647,65535,65535)
+Time for event "memcpy": 0.157 ms (10145.86 MB/s)
+Time for event "mat_mult kernel": 0.572 ms
 Maximum error (infinity norm) is: 2.28882e-05
 </pre>
 </div>
@@ -16846,7 +16846,7 @@ $$</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>mkdir<span class="w"> </span>-p<span class="w"> </span>nsys_trace<span class="p">;</span><span class="w"> </span>run<span class="w"> </span>nsys<span class="w"> </span>profile<span class="w"> </span>-f<span class="w"> </span><span class="nb">true</span><span class="w"> </span>-o<span class="w"> </span>nsys_trace/results<span class="w"> </span>mat_mult_profiling.exe
@@ -16863,23 +16863,23 @@ $$</p>
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Device id: 0
-	name:                                    Tesla T4
-	global memory size:                      15652 MB
+	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
+	global memory size:                      6219 MB
 	available registers per block:           65536 
-	max threads per SM or CU:                1024 
+	max threads per SM or CU:                1536 
 	maximum shared memory size per block:    49 KB
 	maximum shared memory size per SM or CU: 0 KB
 	maximum pitch size for memory copies:    2147 MB
 	max block size:                          (1024,1024,64)
 	max threads in a block:                  1024
 	max Grid size:                           (2147483647,65535,65535)
-Time for event "memcpy": 0.297 ms (5356.34 MB/s)
-Time for event "mat_mult kernel": 1.196 ms
+Time for event "memcpy": 0.167 ms (9510.53 MB/s)
+Time for event "mat_mult kernel": 0.583 ms
 Maximum error (infinity norm) is: 2.28882e-05
-Generating '/tmp/nsys-report-8ba2.qdstrm'
+Generating '/tmp/nsys-report-201d.qdstrm'
 [1/1] [========================100%] results.nsys-rep
 Generated:
-    /nethome/tpotter/HIP_Course/course_material/L5_Profiling/nsys_trace/results.nsys-rep
+    /home/toby/Pelagos/Projects/HIP_Course/course_material/L5_Profiling/nsys_trace/results.nsys-rep
 </pre>
 </div>
 </div>
@@ -16925,7 +16925,7 @@ Generated:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>mkdir<span class="w"> </span>-p<span class="w"> </span>ncu_counters<span class="p">;</span><span class="w"> </span>run<span class="w"> </span>ncu<span class="w"> </span>-f<span class="w"> </span>-o<span class="w"> </span>ncu_counters/results<span class="w"> </span>mat_mult_profiling.exe
@@ -16941,24 +16941,24 @@ Generated:
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>==PROF== Connected to process 2088 (/nethome/tpotter/HIP_Course/course_material/install/bin/mat_mult_profiling.exe)
+<pre>==PROF== Connected to process 24986 (/home/toby/Pelagos/Projects/HIP_Course/course_material/install/bin/mat_mult_profiling.exe)
 Device id: 0
-	name:                                    Tesla T4
-	global memory size:                      15652 MB
+	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
+	global memory size:                      6219 MB
 	available registers per block:           65536 
-	max threads per SM or CU:                1024 
+	max threads per SM or CU:                1536 
 	maximum shared memory size per block:    49 KB
 	maximum shared memory size per SM or CU: 0 KB
 	maximum pitch size for memory copies:    2147 MB
 	max block size:                          (1024,1024,64)
 	max threads in a block:                  1024
 	max Grid size:                           (2147483647,65535,65535)
-Time for event "memcpy": 0.296 ms (5369.66 MB/s)
+Time for event "memcpy": 0.151 ms (10542.14 MB/s)
 ==PROF== Profiling "mat_mult" - 0: 0%....50%....100% - 8 passes
-Time for event "mat_mult kernel": 1166.193 ms
+Time for event "mat_mult kernel": 203.701 ms
 Maximum error (infinity norm) is: 2.28882e-05
-==PROF== Disconnected from process 2088
-==PROF== Report: /nethome/tpotter/HIP_Course/course_material/L5_Profiling/ncu_counters/results.ncu-rep
+==PROF== Disconnected from process 24986
+==PROF== Report: /home/toby/Pelagos/Projects/HIP_Course/course_material/L5_Profiling/ncu_counters/results.ncu-rep
 </pre>
 </div>
 </div>
