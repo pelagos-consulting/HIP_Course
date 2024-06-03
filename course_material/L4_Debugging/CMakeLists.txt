@@ -22,7 +22,7 @@ foreach(target ${targets})
     # Set debugging flags for CUDA or AMD
     if (CUDAToolkit_FOUND)
         # Add debugging compile flags for CUDA
-        target_compile_options(${target}.exe PRIVATE -g -O0)
+        target_compile_options(${target}.exe PRIVATE -g -G -O0)
     else()
         # Add debugging compile flags for HIP
         target_compile_options(${target}.exe PRIVATE -g -ggdb -O1)
