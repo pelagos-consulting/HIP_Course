@@ -1,0 +1,6 @@
+*.pdf
+samples/
+HIP
+AMD_documentation/
+Setonix_Training/
+hip-testsuite

@@ -1,8 +1,7 @@
 #!/bin/bash --login
 
-#SBATCH --account=courses01-gpu    # your account
-#SBATCH --partition=gpu        # Using the gpu-dev partition
-#SBATCH --reservation=HIPWorkshop
+#SBATCH --account=<account>-gpu    # your account
+#SBATCH --partition=gpu-dev        # Using the gpu-dev partition
 #SBATCH --nodes=1                  # Total number of nodes
 #SBATCH --gres=gpu:2               # Number of GPU's per node
 #SBATCH --time=01:00:00

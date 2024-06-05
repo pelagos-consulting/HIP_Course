@@ -1,0 +1,11 @@
+# Packages for Python installation
+scipy
+numpy
+matplotlib
+Cython
+scikit-image
+scikit-learn
+ipywidgets
+ipympl
+jupyter
+jupyterlab
