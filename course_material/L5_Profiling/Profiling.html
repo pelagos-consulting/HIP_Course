@@ -7664,7 +7664,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -7693,7 +7693,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span>mat_mult_profiling.exe<span class="p">;</span><span class="w"> </span>run<span class="w"> </span>mat_mult_profiling.exe
@@ -7724,8 +7724,8 @@ Device id: 0
 	max block size:                          (1024,1024,64)
 	max threads in a block:                  1024
 	max Grid size:                           (2147483647,65535,65535)
-Time for event "memcpy": 0.157 ms (10145.86 MB/s)
-Time for event "mat_mult kernel": 0.572 ms
+Time for event "memcpy": 0.459 ms (3464.04 MB/s)
+Time for event "mat_mult kernel": 0.578 ms
 Maximum error (infinity norm) is: 2.28882e-05
 </pre>
 </div>
@@ -16846,7 +16846,7 @@ $$</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>mkdir<span class="w"> </span>-p<span class="w"> </span>nsys_trace<span class="p">;</span><span class="w"> </span>run<span class="w"> </span>nsys<span class="w"> </span>profile<span class="w"> </span>-f<span class="w"> </span><span class="nb">true</span><span class="w"> </span>-o<span class="w"> </span>nsys_trace/results<span class="w"> </span>mat_mult_profiling.exe
@@ -16873,10 +16873,10 @@ $$</p>
 	max block size:                          (1024,1024,64)
 	max threads in a block:                  1024
 	max Grid size:                           (2147483647,65535,65535)
-Time for event "memcpy": 0.167 ms (9510.53 MB/s)
-Time for event "mat_mult kernel": 0.583 ms
+Time for event "memcpy": 0.143 ms (11093.14 MB/s)
+Time for event "mat_mult kernel": 0.541 ms
 Maximum error (infinity norm) is: 2.28882e-05
-Generating '/tmp/nsys-report-201d.qdstrm'
+Generating '/tmp/nsys-report-5cc9.qdstrm'
 [1/1] [========================100%] results.nsys-rep
 Generated:
     /home/toby/Pelagos/Projects/HIP_Course/course_material/L5_Profiling/nsys_trace/results.nsys-rep
@@ -16925,10 +16925,10 @@ Generated:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>mkdir<span class="w"> </span>-p<span class="w"> </span>ncu_counters<span class="p">;</span><span class="w"> </span>run<span class="w"> </span>ncu<span class="w"> </span>-f<span class="w"> </span>-o<span class="w"> </span>ncu_counters/results<span class="w"> </span>mat_mult_profiling.exe
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>mkdir<span class="w"> </span>-p<span class="w"> </span>ncu_counters<span class="p">;</span><span class="w"> </span>run<span class="w"> </span>ncu<span class="w"> </span>--set<span class="w"> </span>full<span class="w"> </span>-f<span class="w"> </span>-o<span class="w"> </span>ncu_counters/results<span class="w"> </span>mat_mult_profiling.exe
 </pre></div>
 </div>
 </div>
@@ -16941,7 +16941,7 @@ Generated:
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>==PROF== Connected to process 24986 (/home/toby/Pelagos/Projects/HIP_Course/course_material/install/bin/mat_mult_profiling.exe)
+<pre>==PROF== Connected to process 34219 (/home/toby/Pelagos/Projects/HIP_Course/course_material/install/bin/mat_mult_profiling.exe)
 Device id: 0
 	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
 	global memory size:                      6219 MB
@@ -16953,11 +16953,11 @@ Device id: 0
 	max block size:                          (1024,1024,64)
 	max threads in a block:                  1024
 	max Grid size:                           (2147483647,65535,65535)
-Time for event "memcpy": 0.151 ms (10542.14 MB/s)
-==PROF== Profiling "mat_mult" - 0: 0%....50%....100% - 8 passes
-Time for event "mat_mult kernel": 203.701 ms
+Time for event "memcpy": 0.146 ms (10893.62 MB/s)
+==PROF== Profiling "mat_mult" - 0: 0%....50%....100% - 37 passes
+Time for event "mat_mult kernel": 775.068 ms
 Maximum error (infinity norm) is: 2.28882e-05
-==PROF== Disconnected from process 24986
+==PROF== Disconnected from process 34219
 ==PROF== Report: /home/toby/Pelagos/Projects/HIP_Course/course_material/L5_Profiling/ncu_counters/results.ncu-rep
 </pre>
 </div>
