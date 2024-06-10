@@ -7504,7 +7504,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -7536,7 +7536,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>run<span class="w"> </span>hipify-clang<span class="w"> </span>--version
@@ -7626,7 +7626,7 @@ Familiarity with C++ and what the compiler warnings and errors mean is then cruc
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="nb">cd</span><span class="w"> </span>cuda_mat_mult<span class="p">;</span><span class="w"> </span>make<span class="w"> </span>clean<span class="p">;</span><span class="w"> </span>make<span class="p">;</span><span class="w"> </span>
@@ -7646,8 +7646,8 @@ Familiarity with C++ and what the compiler warnings and errors mean is then cruc
 <pre>rm -r *.exe
 nvcc -g -O2 -x cu mat_mult.cpp -o mat_mult.exe -lcuda 
 Device id: 0
-	name:                                    Tesla T4
-	global memory size:                      15655 MB
+	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
+	global memory size:                      6219 MB
 	available registers per block:           65536 
 	maximum shared memory size per block:    49 KB
 	maximum pitch size for memory copies:    2147 MB
@@ -7676,7 +7676,7 @@ Maximum error (infinity norm) is: 1.52588e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>ls<span class="w"> </span>cuda_mat_mult
@@ -7692,8 +7692,8 @@ Maximum error (infinity norm) is: 1.52588e-05
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Makefile	 mat_helper.hpp  mat_mult.exe
-cuda_helper.hpp  mat_mult.cpp	 mat_size.hpp
+<pre>array_A.dat  array_C.dat      Makefile	      mat_mult.cpp  mat_size.hpp
+array_B.dat  cuda_helper.hpp  mat_helper.hpp  mat_mult.exe
 </pre>
 </div>
 </div>
@@ -7726,7 +7726,7 @@ cuda_helper.hpp  mat_mult.cpp	 mat_size.hpp
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>mkdir<span class="w"> </span>-p<span class="w"> </span>temp_mat_mult<span class="p">;</span><span class="w"> </span>cp<span class="w"> </span>-r<span class="w"> </span>cuda_mat_mult/*<span class="w"> </span>temp_mat_mult/<span class="w"> </span>
@@ -7773,7 +7773,7 @@ cuda_helper.hpp  mat_mult.cpp	 mat_size.hpp
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="nb">cd</span><span class="w"> </span>temp_mat_mult<span class="p">;</span><span class="w"> </span>hipify-perl<span class="w"> </span>-hip-kernel-execution-syntax<span class="w"> </span>./mat_mult.cpp
@@ -8001,7 +8001,7 @@ int main(int argc, char** argv) {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="nb">cd</span><span class="w"> </span>temp_mat_mult<span class="p">;</span><span class="w"> </span>hipify-perl<span class="w"> </span>-inplace<span class="w"> </span>-print-stats<span class="w"> </span>-hip-kernel-execution-syntax<span class="w"> </span>mat_mult.cpp
@@ -8062,7 +8062,7 @@ int main(int argc, char** argv) {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [28]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>hipexamine-perl.sh<span class="w"> </span>cuda_mat_mult<span class="w"> </span>-exclude-dirs<span class="o">=</span><span class="s2">".ipynb_checkpoints"</span>
@@ -8079,6 +8079,19 @@ int main(int argc, char** argv) {
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>
+[HIPIFY] info: file 'cuda_mat_mult/.ipynb_checkpoints/mat_mult-checkpoint.cpp' statistics:
+  CONVERTED refs count: 14
+  TOTAL lines of code: 190
+  WARNINGS: 0
+[HIPIFY] info: CONVERTED refs by names:
+  cudaDeviceSynchronize =&gt; hipDeviceSynchronize: 1
+  cudaFree =&gt; hipFree: 3
+  cudaGetLastError =&gt; hipGetLastError: 1
+  cudaMalloc =&gt; hipMalloc: 3
+  cudaMemcpy =&gt; hipMemcpy: 3
+  cudaMemcpyDeviceToHost =&gt; hipMemcpyDeviceToHost: 1
+  cudaMemcpyHostToDevice =&gt; hipMemcpyHostToDevice: 2
+
 [HIPIFY] info: file 'cuda_mat_mult/mat_mult.cpp' statistics:
   CONVERTED refs count: 14
   TOTAL lines of code: 190
@@ -8091,6 +8104,43 @@ int main(int argc, char** argv) {
   cudaMemcpy =&gt; hipMemcpy: 3
   cudaMemcpyDeviceToHost =&gt; hipMemcpyDeviceToHost: 1
   cudaMemcpyHostToDevice =&gt; hipMemcpyHostToDevice: 2
+  warning: cuda_mat_mult/.ipynb_checkpoints/cuda_helper-checkpoint.hpp:480: removed identifier "cudaLaunch" since CUDA 10.1
+
+[HIPIFY] info: file 'cuda_mat_mult/.ipynb_checkpoints/cuda_helper-checkpoint.hpp' statistics:
+  CONVERTED refs count: 55
+  TOTAL lines of code: 789
+  WARNINGS: 1
+[HIPIFY] info: CONVERTED refs by names:
+  CUDA_SUCCESS =&gt; hipSuccess: 4
+  CUresult =&gt; hipError_t: 4
+  cuGetErrorString =&gt; hipDrvGetErrorString: 1
+  cuInit =&gt; hipInit: 1
+  cuda.h =&gt; hip/hip_runtime.h: 2
+  cudaDevAttrManagedMemory =&gt; hipDeviceAttributeManagedMemory: 1
+  cudaDeviceGetAttribute =&gt; hipDeviceGetAttribute: 1
+  cudaDeviceProp =&gt; hipDeviceProp_t: 2
+  cudaDeviceReset =&gt; hipDeviceReset: 1
+  cudaDeviceSynchronize =&gt; hipDeviceSynchronize: 1
+  cudaError_t =&gt; hipError_t: 4
+  cudaEventCreate =&gt; hipEventCreate: 2
+  cudaEventDestroy =&gt; hipEventDestroy: 2
+  cudaEventElapsedTime =&gt; hipEventElapsedTime: 1
+  cudaEventRecord =&gt; hipEventRecord: 3
+  cudaEventSynchronize =&gt; hipEventSynchronize: 2
+  cudaEvent_t =&gt; hipEvent_t: 3
+  cudaGetDevice =&gt; hipGetDevice: 1
+  cudaGetDeviceCount =&gt; hipGetDeviceCount: 2
+  cudaGetDeviceProperties =&gt; hipGetDeviceProperties: 2
+  cudaGetErrorString =&gt; hipGetErrorString: 2
+  cudaLaunchKernel =&gt; hipLaunchKernel: 1
+  cudaSetDevice =&gt; hipSetDevice: 3
+  cudaStreamCreateWithFlags =&gt; hipStreamCreateWithFlags: 1
+  cudaStreamDefault =&gt; hipStreamDefault: 1
+  cudaStreamDestroy =&gt; hipStreamDestroy: 1
+  cudaStreamNonBlocking =&gt; hipStreamNonBlocking: 1
+  cudaStream_t =&gt; hipStream_t: 7
+  cudaSuccess =&gt; hipSuccess: 4
+  cuda_runtime.h =&gt; hip/hip_runtime.h: 2
   warning: cuda_mat_mult/cuda_helper.hpp:480: removed identifier "cudaLaunch" since CUDA 10.1
 
 [HIPIFY] info: file 'cuda_mat_mult/cuda_helper.hpp' statistics:
@@ -8130,46 +8180,46 @@ int main(int argc, char** argv) {
   cuda_runtime.h =&gt; hip/hip_runtime.h: 2
 
 [HIPIFY] info: file 'GLOBAL' statistics:
-  CONVERTED refs count: 69
-  TOTAL lines of code: 1162
-  WARNINGS: 1
+  CONVERTED refs count: 138
+  TOTAL lines of code: 2141
+  WARNINGS: 2
 [HIPIFY] info: CONVERTED refs by names:
-  CUDA_SUCCESS =&gt; hipSuccess: 4
-  CUresult =&gt; hipError_t: 4
-  cuGetErrorString =&gt; hipDrvGetErrorString: 1
-  cuInit =&gt; hipInit: 1
-  cuda.h =&gt; hip/hip_runtime.h: 2
-  cudaDevAttrManagedMemory =&gt; hipDeviceAttributeManagedMemory: 1
-  cudaDeviceGetAttribute =&gt; hipDeviceGetAttribute: 1
-  cudaDeviceProp =&gt; hipDeviceProp_t: 2
-  cudaDeviceReset =&gt; hipDeviceReset: 1
-  cudaDeviceSynchronize =&gt; hipDeviceSynchronize: 2
-  cudaError_t =&gt; hipError_t: 4
-  cudaEventCreate =&gt; hipEventCreate: 2
-  cudaEventDestroy =&gt; hipEventDestroy: 2
-  cudaEventElapsedTime =&gt; hipEventElapsedTime: 1
-  cudaEventRecord =&gt; hipEventRecord: 3
-  cudaEventSynchronize =&gt; hipEventSynchronize: 2
-  cudaEvent_t =&gt; hipEvent_t: 3
-  cudaFree =&gt; hipFree: 3
-  cudaGetDevice =&gt; hipGetDevice: 1
-  cudaGetDeviceCount =&gt; hipGetDeviceCount: 2
-  cudaGetDeviceProperties =&gt; hipGetDeviceProperties: 2
-  cudaGetErrorString =&gt; hipGetErrorString: 2
-  cudaGetLastError =&gt; hipGetLastError: 1
-  cudaLaunchKernel =&gt; hipLaunchKernel: 1
-  cudaMalloc =&gt; hipMalloc: 3
-  cudaMemcpy =&gt; hipMemcpy: 3
-  cudaMemcpyDeviceToHost =&gt; hipMemcpyDeviceToHost: 1
-  cudaMemcpyHostToDevice =&gt; hipMemcpyHostToDevice: 2
-  cudaSetDevice =&gt; hipSetDevice: 3
-  cudaStreamCreateWithFlags =&gt; hipStreamCreateWithFlags: 1
-  cudaStreamDefault =&gt; hipStreamDefault: 1
-  cudaStreamDestroy =&gt; hipStreamDestroy: 1
-  cudaStreamNonBlocking =&gt; hipStreamNonBlocking: 1
-  cudaStream_t =&gt; hipStream_t: 7
-  cudaSuccess =&gt; hipSuccess: 4
-  cuda_runtime.h =&gt; hip/hip_runtime.h: 2
+  CUDA_SUCCESS =&gt; hipSuccess: 8
+  CUresult =&gt; hipError_t: 8
+  cuGetErrorString =&gt; hipDrvGetErrorString: 2
+  cuInit =&gt; hipInit: 2
+  cuda.h =&gt; hip/hip_runtime.h: 4
+  cudaDevAttrManagedMemory =&gt; hipDeviceAttributeManagedMemory: 2
+  cudaDeviceGetAttribute =&gt; hipDeviceGetAttribute: 2
+  cudaDeviceProp =&gt; hipDeviceProp_t: 4
+  cudaDeviceReset =&gt; hipDeviceReset: 2
+  cudaDeviceSynchronize =&gt; hipDeviceSynchronize: 4
+  cudaError_t =&gt; hipError_t: 8
+  cudaEventCreate =&gt; hipEventCreate: 4
+  cudaEventDestroy =&gt; hipEventDestroy: 4
+  cudaEventElapsedTime =&gt; hipEventElapsedTime: 2
+  cudaEventRecord =&gt; hipEventRecord: 6
+  cudaEventSynchronize =&gt; hipEventSynchronize: 4
+  cudaEvent_t =&gt; hipEvent_t: 6
+  cudaFree =&gt; hipFree: 6
+  cudaGetDevice =&gt; hipGetDevice: 2
+  cudaGetDeviceCount =&gt; hipGetDeviceCount: 4
+  cudaGetDeviceProperties =&gt; hipGetDeviceProperties: 4
+  cudaGetErrorString =&gt; hipGetErrorString: 4
+  cudaGetLastError =&gt; hipGetLastError: 2
+  cudaLaunchKernel =&gt; hipLaunchKernel: 2
+  cudaMalloc =&gt; hipMalloc: 6
+  cudaMemcpy =&gt; hipMemcpy: 6
+  cudaMemcpyDeviceToHost =&gt; hipMemcpyDeviceToHost: 2
+  cudaMemcpyHostToDevice =&gt; hipMemcpyHostToDevice: 4
+  cudaSetDevice =&gt; hipSetDevice: 6
+  cudaStreamCreateWithFlags =&gt; hipStreamCreateWithFlags: 2
+  cudaStreamDefault =&gt; hipStreamDefault: 2
+  cudaStreamDestroy =&gt; hipStreamDestroy: 2
+  cudaStreamNonBlocking =&gt; hipStreamNonBlocking: 2
+  cudaStream_t =&gt; hipStream_t: 14
+  cudaSuccess =&gt; hipSuccess: 8
+  cuda_runtime.h =&gt; hip/hip_runtime.h: 4
 
 </pre>
 </div>
@@ -8192,7 +8242,7 @@ int main(int argc, char** argv) {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [29]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="nb">cd</span><span class="w"> </span>cuda_mat_mult<span class="p">;</span><span class="w"> </span>hipexamine.sh<span class="w"> </span>.<span class="w"> </span>-I.
@@ -8208,10 +8258,10 @@ int main(int argc, char** argv) {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>warning: CUDA version 11.8 is only partially supported
-<span class="ansi-magenta-intense-fg ansi-bold">warning: </span><span class="ansi-bold">CUDA version 11.8 is only partially supported [-Wunknown-cuda-version]</span>
+<pre>warning: CUDA version is newer than the latest partially supported version 11.8
+<span class="ansi-magenta-intense-fg ansi-bold">warning: </span><span class="ansi-bold">CUDA version is newer than the latest partially supported version 11.8 [-Wunknown-cuda-version]</span>
 
-[HIPIFY] info: file './mat_mult.cpp' statistics:
+[HIPIFY] info: file './.ipynb_checkpoints/mat_mult-checkpoint.cpp' statistics:
   CONVERTED refs count: 14
   UNCONVERTED refs count: 0
   CONVERSION %: 100.0
@@ -8221,7 +8271,7 @@ int main(int argc, char** argv) {
   TOTAL lines of code: 190
   CODE CHANGED (in bytes) %: 3.1
   CODE CHANGED (in lines) %: 6.3
-  TIME ELAPSED s: 0.92
+  TIME ELAPSED s: 0.60
 [HIPIFY] info: CONVERTED refs by type:
   error: 1
   device: 1
@@ -8237,27 +8287,55 @@ int main(int argc, char** argv) {
   cudaMemcpy: 3
   cudaMemcpyDeviceToHost: 1
   cudaMemcpyHostToDevice: 2
-<span class="ansi-magenta-intense-fg ansi-bold">warning: </span><span class="ansi-bold">CUDA version 11.8 is only partially supported [-Wunknown-cuda-version]</span>
-<span class="ansi-bold">/tmp/cuda_helper.hpp-2ed8ce.hip:95:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">unknown type name 'SYSTEM_INFO'</span>
+<span class="ansi-magenta-intense-fg ansi-bold">warning: </span><span class="ansi-bold">CUDA version is newer than the latest partially supported version 11.8 [-Wunknown-cuda-version]</span>
+
+[HIPIFY] info: file './mat_mult.cpp' statistics:
+  CONVERTED refs count: 14
+  UNCONVERTED refs count: 0
+  CONVERSION %: 100.0
+  REPLACED bytes: 187
+  TOTAL bytes: 5944
+  CHANGED lines of code: 12
+  TOTAL lines of code: 190
+  CODE CHANGED (in bytes) %: 3.1
+  CODE CHANGED (in lines) %: 6.3
+  TIME ELAPSED s: 0.55
+[HIPIFY] info: CONVERTED refs by type:
+  error: 1
+  device: 1
+  memory: 9
+  numeric_literal: 3
+[HIPIFY] info: CONVERTED refs by API:
+  CUDA RT API: 14
+[HIPIFY] info: CONVERTED refs by names:
+  cudaDeviceSynchronize: 1
+  cudaFree: 3
+  cudaGetLastError: 1
+  cudaMalloc: 3
+  cudaMemcpy: 3
+  cudaMemcpyDeviceToHost: 1
+  cudaMemcpyHostToDevice: 2
+<span class="ansi-magenta-intense-fg ansi-bold">warning: </span><span class="ansi-bold">CUDA version is newer than the latest partially supported version 11.8 [-Wunknown-cuda-version]</span>
+<span class="ansi-bold">/tmp/cuda_helper-checkpoint.hpp-150580.hip:95:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">unknown type name 'SYSTEM_INFO'</span>
     SYSTEM_INFO sys_info;
 <span class="ansi-green-intense-fg ansi-bold">    ^
-</span><span class="ansi-bold">/tmp/cuda_helper.hpp-2ed8ce.hip:381:20: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier '_aligned_malloc'; did you mean 'aligned_alloc'?</span>
+</span><span class="ansi-bold">/tmp/cuda_helper-checkpoint.hpp-150580.hip:381:20: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier '_aligned_malloc'; did you mean 'aligned_alloc'?</span>
     void* buffer = _aligned_malloc(nbytes, alignment);
 <span class="ansi-green-intense-fg ansi-bold">                   ^~~~~~~~~~~~~~~
 </span><span class="ansi-green-fg">                   aligned_alloc
 </span><span class="ansi-bold">/usr/include/stdlib.h:592:14: </span><span class="ansi-black-intense-fg ansi-bold">note: </span>'aligned_alloc' declared here
 extern void *aligned_alloc (size_t __alignment, size_t __size)
 <span class="ansi-green-intense-fg ansi-bold">             ^
-</span><span class="ansi-bold">/tmp/cuda_helper.hpp-2ed8ce.hip:383:11: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">redefinition of 'buffer'</span>
+</span><span class="ansi-bold">/tmp/cuda_helper-checkpoint.hpp-150580.hip:383:11: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">redefinition of 'buffer'</span>
     void* buffer = aligned_alloc(alignment, nbytes);
 <span class="ansi-green-intense-fg ansi-bold">          ^
-</span><span class="ansi-bold">/tmp/cuda_helper.hpp-2ed8ce.hip:381:11: </span><span class="ansi-black-intense-fg ansi-bold">note: </span>previous definition is here
+</span><span class="ansi-bold">/tmp/cuda_helper-checkpoint.hpp-150580.hip:381:11: </span><span class="ansi-black-intense-fg ansi-bold">note: </span>previous definition is here
     void* buffer = _aligned_malloc(nbytes, alignment);
 <span class="ansi-green-intense-fg ansi-bold">          ^
 </span>3 errors generated when compiling for host.
-Error while processing /tmp/cuda_helper.hpp-2ed8ce.hip.
+Error while processing /tmp/cuda_helper-checkpoint.hpp-150580.hip.
 
-[HIPIFY] info: file './cuda_helper.hpp' statistics:
+[HIPIFY] info: file './.ipynb_checkpoints/cuda_helper-checkpoint.hpp' statistics:
 
   ERROR: Statistics is invalid due to failed hipification.
 
@@ -8270,7 +8348,7 @@ Error while processing /tmp/cuda_helper.hpp-2ed8ce.hip.
   TOTAL lines of code: 789
   CODE CHANGED (in bytes) %: 3.3
   CODE CHANGED (in lines) %: 6.1
-  TIME ELAPSED s: 0.69
+  TIME ELAPSED s: 0.48
 [HIPIFY] info: CONVERTED refs by type:
   error: 3
   init: 1
@@ -8316,28 +8394,94 @@ Error while processing /tmp/cuda_helper.hpp-2ed8ce.hip.
   cudaStream_t: 7
   cudaSuccess: 2
   cuda_runtime.h: 1
-<span class="ansi-magenta-intense-fg ansi-bold">warning: </span><span class="ansi-bold">CUDA version 11.8 is only partially supported [-Wunknown-cuda-version]</span>
+<span class="ansi-magenta-intense-fg ansi-bold">warning: </span><span class="ansi-bold">CUDA version is newer than the latest partially supported version 11.8 [-Wunknown-cuda-version]</span>
+<span class="ansi-bold">/tmp/cuda_helper.hpp-cfba75.hip:95:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">unknown type name 'SYSTEM_INFO'</span>
+    SYSTEM_INFO sys_info;
+<span class="ansi-green-intense-fg ansi-bold">    ^
+</span><span class="ansi-bold">/tmp/cuda_helper.hpp-cfba75.hip:381:20: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier '_aligned_malloc'; did you mean 'aligned_alloc'?</span>
+    void* buffer = _aligned_malloc(nbytes, alignment);
+<span class="ansi-green-intense-fg ansi-bold">                   ^~~~~~~~~~~~~~~
+</span><span class="ansi-green-fg">                   aligned_alloc
+</span><span class="ansi-bold">/usr/include/stdlib.h:592:14: </span><span class="ansi-black-intense-fg ansi-bold">note: </span>'aligned_alloc' declared here
+extern void *aligned_alloc (size_t __alignment, size_t __size)
+<span class="ansi-green-intense-fg ansi-bold">             ^
+</span><span class="ansi-bold">/tmp/cuda_helper.hpp-cfba75.hip:383:11: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">redefinition of 'buffer'</span>
+    void* buffer = aligned_alloc(alignment, nbytes);
+<span class="ansi-green-intense-fg ansi-bold">          ^
+</span><span class="ansi-bold">/tmp/cuda_helper.hpp-cfba75.hip:381:11: </span><span class="ansi-black-intense-fg ansi-bold">note: </span>previous definition is here
+    void* buffer = _aligned_malloc(nbytes, alignment);
+<span class="ansi-green-intense-fg ansi-bold">          ^
+</span>3 errors generated when compiling for host.
+Error while processing /tmp/cuda_helper.hpp-cfba75.hip.
 
-[HIPIFY] info: file './mat_size.hpp' statistics:
-  CONVERTED refs count: 0
+[HIPIFY] info: file './cuda_helper.hpp' statistics:
+
+  ERROR: Statistics is invalid due to failed hipification.
+
+  CONVERTED refs count: 52
   UNCONVERTED refs count: 0
-  CONVERSION %: 0.0
-  REPLACED bytes: 0
-  TOTAL bytes: 107
-  CHANGED lines of code: 1
-  TOTAL lines of code: 3
-  CODE CHANGED (in bytes) %: 0.0
-  CODE CHANGED (in lines) %: 33.3
-  TIME ELAPSED s: 0.30
-<span class="ansi-magenta-intense-fg ansi-bold">warning: </span><span class="ansi-bold">CUDA version 11.8 is only partially supported [-Wunknown-cuda-version]</span>
-<span class="ansi-bold">/tmp/mat_helper.hpp-573b94.hip:162:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier 'assert'</span>
+  CONVERSION %: 100.0
+  REPLACED bytes: 814
+  TOTAL bytes: 24629
+  CHANGED lines of code: 48
+  TOTAL lines of code: 789
+  CODE CHANGED (in bytes) %: 3.3
+  CODE CHANGED (in lines) %: 6.1
+  TIME ELAPSED s: 0.46
+[HIPIFY] info: CONVERTED refs by type:
+  error: 3
+  init: 1
+  device: 11
+  stream: 2
+  event: 9
+  execution: 1
+  include_cuda_main_header: 2
+  type: 16
+  numeric_literal: 5
+  define: 2
+[HIPIFY] info: CONVERTED refs by API:
+  CUDA Driver API: 7
+  CUDA RT API: 45
+[HIPIFY] info: CONVERTED refs by names:
+  CUDA_SUCCESS: 2
+  CUresult: 2
+  cuGetErrorString: 1
+  cuInit: 1
+  cuda.h: 1
+  cudaDevAttrManagedMemory: 1
+  cudaDeviceGetAttribute: 1
+  cudaDeviceProp: 2
+  cudaDeviceReset: 1
+  cudaDeviceSynchronize: 1
+  cudaError_t: 2
+  cudaEventCreate: 2
+  cudaEventDestroy: 2
+  cudaEventElapsedTime: 1
+  cudaEventRecord: 2
+  cudaEventSynchronize: 2
+  cudaEvent_t: 3
+  cudaGetDevice: 1
+  cudaGetDeviceCount: 2
+  cudaGetDeviceProperties: 2
+  cudaGetErrorString: 2
+  cudaLaunchKernel: 1
+  cudaSetDevice: 3
+  cudaStreamCreateWithFlags: 1
+  cudaStreamDefault: 1
+  cudaStreamDestroy: 1
+  cudaStreamNonBlocking: 1
+  cudaStream_t: 7
+  cudaSuccess: 2
+  cuda_runtime.h: 1
+<span class="ansi-magenta-intense-fg ansi-bold">warning: </span><span class="ansi-bold">CUDA version is newer than the latest partially supported version 11.8 [-Wunknown-cuda-version]</span>
+<span class="ansi-bold">/tmp/mat_helper.hpp-22bc3d.hip:162:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier 'assert'</span>
     assert(len0_src&gt;=K0);
 <span class="ansi-green-intense-fg ansi-bold">    ^
-</span><span class="ansi-bold">/tmp/mat_helper.hpp-573b94.hip:163:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier 'assert'</span>
+</span><span class="ansi-bold">/tmp/mat_helper.hpp-22bc3d.hip:163:5: </span><span class="ansi-red-intense-fg ansi-bold">error: </span><span class="ansi-bold">use of undeclared identifier 'assert'</span>
     assert(len1_src&gt;=K1);    
 <span class="ansi-green-intense-fg ansi-bold">    ^
 </span>2 errors generated when compiling for host.
-Error while processing /tmp/mat_helper.hpp-573b94.hip.
+Error while processing /tmp/mat_helper.hpp-22bc3d.hip.
 
 [HIPIFY] info: file './mat_helper.hpp' statistics:
 
@@ -8352,78 +8496,91 @@ Error while processing /tmp/mat_helper.hpp-573b94.hip.
   TOTAL lines of code: 180
   CODE CHANGED (in bytes) %: 0.0
   CODE CHANGED (in lines) %: 0.6
-  TIME ELAPSED s: 0.76
+  TIME ELAPSED s: 0.50
+<span class="ansi-magenta-intense-fg ansi-bold">warning: </span><span class="ansi-bold">CUDA version is newer than the latest partially supported version 11.8 [-Wunknown-cuda-version]</span>
+
+[HIPIFY] info: file './mat_size.hpp' statistics:
+  CONVERTED refs count: 0
+  UNCONVERTED refs count: 0
+  CONVERSION %: 0.0
+  REPLACED bytes: 0
+  TOTAL bytes: 107
+  CHANGED lines of code: 1
+  TOTAL lines of code: 3
+  CODE CHANGED (in bytes) %: 0.0
+  CODE CHANGED (in lines) %: 33.3
+  TIME ELAPSED s: 0.19
 
 [HIPIFY] info: file 'GLOBAL' statistics:
 
   ERROR: Statistics is invalid due to failed hipification.
 
-  CONVERTED refs count: 66
+  CONVERTED refs count: 132
   UNCONVERTED refs count: 0
   CONVERSION %: 100.0
-  REPLACED bytes: 1001
-  TOTAL bytes: 35177
-  CHANGED lines of code: 62
-  TOTAL lines of code: 1162
-  CODE CHANGED (in bytes) %: 2.8
-  CODE CHANGED (in lines) %: 5.3
-  TIME ELAPSED s: 2.68
+  REPLACED bytes: 2002
+  TOTAL bytes: 65750
+  CHANGED lines of code: 122
+  TOTAL lines of code: 2141
+  CODE CHANGED (in bytes) %: 3.0
+  CODE CHANGED (in lines) %: 5.7
+  TIME ELAPSED s: 2.79
 [HIPIFY] info: CONVERTED refs by type:
-  error: 4
-  init: 1
-  device: 12
-  memory: 9
-  stream: 2
-  event: 9
-  execution: 1
-  include_cuda_main_header: 2
-  type: 16
-  numeric_literal: 8
-  define: 2
+  error: 8
+  init: 2
+  device: 24
+  memory: 18
+  stream: 4
+  event: 18
+  execution: 2
+  include_cuda_main_header: 4
+  type: 32
+  numeric_literal: 16
+  define: 4
 [HIPIFY] info: CONVERTED refs by API:
-  CUDA Driver API: 7
-  CUDA RT API: 59
+  CUDA Driver API: 14
+  CUDA RT API: 118
 [HIPIFY] info: CONVERTED refs by names:
-  CUDA_SUCCESS: 2
-  CUresult: 2
-  cuGetErrorString: 1
-  cuInit: 1
-  cuda.h: 1
-  cudaDevAttrManagedMemory: 1
-  cudaDeviceGetAttribute: 1
-  cudaDeviceProp: 2
-  cudaDeviceReset: 1
-  cudaDeviceSynchronize: 2
-  cudaError_t: 2
-  cudaEventCreate: 2
-  cudaEventDestroy: 2
-  cudaEventElapsedTime: 1
-  cudaEventRecord: 2
-  cudaEventSynchronize: 2
-  cudaEvent_t: 3
-  cudaFree: 3
-  cudaGetDevice: 1
-  cudaGetDeviceCount: 2
-  cudaGetDeviceProperties: 2
-  cudaGetErrorString: 2
-  cudaGetLastError: 1
-  cudaLaunchKernel: 1
-  cudaMalloc: 3
-  cudaMemcpy: 3
-  cudaMemcpyDeviceToHost: 1
-  cudaMemcpyHostToDevice: 2
-  cudaSetDevice: 3
-  cudaStreamCreateWithFlags: 1
-  cudaStreamDefault: 1
-  cudaStreamDestroy: 1
-  cudaStreamNonBlocking: 1
-  cudaStream_t: 7
-  cudaSuccess: 2
-  cuda_runtime.h: 1
+  CUDA_SUCCESS: 4
+  CUresult: 4
+  cuGetErrorString: 2
+  cuInit: 2
+  cuda.h: 2
+  cudaDevAttrManagedMemory: 2
+  cudaDeviceGetAttribute: 2
+  cudaDeviceProp: 4
+  cudaDeviceReset: 2
+  cudaDeviceSynchronize: 4
+  cudaError_t: 4
+  cudaEventCreate: 4
+  cudaEventDestroy: 4
+  cudaEventElapsedTime: 2
+  cudaEventRecord: 4
+  cudaEventSynchronize: 4
+  cudaEvent_t: 6
+  cudaFree: 6
+  cudaGetDevice: 2
+  cudaGetDeviceCount: 4
+  cudaGetDeviceProperties: 4
+  cudaGetErrorString: 4
+  cudaGetLastError: 2
+  cudaLaunchKernel: 2
+  cudaMalloc: 6
+  cudaMemcpy: 6
+  cudaMemcpyDeviceToHost: 2
+  cudaMemcpyHostToDevice: 4
+  cudaSetDevice: 6
+  cudaStreamCreateWithFlags: 2
+  cudaStreamDefault: 2
+  cudaStreamDestroy: 2
+  cudaStreamNonBlocking: 2
+  cudaStream_t: 14
+  cudaSuccess: 4
+  cuda_runtime.h: 2
 
 [HIPIFY] info: TOTAL statistics:
-  CONVERTED files: 2
-  PROCESSED files: 4
+  CONVERTED files: 3
+  PROCESSED files: 6
 </pre>
 </div>
 </div>
@@ -8446,7 +8603,7 @@ Error while processing /tmp/mat_helper.hpp-573b94.hip.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [30]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>hipconvertinplace-perl.sh<span class="w"> </span>temp_mat_mult<span class="w"> </span>-hip-kernel-execution-syntax
@@ -8475,15 +8632,15 @@ Error while processing /tmp/mat_helper.hpp-573b94.hip.
   cudaMemcpy =&gt; hipMemcpy: 3
   cudaMemcpyDeviceToHost =&gt; hipMemcpyDeviceToHost: 1
   cudaMemcpyHostToDevice =&gt; hipMemcpyHostToDevice: 2
-  warning: temp_mat_mult/cuda_helper.hpp:465: removed identifier "cudaLaunch" since CUDA 10.1
+  warning: temp_mat_mult/cuda_helper.hpp:480: removed identifier "cudaLaunch" since CUDA 10.1
 
 [HIPIFY] info: file 'temp_mat_mult/cuda_helper.hpp' statistics:
-  CONVERTED refs count: 53
-  TOTAL lines of code: 774
+  CONVERTED refs count: 56
+  TOTAL lines of code: 789
   WARNINGS: 1
 [HIPIFY] info: CONVERTED refs by names:
-  CUDA_SUCCESS =&gt; hipSuccess: 3
-  CUresult =&gt; hipError_t: 3
+  CUDA_SUCCESS =&gt; hipSuccess: 4
+  CUresult =&gt; hipError_t: 4
   cuGetErrorString =&gt; hipDrvGetErrorString: 1
   cuInit =&gt; hipInit: 1
   cuda.h =&gt; hip/hip_runtime.h: 2
@@ -8492,7 +8649,7 @@ Error while processing /tmp/mat_helper.hpp-573b94.hip.
   cudaDeviceProp =&gt; hipDeviceProp_t: 2
   cudaDeviceReset =&gt; hipDeviceReset: 1
   cudaDeviceSynchronize =&gt; hipDeviceSynchronize: 1
-  cudaError_t =&gt; hipError_t: 3
+  cudaError_t =&gt; hipError_t: 4
   cudaEventCreate =&gt; hipEventCreate: 2
   cudaEventDestroy =&gt; hipEventDestroy: 2
   cudaEventElapsedTime =&gt; hipEventElapsedTime: 1
@@ -8502,7 +8659,7 @@ Error while processing /tmp/mat_helper.hpp-573b94.hip.
   cudaGetDevice =&gt; hipGetDevice: 1
   cudaGetDeviceCount =&gt; hipGetDeviceCount: 2
   cudaGetDeviceProperties =&gt; hipGetDeviceProperties: 2
-  cudaGetErrorString =&gt; hipGetErrorString: 1
+  cudaGetErrorString =&gt; hipGetErrorString: 2
   cudaLaunchKernel =&gt; hipLaunchKernel: 1
   cudaSetDevice =&gt; hipSetDevice: 3
   cudaStreamCreateWithFlags =&gt; hipStreamCreateWithFlags: 1
@@ -8510,16 +8667,16 @@ Error while processing /tmp/mat_helper.hpp-573b94.hip.
   cudaStreamDestroy =&gt; hipStreamDestroy: 1
   cudaStreamNonBlocking =&gt; hipStreamNonBlocking: 1
   cudaStream_t =&gt; hipStream_t: 7
-  cudaSuccess =&gt; hipSuccess: 3
+  cudaSuccess =&gt; hipSuccess: 4
   cuda_runtime.h =&gt; hip/hip_runtime.h: 2
 
 [HIPIFY] info: file 'GLOBAL' statistics:
-  CONVERTED refs count: 68
-  TOTAL lines of code: 1147
+  CONVERTED refs count: 71
+  TOTAL lines of code: 1162
   WARNINGS: 1
 [HIPIFY] info: CONVERTED refs by names:
-  CUDA_SUCCESS =&gt; hipSuccess: 3
-  CUresult =&gt; hipError_t: 3
+  CUDA_SUCCESS =&gt; hipSuccess: 4
+  CUresult =&gt; hipError_t: 4
   cuGetErrorString =&gt; hipDrvGetErrorString: 1
   cuInit =&gt; hipInit: 1
   cuda.h =&gt; hip/hip_runtime.h: 2
@@ -8528,7 +8685,7 @@ Error while processing /tmp/mat_helper.hpp-573b94.hip.
   cudaDeviceProp =&gt; hipDeviceProp_t: 2
   cudaDeviceReset =&gt; hipDeviceReset: 1
   cudaDeviceSynchronize =&gt; hipDeviceSynchronize: 2
-  cudaError_t =&gt; hipError_t: 3
+  cudaError_t =&gt; hipError_t: 4
   cudaEventCreate =&gt; hipEventCreate: 2
   cudaEventDestroy =&gt; hipEventDestroy: 2
   cudaEventElapsedTime =&gt; hipEventElapsedTime: 1
@@ -8539,7 +8696,7 @@ Error while processing /tmp/mat_helper.hpp-573b94.hip.
   cudaGetDevice =&gt; hipGetDevice: 1
   cudaGetDeviceCount =&gt; hipGetDeviceCount: 2
   cudaGetDeviceProperties =&gt; hipGetDeviceProperties: 2
-  cudaGetErrorString =&gt; hipGetErrorString: 1
+  cudaGetErrorString =&gt; hipGetErrorString: 2
   cudaGetLastError =&gt; hipGetLastError: 1
   cudaLaunchKernel =&gt; hipLaunchKernel: 1
   cudaMalloc =&gt; hipMalloc: 3
@@ -8552,7 +8709,7 @@ Error while processing /tmp/mat_helper.hpp-573b94.hip.
   cudaStreamDestroy =&gt; hipStreamDestroy: 1
   cudaStreamNonBlocking =&gt; hipStreamNonBlocking: 1
   cudaStream_t =&gt; hipStream_t: 7
-  cudaSuccess =&gt; hipSuccess: 3
+  cudaSuccess =&gt; hipSuccess: 4
   cuda_runtime.h =&gt; hip/hip_runtime.h: 2
 
 </pre>
@@ -8612,7 +8769,7 @@ Error while processing /tmp/mat_helper.hpp-573b94.hip.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [32]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>ls<span class="w"> </span>-l<span class="w"> </span>temp_mat_mult
@@ -8628,17 +8785,20 @@ Error while processing /tmp/mat_helper.hpp-573b94.hip.
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>total 1612
--rw-r--r-- 1 tpotter unix_users     703 May 27 03:16 Makefile
--rw-r--r-- 1 tpotter unix_users   24217 May 27 03:17 cuda_helper.hpp
--rw-r--r-- 1 tpotter unix_users   24183 May 27 02:39 cuda_helper.hpp.prehip
--rw-r--r-- 1 tpotter unix_users    4497 May 27 03:17 mat_helper.hpp
--rw-r--r-- 1 tpotter unix_users    4497 May 27 02:38 mat_helper.hpp.prehip
--rw-r--r-- 1 tpotter unix_users    5975 May 27 03:17 mat_mult.cpp
--rw-r--r-- 1 tpotter unix_users    5944 May 27 02:34 mat_mult.cpp.prehip
--rwxr-xr-x 1 tpotter unix_users 1553880 May 27 03:16 mat_mult.exe
--rw-r--r-- 1 tpotter unix_users     107 May 27 03:17 mat_size.hpp
--rw-r--r-- 1 tpotter unix_users     107 May 27 02:38 mat_size.hpp.prehip
+<pre>total 2464
+-rw-r--r-- 1 toby toby  262144 Jun 10 16:24 array_A.dat
+-rw-r--r-- 1 toby toby  262144 Jun 10 16:24 array_B.dat
+-rw-r--r-- 1 toby toby  262144 Jun 10 16:24 array_C.dat
+-rw-r--r-- 1 toby toby   24660 Jun 10 16:26 cuda_helper.hpp
+-rw-r--r-- 1 toby toby   24629 Jun 10 16:25 cuda_helper.hpp.prehip
+-rw-r--r-- 1 toby toby     703 Jun 10 16:24 Makefile
+-rw-r--r-- 1 toby toby    4497 Jun 10 16:26 mat_helper.hpp
+-rw-r--r-- 1 toby toby    4497 Jun 10 16:25 mat_helper.hpp.prehip
+-rw-r--r-- 1 toby toby    5975 Jun 10 16:25 mat_mult.cpp
+-rw-r--r-- 1 toby toby    5944 Jun 10 16:24 mat_mult.cpp.prehip
+-rwxr-xr-x 1 toby toby 1632488 Jun 10 16:24 mat_mult.exe
+-rw-r--r-- 1 toby toby     107 Jun 10 16:26 mat_size.hpp
+-rw-r--r-- 1 toby toby     107 Jun 10 16:25 mat_size.hpp.prehip
 </pre>
 </div>
 </div>
@@ -8660,7 +8820,7 @@ Error while processing /tmp/mat_helper.hpp-573b94.hip.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [33]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="nb">cd</span><span class="w"> </span>temp_mat_mult<span class="p">;</span><span class="w"> </span>make<span class="w"> </span>clean<span class="p">;</span><span class="w"> </span>make<span class="w"> </span><span class="nv">CXX</span><span class="o">=</span><span class="s2">"hipcc"</span>
@@ -8679,130 +8839,17 @@ Error while processing /tmp/mat_helper.hpp-573b94.hip.
 <pre>rm -r *.exe
 hipcc -g -O2 -x cu mat_mult.cpp -o mat_mult.exe -lcuda 
 <span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h(506)</span>: <span class="ansi-magenta-intense-fg ansi-bold">warning</span> #1056-D: returning pointer to local variable
+      return &amp;a;
+             ^
 
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h(506)</span>: <span class="ansi-magenta-intense-fg ansi-bold">warning</span> #1056-D: returning pointer to local variable
+<span class="ansi-cyan-intense-fg ansi-bold">Remark</span>: The warnings can be suppressed with "-diag-suppress &lt;warning-number&gt;"
 
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">CUDA_RESOURCE_DESC* hipResourceDesTocudaResourceDes(const HIP_RESOURCE_DESC*)</span>’:
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:506:8:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>address of local variable ‘<span class="ansi-bold">a</span>’ returned [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wreturn-local-addr-Wreturn-local-addr]8;;</span>]
-  506 |     ret<span class="ansi-magenta-intense-fg ansi-bold">ur</span>n &amp;a;
-      |        <span class="ansi-magenta-intense-fg ansi-bold">^~</span>
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:480:20:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
-  480 |     CUDA_RESOURCE_D<span class="ansi-cyan-intense-fg ansi-bold">E</span>SC a;
-      |                    <span class="ansi-cyan-intense-fg ansi-bold">^</span>
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipMemcpyToArray(hipArray_t, size_t, size_t, const void*, size_t, hipMemcpyKind)</span>’:
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:2070:48:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">cudaError_t cudaMemcpyToArray(cudaArray_t, size_t, size_t, const void*, size_t, cudaMemcpyKind)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 2070 |     return hipCUDAErrorTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(</span>
-      |                               <span class="ansi-magenta-intense-fg ansi-bold">~~~~</span>             <span class="ansi-magenta-intense-fg ansi-bold">^</span>                                        
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime_api.h:7593:46:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
- 7593 | extern __CUDA_DEPRECATED __host__ cudaError_t<span class="ansi-cyan-intense-fg ansi-bold"> CUDARTAPI cudaMe</span>mcpyToArray(cudaArray_t dst, size_t wOffset, size_t hOffset, const void *src, size_t count, enum cudaMemcpyKind kind);
-      |                                              <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipMemcpyFromArray(void*, hipArray_const_t, size_t, size_t, size_t, hipMemcpyKind)</span>’:
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:2077:50:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">cudaError_t cudaMemcpyFromArray(void*, cudaArray_const_t, size_t, size_t, size_t, cudaMemcpyKind)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 2077 |     return hipCUDAErrorTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cudaMemcpyFromArray(dst, srcArray, wOffset, hOffset, count,</span>
-      |                               <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>  
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime_api.h:7635:46:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
- 7635 | extern __CUDA_DEPRECATED __host__ cudaError_t<span class="ansi-cyan-intense-fg ansi-bold"> CUDARTAPI cudaMemc</span>pyFromArray(void *dst, cudaArray_const_t src, size_t wOffset, size_t hOffset, size_t count, enum cudaMemcpyKind kind);
-      |                                              <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipCtxDetach(hipCtx_t)</span>’:
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:2997:41:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult cuCtxDetach(CUcontext)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 2997 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuCtxDetach(</span>ctx));
-      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~^~~~~</span>
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:5836:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
- 5836 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuCtxDetach</span>(CUcontext ctx);
-      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipDeviceComputeCapability(int*, int*, hipDevice_t)</span>’:
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3005:55:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult cuDeviceComputeCapability(int*, int*, CUdevice)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 3005 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuDeviceComputeCapability(major, minor, dev</span>ice));
-      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:4553:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
- 4553 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuDeviceComputeCapability</span>(int *major, int *minor, CUdevice dev);
-      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipBindTexture(size_t*, textureReference*, const void*, const hipChannelFormatDesc*, size_t)</span>’:
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3126:46:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">cudaError_t cudaBindTexture(size_t*, const textureReference*, const void*, const cudaChannelFormatDesc*, size_t)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 3126 |     return hipCUDAErrorTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cudaBindTexture(offset, tex, devPtr, desc, s</span>ize));
-      |                               <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime_api.h:8801:46:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
- 8801 | extern __CUDA_DEPRECATED __host__ cudaError_t<span class="ansi-cyan-intense-fg ansi-bold"> CUDARTAPI cuda</span>BindTexture(size_t *offset, const struct textureReference *texref, const void *devPtr, const struct cudaChannelFormatDesc *desc, size_t size __dv(UINT_MAX));
-      |                                              <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipBindTexture2D(size_t*, textureReference*, const void*, const hipChannelFormatDesc*, size_t, size_t, size_t)</span>’:
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3132:48:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">cudaError_t cudaBindTexture2D(size_t*, const textureReference*, const void*, const cudaChannelFormatDesc*, size_t, size_t, size_t)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 3132 |     return hipCUDAErrorTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cudaBindTexture2D(offset, tex, devPtr, desc, width, height, pi</span>tch));
-      |                               <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime_api.h:8860:46:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
- 8860 | extern __CUDA_DEPRECATED __host__ cudaError_t<span class="ansi-cyan-intense-fg ansi-bold"> CUDARTAPI cudaBi</span>ndTexture2D(size_t *offset, const struct textureReference *texref, const void *devPtr, const struct cudaChannelFormatDesc *desc, size_t width, size_t height, size_t pitch);
-      |                                              <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipGetTextureAlignmentOffset(size_t*, const textureReference*)</span>’:
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3191:60:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">cudaError_t cudaGetTextureAlignmentOffset(size_t*, const textureReference*)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 3191 |     return hipCUDAErrorTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cudaGetTextureAlignmentOffset(offset,texr</span>ef));
-      |                               <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime_api.h:8993:46:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
- 8993 | extern __CUDA_DEPRECATED __host__ cudaError_t<span class="ansi-cyan-intense-fg ansi-bold"> CUDARTAPI cudaGetTextureAlig</span>nmentOffset(size_t *offset, const struct textureReference *texref);
-      |                                              <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipLaunchCooperativeKernelMultiDevice(hipLaunchParams*, int, unsigned int)</span>’:
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3219:69:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">cudaError_t cudaLaunchCooperativeKernelMultiDevice(cudaLaunchParams*, unsigned int, unsigned int)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 3219 | rn hipCUDAErrorTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cudaLaunchCooperativeKernelMultiDevice(launchParamsList, numDevices, fl</span>ags));
-      |                       <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">cuda_helper.hpp(54)</span>: <span class="ansi-red-intense-fg ansi-bold">error</span>: function <span class="ansi-bold">"h_errchk"</span> has already been defined
+  void h_errchk(hipError_t errcode, const char* message) {
+       ^
 
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime_api.h:4257:46:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
- 4257 | extern __CUDA_DEPRECATED __host__ cudaError_t<span class="ansi-cyan-intense-fg ansi-bold"> CUDARTAPI cudaLaunchCooperativeKernel</span>MultiDevice(struct cudaLaunchParams *launchParamsList, unsigned int numDevices, unsigned int flags  __dv(0));
-      |                                              <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipModuleLaunchCooperativeKernelMultiDevice(hipFunctionLaunchParams*, unsigned int, unsigned int)</span>’:
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3226:66:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult cuLaunchCooperativeKernelMultiDevice(CUDA_LAUNCH_PARAMS*, unsigned int, unsigned int)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 3226 | eturn hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuLaunchCooperativeKernelMultiDevice(launchParamsList,</span>
-      |                         <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~</span>               
-
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:14684:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
-14684 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuLaunchCooperativeKernelMultiDevice</span>(CUDA_LAUNCH_PARAMS *launchParamsList, unsigned int numDevices, unsigned int flags);
-      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipTexRefSetAddressMode(CUtexref, int, CUaddress_mode)</span>’:
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3515:52:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult cuTexRefSetAddressMode(CUtexref, int, CUaddress_mode)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 3515 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuTexRefSetAddressMode(hTexRef,dim,a</span>m));
-      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:18334:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
-18334 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuTexRefSetAddressMode</span>(CUtexref hTexRef, int dim, CUaddress_mode am);
-      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipTexRefSetFilterMode(CUtexref, CUfilter_mode)</span>’:
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3519:51:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult cuTexRefSetFilterMode(CUtexref, CUfilter_mode)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 3519 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuTexRefSetFilterMode(hTexRef,</span>fm));
-      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~</span>
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:18371:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
-18371 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuTexRefSetFilterMode</span>(CUtexref hTexRef, CUfilter_mode fm);
-      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipTexRefSetAddress(size_t*, CUtexref, hipDeviceptr_t, size_t)</span>’:
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3523:51:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult cuTexRefSetAddress_v2(size_t*, CUtexref, CUdeviceptr, size_t)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 3523 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuTexRefSetAddress(ByteOffset,hTexRef,dptr,bytes));</span>
-      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:18195:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
-18195 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuTexRefSetAddress(si</span>ze_t *ByteOffset, CUtexref hTexRef, CUdeviceptr dptr, size_t bytes);
-      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipTexRefSetAddress2D(CUtexref, const CUDA_ARRAY_DESCRIPTOR*, hipDeviceptr_t, size_t)</span>’:
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3527:53:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult cuTexRefSetAddress2D_v3(CUtexref, const CUDA_ARRAY_DESCRIPTOR*, CUdeviceptr, size_t)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 3527 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuTexRefSetAddress2D(hTexRef,desc,dptr,Pitch));</span>
-      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:18251:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
-18251 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuTexRefSetAddress2D(CU</span>texref hTexRef, const CUDA_ARRAY_DESCRIPTOR *desc, CUdeviceptr dptr, size_t Pitch);
-      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipTexRefSetFormat(CUtexref, CUarray_format, int)</span>’:
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3531:47:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult cuTexRefSetFormat(CUtexref, CUarray_format, int)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 3531 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuTexRefSetFormat(hTexRef,fmt,NumPackedComponent</span>s));
-      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:18287:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
-18287 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuTexRefSetFormat</span>(CUtexref hTexRef, CUarray_format fmt, int NumPackedComponents);
-      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipTexRefSetFlags(CUtexref, unsigned int)</span>’:
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3535:46:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult cuTexRefSetFlags(CUtexref, unsigned int)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 3535 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuTexRefSetFlags(hTexRef,Fla</span>gs));
-      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:18584:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
-18584 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuTexRefSetFlags</span>(CUtexref hTexRef, unsigned int Flags);
-      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t hipTexRefSetArray(CUtexref, hipArray_t, unsigned int)</span>’:
-<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3539:46:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult cuTexRefSetArray(CUtexref, CUarray, unsigned int)</span>’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
- 3539 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuTexRefSetArray(hTexRef,(CUarray)hArray,Flag</span>s));
-      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
-<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:18117:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
-18117 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuTexRefSetArray</span>(CUtexref hTexRef, CUarray hArray, unsigned int Flags);
-      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~</span>
+1 error detected in the compilation of "mat_mult.cpp".
+make: *** [Makefile:29: mat_mult.exe] Error 2
 </pre>
 </div>
 </div>
@@ -8824,7 +8871,7 @@ hipcc -g -O2 -x cu mat_mult.cpp -o mat_mult.exe -lcuda
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [34]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Run this after fixing code</span>
@@ -8844,10 +8891,164 @@ hipcc -g -O2 -x cu mat_mult.cpp -o mat_mult.exe -lcuda
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>  warning: cuda_helper.hpp:465: removed identifier "cudaLaunch" since CUDA 10.1
-make: Nothing to be done for 'all'.
+hipcc -g -O2 -x cu mat_mult.cpp -o mat_mult.exe -lcuda 
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h(506)</span>: <span class="ansi-magenta-intense-fg ansi-bold">warning</span> #1056-D: returning pointer to local variable
+      return &amp;a;
+             ^
+
+<span class="ansi-cyan-intense-fg ansi-bold">Remark</span>: The warnings can be suppressed with "-diag-suppress &lt;warning-number&gt;"
+
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h(506)</span>: <span class="ansi-magenta-intense-fg ansi-bold">warning</span> #1056-D: returning pointer to local variable
+      return &amp;a;
+             ^
+
+<span class="ansi-cyan-intense-fg ansi-bold">Remark</span>: The warnings can be suppressed with "-diag-suppress &lt;warning-number&gt;"
+
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">CUDA_RESOURCE_DESC*</span><span class="ansi-green-intense-fg ansi-bold"> hipResourceDesTocudaResourceDes</span>(const HIP_RESOURCE_DESC*)’:
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:506:8:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>address of local variable ‘<span class="ansi-bold">a</span>’ returned [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wreturn-local-addr-Wreturn-local-addr]8;;</span>]
+  506 |     ret<span class="ansi-magenta-intense-fg ansi-bold">ur</span>n &amp;a;
+      |        <span class="ansi-magenta-intense-fg ansi-bold">^~</span>
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:480:20:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
+  480 |     CUDA_RESOURCE_D<span class="ansi-cyan-intense-fg ansi-bold">E</span>SC a;
+      |                    <span class="ansi-cyan-intense-fg ansi-bold">^</span>
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t</span><span class="ansi-green-intense-fg ansi-bold"> hipMemcpyToArray</span>(hipArray_t, size_t, size_t, const void*, size_t, hipMemcpyKind)’:
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:2070:48:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">cudaError_t</span><span class="ansi-green-intense-fg ansi-bold"> cudaMemcpyToArray</span>(cudaArray_t, size_t, size_t, const void*, size_t, cudaMemcpyKind)’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
+ 2070 |     return hipCUDAErrorTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(</span>
+      |                               <span class="ansi-magenta-intense-fg ansi-bold">~~~~</span>             <span class="ansi-magenta-intense-fg ansi-bold">^</span>                                        
+<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime_api.h:8181:46:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
+ 8181 | extern __CUDA_DEPRECATED __host__ cudaError_t<span class="ansi-cyan-intense-fg ansi-bold"> CUDARTAPI cudaMe</span>mcpyToArray(cudaArray_t dst, size_t wOffset, size_t hOffset, const void *src, size_t count, enum cudaMemcpyKind kind);
+      |                                              <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t</span><span class="ansi-green-intense-fg ansi-bold"> hipMemcpyFromArray</span>(void*, hipArray_const_t, size_t, size_t, size_t, hipMemcpyKind)’:
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:2077:50:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">cudaError_t</span><span class="ansi-green-intense-fg ansi-bold"> cudaMemcpyFromArray</span>(void*, cudaArray_const_t, size_t, size_t, size_t, cudaMemcpyKind)’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
+ 2077 |     return hipCUDAErrorTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cudaMemcpyFromArray(dst, srcArray, wOffset, hOffset, count,</span>
+      |                               <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>  
+<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime_api.h:8223:46:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
+ 8223 | extern __CUDA_DEPRECATED __host__ cudaError_t<span class="ansi-cyan-intense-fg ansi-bold"> CUDARTAPI cudaMemc</span>pyFromArray(void *dst, cudaArray_const_t src, size_t wOffset, size_t hOffset, size_t count, enum cudaMemcpyKind kind);
+      |                                              <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t</span><span class="ansi-green-intense-fg ansi-bold"> hipFuncSetSharedMemConfig</span>(const void*, hipSharedMemConfig)’:
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:2108:57:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">cudaError_t</span><span class="ansi-green-intense-fg ansi-bold"> cudaFuncSetSharedMemConfig</span>(const void*, cudaSharedMemConfig)’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
+ 2108 |     return hipCUDAErrorTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cudaFuncSetSharedMemConfig(func, con</span>fig));
+      |                               <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime_api.h:4971:46:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
+ 4971 | extern __CUDA_DEPRECATED __host__ cudaError_t<span class="ansi-cyan-intense-fg ansi-bold"> CUDARTAPI cudaFuncSetShar</span>edMemConfig(const void *func, enum cudaSharedMemConfig config);
+      |                                              <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t</span><span class="ansi-green-intense-fg ansi-bold"> hipCtxSetSharedMemConfig</span>(hipSharedMemConfig)’:
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:2981:53:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult</span><span class="ansi-green-intense-fg ansi-bold"> cuCtxSetSharedMemConfig</span>(CUsharedconfig)’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
+ 2981 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuCtxSetSharedMemConfig((CUsharedconfig)con</span>fig));
+      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:6855:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
+ 6855 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuCtxSetSharedMemConfig</span>(CUsharedconfig config);
+      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t</span><span class="ansi-green-intense-fg ansi-bold"> hipCtxGetSharedMemConfig</span>(hipSharedMemConfig*)’:
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:2985:53:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult</span><span class="ansi-green-intense-fg ansi-bold"> cuCtxGetSharedMemConfig</span>(CUsharedconfig*)’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
+ 2985 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuCtxGetSharedMemConfig((CUsharedconfig*)pConf</span>ig));
+      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:6800:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
+ 6800 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuCtxGetSharedMemConfig</span>(CUsharedconfig *pConfig);
+      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t</span><span class="ansi-green-intense-fg ansi-bold"> hipCtxDetach</span>(hipCtx_t)’:
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:2997:41:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult</span><span class="ansi-green-intense-fg ansi-bold"> cuCtxDetach</span>(CUcontext)’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
+ 2997 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuCtxDetach(</span>ctx));
+      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~^~~~~</span>
+<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:6755:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
+ 6755 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuCtxDetach</span>(CUcontext ctx);
+      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~</span>
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t</span><span class="ansi-green-intense-fg ansi-bold"> hipDeviceComputeCapability</span>(int*, int*, hipDevice_t)’:
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3005:55:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult</span><span class="ansi-green-intense-fg ansi-bold"> cuDeviceComputeCapability</span>(int*, int*, CUdevice)’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
+ 3005 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuDeviceComputeCapability(major, minor, dev</span>ice));
+      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:5440:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
+ 5440 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuDeviceComputeCapability</span>(int *major, int *minor, CUdevice dev);
+      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t</span><span class="ansi-green-intense-fg ansi-bold"> hipDeviceGetSharedMemConfig</span>(hipSharedMemConfig*)’:
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3038:59:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">cudaError_t</span><span class="ansi-green-intense-fg ansi-bold"> cudaDeviceGetSharedMemConfig</span>(cudaSharedMemConfig*)’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
+ 3038 |     return hipCUDAErrorTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cudaDeviceGetSharedMemConfig(con</span>fig));
+      |                               <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~</span>
+<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime_api.h:1043:46:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
+ 1043 | extern __CUDA_DEPRECATED __host__ __cudart_bu<span class="ansi-cyan-intense-fg ansi-bold">iltin__ cudaError_t CUDARTAP</span>I cudaDeviceGetSharedMemConfig(enum cudaSharedMemConfig *pConfig);
+      |                                              <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t</span><span class="ansi-green-intense-fg ansi-bold"> hipDeviceSetSharedMemConfig</span>(hipSharedMemConfig)’:
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3042:59:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">cudaError_t</span><span class="ansi-green-intense-fg ansi-bold"> cudaDeviceSetSharedMemConfig</span>(cudaSharedMemConfig)’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
+ 3042 |     return hipCUDAErrorTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cudaDeviceSetSharedMemConfig(con</span>fig));
+      |                               <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~</span>
+<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime_api.h:1089:46:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
+ 1089 | extern __CUDA_DEPRECATED __host__ cudaError_t<span class="ansi-cyan-intense-fg ansi-bold"> CUDARTAPI cudaDeviceSetShar</span>edMemConfig(enum cudaSharedMemConfig config);
+      |                                              <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t</span><span class="ansi-green-intense-fg ansi-bold"> hipModuleGetTexRef</span>(CUtexref_st**, hipModule_t, const char*)’:
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3071:47:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult</span><span class="ansi-green-intense-fg ansi-bold"> cuModuleGetTexRef</span>(CUtexref_st**, CUmodule, const char*)’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
+ 3071 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuModuleGetTexRef(pTexRef, hmod, n</span>ame));
+      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:7407:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
+ 7407 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuModuleGetTexRef</span>(CUtexref *pTexRef, CUmodule hmod, const char *name);
+      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t</span><span class="ansi-green-intense-fg ansi-bold"> hipLaunchCooperativeKernelMultiDevice</span>(hipLaunchParams*, int, unsigned int)’:
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3219:69:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">cudaError_t</span><span class="ansi-green-intense-fg ansi-bold"> cudaLaunchCooperativeKernelMultiDevice</span>(cudaLaunchParams*, unsigned int, unsigned int)’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
+ 3219 | rn hipCUDAErrorTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cudaLaunchCooperativeKernelMultiDevice(launchParamsList, numDevices, fl</span>ags));
+      |                       <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+
+<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime_api.h:4622:46:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
+ 4622 | extern __CUDA_DEPRECATED __host__ cudaError_t<span class="ansi-cyan-intense-fg ansi-bold"> CUDARTAPI cudaLaunchCooperativeKernel</span>MultiDevice(struct cudaLaunchParams *launchParamsList, unsigned int numDevices, unsigned int flags  __dv(0));
+      |                                              <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t</span><span class="ansi-green-intense-fg ansi-bold"> hipModuleLaunchCooperativeKernelMultiDevice</span>(hipFunctionLaunchParams*, unsigned int, unsigned int)’:
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3226:66:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult</span><span class="ansi-green-intense-fg ansi-bold"> cuLaunchCooperativeKernelMultiDevice</span>(CUDA_LAUNCH_PARAMS*, unsigned int, unsigned int)’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
+ 3226 | eturn hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuLaunchCooperativeKernelMultiDevice(launchParamsList,</span>
+      |                         <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~</span>               
+
+<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:17082:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
+17082 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuLaunchCooperativeKernelMultiDevice</span>(CUDA_LAUNCH_PARAMS *launchParamsList, unsigned int numDevices, unsigned int flags);
+      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t</span><span class="ansi-green-intense-fg ansi-bold"> hipTexRefSetAddressMode</span>(CUtexref, int, CUaddress_mode)’:
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3515:52:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult</span><span class="ansi-green-intense-fg ansi-bold"> cuTexRefSetAddressMode</span>(CUtexref, int, CUaddress_mode)’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
+ 3515 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuTexRefSetAddressMode(hTexRef,dim,a</span>m));
+      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:21313:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
+21313 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuTexRefSetAddressMode</span>(CUtexref hTexRef, int dim, CUaddress_mode am);
+      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t</span><span class="ansi-green-intense-fg ansi-bold"> hipTexRefSetFilterMode</span>(CUtexref, CUfilter_mode)’:
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3519:51:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult</span><span class="ansi-green-intense-fg ansi-bold"> cuTexRefSetFilterMode</span>(CUtexref, CUfilter_mode)’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
+ 3519 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuTexRefSetFilterMode(hTexRef,</span>fm));
+      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~</span>
+<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:21349:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
+21349 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuTexRefSetFilterMode</span>(CUtexref hTexRef, CUfilter_mode fm);
+      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t</span><span class="ansi-green-intense-fg ansi-bold"> hipTexRefSetAddress</span>(size_t*, CUtexref, hipDeviceptr_t, size_t)’:
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3523:51:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult</span><span class="ansi-green-intense-fg ansi-bold"> cuTexRefSetAddress_v2</span>(size_t*, CUtexref, CUdeviceptr, size_t)’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
+ 3523 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuTexRefSetAddress(ByteOffset,hTexRef,dptr,bytes));</span>
+      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:21183:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
+21183 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuTexRefSetAddress(si</span>ze_t *ByteOffset, CUtexref hTexRef, CUdeviceptr dptr, size_t bytes);
+      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t</span><span class="ansi-green-intense-fg ansi-bold"> hipTexRefSetAddress2D</span>(CUtexref, const CUDA_ARRAY_DESCRIPTOR*, hipDeviceptr_t, size_t)’:
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3527:53:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult</span><span class="ansi-green-intense-fg ansi-bold"> cuTexRefSetAddress2D_v3</span>(CUtexref, const CUDA_ARRAY_DESCRIPTOR*, CUdeviceptr, size_t)’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
+ 3527 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuTexRefSetAddress2D(hTexRef,desc,dptr,Pitch));</span>
+      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:21238:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
+21238 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuTexRefSetAddress2D(CU</span>texref hTexRef, const CUDA_ARRAY_DESCRIPTOR *desc, CUdeviceptr dptr, size_t Pitch);
+      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t</span><span class="ansi-green-intense-fg ansi-bold"> hipTexRefSetFormat</span>(CUtexref, CUarray_format, int)’:
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3531:47:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult</span><span class="ansi-green-intense-fg ansi-bold"> cuTexRefSetFormat</span>(CUtexref, CUarray_format, int)’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
+ 3531 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuTexRefSetFormat(hTexRef,fmt,NumPackedComponent</span>s));
+      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:21270:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
+21270 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuTexRefSetFormat</span>(CUtexref hTexRef, CUarray_format fmt, int NumPackedComponents);
+      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t</span><span class="ansi-green-intense-fg ansi-bold"> hipTexRefSetFlags</span>(CUtexref, unsigned int)’:
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3535:46:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult</span><span class="ansi-green-intense-fg ansi-bold"> cuTexRefSetFlags</span>(CUtexref, unsigned int)’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
+ 3535 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuTexRefSetFlags(hTexRef,Fla</span>gs));
+      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:21549:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
+21549 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuTexRefSetFlags</span>(CUtexref hTexRef, unsigned int Flags);
+      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:</span> In function ‘<span class="ansi-bold">hipError_t</span><span class="ansi-green-intense-fg ansi-bold"> hipTexRefSetArray</span>(CUtexref, hipArray_t, unsigned int)’:
+<span class="ansi-bold">/opt/rocm-6.0.2/include/hip/nvidia_detail/nvidia_hip_runtime_api.h:3539:46:</span> <span class="ansi-magenta-intense-fg ansi-bold">warning: </span>‘<span class="ansi-bold">CUresult</span><span class="ansi-green-intense-fg ansi-bold"> cuTexRefSetArray</span>(CUtexref, CUarray, unsigned int)’ is deprecated [<span class="ansi-magenta-intense-fg ansi-bold">]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;</span>]
+ 3539 |     return hipCUResultTohipEr<span class="ansi-magenta-intense-fg ansi-bold">ror(cuTexRefSetArray(hTexRef,(CUarray)hArray,Flag</span>s));
+      |                              <span class="ansi-magenta-intense-fg ansi-bold">~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="ansi-bold">/usr/local/cuda/bin/../targets/x86_64-linux/include/cuda.h:21107:36:</span> <span class="ansi-cyan-intense-fg ansi-bold">note: </span>declared here
+21107 | __CUDA_DEPRECATED CUresult CUDAAPI <span class="ansi-cyan-intense-fg ansi-bold">cuTexRefSetArray</span>(CUtexref hTexRef, CUarray hArray, unsigned int Flags);
+      |                                    <span class="ansi-cyan-intense-fg ansi-bold">^~~~~~~~~~~~~~~~</span>
 Device id: 0
-	name:                                    Tesla T4
-	global memory size:                      15655 MB
+	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
+	global memory size:                      6219 MB
 	available registers per block:           65536 
 	maximum shared memory size per block:    49 KB
 	maximum pitch size for memory copies:    2147 MB
@@ -8878,7 +9079,7 @@ Maximum error (infinity norm) is: 1.52588e-05
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Case-studies-in-porting-codes">Case studies in porting codes<a class="anchor-link" href="#Case-studies-in-porting-codes">¶</a></h2><p>Apart from the toy example above, it is informative to try porting some real-world applications and see what learnings can be derived from the process. Here are a few dot points that stood out from.</p>
+<h2 id="Case-studies-in-porting-codes">Case studies in porting codes<a class="anchor-link" href="#Case-studies-in-porting-codes">¶</a></h2><p>Apart from the toy example above, it is informative to try porting some real-world applications and see what learnings can be derived from the process. Here are a few examples.</p>
 <h3 id="Visualising-shipwrecks">Visualising shipwrecks<a class="anchor-link" href="#Visualising-shipwrecks">¶</a></h3><p>From <a href="https://blogs.nvidia.com/blog/2022/11/18/3d-shipwrecks-perth/">this resource</a> researchers at Curtin University are using open source visualisation software to render 3D environments of shipwrecks. Some feedback from their work was:</p>
 <ul>
 <li>Fragility between CUDA and HIP API's. They had to have a version of ROCm that closely matches the CUDA library.</li>
