@@ -7517,7 +7517,7 @@ a.anchor-link {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="Exercise---building-a-layer-cake">Exercise - building a layer cake<a class="anchor-link" href="#Exercise---building-a-layer-cake">¶</a></h1><p>In this exercise the goal is to optimise an iterative code so that copies are performed concurrently with compute. The code <a href="exercise_layer_cake.cpp">exercise_layer_cake.cpp</a> is a synchronous application where at each iteration <strong>n</strong> a simple kernel called <strong>fill_plane</strong> fills an on-device allocation in <strong>U_ds</strong> with <strong>n</strong>.</p>
-<p>After the kernel completes, <strong>hipMemcpy3D</strong> is employed to copy the plane to <strong>out_h</strong>, a 3D array of output planes. We avoid copying plane 1 to work around a bug in the AMD implementation of <strong>hipMemcpy3D</strong>. Hopefully this bug will be fixed in the future.</p>
+<p>After the kernel completes, <strong>hipMemcpy3D</strong> is employed to copy the plane to <strong>out_h</strong>, a 3D array of output planes. We avoid copying plane 1 to work around a bug in the AMD implementation of <strong>hipMemcpy3D</strong>. This bug has been fixed in later versions of ROCM (not working in 5.7.3 on Setonix, but known to work in 6.0.2+).</p>
 <p>If we make and run the application we can see that it correctly copies all planes other than plane 1.</p>
 </div>
 </div>
