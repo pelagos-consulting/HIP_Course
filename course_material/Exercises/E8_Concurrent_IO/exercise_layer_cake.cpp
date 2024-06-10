@@ -185,7 +185,7 @@ int main(int argc, char** argv) {
         // Z positions equal to 1 don't seem to work on AMD platforms?!?!
         copy_parms.dstPos.z = n;
         
-        if (n!=1) {
+        if (n!=-1) {
             //H_ERRCHK(
             //    hipMemcpy(
             //        &out_h[n*N0*N1],
