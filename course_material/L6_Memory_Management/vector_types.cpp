@@ -13,7 +13,7 @@ Written by Dr Toby M. Potter
 
 int main(int argc, char** argv) {
 
-    // Get the size of differnt data types
+    // Get the size of different data types
     std::printf("Size of char1: %zu\n", sizeof(char1));
     std::printf("Size of short1: %zu\n", sizeof(short1));
     std::printf("Size of int1: %zu\n", sizeof(int1));

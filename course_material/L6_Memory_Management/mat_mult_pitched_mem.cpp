@@ -216,13 +216,13 @@ int main(int argc, char** argv) {
         N1_C, // requested pencil width (elements)
         N0_C // number of pencils in a plane (elements)
     );
-    // Postion within the host array
+    // Position within the host array
     hipPos C_h_pos = make_hipPos(
         0*sizeof(float), // byte position along a pencil (bytes)
         0, // starting pencil index (elements)
         0 // start pencil plane index (elements)
     );
-    // Postion within the device array
+    // Position within the device array
     hipPos C_d_pos = make_hipPos(
         0*sizeof(float), // byte position along a pencil (bytes)
         0, // starting pencil index (elements)

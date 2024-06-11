@@ -79,7 +79,7 @@ __global__ void mat_mult_shared_A (
     size_t i0 = blockIdx.y * blockDim.y + threadIdx.y;
     size_t i1 = blockIdx.x * blockDim.x + threadIdx.x;
     
-    // Location within the workgroup
+    // Location within the block
     size_t s0=threadIdx.y;
     size_t s1=threadIdx.x;
     
