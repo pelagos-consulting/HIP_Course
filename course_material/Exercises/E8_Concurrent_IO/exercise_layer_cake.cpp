@@ -15,7 +15,7 @@ Written by Dr Toby M. Potter
 // Bring in helper library to manage matrices
 #include "mat_helper.hpp"
 
-// Kernel to solve the wave equation with fourth-order accuracy in space
+// Kernel to fill a plane 
 __global__ void fill_plane (
         // Arguments
         float_type* U,
