@@ -1,6 +1,5 @@
-/* Code to perform a Matrix multiplication using HIP
-Written by Dr Toby M. Potter
-*/
+// Code to perform elementwise matrix multiplication using HIP
+// Written by Dr Toby M. Potter
 
 // Setup headers
 #include <cassert>

@@ -1,6 +1,5 @@
-/* Code to perform a Matrix multiplication using OpenCL
-Written by Dr Toby M. Potter
-*/
+// A program to fill layers in a 3D array - a layer cake 
+// Written by Dr. Toby Potter
 
 #include <cassert>
 #include <cmath>
