@@ -13,13 +13,14 @@ endif()
 # Set up the project
 project(hip_course VERSION 1.0.0
     DESCRIPTION "Example codes to accompany a course in HIP"
-    LANGUAGES HIP C CXX
+    LANGUAGES C CXX
 )
 
 message("Compiler ID is: ${CMAKE_CXX_COMPILER_ID}")
 
-# Default compiler flags for the C++ compiler
+# Default compiler flags for different C++ compilers
 
+# GNU compiler
 if( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     set(CMAKE_CXX_FLAGS "-g -fPIC -fopenmp -pthread")
     set(CMAKE_CXX_FLAGS_DEBUG "-O0 -Wall -Wextra -pedantic")
@@ -29,6 +30,7 @@ if( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp -lpthread")
 endif()
 
+# Clang compiler
 if( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set(CMAKE_CXX_FLAGS "-g -fPIC -fopenmp -pthread")
     set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -Wall -Wextra -pedantic")
@@ -38,62 +40,81 @@ if( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp -lpthread")
 endif()
 
-# Find packages
+# Find necessary packages
 find_package(MPI REQUIRED)
 find_package(hip REQUIRED)
 
-# Query HIP_PLATFORM and setup kernel_lang as HIP or CUDA
-if ((DEFINED ENV{HIP_PLATFORM}) AND ($ENV{HIP_PLATFORM} STREQUAL nvidia))
-    message("Building for an NVIDIA backend.")
+# Choose to use compilation for NVIDIA or AMD
+if ("$ENV{HIP_PLATFORM}" STREQUAL "nvidia")
+    
+    message("Performing compilation for an NVIDIA backend.")
+
+    # Set GPU architectures
+    if (DEFINED ENV{GPU_ARCH})
+        # Read GPU_ARCH environment variable into a CMake variable
+        set(gpu_arch_list $ENV{GPU_ARCH})
         
-    # CUDA language must be enabled first
+        # Set NVIDIA architectures to compile for
+        set(CMAKE_CUDA_ARCHITECTURES ${gpu_arch_list})
+    endif()
+
+    # Enable the CUDA language
     enable_language(CUDA)
+
+    # Set separable compilation on
     set(CUDA_SEPARABLE_COMPILATION ON)
         
-    # Find the CUDA toolkit, 
-    # it is required if the environment variable HIP_PLATFORM is "nvidia" 
+    ## Find the CUDA toolkit, 
+    ## it must be present if we use HIP_PLATFORM=nvidia 
     find_package(CUDAToolkit REQUIRED)
 
-    # Set the language for all host+device code
+    # Set the kernel language for device code
     set(kernel_lang CUDA)
 
-    # Set kernel_libs to the CUDA toolkit libraries
-    set(kernel_libs CUDA::cudart CUDA::cuda_driver)
-        
-    # Set the CUDA GPU architectures to use
-    set(CMAKE_CUDA_ARCHITECTURES $ENV{GPU_ARCH})
-
-    # Compile flags for different build types
-    set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -g -Xcompiler -fopenmp -Xcompiler -fPIC")
+    # Set compiler flags
+    set(CMAKE_CUDA_FLAGS "-g -Xcompiler -fPIC")
     set(CMAKE_CUDA_FLAGS_DEBUG "-G -O0")
     set(CMAKE_CUDA_FLAGS_PROFILE "-pg -O3")
     set(CMAKE_CUDA_FLAGS_RELEASE "-O3")
 
-    # Change global preprocessor definitions for CUDA sources.
-    # These become switches for AMD/NVIDIA in hip/hip_runtime.h
+    ## Change global preprocessor defintions for CUDA sources
         
-    # Remove AMD preprocessor defines
+    ## Remove any preprocessor definitions for AMD
     remove_definitions(-D__HIP_PLATFORM_HCC__ -D__HIP_PLATFORM_AMD__)
-    # Set CUDA preprocessor defines
-    add_definitions(-D__HIP_PLATFORM_NVCC__ -D__HIP_PLATFORM_NVIDIA__)  
+    ## Replace it with CUDA precprocessor definitions
+    add_definitions(-D__HIP_PLATFORM_NVCC__ -D__HIP_PLATFORM_NVIDIA__)
+
+    ## Set libraries to link to
+    set(kernel_libs CUDA::cuda_driver CUDA::cudart)
 
 else()
-    message("Building for an AMD backend.")
-
-    # Set the language for device code
-    set(kernel_lang HIP)
-
-    # Set libraries for kernel code
-    set(kernel_libs hip::device)
+    message("Performing compilation for an AMD backend.")
     
-    # Set your HIP GPU architectures to use here
-    set(CMAKE_HIP_ARCHITECTURES $ENV{GPU_ARCH})
+    # Enable the HIP language
+    enable_language(HIP)
 
-    # HIP compile flags
-    set(CMAKE_HIP_FLAGS "${CMAKE_HIP_FLAGS} -g -fPIC -fopenmp")
-    set(CMAKE_HIP_FLAGS_DEBUG "-ggdb -O1")
-    set(CMAKE_HIP_FLAGS_PROFILE "-pg -O3")
-    set(CMAKE_HIP_FLAGS_RELEASE "-O3")
+    # Set language for device code
+    set(kernel_lang HIP)
+    
+    # Set GPU architectures
+    if (DEFINED ENV{GPU_ARCH})
+        # Read GPU_ARCH environment variable into a CMake variable
+        set(gpu_arch_list $ENV{GPU_ARCH})
+        
+        # Set AMD architectures to compile for
+        set(CMAKE_HIP_ARCHITECTURES ${gpu_arch_list})
+
+    endif()
+
+    # Set HIP flags
+    set(CMAKE_HIP_FLAGS "${CMAKE_HIP_FLAGS} -g")
+    set(CMAKE_HIP_FLAGS_DEBUG, "-ggdb -O1")
+    set(CMAKE_HIP_FLAGS_PROFILE, "-pg -O3")
+    set(CMAKE_HIP_FLAGS_RELEASE, "-O3")
+
+    ## Set libraries to link to
+    set(kernel_libs ${HIPFORT_LIBRARIES} hip::device)
+
 endif()
 
 # ----- end dependencies section ----- #
