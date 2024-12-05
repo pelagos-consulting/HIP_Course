@@ -70,6 +70,7 @@ if ("$ENV{HIP_PLATFORM}" STREQUAL "nvidia")
 
     # Set the kernel language for device code
     set(kernel_lang CUDA)
+    set(linker_lang CUDA)
 
     # Set compiler flags
     set(CMAKE_CUDA_FLAGS "-g -Xcompiler -fPIC")
@@ -95,6 +96,7 @@ else()
 
     # Set language for device code
     set(kernel_lang HIP)
+    set(linker_lang HIP)
     
     # Set GPU architectures
     if (DEFINED ENV{GPU_ARCH})
@@ -114,13 +116,11 @@ else()
 
     ## Set libraries to link to
     set(kernel_libs ${HIPFORT_LIBRARIES} hip::device)
+    
 
 endif()
 
 # ----- end dependencies section ----- #
-
-# Set linker_lang as the language used to link all sources
-set(linker_lang CXX)
 
 # Set common directory as the destination for all includes in builds
 include_directories(common)
