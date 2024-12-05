@@ -41,7 +41,7 @@ __device__ void get_start_end(
     *start=block_index*jump_size;
     // End position for the copy
     *end=(block_index+1)*jump_size;
-    // Limit end so we don't go off the end
+    // Limit the end so we don't go off it
     *end=min(*end,array_length);
 }
 
@@ -62,7 +62,7 @@ __global__ void mat_mult_shared_A (
     
     // A is of size (N0_C, N1_A)
     // B is of size (N1_A, N1_C)
-    // shared_A is of size (L0, N1_A)
+    // shared_A is of size (N1_A, L0)
     // C is of size (N0_C, N1_C)
     
     // i0 and i1 represent the coordinates in Matrix C 
@@ -71,12 +71,12 @@ __global__ void mat_mult_shared_A (
     size_t i1 = blockIdx.x * blockDim.x + threadIdx.x;
     
     // Location within the workgroup
-    size_t s0=threadIdx.y;
-    size_t s1=threadIdx.x;
+    int s0=threadIdx.y;
+    int s1=threadIdx.x;
     
     // block size
-    //size_t L0=blockDim.y;
-    size_t L1=blockDim.x;
+    int L0=blockDim.y;
+    int L1=blockDim.x;
     
     // start and end positions for the copy
     size_t start, end;
@@ -87,7 +87,8 @@ __global__ void mat_mult_shared_A (
     // Fill shared_A
     if (i0<N0_C) {
         for (size_t n=start; n<end; n++) {
-            shared_A[s0*N1_A+n]=A[i0*N1_A+n]; 
+            // 
+            shared_A[n*L0+s0]=A[i0*N1_A+n]; 
         }   
     }
     
@@ -108,13 +109,12 @@ __global__ void mat_mult_shared_A (
             
             // A is of size (N0_C, N1_A)
             // B is of size (N1_A, N1_C)
-            // shared_B is of size (L1, N1_A)
+            // shared_A is of size (N1_A, L0)
             // C is of size (N0_C, N1_C)
             
-            // Loop across row s0 of shared_A
+            // Loop down column s0 of shared_A
             // and down column i1 of B
-            temp+=shared_A[s0*N1_A+n]*B[n*N1_C+i1];
-            
+            temp+=shared_A[n*L0+s0]*B[n*N1_C+i1];
         } 
         
         // Number of rows in C is same as number of rows in A
