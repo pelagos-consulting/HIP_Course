@@ -28,6 +28,7 @@ dev_types={"gpu" : dev_indices_gpu}
 
 # Specify programs to benchmark
 experiments = {
+    "Single precision naive" : "mat_mult_naive.exe",
     "Double precision" : "mat_mult_double.exe",
     "Single precision" : "mat_mult_float.exe",
     "Shared A" : "mat_mult_shared_A.exe",

@@ -9,6 +9,7 @@ set(targets
     mat_mult_AT
     mat_mult_BT
     mat_mult_double
+    mat_mult_naive
     mat_mult_float
     mat_mult_shared_A
     mat_mult_shared_B
