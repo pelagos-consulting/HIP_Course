@@ -306,8 +306,8 @@ class TimingResults:
             ax.set_yticks(np.arange(0,result.local0.size,1))
             ax.set_xticklabels([str(x) for x in result.local1])
             ax.set_yticklabels([str(x) for x in result.local0])
-            ax.set_xlabel("blockDim.y -> dim 0 of matrix C")
-            ax.set_ylabel("blockDim.x -> dim 1 of matrix C")
+            ax.set_xlabel("blockDim.y")
+            ax.set_ylabel("blockDim.x")
             ax.set_title(f"{key} - (time ms)")
         
             # Put patches on minima and maxima
