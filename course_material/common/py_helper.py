@@ -46,8 +46,8 @@ class MatMul:
         flop = 2*self.NCOLS_A*self.NROWS_C*self.NCOLS_C
 
         # Converstion to tflops
-        C=1000/1e12
-        return (flop*C/time_ms, C*stdev_ms/(time_ms*time_ms))
+        C=flop*1000/1e12
+        return (C/time_ms, C*stdev_ms/(time_ms*time_ms))
     
     def run_compute(self):
         """Calculate the solution"""

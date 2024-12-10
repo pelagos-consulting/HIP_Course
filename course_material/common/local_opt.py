@@ -73,7 +73,7 @@ class LocalOpt():
         
         print(f"Min time is {timing_data['min_ms']:.3f} ms, at the local size of" 
             f" ({timing_data['L0_min']},{timing_data['L1_min']},{timing_data['L2_min']}).")
-        print(f"Max TFlop/S is {timing_data['max_tflops']} +/- {timing_data['max_tflops_stdev']}.")
+        print(f"Max TFlop/S is {timing_data['max_tflops']:.3f} +/- {timing_data['max_tflops_stdev']:.3f}.")
         print(f"Max time is {timing_data['max_ms']:.3f} ms, at the local size of" 
             f" ({timing_data['L0_max']},{timing_data['L1_max']},{timing_data['L2_max']}).")
         print(f"Max time / min time == {timing_data['max_ms']/timing_data['min_ms']:.3f}")
