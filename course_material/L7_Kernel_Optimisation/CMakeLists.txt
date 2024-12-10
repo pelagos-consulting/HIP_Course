@@ -10,6 +10,8 @@ set(targets
     mat_mult_BT
     mat_mult_double
     mat_mult_naive
+    mat_mult_coalesced1
+    mat_mult_coalesced2
     mat_mult_float
     mat_mult_shared_A
     mat_mult_shared_B
