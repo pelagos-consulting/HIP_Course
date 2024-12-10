@@ -4,6 +4,7 @@ import sys
 import json
 sys.path.insert(0, os.path.abspath("../common"))
 from local_opt import LocalOpt
+from py_helper import MatMul
                 
 # Helper class to specify an experiment
 class Exp:
@@ -25,6 +26,9 @@ output_file = "benchmark.json"
 # Specify device types along with indices to try
 dev_indices_gpu = [0]
 dev_types={"gpu" : dev_indices_gpu}
+
+# Algorithm to test
+alg=MatMul(1024,1024,1024,np.float32)
 
 # Specify programs to benchmark
 experiments = {
@@ -67,7 +71,8 @@ for label, spec in inputSpec.items():
         cmds=spec.cmds, 
         local0=spec.local0,
         local1=spec.local1,
-        local2=spec.local2)
+        local2=spec.local2,
+        alg=alg)
     
     if temp.has_data:
         # Results contains dictionary of timing results

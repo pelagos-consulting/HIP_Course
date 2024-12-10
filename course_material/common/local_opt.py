@@ -6,29 +6,36 @@ from collections import OrderedDict
 class LocalOpt():
     """Class to capture the result of an optimisation exercise for different algorithms."""
     
-    def __init__(self, 
+    def __init__(self,
             timings=None, 
             cmds=None, 
             local0=np.uint32(2**np.arange(0,10,1)),
             local1=np.uint32(2**np.arange(0,10,1)),
-            local2=np.uint32(2**np.arange(0,1,1))
+            local2=np.uint32(2**np.arange(0,1,1)),
+            alg=None
                 ):
         
         # Does the class have any data?
         self.has_data=False
-        
+
         if timings is not None:
             assert(cmds is None)
             self.import_result(timings)
             
         if cmds is not None:
+            
             assert(timings is None)
+            assert(alg is not None)
+            
+            # Import the algorithm class
+            self.alg = alg
+            # Make the result
             self.make_result(cmds, local0, local1, local2)
         
     def make_mesh(self, local0, local1, local2):
         return np.meshgrid(local0, local1, local2, indexing="ij") 
         
-    def insert_local(self, local0, local1, local2, times_ms, times_stdev):
+    def insert_local(self, local0, local1, local2, times_ms, times_stdev, tflops, tflops_stdev):
         
         # Set variables
         self.local0 = np.array(local0)
@@ -41,6 +48,9 @@ class LocalOpt():
         self.times_ms = np.array(times_ms).reshape(self.L0.shape)
         self.times_stdev = np.array(times_stdev).reshape(self.L0.shape)
 
+        self.tflops = np.array(tflops).reshape(self.L0.shape)
+        self.tflops_stdev = np.array(tflops_stdev).reshape(self.L0.shape)
+        
         # Signal that we have data
         self.has_data=True 
           
@@ -50,7 +60,10 @@ class LocalOpt():
             timing_data["local1"],
             timing_data["local2"],
             timing_data["times_ms"],
-            timing_data["times_stdev"])
+            timing_data["times_stdev"],
+            timing_data["tflops"],
+            timing_data["tflops_stdev"]
+        )
         
     def report_timings(self):
         
@@ -104,8 +117,11 @@ class LocalOpt():
             # Data to plot
             times_ms = output_local[...,0]
             times_stdev = output_local[...,1]
+
+            # Calculate tflops here
+            tflops, tflops_stdev = self.alg.get_tflops(times_ms, times_stdev)
             
-            self.insert_local(local0, local1, local2, times_ms, times_stdev)
+            self.insert_local(local0, local1, local2, times_ms, times_stdev, tflops, tflops_stdev)
    
     def export_result(self):
         
@@ -128,6 +144,8 @@ class LocalOpt():
             "L2_max" : int(self.L2.ravel()[index_max]),
             "times_ms" : list(self.times_ms.ravel()),
             "times_stdev" : list(self.times_stdev.ravel()),
+            "tflops" : list(self.tflops.ravel()),
+            "tflops_stdev" : list(self.tflops_stdev.ravel()),
             "local0" : [int(n) for n in self.local0],
             "local1" : [int(n) for n in self.local1],
             "local2" : [int(n) for n in self.local2]

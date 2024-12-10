@@ -39,7 +39,16 @@ class MatMul:
         self.NROWS_C = NROWS_C
         self.NCOLS_C = NCOLS_C
         self.dtype = dtype
-  
+
+    def get_tflops(self, time_ms, stdev_ms):
+        
+        # Get the number of flops
+        flop = 2*self.NCOLS_A*self.NROWS_C*self.NCOLS_C
+
+        # Converstion to tflops
+        C=1000/1e12
+        return (flop*C/time_ms, C*stdev_ms/(time_ms*time_ms))
+    
     def run_compute(self):
         """Calculate the solution"""
         self.C = np.matmul(self.A, self.B, dtype = self.dtype)
@@ -139,6 +148,15 @@ class Hadamard:
         self.D.tofile("array_D.dat")
         self.E.tofile("array_E.dat")
 
+    def get_tflops(self, time_ms, stdev_ms):
+        
+        # Get the number of flops
+        flop = self.NROWS_F*self.NCOLS_F
+
+        # Converstion to tflops
+        C=1000/1e12
+        return (flop*C/time_ms, C*stdev_ms/(time_ms*time_ms))
+    
     def check_data(self):
         """Load a binary file and check it against the local solution"""
         
