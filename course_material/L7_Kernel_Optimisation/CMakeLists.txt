@@ -3,10 +3,6 @@ set(headers ${CMAKE_CURRENT_SOURCE_DIR}/mat_size.hpp)
 
 # Compile all targets in this directory using a loop
 set(targets
-    mat_mult_shared_A_col
-    mat_mult_shared_A_flat_col
-    mat_mult_shared_A_flat_alt
-    mat_mult_tile_shared_AB_flat_col
     mat_mult_AT
     mat_mult_BT
     mat_mult_double

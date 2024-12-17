@@ -19,31 +19,6 @@ Written by Dr Toby M. Potter
 
 typedef float float_type;
 
-// Device function to get the start and end values
-// for filling a shared memory array
-__device__ void get_start_end(
-    // Number of work-items along a dimension of workgroup
-    size_t block_length,
-    // Number of items in the array
-    size_t array_length,
-    // Index of work item along dimension of workgroup
-    size_t block_index,
-    // Starting position of the copy
-    size_t *start,
-    // End position of the copy
-    size_t *end) {
-  
-    // Work out the jump size
-    size_t jump_size=array_length/block_length;
-    if (array_length%block_length) jump_size++;
-    
-    // Starting position for the copy
-    *start=block_index*jump_size;
-    // End position for the copy
-    *end=(block_index+1)*jump_size;
-    // Limit end so we don't go off the end
-    *end=min(*end,array_length);
-}
 
 // Matrix multiply kernel that uses shared memory for A
 __global__ void mat_mult_shared_B (
@@ -62,7 +37,7 @@ __global__ void mat_mult_shared_B (
     
     // A is of size (N0_C, N1_A)
     // B is of size (N1_A, N1_C)
-    // shared_B is of size (L1, N1_A)
+    // shared_B is of size (N1_A, L1)
     // C is of size (N0_C, N1_C)
     
     // i0 and i1 represent the coordinates in Matrix C 
@@ -71,25 +46,34 @@ __global__ void mat_mult_shared_B (
     size_t i1 = blockIdx.x * blockDim.x + threadIdx.x;
     
     // Location within the workgroup
-    size_t s0=threadIdx.y;
-    size_t s1=threadIdx.x;
-    
+    int s0=threadIdx.y;
+    int s1=threadIdx.x;
+
     // block size
-    size_t L0=blockDim.y;
-    //size_t L1=blockDim.x;
-    
-    // start and end positions for the copy
-    size_t start, end;
-    
-    // Get the start and end lengths to fill array
-    get_start_end(L0, N1_A, s0, &start, &end);
-    
-    // Fill shared_B
-    if (i0<N0_C) {
-        for (size_t n=start; n<end; n++) {
-            shared_B[s1*N1_A+n]=B[i1+n*N1_C]; 
-        }   
+    int L0=blockDim.y;
+    int L1=blockDim.x;
+
+    // Index of the thread withing the workgroup
+    int w0 = s0*L1 + s1;
+    int nthreads = L0*L1;
+
+    // Each thread fills elements of shared_B
+    for (int offset_S=w0; offset_S<L1*N1_A; offset_S+=nthreads) {
+        
+        // Coordinates within shared_B of size (N1_A, L1)
+        int j0 = offset_S / L1;
+        int j1 = offset_S % L1;
+        
+        // Position within B, memory copied from B is coalesced
+        size_t offset_B = j0*N1_C + blockDim.x*blockIdx.x + j1;
+
+        if (offset_B<N1_C*N1_A) {
+            shared_B[offset_S]=B[offset_B];    
+        } else {
+            shared_B[offset_S]=0.0;
+        }
     }
+
     
     // Set a barrier to ensure that all threads 
     // sync to this point before moving on 
@@ -103,7 +87,7 @@ __global__ void mat_mult_shared_B (
     // outside the boundaries of matrix C
     if ((i0<N0_C) && (i1<N1_C)) {
         
-        // Loop over columns of A and rows of B 
+        // Loop along rows of A and down columns B 
         for (size_t n=0; n<N1_A; n++) {
             
             // A is of size (N0_C, N1_A)
@@ -111,9 +95,9 @@ __global__ void mat_mult_shared_B (
             // shared_B is of size (L1, N1_A)
             // C is of size (N0_C, N1_C)
             
-            // Loop across row s0 of shared_B
-            // and down column i1 of B
-            temp+=A[i0*N1_A+n]*shared_B[s1*N1_A+n];
+            // Loop across row i0 of A
+            // and down column s1 of shared_B
+            temp+=A[i0*N1_A+n]*shared_B[n*L1+s1];
             
         } 
         
@@ -202,7 +186,7 @@ int main(int argc, char** argv) {
     //// from A_d and B_d on the device ////
         
     // Desired block size
-    dim3 block_size = { 16, 16, 1 };
+    dim3 block_size = { 8, 8, 1 };
     dim3 global_size = { (uint32_t)N1_C, (uint32_t)N0_C, 1 };
     
     // Arguments for prep_kernel

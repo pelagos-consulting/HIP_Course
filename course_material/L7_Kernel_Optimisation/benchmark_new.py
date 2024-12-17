@@ -38,9 +38,7 @@ experiments = {
     "Double precision" : "mat_mult_double.exe",
     "Single precision" : "mat_mult_float.exe",
     "Shared A" : "mat_mult_shared_A.exe",
-    "Shared A col" : "mat_mult_shared_A_col.exe",
-    "Shared A flat alt" : "mat_mult_shared_A_flat_alt.exe",
-    "Shared A flat col" : "mat_mult_shared_A_flat_col.exe",
+    "Shared B" : "mat_mult_shared_B.exe",
     "Tile shared_AB_flat_col" : "mat_mult_tile_shared_AB_flat_col.exe",
     "Tile shared_AB" : "mat_mult_tile_shared_AB.exe"
 }

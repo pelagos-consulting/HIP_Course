@@ -17,34 +17,6 @@ Written by Dr Toby M. Potter
 // Bring in helper header to manage boilerplate code
 #include "hip_helper.hpp"
 
-typedef float float_type;
-
-// Device function to get the start and end values
-// for filling a shared memory array
-__device__ void get_start_end(
-    // Number of work-items along a dimension of workgroup
-    size_t block_length,
-    // Number of items in the array
-    size_t array_length,
-    // Index of work item along dimension of workgroup
-    size_t block_index,
-    // Starting position of the copy
-    size_t *start,
-    // End position of the copy
-    size_t *end) {
-  
-    // Work out the jump size
-    size_t jump_size=array_length/block_length;
-    if (array_length%block_length) jump_size++;
-    
-    // Starting position for the copy
-    *start=block_index*jump_size;
-    // End position for the copy
-    *end=(block_index+1)*jump_size;
-    // Limit end so we don't go off the end
-    *end=min(*end,array_length);
-}
-
 // Matrix multiply kernel that uses shared memory for A
 __global__ void mat_mult_tile_shared_B (
                         float_type* A_star, 
@@ -67,29 +39,28 @@ __global__ void mat_mult_tile_shared_B (
     // We assume row-major ordering for the matrices 
     size_t i0 = blockIdx.y * blockDim.y + threadIdx.y;
     size_t i1 = blockIdx.x * blockDim.x + threadIdx.x;
+
+    // Number of elements along N1_A
+    size_t N1_A_star = nchunks*chunk_len;
     
     // Location within the block
-    size_t s0=threadIdx.y;
-    size_t s1=threadIdx.x;
+    int s0=threadIdx.y;
+    int s1=threadIdx.x;
     
     // block size
-    size_t L0=blockDim.y;
-    //size_t L1=blockDim.x;
+    int L0=blockDim.y;
+    int L1=blockDim.x;
 
-    // Get a pointer to shared_B from shared
-
-    // shared_B is of size (L1, chunk_len)
+    // Get pointers to shared memory from shared
+    // shared_B_star is of size (chunk_len, L1)
     float_type* shared_B_star = (float_type*)&shared[0];
-    
-    // Positions within shared memory
-    float_type* shared_B_star_s1 = &shared_B_star[s1*chunk_len];
     
     // Scratch variable
     float_type temp=0.0f;
-    
-    // Start and end positions to copy within a chunk
-    size_t start0, end0;
-    get_start_end(L0, chunk_len, s0, &start0, &end0);
+
+    // Flat position within the workgroup
+    int w0 = s0*L1 + s1;
+    int nthreads = L0*L1;
     
     // Make sure we don't go beyond the bounds of the array
     if ((i0<N0_C) && (i1<N1_C)) {
@@ -97,16 +68,24 @@ __global__ void mat_mult_tile_shared_B (
         // Loop over the chunks
         for (int chunk_id=0; chunk_id<nchunks; chunk_id++) {
     
-            // Fill shared_A_star and shared_B_star 
-            // Starting positions for the copy
-            float_type* A_star_i0 = &A_star[i0*chunk_len*nchunks+chunk_id*chunk_len];
-            float_type* B_star_i1 = &B_star[chunk_id*chunk_len*N1_C+i1];
-        
-            // Fill the rows of shared_B_star
-            // Copy from column i1 of B_star   
-            for (size_t n = start0; n<end0; n++) {
-                shared_B_star_s1[n] = B_star_i1[n*N1_C];
-            }
+            // Fill shared_B_star
+            for (int offset_S=w0; offset_S<L1*chunk_len; offset_S+=nthreads) {
+
+                // Coordinates within shared_B_star of size (chunk_len, L1)
+                int j0 = offset_S / L1;
+                int j1 = offset_S % L1;
+
+                // Get the offset into B of size (N1_A_star, N1_C)
+                size_t offset_B = (chunk_id*chunk_len+j0)*N1_C 
+                    + blockIdx.x*blockDim.x + j1;
+                
+                if (offset_B<N1_C*N1_A_star) {
+                    shared_B_star[offset_S] = B_star[offset_B];
+                } else {
+                    shared_B_star[offset_S] = 0.0;
+                }
+
+            }       
         
             // Synchronise threads to ensure shared memory is filled
             __syncthreads();
@@ -116,7 +95,7 @@ __global__ void mat_mult_tile_shared_B (
             for (size_t n=0; n<chunk_len; n++) {
                 
                 // Perform the dot product using shared memory
-                temp+=A_star_i0[n]*shared_B_star_s1[n];
+                temp+=A_star[i0*N1_A_star+chunk_id*chunk_len+n]*shared_B_star[n*L1+s1];
             }
         
             // Synchronise threads so they are
