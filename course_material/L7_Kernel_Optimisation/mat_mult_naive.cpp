@@ -16,7 +16,8 @@ Written by Dr Toby M. Potter
 // Bring in helper header to manage boilerplate code
 #include "hip_helper.hpp"
 
-typedef float float_type;
+// Redefine the default typedef to be double
+typedef double float_type;
 
 // standard matrix multiply kernel 
 __global__ void mat_mult (
@@ -33,9 +34,9 @@ __global__ void mat_mult (
     
     // i0 and i1 represent the coordinates in Matrix C 
     // We use row-major ordering for the matrices
-    
-    size_t i1 = blockIdx.y * blockDim.y + threadIdx.y;
+
     size_t i0 = blockIdx.x * blockDim.x + threadIdx.x;
+    size_t i1 = blockIdx.y * blockDim.y + threadIdx.y;
     
     // Scratch variable
     float_type temp=0.0f; 
