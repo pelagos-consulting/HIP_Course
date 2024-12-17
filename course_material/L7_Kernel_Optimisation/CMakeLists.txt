@@ -5,6 +5,7 @@ set(headers ${CMAKE_CURRENT_SOURCE_DIR}/mat_size.hpp)
 set(targets
     mat_mult_shared_A_col
     mat_mult_shared_A_flat_col
+    mat_mult_shared_A_flat_alt
     mat_mult_tile_shared_AB_flat_col
     mat_mult_AT
     mat_mult_BT

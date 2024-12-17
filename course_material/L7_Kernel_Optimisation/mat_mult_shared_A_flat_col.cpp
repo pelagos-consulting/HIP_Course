@@ -82,7 +82,7 @@ __global__ void mat_mult_shared_A (
     int w0 = s0*L1 + s1;
     int nthreads = L0*L1;
 
-    // Each thread fills an element of shared_A
+    // Each thread fills elements of shared_A
     for (int offset_S=w0; offset_S<L0*N1_A; offset_S+=nthreads) {
         
         // Coordinates within shared_A_star of size (N1_A, L0)
