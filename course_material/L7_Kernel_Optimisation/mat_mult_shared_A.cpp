@@ -52,7 +52,7 @@ __global__ void mat_mult_shared_A (
     int L0=blockDim.y;
     int L1=blockDim.x;
 
-    // Index of the thread withing the workgroup
+    // Index of the thread within the workgroup
     int w0 = s0*L1 + s1;
     int nthreads = L0*L1;
 
