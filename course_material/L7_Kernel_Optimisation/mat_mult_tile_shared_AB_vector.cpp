@@ -17,31 +17,8 @@ Written by Dr Toby M. Potter
 // Bring in helper header to manage boilerplate code
 #include "hip_helper.hpp"
 
-// Device function to get the start and end values
-// for filling a shared memory array
-__device__ void get_start_end(
-    // Number of work-items along a dimension of workgroup
-    size_t block_length,
-    // Number of items in the array
-    size_t array_length,
-    // Index of work item along dimension of workgroup
-    size_t block_index,
-    // Starting position of the copy
-    size_t *start,
-    // End position of the copy
-    size_t *end) {
-  
-    // Work out the jump size
-    size_t jump_size=array_length/block_length;
-    if (array_length%block_length) jump_size++;
-    
-    // Starting position for the copy
-    *start=block_index*jump_size;
-    // End position for the copy
-    *end=(block_index+1)*jump_size;
-    // Limit end so we don't go off the end
-    *end=min(*end,array_length);
-}
+typedef float float_type;
+typedef float4 float_vector_type;
 
 // Matrix multiply kernel that uses shared memory for A
 __global__ void mat_mult_tile_shared_AB_vector (
@@ -50,7 +27,7 @@ __global__ void mat_mult_tile_shared_AB_vector (
                         float_type* C,
                         // number of elements in a chunk
                         size_t chunk_len,
-                        // number of chunks
+                        // number of chunks in total
                         size_t nchunks,
                         // length of a vector
                         size_t vector_len,
@@ -60,12 +37,14 @@ __global__ void mat_mult_tile_shared_AB_vector (
                         size_t N0_C,
                         // dimension 1 extent of C
                         size_t N1_C) { 
-    
+
     // Access the allocation of shared memory
     extern __shared__ char shared[];
     
     // N1_A_star >= N1_A
     // N1_A_star = nchunks * chunk_len
+    // chunk_len = vector_len * nvectors
+    
     // A_star is of size (N0_C, N1_A_star)
     // B_star is of size (N1_A_star, N1_C)
     // C is of size (N0_C, N1_C)
@@ -83,75 +62,97 @@ __global__ void mat_mult_tile_shared_AB_vector (
     size_t L0=blockDim.y;
     size_t L1=blockDim.x;
 
-    // Get a pointer to shared_A from shared
-    // shared_A is of size (L0, chunk_len)
-    // shared_B is of size (L1, chunk_len)
+    // Index of the thread within the workgroup, and total number of threads
+    int w0 = s0*L1 + s1;
+    int nthreads = L0*L1;
+
+    // Length of the hidden dimension
+    int N1_A_star = chunk_len*nchunks;
     
+    // Get a pointer to shared_A from shared
+    // shared_A is of size (L0, chunk_len) with float_type elements
+    // shared_B is of size (L1, chunk_len) with float_type elements
     float_type* shared_A = (float_type*)&shared[0];
     float_type* shared_B = (float_type*)&shared[L0*chunk_len*sizeof(float_type)];
 
-    // Line of shared memory 
-    float_type* shared_A_star_s0 = &shared_A[s0*chunk_len];
-    float_type* shared_B_star_s1 = &shared_B[s1*chunk_len];    
-    
-    // Line of shared memory as a vector
-    float_vector_type* shared_A_star_v0 = (float_vector_type*)shared_A_star_s0;
-    float_vector_type* shared_B_star_v1 = (float_vector_type*)shared_B_star_s1;
-    
     // Scratch variable
     float_vector_type temp=(float_vector_type){0.0f};
+
+    // Only insert the result if we haven't gone off the bounds of C
+    if ((i0<N0_C) && (i1<N1_C)) {
     
-    // Start and end positions to copy within a chunk
-    size_t start0, end0, start1, end1;
-    get_start_end(L1, chunk_len, s1, &start1, &end1);
-    get_start_end(L0, chunk_len, s0, &start0, &end0);
-    
-    // Make sure we don't go beyond the bounds of the array
-    if ((i0<N0_C) && (i1<N1_C)) {      
-    
-        // Loop over the chunks
+        // Loop over all the chunks
         for (int chunk_id=0; chunk_id<nchunks; chunk_id++) {
     
-            // Fill shared_A_star and shared_B_star 
-            // Starting positions for the copy
-            float_type* A_star_i0 = &A_star[i0*chunk_len*nchunks+chunk_id*chunk_len];
-            float_type* B_star_i1 = &B_star[chunk_id*chunk_len*N1_C+i1];
-        
-            // Fill the rows of shared_A_star and shared_B_star
-            // Copy from row i0 of A_star
-            for (size_t n = start1; n<end1; n++) {
-                shared_A_star_s0[n] = A_star_i0[n];
+            // Make sure we don't go off the deep end of matrix A
+            size_t max_offset=N0_C*N1_A_star;
+            
+            // Fill shared_A using all available threads
+            for (int offset_S=w0; offset_S<L0*chunk_len; offset_S+=nthreads) {
+                    
+                // Coordinates within shared_A of size (L0, chunk_len)
+                int j0 = offset_S / chunk_len;
+                int j1 = offset_S % chunk_len;            
+    
+                // Get the offset into A_star of size (N0_C, N1_A_star)
+                size_t offset_A = (blockIdx.y*blockDim.y+j0)*N1_A_star 
+                    + chunk_id*chunk_len + j1;
+                    
+                if (offset_A<max_offset) {
+                    shared_A[offset_S] = A_star[offset_A];
+                } else {
+                    shared_A[offset_S] = 0.0;
+                }
             }
-        
-            // Copy from column i1 of B_star   
-            for (size_t n = start0; n<end0; n++) {
-                shared_B_star_s1[n] = B_star_i1[n*N1_C];
+    
+            // Make sure we don't go off the deep end of matrix B
+            max_offset=N1_C*N1_A_star;
+            
+            // Fill shared_B using all available threads
+            for (int offset_S=w0; offset_S<L1*chunk_len; offset_S+=nthreads) {
+                    
+                // Coordinates within shared_B of size (L1, chunk_len)
+                int j0 = offset_S / chunk_len;
+                int j1 = offset_S % chunk_len;            
+    
+                // Get the offset into B_star of size (N1_A_star, N1_C)
+                size_t offset_B = (chunk_id*chunk_len+j1)*N1_C 
+                    + blockIdx.x*blockDim.x + j0;
+                    
+                if (offset_B<max_offset) {
+                    shared_B[offset_S] = B_star[offset_B];
+                } else {
+                    shared_B[offset_S] = 0.0;
+                }
             }
-        
-            // Synchronise threads to ensure shared memory is filled
+            
+            // Synchronise threads to ensure all shared memory is covered
             __syncthreads();
-        
-            // Loop over shared memory to compute dot product 
-            // component for the chunk
-            for (size_t n=0; n<nvectors; n++) {
+    
+            // Get vector handles on shared memory for this thread
+            float_vector_type* shared_A_v=(float_vector_type*)&shared_A[s0*chunk_len];
+            float_vector_type* shared_B_v=(float_vector_type*)&shared_B[s1*chunk_len];
                 
+            // Loop over the number of vectors in a chunk and accumulate the dot product
+            for (size_t n=0; n<nvectors; n++) {
+                    
                 // Perform the dot product using shared memory           
 #ifdef __HIP_PLATFORM_NVIDIA__
-                temp.x += shared_A_star_v0[n].x*shared_B_star_v1[n].x;
-                temp.y += shared_A_star_v0[n].y*shared_B_star_v1[n].y;
-                temp.z += shared_A_star_v0[n].z*shared_B_star_v1[n].z;
-                temp.w += shared_A_star_v0[n].w*shared_B_star_v1[n].w;
+                temp.x += shared_A_v[n].x*shared_B_v[n].x;
+                temp.y += shared_A_v[n].y*shared_B_v[n].y;
+                temp.z += shared_A_v[n].z*shared_B_v[n].z;
+                temp.w += shared_A_v[n].w*shared_B_v[n].w;
 #else
-                temp+=shared_A_star_v0[n]*shared_B_star_v1[n];
+                temp+=shared_A_v[n]*shared_B_v[n];
 #endif
-                 
             }
-        
+            
             // Synchronise threads so they are
             // are ready to tackle the next tile together
             __syncthreads();
         }
-    
+
+
         // Put the accumulated value into position
         C[i0*N1_C+i1]=temp.x+temp.y+temp.z+temp.w;
     }

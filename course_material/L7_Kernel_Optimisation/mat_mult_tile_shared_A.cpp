@@ -64,47 +64,53 @@ __global__ void mat_mult_tile_shared_A (
 
     // Make sure we don't go beyond the bounds of the array
     if ((i0<N0_C) && (i1<N1_C)) {
-    
+
+        size_t max_offset=N0_C*N1_A_star;
+        
         // Loop over the chunks
         for (int chunk_id=0; chunk_id<nchunks; chunk_id++) {
-    
+        
             // Fill shared_A_star chunk
             for (int offset_S=w0; offset_S<L0*chunk_len; offset_S+=nthreads) {
-                
+                    
                 // Coordinates within shared_A_star of size (L0, chunk_len)
                 int j0 = offset_S / chunk_len;
                 int j1 = offset_S % chunk_len;
-                
+                    
                 // Get the offset into A of size (N0_C, N1_A_star)
                 size_t offset_A = (blockIdx.y*blockDim.y+j0)*N1_A_star 
                     + chunk_id*chunk_len + j1;
-                
-                if (offset_A<N0_C*N1_A_star) {
+                    
+                if (offset_A<max_offset) {
                     shared_A_star[offset_S] = A_star[offset_A];
                 } else {
                     shared_A_star[offset_S] = 0.0;
                 }
-
+    
             }
-        
+            
             // Synchronise threads to ensure shared memory is filled
             __syncthreads();
-        
+    
+            // Get a handle to shared memory
+            float_type* shared_A_s = &shared_A_star[s0*chunk_len];
+            
             // Loop over shared memory to compute dot product 
             // component for the chunk
             for (size_t n=0; n<chunk_len; n++) {
-                
+                    
                 // Perform the dot product using shared memory
-                temp+=shared_A_star[s0*chunk_len+n]*B_star[(chunk_id*chunk_len+n)*N1_C+i1];
+                temp+=shared_A_s[n]*B_star[(chunk_id*chunk_len+n)*N1_C+i1];
             }
-        
+            
             // Synchronise threads so they are
             // are ready to tackle the next tile together
             __syncthreads();
         }
-    
+
         // Put the accumulated value into position
-        C[i0*N1_C+i1]=temp;    
+        C[i0*N1_C+i1]=temp;
+        
     }
 }
 
