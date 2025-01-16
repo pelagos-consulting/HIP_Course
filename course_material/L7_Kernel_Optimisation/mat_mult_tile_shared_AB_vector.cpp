@@ -17,9 +17,6 @@ Written by Dr Toby M. Potter
 // Bring in helper header to manage boilerplate code
 #include "hip_helper.hpp"
 
-typedef float float_type;
-typedef float4 float_vector_type;
-
 // Matrix multiply kernel that uses shared memory for A
 __global__ void mat_mult_tile_shared_AB_vector (
                         float_type* A_star, 
@@ -53,41 +50,41 @@ __global__ void mat_mult_tile_shared_AB_vector (
     // We assume row-major ordering for the matrices 
     size_t i0 = blockIdx.y * blockDim.y + threadIdx.y;
     size_t i1 = blockIdx.x * blockDim.x + threadIdx.x;
+
+    // Number of elements along N1_A
+    size_t N1_A_star = nchunks*chunk_len;
     
     // Location within the block
-    size_t s0=threadIdx.y;
-    size_t s1=threadIdx.x;
+    int s0=threadIdx.y;
+    int s1=threadIdx.x;
     
     // block size
-    size_t L0=blockDim.y;
-    size_t L1=blockDim.x;
+    int L0=blockDim.y;
+    int L1=blockDim.x;
 
     // Index of the thread within the workgroup, and total number of threads
     int w0 = s0*L1 + s1;
     int nthreads = L0*L1;
 
-    // Length of the hidden dimension
-    int N1_A_star = chunk_len*nchunks;
-    
-    // Get a pointer to shared_A from shared
-    // shared_A is of size (L0, chunk_len) with float_type elements
-    // shared_B is of size (L1, chunk_len) with float_type elements
+    // Get pointers to shared memory from shared
+    // shared_A is of size (L0, chunk_len)
+    // shared_B is of size (L1, chunk_len)
     float_type* shared_A = (float_type*)&shared[0];
     float_type* shared_B = (float_type*)&shared[L0*chunk_len*sizeof(float_type)];
 
-    // Scratch variable
-    float_vector_type temp=(float_vector_type){0.0f};
+    // Vector scratch variable
+    float_vec_type temp=(float_vec_type){0.0f};
 
-    // Only insert the result if we haven't gone off the bounds of C
+    // Make sure we don't go beyond the bounds of the array
     if ((i0<N0_C) && (i1<N1_C)) {
     
         // Loop over all the chunks
         for (int chunk_id=0; chunk_id<nchunks; chunk_id++) {
-    
-            // Make sure we don't go off the deep end of matrix A
+
+           // Make sure we don't go off the deep end of matrix A
             size_t max_offset=N0_C*N1_A_star;
             
-            // Fill shared_A using all available threads
+            // Fill shared_A using all threads
             for (int offset_S=w0; offset_S<L0*chunk_len; offset_S+=nthreads) {
                     
                 // Coordinates within shared_A of size (L0, chunk_len)
@@ -96,7 +93,7 @@ __global__ void mat_mult_tile_shared_AB_vector (
     
                 // Get the offset into A_star of size (N0_C, N1_A_star)
                 size_t offset_A = (blockIdx.y*blockDim.y+j0)*N1_A_star 
-                    + chunk_id*chunk_len + j1;
+                    + chunk_id*chunk_len+j1;
                     
                 if (offset_A<max_offset) {
                     shared_A[offset_S] = A_star[offset_A];
@@ -107,17 +104,17 @@ __global__ void mat_mult_tile_shared_AB_vector (
     
             // Make sure we don't go off the deep end of matrix B
             max_offset=N1_C*N1_A_star;
-            
-            // Fill shared_B using all available threads
+    
+            // Then fill shared_B using all threads
             for (int offset_S=w0; offset_S<L1*chunk_len; offset_S+=nthreads) {
-                    
+    
                 // Coordinates within shared_B of size (L1, chunk_len)
                 int j0 = offset_S / chunk_len;
-                int j1 = offset_S % chunk_len;            
+                int j1 = offset_S % chunk_len;
     
                 // Get the offset into B_star of size (N1_A_star, N1_C)
                 size_t offset_B = (chunk_id*chunk_len+j1)*N1_C 
-                    + blockIdx.x*blockDim.x + j0;
+                    + blockIdx.x*blockDim.x+j0;
                     
                 if (offset_B<max_offset) {
                     shared_B[offset_S] = B_star[offset_B];
@@ -126,17 +123,17 @@ __global__ void mat_mult_tile_shared_AB_vector (
                 }
             }
             
-            // Synchronise threads to ensure all shared memory is covered
+            // Synchronise threads to ensure shared memory is filled
             __syncthreads();
     
             // Get vector handles on shared memory for this thread
-            float_vector_type* shared_A_v=(float_vector_type*)&shared_A[s0*chunk_len];
-            float_vector_type* shared_B_v=(float_vector_type*)&shared_B[s1*chunk_len];
-                
-            // Loop over the number of vectors in a chunk and accumulate the dot product
-            for (size_t n=0; n<nvectors; n++) {
+            float_vec_type* shared_A_v = (float_vec_type*)&shared_A[s0*chunk_len];
+            float_vec_type* shared_B_v = (float_vec_type*)&shared_B[s1*chunk_len];
+
+            // Loop over vectors in a chunk and accumulate the dot product
+            for (int n=0; n<nvectors; n++) {
                     
-                // Perform the dot product using shared memory           
+                // Perform the dot product using shared memory
 #ifdef __HIP_PLATFORM_NVIDIA__
                 temp.x += shared_A_v[n].x*shared_B_v[n].x;
                 temp.y += shared_A_v[n].y*shared_B_v[n].y;
@@ -146,12 +143,11 @@ __global__ void mat_mult_tile_shared_AB_vector (
                 temp+=shared_A_v[n]*shared_B_v[n];
 #endif
             }
-            
+        
             // Synchronise threads so they are
             // are ready to tackle the next tile together
             __syncthreads();
         }
-
 
         // Put the accumulated value into position
         C[i0*N1_C+i1]=temp.x+temp.y+temp.z+temp.w;
@@ -207,8 +203,8 @@ int main(int argc, char** argv) {
     // Use the alignment as the fundamental unit of a chunk length
     size_t chunk_len = h_get_alignment()/sizeof(float_type);
     
-    // Vector length
-    size_t vector_len = sizeof(float_vector_type)/sizeof(float_type);
+    // Number of elements in a vector
+    size_t vector_len = sizeof(float_vec_type)/sizeof(float_type);
     
     // Make sure an integer number of vectors fit into chunk_len 
     chunk_len = h_lcm(chunk_len, vector_len);

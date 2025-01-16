@@ -52,8 +52,8 @@ __global__ void mat_mult_tile_shared_B (
     int L1=blockDim.x;
 
     // Get pointers to shared memory from shared
-    // shared_B_star is of size (chunk_len, L1)
-    float_type* shared_B_star = (float_type*)&shared[0];
+    // shared_B is of size (L1, chunk_len)
+    float_type* shared_B = (float_type*)&shared[0];
     
     // Scratch variable
     float_type temp=0.0f;
@@ -65,41 +65,40 @@ __global__ void mat_mult_tile_shared_B (
     // Make sure we don't go beyond the bounds of the array
     if ((i0<N0_C) && (i1<N1_C)) {
 
-        // Make sure we don't go off the deep end of matrix A
+        // Make sure we don't go off the deep end of matrix B
         size_t max_offset=N1_C*N1_A_star;
         
         // Loop over the chunks
         for (int chunk_id=0; chunk_id<nchunks; chunk_id++) {
 
-            // Fill shared_B_star using all threads
+            // Fill shared_B using all threads
             for (int offset_S=w0; offset_S<L1*chunk_len; offset_S+=nthreads) {
     
-                // Coordinates within shared_B_star of size (L1, chunk_len)
+                // Coordinates within shared_B of size (L1, chunk_len)
                 int j0 = offset_S / chunk_len;
                 int j1 = offset_S % chunk_len;
     
                 // Get the offset into B of size (N1_A_star, N1_C)
                 size_t offset_B = (chunk_id*chunk_len+j1)*N1_C 
-                    + blockIdx.x*blockDim.x + j0;
+                    + blockIdx.x*blockDim.x+j0;
                     
                 if (offset_B<max_offset) {
-                    shared_B_star[offset_S] = B_star[offset_B];
+                    shared_B[offset_S] = B_star[offset_B];
                 } else {
-                    shared_B_star[offset_S] = 0.0;
+                    shared_B[offset_S] = 0.0;
                 }
     
-            }       
+            }
             
             // Synchronise threads to ensure shared memory is filled
             __syncthreads();
     
             // Get a handle to shared memory
-            float_type* shared_B_s = &shared_B_star[s1*chunk_len];
+            float_type* shared_B_s = &shared_B[s1*chunk_len];
             
             // Loop over shared memory to compute dot product 
             // component for the chunk
-            for (size_t n=0; n<chunk_len; n++) {
-                    
+            for (int n=0; n<chunk_len; n++) {    
                 // Perform the dot product using shared memory
                 temp+=A_star[i0*N1_A_star+chunk_id*chunk_len+n]*shared_B_s[n];
             }

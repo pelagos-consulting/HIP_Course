@@ -26,7 +26,7 @@ __global__ void mat_mult_tile_shared_AB (
                         size_t nchunks, 
                         size_t N0_C,
                         size_t N1_C) { 
-    
+
     // Access the allocation of shared memory
     extern __shared__ char shared[];
     
@@ -51,18 +51,18 @@ __global__ void mat_mult_tile_shared_AB (
     int L0=blockDim.y;
     int L1=blockDim.x;
 
-    // Get pointers to shared memory from shared
-    // shared_A_star is of size (L0, chunk_len)
-    // shared_B_star is of size (L1, chunk_len)
-    float_type* shared_A_star = (float_type*)&shared[0];
-    float_type* shared_B_star = (float_type*)&shared[L0*chunk_len*sizeof(float_type)];
-    
-    // Scratch variable
-    float_type temp=0.0f;
-
-    // Flat position within the workgroup
+    // Index of the thread within the workgroup, and total number of threads
     int w0 = s0*L1 + s1;
     int nthreads = L0*L1;
+
+    // Get pointers to shared memory from shared
+    // shared_A is of size (L0, chunk_len)
+    // shared_B is of size (L1, chunk_len)
+    float_type* shared_A = (float_type*)&shared[0];
+    float_type* shared_B = (float_type*)&shared[L0*chunk_len*sizeof(float_type)];
+
+    // Scratch variable
+    float_type temp=(float_type)0.0;
 
     // Make sure we don't go beyond the bounds of the array
     if ((i0<N0_C) && (i1<N1_C)) {
@@ -72,58 +72,56 @@ __global__ void mat_mult_tile_shared_AB (
     
             // Make sure we don't go off the deep end of matrix A
             size_t max_offset=N0_C*N1_A_star;
-                
-            // Fill shared_A_star of size (L0, chunk_len)
+            
+            // Fill shared_A using all threads
             for (int offset_S=w0; offset_S<L0*chunk_len; offset_S+=nthreads) {
                     
-                // Coordinates within shared_A_star
+                // Coordinates within shared_A of size (L0, chunk_len)
                 int j0 = offset_S / chunk_len;
                 int j1 = offset_S % chunk_len;
-                    
-                // Get the offset into A of size (N0_C, N1_A_star)
+                
+                // Get the offset into A_star of size (N0_C, N1_A_star)
                 size_t offset_A = (blockIdx.y*blockDim.y+j0)*N1_A_star 
-                    + chunk_id*chunk_len + j1;
+                    + chunk_id*chunk_len+j1;
                     
                 if (offset_A<max_offset) {
-                    shared_A_star[offset_S] = A_star[offset_A];
+                    shared_A[offset_S] = A_star[offset_A];
                 } else {
-                    shared_A_star[offset_S] = 0.0;
+                    shared_A[offset_S] = 0.0;
                 }
-    
             }
     
-            // Make sure we don't go off the deep end of matrix A
+            // Make sure we don't go off the deep end of matrix B
             max_offset=N1_C*N1_A_star;
     
-            // Then fill shared_B_star of size (L1, chunk_len)
+            // Then fill shared_B using all threads
             for (int offset_S=w0; offset_S<L1*chunk_len; offset_S+=nthreads) {
     
-                // Coordinates within shared_B_star
+                // Coordinates within shared_B of size (L1, chunk_len)
                 int j0 = offset_S / chunk_len;
                 int j1 = offset_S % chunk_len;
     
-                // Get the offset into B of size (N1_A_star, N1_C)
+                // Get the offset into B_star of size (N1_A_star, N1_C)
                 size_t offset_B = (chunk_id*chunk_len+j1)*N1_C 
-                    + blockIdx.x*blockDim.x + j0;
+                    + blockIdx.x*blockDim.x+j0;
                     
                 if (offset_B<max_offset) {
-                    shared_B_star[offset_S] = B_star[offset_B];
+                    shared_B[offset_S] = B_star[offset_B];
                 } else {
-                    shared_B_star[offset_S] = 0.0;
+                    shared_B[offset_S] = 0.0;
                 }
-    
             }
-                
+            
             // Synchronise threads to ensure shared memory is filled
             __syncthreads();
     
-            // Get a handle to shared memory
-            float_type* shared_A_s = &shared_A_star[s0*chunk_len];
-            float_type* shared_B_s = &shared_B_star[s1*chunk_len];
+            // Get scalar handles on shared memory for this thread
+            float_type* shared_A_s = &shared_A[s0*chunk_len];
+            float_type* shared_B_s = &shared_B[s1*chunk_len];
                 
-            // Loop over shared memory to compute dot product 
-            // component for the chunk
-            for (int n=0; n<chunk_len; n++) {    
+            // Loop over elements of shared memory and accumulate the dot product
+            for (int n=0; n<chunk_len; n++) {
+    
                 // Perform the dot product using shared memory
                 temp+=shared_A_s[n]*shared_B_s[n];
             }
@@ -132,7 +130,6 @@ __global__ void mat_mult_tile_shared_AB (
             // are ready to tackle the next tile together
             __syncthreads();
         }
-
 
         // Put the accumulated value into position
         C[i0*N1_C+i1]=temp;
