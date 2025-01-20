@@ -27,8 +27,16 @@ output_file = "benchmark.json"
 dev_indices_gpu = [0]
 dev_types={"gpu" : dev_indices_gpu}
 
-# Algorithm to test
-alg=MatMul(1024,1024,1024,np.float32)
+mat_size = {}
+# Read mat_size.hpp to extract the size
+with open("mat_size.hpp") as fd:
+    for line in fd:
+        if line.startswith("#define"):
+            splt=line.strip().split()
+            mat_size[splt[1]]=int(splt[2])
+
+alg_float=MatMul(mat_size["NCOLS_A"], mat_size["NROWS_C"], mat_size["NCOLS_C"], np.float32)
+alg_double=MatMul(mat_size["NCOLS_A"], mat_size["NROWS_C"], mat_size["NCOLS_C"], np.float64)
 
 # Specify programs to benchmark
 experiments = {
@@ -66,12 +74,17 @@ results = {}
 for label, spec in inputSpec.items():
     print(f"{label}, {spec.cmds}")
     # Make and run an optimisation experiment
+    alg=alg_float
+    if "double" in label.lower():
+        alg=alg_double
+
     temp=LocalOpt(
         cmds=spec.cmds, 
         local0=spec.local0,
         local1=spec.local1,
         local2=spec.local2,
-        alg=alg)
+        alg=alg
+    )
     
     if temp.has_data:
         # Results contains dictionary of timing results

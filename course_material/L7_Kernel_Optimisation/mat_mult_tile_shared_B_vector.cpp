@@ -84,7 +84,7 @@ __global__ void mat_mult_tile_shared_B_vector (
             size_t max_offset=N1_C*N1_A_star;
             
             // Fill shared_A using all threads
-            for (int offset_S=w0; offset_S<L0*chunk_len; offset_S+=nthreads) {
+            for (int offset_S=w0; offset_S<L1*chunk_len; offset_S+=nthreads) {
                     
                 // Coordinates within shared_B of size (L1, chunk_len)
                 int j0 = offset_S / chunk_len;
