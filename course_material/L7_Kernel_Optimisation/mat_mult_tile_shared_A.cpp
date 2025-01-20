@@ -26,7 +26,7 @@ __global__ void mat_mult_tile_shared_A (
                         size_t nchunks, 
                         size_t N0_C,
                         size_t N1_C) { 
-    
+
     // Access the allocation of shared memory
     extern __shared__ char shared[];
     
@@ -56,9 +56,9 @@ __global__ void mat_mult_tile_shared_A (
     float_type* shared_A = (float_type*)&shared[0];
     
     // Scratch variable
-    float_type temp=0.0f;
+    float_type temp=(float_type)0.0;
 
-    // Flat position within the workgroup
+    // Index of the thread within the workgroup, and total number of threads
     int w0 = s0*L1 + s1;
     int nthreads = L0*L1;
 
@@ -87,16 +87,15 @@ __global__ void mat_mult_tile_shared_A (
                 } else {
                     shared_A[offset_S] = 0.0;
                 }
-    
             }
             
             // Synchronise threads to ensure shared memory is filled
             __syncthreads();
     
-            // Get a handle to shared memory
+            // Get a scalar handle to shared memory
             float_type* shared_A_s = &shared_A[s0*chunk_len];
             
-            // Loop over shared memory to compute dot product 
+            // Loop over elements of shared memory and accumulate the dot product
             // component for the chunk
             for (int n=0; n<chunk_len; n++) {
                     

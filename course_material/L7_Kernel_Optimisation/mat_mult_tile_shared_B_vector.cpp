@@ -24,7 +24,7 @@ __global__ void mat_mult_tile_shared_B_vector (
                         float_type* C,
                         // number of elements in a chunk
                         size_t chunk_len,
-                        // number of chunks along dim 1 of A_star
+                        // number of chunks along hidden dimension
                         size_t nchunks,
                         // length of a vector
                         size_t vector_len,
@@ -47,7 +47,7 @@ __global__ void mat_mult_tile_shared_B_vector (
     // C is of size (N0_C, N1_C)
     
     // i0 and i1 represent the coordinates in Matrix C 
-    // We assume row-major ordering for the matrices 
+    // We use row-major ordering for the matrices 
     size_t i0 = blockIdx.y * blockDim.y + threadIdx.y;
     size_t i1 = blockIdx.x * blockDim.x + threadIdx.x;
 
@@ -62,17 +62,17 @@ __global__ void mat_mult_tile_shared_B_vector (
     int L0=blockDim.y;
     int L1=blockDim.x;
 
-    // Index of the thread within the workgroup, and total number of threads
-    int w0 = s0*L1 + s1;
-    int nthreads = L0*L1;
-
     // Get pointers to shared memory from shared
     // shared_B is of size (L1, chunk_len)
     float_type* shared_B = (float_type*)&shared[0];
 
-    // Vector scratch variables
+    // Vector scratch variable
     float_vec_type temp=(float_vec_type){0.0f};
     float_vec_type scratch=temp;
+
+    // Index of the thread within the workgroup, and total number of threads
+    int w0 = s0*L1 + s1;
+    int nthreads = L0*L1;
 
     // Make sure we don't go beyond the bounds of the array
     if ((i0<N0_C) && (i1<N1_C)) {
@@ -107,10 +107,10 @@ __global__ void mat_mult_tile_shared_B_vector (
             // Get vector handles on shared memory for this thread
             float_vec_type* shared_B_v = (float_vec_type*)&shared_B[s1*chunk_len];
 
-            // Loop over vectors in a chunk and accumulate the dot product
+            // Loop over vectors in shared memory and accumulate the dot product
             for (int n=0; n<nvectors; n++) {
             
-        		size_t offset_A = i0*N0_C + chunk_id*chunk_len+n*vector_len;
+        	size_t offset_A = i0*N0_C + chunk_id*chunk_len+n*vector_len;
 
                 // Fill scratch from A_star_i0
                 scratch.x = A_star[offset_A+0];
@@ -120,6 +120,7 @@ __global__ void mat_mult_tile_shared_B_vector (
 
                 // Perform the dot product using shared memory
 #ifdef __HIP_PLATFORM_NVIDIA__
+		// NVIDIA platforms don't seem to support vector operations
                 temp.x += scratch.x*shared_B_v[n].x;
                 temp.y += scratch.y*shared_B_v[n].y;
                 temp.z += scratch.z*shared_B_v[n].z;
@@ -188,7 +189,7 @@ int main(int argc, char** argv) {
     // Use the alignment as the fundamental unit of a chunk length
     size_t chunk_len = h_get_alignment()/sizeof(float_type);
     
-    // Vector length
+    // Number of elements in a vector
     size_t vector_len = sizeof(float_vec_type)/sizeof(float_type);
     
     // Make sure an integer number of vectors fit into chunk_len 

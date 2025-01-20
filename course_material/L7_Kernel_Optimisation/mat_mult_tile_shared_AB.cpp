@@ -22,9 +22,13 @@ __global__ void mat_mult_tile_shared_AB (
                         float_type* A_star, 
                         float_type* B_star, 
                         float_type* C,
+                        // number of elements in a chunk
                         size_t chunk_len,
-                        size_t nchunks, 
+                        // number of chunks in total
+                        size_t nchunks,
+                        // dimension 0 extent of C
                         size_t N0_C,
+                        // dimension 1 extent of C
                         size_t N1_C) { 
 
     // Access the allocation of shared memory
@@ -36,7 +40,7 @@ __global__ void mat_mult_tile_shared_AB (
     // C is of size (N0_C, N1_C)
     
     // i0 and i1 represent the coordinates in Matrix C 
-    // We assume row-major ordering for the matrices 
+    // We use row-major ordering for the matrices 
     size_t i0 = blockIdx.y * blockDim.y + threadIdx.y;
     size_t i1 = blockIdx.x * blockDim.x + threadIdx.x;
 
@@ -51,10 +55,6 @@ __global__ void mat_mult_tile_shared_AB (
     int L0=blockDim.y;
     int L1=blockDim.x;
 
-    // Index of the thread within the workgroup, and total number of threads
-    int w0 = s0*L1 + s1;
-    int nthreads = L0*L1;
-
     // Get pointers to shared memory from shared
     // shared_A is of size (L0, chunk_len)
     // shared_B is of size (L1, chunk_len)
@@ -64,13 +64,17 @@ __global__ void mat_mult_tile_shared_AB (
     // Scratch variable
     float_type temp=(float_type)0.0;
 
+    // Index of the thread within the workgroup, and total number of threads
+    int w0 = s0*L1 + s1;
+    int nthreads = L0*L1;
+
     // Make sure we don't go beyond the bounds of the array
     if ((i0<N0_C) && (i1<N1_C)) {
     
         // Loop over all the chunks
         for (int chunk_id=0; chunk_id<nchunks; chunk_id++) {
-    
-            // Make sure we don't go off the deep end of matrix A
+
+           // Make sure we don't go off the deep end of matrix A
             size_t max_offset=N0_C*N1_A_star;
             
             // Fill shared_A using all threads
@@ -118,8 +122,8 @@ __global__ void mat_mult_tile_shared_AB (
             // Get scalar handles on shared memory for this thread
             float_type* shared_A_s = &shared_A[s0*chunk_len];
             float_type* shared_B_s = &shared_B[s1*chunk_len];
-                
-            // Loop over elements of shared memory and accumulate the dot product
+
+            // Loop over scalars in shared memory and accumulate the dot product
             for (int n=0; n<chunk_len; n++) {
     
                 // Perform the dot product using shared memory

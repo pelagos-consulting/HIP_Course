@@ -24,7 +24,7 @@ __global__ void mat_mult_tile_shared_AB_vector (
                         float_type* C,
                         // number of elements in a chunk
                         size_t chunk_len,
-                        // number of chunks in total
+                        // number of chunks along hidden dimension
                         size_t nchunks,
                         // length of a vector
                         size_t vector_len,
@@ -47,7 +47,7 @@ __global__ void mat_mult_tile_shared_AB_vector (
     // C is of size (N0_C, N1_C)
     
     // i0 and i1 represent the coordinates in Matrix C 
-    // We assume row-major ordering for the matrices 
+    // We use row-major ordering for the matrices 
     size_t i0 = blockIdx.y * blockDim.y + threadIdx.y;
     size_t i1 = blockIdx.x * blockDim.x + threadIdx.x;
 
@@ -62,18 +62,19 @@ __global__ void mat_mult_tile_shared_AB_vector (
     int L0=blockDim.y;
     int L1=blockDim.x;
 
-    // Index of the thread within the workgroup, and total number of threads
-    int w0 = s0*L1 + s1;
-    int nthreads = L0*L1;
-
     // Get pointers to shared memory from shared
     // shared_A is of size (L0, chunk_len)
     // shared_B is of size (L1, chunk_len)
     float_type* shared_A = (float_type*)&shared[0];
+    // Notice the starting offset for shared_B
     float_type* shared_B = (float_type*)&shared[L0*chunk_len*sizeof(float_type)];
 
     // Vector scratch variable
     float_vec_type temp=(float_vec_type){0.0f};
+
+    // Index of the thread within the workgroup, and total number of threads
+    int w0 = s0*L1 + s1;
+    int nthreads = L0*L1;
 
     // Make sure we don't go beyond the bounds of the array
     if ((i0<N0_C) && (i1<N1_C)) {
@@ -130,11 +131,12 @@ __global__ void mat_mult_tile_shared_AB_vector (
             float_vec_type* shared_A_v = (float_vec_type*)&shared_A[s0*chunk_len];
             float_vec_type* shared_B_v = (float_vec_type*)&shared_B[s1*chunk_len];
 
-            // Loop over vectors in a chunk and accumulate the dot product
+            // Loop over vectors in shared memory and accumulate the dot product
             for (int n=0; n<nvectors; n++) {
                     
                 // Perform the dot product using shared memory
 #ifdef __HIP_PLATFORM_NVIDIA__
+		// NVIDIA platforms don't seem to support vector operations
                 temp.x += shared_A_v[n].x*shared_B_v[n].x;
                 temp.y += shared_A_v[n].y*shared_B_v[n].y;
                 temp.z += shared_A_v[n].z*shared_B_v[n].z;
