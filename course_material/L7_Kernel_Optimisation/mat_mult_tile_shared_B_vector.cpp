@@ -81,7 +81,7 @@ __global__ void mat_mult_tile_shared_B_vector (
         for (int chunk_id=0; chunk_id<nchunks; chunk_id++) {
 
            // Make sure we don't go off the deep end of matrix B
-            size_t max_offset=N1_C*N1_A_star;
+            size_t max_offset=N1_A_star*N1_C;
             
             // Fill shared_A using all threads
             for (int offset_S=w0; offset_S<L1*chunk_len; offset_S+=nthreads) {
@@ -110,7 +110,7 @@ __global__ void mat_mult_tile_shared_B_vector (
             // Loop over vectors in shared memory and accumulate the dot product
             for (int n=0; n<nvectors; n++) {
             
-        	size_t offset_A = i0*N0_C + chunk_id*chunk_len+n*vector_len;
+            	size_t offset_A = i0*N1_A_star + chunk_id*chunk_len+n*vector_len;
 
                 // Fill scratch from A_star_i0
                 scratch.x = A_star[offset_A+0];
