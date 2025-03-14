@@ -83,7 +83,7 @@ conda activate hip_course
 A list of helpful packages for viewing the material may then be installed with this command when run from the **HIP_Course** folder. 
 
 ```bash
-pip install -r deployment/requirements.txt
+pip install -r ./deployment/python_packages.txt
 ```
 then run 
 
