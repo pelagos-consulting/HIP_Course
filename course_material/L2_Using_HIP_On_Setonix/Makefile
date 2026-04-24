@@ -5,10 +5,10 @@ TARGETS=hello_jobstep.exe hello_devices_mpi.exe hello_devices_mpi_onefile_hipcc.
 all: $(TARGETS)
 
 # Compiler flags for C++ compiler
-CC_CFLAGS=-x hip -fPIC -D__HIP_ROCclr__ -D__HIP_ARCH_GFX90A__=1 --offload-arch=gfx90a --rocm-path=${ROCM_PATH}
+CC_CFLAGS=-x hip -fPIC -D__HIP_ROCclr__ -D__HIP_ARCH_GFX90A__=1 --offload-arch=gfx90a
 
 # Linker flags for C++ compiler
-CC_LDFLAGS=--rocm-path=${ROCM_PATH} -L${ROCM_PATH}/lib -lamdhip64
+CC_LDFLAGS=-L${ROCM_PATH}/lib -lamdhip64
 
 # Compiler flags for hipcc on AMD platform
 HIPCC_CFLAGS=-fPIC -fopenmp -I${MPICH_DIR}/include --offload-arch=gfx90a 
