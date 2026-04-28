@@ -1,0 +1,2330 @@
+gpu-agent4:	CPC_CPC_STAT_BUSY
+Description:	CPC Busy.
+Block:	CPC
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	CPC_CPC_STAT_IDLE
+Description:	CPC Idle.
+Block:	CPC
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	CPC_CPC_STAT_STALL
+Description:	CPC Stalled.
+Block:	CPC
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	CPC_CPC_TCIU_BUSY
+Description:	CPC TCIU interface Busy.
+Block:	CPC
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	CPC_CPC_TCIU_IDLE
+Description:	CPC TCIU interface Idle.
+Block:	CPC
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	CPC_CPC_UTCL2IU_BUSY
+Description:	CPC UTCL2 interface Busy.
+Block:	CPC
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	CPC_CPC_UTCL2IU_IDLE
+Description:	CPC UTCL2 interface Idle.
+Block:	CPC
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	CPC_CPC_UTCL2IU_STALL
+Description:	CPC UTCL2 interface Stalled waiting on Free, Tags or Translation.
+Block:	CPC
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	CPC_ME1_BUSY_FOR_PACKET_DECODE
+Description:	Me1 busy for packet decode.
+Block:	CPC
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	CPC_ME1_DC0_SPI_BUSY
+Description:	CPC Me1 Processor Busy.
+Block:	CPC
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	CPC_UTCL1_STALL_ON_TRANSLATION
+Description:	One of the UTCL1s is stalled waiting on translation, XNACK or PENDING response.
+Block:	CPC
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	CPF_CMP_UTCL1_STALL_ON_TRANSLATION
+Description:	One of the Compute UTCL1s is stalled waiting on translation, XNACK or PENDING response.
+Block:	CPF
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	CPF_CPF_STAT_BUSY
+Description:	CPF Busy.
+Block:	CPF
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	CPF_CPF_STAT_IDLE
+Description:	CPF Idle.
+Block:	CPF
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	CPF_CPF_STAT_STALL
+Description:	CPF Stalled.
+Block:	CPF
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	CPF_CPF_TCIU_BUSY
+Description:	CPF TCIU interface Busy.
+Block:	CPF
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	CPF_CPF_TCIU_IDLE
+Description:	CPF TCIU interface Idle.
+Block:	CPF
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	CPF_CPF_TCIU_STALL
+Description:	CPF TCIU interface Stalled waiting on Free, Tags.
+Block:	CPF
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	GRBM_COUNT
+Description:	Tie High - Count Number of Clocks
+Block:	GRBM
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	GRBM_CPC_BUSY
+Description:	The Command Processor Compute (CPC) is busy.
+Block:	GRBM
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	GRBM_CPF_BUSY
+Description:	The Command Processor Fetchers (CPF) is busy.
+Block:	GRBM
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	GRBM_CP_BUSY
+Description:	Any of the Command Processor (CPG/CPC/CPF) blocks are busy.
+Block:	GRBM
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	GRBM_EA_BUSY
+Description:	The Efficiency Arbiter (EA) block is busy.
+Block:	GRBM
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	GRBM_GUI_ACTIVE
+Description:	The GUI is Active
+Block:	GRBM
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	GRBM_SPI_BUSY
+Description:	Any of the Shader Pipe Interpolators (SPI) are busy in the shader engine(s).
+Block:	GRBM
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	GRBM_TA_BUSY
+Description:	Any of the Texture Pipes (TA) are busy in the shader engine(s).
+Block:	GRBM
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	GRBM_TC_BUSY
+Description:	Any of the Texture Cache Blocks (TCP/TCI/TCA/TCC) are busy.
+Block:	GRBM
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	GRBM_UTCL2_BUSY
+Description:	The Unified Translation Cache Level-2 (UTCL2) block is busy.
+Block:	GRBM
+Dimensions:	DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	SPI_CSN_BUSY
+Description:	Number of clocks with outstanding waves (SPI or SH). Requires SPI_DEBUG_CNTL.DEBUG_PIPE_SEL to select source, DEBUG_PIPE_SEL = 1, source is CS1; DEBUG_PIPE_SEL = 2, source is CS2; DEBUG_PIPE_SEL = 3, source is CS3; default, source is CS0;
+Block:	SPI
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SPI_CSN_NUM_THREADGROUPS
+Description:	Number of threadgroups launched. Requires SPI_DEBUG_CNTL.DEBUG_PIPE_SEL to select source, DEBUG_PIPE_SEL = 1, source is CS1; DEBUG_PIPE_SEL = 2, source is CS2; DEBUG_PIPE_SEL = 3, source is CS3; default, source is CS0;
+Block:	SPI
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SPI_CSN_WAVE
+Description:	Number of waves. Requires SPI_DEBUG_CNTL.DEBUG_PIPE_SEL to select source, DEBUG_PIPE_SEL = 1, source is CS1; DEBUG_PIPE_SEL = 2, source is CS2; DEBUG_PIPE_SEL = 3, source is CS3; default, source is CS0;
+Block:	SPI
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SPI_CSN_WINDOW_VALID
+Description:	Clock count enabled by perfcounter_start event. Requires SPI_DEBUG_CNTL.DEBUG_PIPE_SEL to select source, DEBUG_PIPE_SEL = 1, source is CS1; DEBUG_PIPE_SEL = 2, source is CS2; DEBUG_PIPE_SEL = 3, source is CS3; default, source is CS0;
+Block:	SPI
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SPI_RA_BAR_CU_FULL_CSN
+Description:	Sum of CU where BARRIER can't take csn wave when !fits. Source is RA0
+Block:	SPI
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SPI_RA_BULKY_CU_FULL_CSN
+Description:	Sum of CU where BULKY can't take csn wave when !fits. Source is RA0
+Block:	SPI
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SPI_RA_LDS_CU_FULL_CSN
+Description:	Sum of CU where LDS can't take csn wave when !fits. Source is RA0
+Block:	SPI
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SPI_RA_REQ_NO_ALLOC
+Description:	Arb cycles with requests but no allocation. Source is RA0
+Block:	SPI
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SPI_RA_REQ_NO_ALLOC_CSN
+Description:	Arb cycles with CSn req and no CSn alloc. Source is RA0
+Block:	SPI
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SPI_RA_RES_STALL_CSN
+Description:	Arb cycles with CSn req and no CSn fits. Source is RA0
+Block:	SPI
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SPI_RA_SGPR_SIMD_FULL_CSN
+Description:	Sum of SIMD where SGPR can't take csn wave when !fits. Source is RA0
+Block:	SPI
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SPI_RA_TGLIM_CU_FULL_CSN
+Description:	Cycles where csn wants to req but all CU are at tg_limit
+Block:	SPI
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SPI_RA_TMP_STALL_CSN
+Description:	Cycles where csn wants to req but does not fit in temp space.
+Block:	SPI
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SPI_RA_VGPR_SIMD_FULL_CSN
+Description:	Sum of SIMD where VGPR can't take csn wave when !fits. Source is RA0
+Block:	SPI
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SPI_RA_WAVE_SIMD_FULL_CSN
+Description:	Sum of SIMD where WAVE can't take csn wave when !fits. Source is RA0
+Block:	SPI
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SPI_RA_WVLIM_STALL_CSN
+Description:	Number of clocks csn is stalled due to WAVE LIMIT.
+Block:	SPI
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SPI_SWC_CSC_WR
+Description:	Number of clocks to write CSC waves to SGPRs (need to multiply this value by 4) Requires SPI_DEBUG_CNTL.DEBUG_PIPE_SEL to select source, DEBUG_PIPE_SEL = 1, source is CS1; DEBUG_PIPE_SEL = 2, source is CS2; DEBUG_PIPE_SEL = 3, source is CS3; default, source is CS0;
+Block:	SPI
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SPI_VWC_CSC_WR
+Description:	Number of clocks to write CSC waves to VGPRs (need to multiply this value by 4) Requires SPI_DEBUG_CNTL.DEBUG_PIPE_SEL to select source, DEBUG_PIPE_SEL = 1, source is CS1; DEBUG_PIPE_SEL = 2, source is CS2; DEBUG_PIPE_SEL = 3, source is CS3; default, source is CS0;
+Block:	SPI
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQC_DCACHE_ATOMIC
+Description:	Number of atomic requests. (per-SQ, per-Bank)
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQC_DCACHE_HITS
+Description:	Number of cache hits. (per-SQ, per-Bank, nondeterministic)
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQC_DCACHE_INPUT_VALID_READYB
+Description:	Input stalled by SQC (per-SQ, nondeterministic, unwindowed)
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQC_DCACHE_MISSES
+Description:	Number of cache misses, includes uncached requests. (per-SQ, per-Bank, nondeterministic)
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQC_DCACHE_MISSES_DUPLICATE
+Description:	Number of misses that were duplicates (access to a non-resident, miss pending CL). (per-SQ, per-Bank, nondeterministic)
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQC_DCACHE_REQ
+Description:	Number of requests (post-bank-serialization). (per-SQ, per-Bank)
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQC_DCACHE_REQ_READ_1
+Description:	Number of constant cache 1 dw read requests. (per-SQ)
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQC_DCACHE_REQ_READ_16
+Description:	Number of constant cache 16 dw read requests. (per-SQ)
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQC_DCACHE_REQ_READ_2
+Description:	Number of constant cache 2 dw read requests. (per-SQ)
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQC_DCACHE_REQ_READ_4
+Description:	Number of constant cache 4 dw read requests. (per-SQ)
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQC_DCACHE_REQ_READ_8
+Description:	Number of constant cache 8 dw read requests. (per-SQ)
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQC_ICACHE_HITS
+Description:	Number of cache hits. (per-SQ, per-Bank, nondeterministic)
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQC_ICACHE_MISSES
+Description:	Number of cache misses, includes uncached requests. (per-SQ, per-Bank, nondeterministic)
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQC_ICACHE_MISSES_DUPLICATE
+Description:	Number of misses that were duplicates (access to a non-resident, miss pending CL). (per-SQ, per-Bank, nondeterministic)
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQC_ICACHE_REQ
+Description:	Number of requests. (per-SQ, per-Bank)
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQC_TC_DATA_ATOMIC_REQ
+Description:	Number of data atomic requests to the TC (No-Masking, nondeterministic)
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQC_TC_DATA_READ_REQ
+Description:	Number of data read requests to the TC (No-Masking, nondeterministic)
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQC_TC_DATA_WRITE_REQ
+Description:	Number of data write requests to the TC (No-Masking, nondeterministic)
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQC_TC_INST_REQ
+Description:	Number of insruction requests to the TC (No-Masking, nondeterministic)
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQC_TC_REQ
+Description:	Total number of TC requests that were issued by instruction and constant caches. (No-Masking, nondeterministic)
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQC_TC_STALL
+Description:	Valid request stalled TC request interface (no-credits). (No-Masking, nondeterministic, unwindowed)
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_ACCUM_PREV
+Description:	This is a hardware register that can be used for accumulating values for other counters. This is useful in expressions where you want to integrate over time. Only accumulates once every 4 cycles. This counter is primarily for use with derived counters supplied by rocprof.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_ACCUM_PREV_HIRES
+Description:	This is a hardware register that can be used for accumulating values for other counters. This is useful in expressions where you want to integrate over time. This counter is primarily for use with derived counters supplied by rocprof.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_ACTIVE_INST_ANY
+Description:	Number of cycles each wave spends working on any type of instruction. Useful in determining percentage of time spend executing wave workloads (see WaveExec). This value is returned on a per-SE (aggregate of values in SIMDs in the SE) basis with units in quad-cycles(4 cycles).
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_ACTIVE_INST_EXP_GDS
+Description:	Number of cycles each wave spends working on EXPORT or GDS instructions. This value represents the number of cycles each wave spends executing instructions synchronizing workgroups across the device (global data sync). High values indicates large amounts of time spent waiting on communication between CUs. This value is returned on a per-SE (aggregate of values in SIMDs in the SE) basis with units in quad-cycles(4 cycles). See AMD ISAs for more information on GDS instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_ACTIVE_INST_FLAT
+Description:	Number of cycles each wave spends working on FLAT instructions. This value represents the number of cycles each wave spends executing instructions accessing flat scratch memory locations. High values indicates a large amount of reading/writing to scratch memory on the device. This value is returned on a per-SE (aggregate of values in SIMDs in the SE) basis with units in quad-cycles(4 cycles). See AMD ISAs for more information on FLAT instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_ACTIVE_INST_LDS
+Description:	Number of cycles each wave spends working on LDS instructions. This value represents the number of cycles each wave spends executing instructions accessing the local data store (data shared between SIMDs on the same CU). High values indicates a large amount of reading/writing to this shared memory space. This value is returned on a per-SE (aggregate of values in SIMDs in the SE) basis with units in quad-cycles(4 cycles). See AMD ISAs for more information on LDS instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_ACTIVE_INST_MISC
+Description:	Number of cycles each wave spends working on a BRANCH or SENDMSG instructions. This value represents the number of cycles each wave spends executing instructions performing control flow branching and message sending. This value is returned on a per-SE (aggregate of values in SIMDs in the SE) basis with units in quad-cycles(4 cycles). See AMD ISAs for more information on BRANCH and SENDMSG instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_ACTIVE_INST_SCA
+Description:	Number of cycles each wave spends working on a SALU or SMEM instructions. This value represents the number of cycles each wave spends executing scalar ALU or scalar memory instructions. On MI200/300 platforms, there is a single ALU per CU. High values indicates a large amount of time spent executing scalar instructions. This value is returned on a per-SE (aggregate of values in SIMDs in the SE) basis with units in quad-cycles(4 cycles). See AMD ISAs for more information on SALU and SMEM instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_ACTIVE_INST_VALU
+Description:	Number of cycles each wave spends working on a VALU instructions. This value represents the number of cycles each wave spends executing vector ALU instructions. On MI200 platforms, there are 4 VALUs per CU. High values indicates a large amount of time spent executing vector instructions. This value is returned on a per-SE (aggregate of values in SIMDs in the SE) basis with units in quad-cycles(4 cycles).
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_ACTIVE_INST_VMEM
+Description:	Number of cycles each wave spends working on a VMEM instructions. This value represents the number of cycles each wave spends executing vector memory instructions. High values indicates a large amount of time spent executing vector memory operations. This value is returned on a per-SE (aggregate of values in SIMDs in the SE) basis with units in quad-cycles(4 cycles).
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_BUSY_CU_CYCLES
+Description:	Number of quad-cycles each CU is busy. Can be used to calculate the percentage of time each CU is busy. This value is returned on a per-SE (aggregate of values in SIMDs in the SE) basis with units in quad-cycles(4 cycles).
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_BUSY_CYCLES
+Description:	Number of clock cycles there are active waves in a shader engine (as reported by the distributed sequencer). This value does not denote the number of active waves, only the clock cycle in which any wave is present in a SE. This value is returned on a per-shader engine basis in clock cycles.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_CYCLES
+Description:	Clock cycles. Value is returned per-SIMD.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_IFETCH
+Description:	Number of instruction fetch requests from L1I (instruction) cache. This is a value returned per-SIMD.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_IFETCH_LEVEL
+Description:	Number of inflight instruction fetch requests from the cache. This is a value returned per-sharder engine. Best used with accumlate() functions as part of a derived counter.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS
+Description:	Total number of instructions issued. When used in combination with SQ_ACTIVE_INST_ANY (cycle count for executing instructions) the average latency of instruction execution can be calculated (SQ_ACTIVE_INST_ANY / SQ_INSTS). This value is returned per-SE (aggregate of values in SIMDs in the SE).
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_BRANCH
+Description:	Total number of BRANCH instructions issued. This value is returned per-SE (aggregate of values in SIMDs in the SE). This value SHOULD NOT be used in combination with SQ_ACTIVE_INST_MISC to calculate latency. SQ_ACTIVE_INST_MISC includes both BRANCH and SENDMSG instructions while this is only BRANCH.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_EXP_GDS
+Description:	Total number of EXPORT or GDS (global wave state) instructions issued. When used in combination with SQ_ACTIVE_INST_EXP_GDS (cycle count for executing instructions) the average latency of EXPORT/GDS instruction execution can be calculated (SQ_ACTIVE_INST_EXP_GDS / SQ_INSTS_EXP_GDS). This value is returned per-SE (aggregate of values in SIMDs in the SE).
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_FLAT
+Description:	Total number of FLAT instructions issued. When used in combination with SQ_ACTIVE_INST_FLAT (cycle count for executing instructions) the average latency of FLAT instruction execution can be calculated (SQ_ACTIVE_INST_FLAT / SQ_INSTS). This value is returned per-SE (aggregate of values in SIMDs in the SE).
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_FLAT_LDS_ONLY
+Description:	Total number of FLAT instructions issued that read/wrote only from/to LDS (scratch memory). Values are only populated if EARLY_TA_DONE is enabled. This value is returned per-SE (aggregate of values in SIMDs in the SE).
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_GDS
+Description:	Total number of GDS (global data sync) instructions issued. This value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on GDS (global data sync) instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_LDS
+Description:	Total number of LDS instructions issued (including FLAT). This value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on LDS instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_MFMA
+Description:	Total number of MFMA (Matrix-Fused-Multiply-Add) instructions issued. This value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on MFMA instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_SALU
+Description:	Total Number of SALU (Scalar ALU) instructions issued. This value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on SALU instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_SENDMSG
+Description:	Total number of Sendmsg (typically an interrupt to the CPU host) instructions issued. This value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on Sendmsg instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_SMEM
+Description:	Total number of SMEM (Scalar Memory Read) instructions issued. This value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on SMEM instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_SMEM_NORM
+Description:	Number of SMEM instructions issued normalized to match the level of memory accessed (i.e. scratch, global, etc). This normalized value is designed to give a hint of high cost memory actions being used. The formula used to calculate this value is the following (INST_COUNT *2 for load/store; INST_COUNT*2 atomic; INST_COUNT*2 memtime; INST_COUNT*4 wb/inv). This value is returned per-SE (aggregate of values in SIMDs in the SE).
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU
+Description:	The number of VALU (Vector ALU) instructions issued. The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on VALU instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_ADD_F16
+Description:	The number of VALU (Vector ALU) ADD/SUB instructions on float16. For maximum performance lower percision floating point ops are preferred to higher percision ones. The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on VALU instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_ADD_F32
+Description:	The number of VALU (Vector ALU) ADD/SUB instructions on float32. For maximum performance lower percision floating point ops are preferred to higher percision ones. The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on VALU instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_ADD_F64
+Description:	The number of VALU ADD/SUB instructions on float64. For maximum performance lower percision floating point ops are preferred to higher percision ones. The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on VALU instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_CVT
+Description:	The number of VALU (Vector ALU) data conversion instructions (ex. float -> int). The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on VALU instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_FMA_F16
+Description:	The number of VALU (Vector ALU) FMA (Fused-Multiply-Add)/MAD(Multiply-Add) instructions on float16. For maximum performance lower percision floating point ops are preferred to higher percision ones. The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on VALU instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_FMA_F32
+Description:	The number of VALU (Vector ALU) FMA (Fused-Multiply-Add)/MAD(Multiply-Add) instructions on float32. For maximum performance lower percision floating point ops are preferred to higher percision ones. The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on VALU instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_FMA_F64
+Description:	The number of VALU (Vector ALU) FMA (Fused-Multiply-Add)/MAD(Multiply-Add) instructions on float64. For maximum performance lower percision floating point ops are preferred to higher percision ones. The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on VALU instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_INT32
+Description:	The number of VALU (Vector ALU) 32-bit integer (signed or unsigned) instructions. The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on VALU instruction.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_INT64
+Description:	The number of VALU (Vector ALU) 64-bit integer (signed or unsigned) instructions. The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on VALU instruction.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_MFMA_BF16
+Description:	The number of VALU (Vector ALU) MFMA (Matrix-Fused-Multiply-Add) BF16 (outputing bfloat16 format) instructions (V_MFMA_*_BF16). For maximum performance lower percision floating point ops are preferred to higher percision ones. The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on MFMA instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_MFMA_F16
+Description:	The number of VALU (Vector ALU) MFMA (Matrix-Fused-Multiply-Add) F16 (outputing float16 format) instructions (V_MFMA_*_F16). For maximum performance lower percision floating point ops are preferred to higher percision ones. The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on MFMA instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_MFMA_F32
+Description:	The number of VALU (Vector ALU) MFMA (Matrix-Fused-Multiply-Add) F32 (outputing float32 format) instructions (V_MFMA_*_F32). For maximum performance lower percision floating point ops are preferred to higher percision ones. The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on MFMA instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_MFMA_F64
+Description:	The number of VALU (Vector ALU) MFMA (Matrix-Fused-Multiply-Add) F64 (outputing float32 format) instructions (V_MFMA_*_F64). For maximum performance lower percision floating point ops are preferred to higher percision ones. The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on MFMA instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_MFMA_I8
+Description:	The number of VALU (Vector ALU) MFMA (Matrix-Fused-Multiply-Add) I8 (outputing 8bit intergers) instructions (V_MFMA_*_I8). See AMD ISAs for more information on MFMA instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_MFMA_MOPS_BF16
+Description:	The number of math operation instructions on the VALU (Vector ALU) using MFMA (Matrix-Fused-Multiply-Add) and operating on BF16 (bfloat16) data. Captures add or mul ops performed divided by 512. For maximum performance lower percision floating point ops are preferred to higher percision ones. The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on MFMA instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_MFMA_MOPS_F16
+Description:	The number of math operation instructions on the VALU (Vector ALU) using MFMA (Matrix-Fused-Multiply-Add) and operating on F16 (float16) data. Captures add or mul ops performed divided by 512. For maximum performance lower percision floating point ops are preferred to higher percision ones. The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on MFMA instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_MFMA_MOPS_F32
+Description:	The number of math operation instructions on the VALU (Vector ALU) using MFMA (Matrix-Fused-Multiply-Add) and operating on F32 (float32) data. Captures add or mul ops performed divided by 512. For maximum performance lower percision floating point ops are preferred to higher percision ones. The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on MFMA instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_MFMA_MOPS_F64
+Description:	The number of math operation instructions on the VALU (Vector ALU) using MFMA (Matrix-Fused-Multiply-Add) and operating on F64 (float64) data. Captures add or mul ops performed divided by 512. For maximum performance lower percision floating point ops are preferred to higher percision ones. The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on MFMA instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_MFMA_MOPS_I8
+Description:	The number of math operation instructions on the VALU (Vector ALU) using MFMA (Matrix-Fused-Multiply-Add) and operating on I8 (8 bit int) data. Captures add or mul ops performed divided by 512. The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on MFMA instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_MUL_F16
+Description:	The number of VALU MUL instructions on float16 data. For maximum performance lower percision floating point ops are preferred to higher percision ones. The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on VALU instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_MUL_F32
+Description:	The number of VALU MUL instructions on float32 data. For maximum performance lower percision floating point ops are preferred to higher percision ones. The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on VALU instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_MUL_F64
+Description:	The number of VALU MUL instructions on float64 data. For maximum performance lower percision floating point ops are preferred to higher percision ones. The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on VALU instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_TRANS_F16
+Description:	The number of VALU transcendental instructions on float16 data. Transcendental instructions include sin, cos, exp, log, etc. For maximum performance lower percision floating point ops are preferred to higher percision ones. The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on VALU instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_TRANS_F32
+Description:	The number of VALU transcendental instructions on float32 data. Transcendental instructions include sin, cos, exp, log, etc. For maximum performance lower percision floating point ops are preferred to higher percision ones. The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on VALU instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VALU_TRANS_F64
+Description:	The number of VALU transcendental instructions on float64 data. Transcendental instructions include sin, cos, exp, log, etc. For maximum performance lower percision floating point ops are preferred to higher percision ones. The value is returned per-SE (aggregate of values in SIMDs in the SE). See AMD ISAs for more information on VALU instructions.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VMEM
+Description:	The number of VMEM (GPU Memory) instructions issued. The value is returned per-SE (aggregate of values in SIMDs in the SE).
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VMEM_RD
+Description:	The number of VMEM (GPU Memory) read instructions issued (including FLAT/scratch memory). The value is returned per-SE (aggregate of values in SIMDs in the SE).
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VMEM_WR
+Description:	The number of VMEM (GPU Memory) write instructions issued (including FLAT/scratch memory). The value is returned per-SE (aggregate of values in SIMDs in the SE).
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INSTS_VSKIPPED
+Description:	The number of vector instructions skipped. This can occur when the S_SETVSKIP bit is enabled on certain instructions. Often this is used as an alturnative to branching (a compiler may replace a branch with setting this bit to skip the operation, typically as a performance optimization). The value is returned per-SE (aggregate of values in SIMDs in the SE).
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INST_CYCLES_SALU
+Description:	The number of cycles needed to execute non-memory read scalar operations (SALU). This value is returned on a per-SE (aggregate of values in SIMDs in the SE) basis with units in quad-cycles(4 cycles).
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INST_CYCLES_SMEM
+Description:	The number of cycles needed to execute scalar memory reads (SMEM). This value is returned on a per-SE (aggregate of values in SIMDs in the SE) basis with units in quad-cycles(4 cycles).
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INST_CYCLES_VMEM_RD
+Description:	The number of cycles needed to send addr and cmd data for VMEM read instructions. This value is returned on a per-SE (aggregate of values in SIMDs in the SE) basis with units in quad-cycles(4 cycles).
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INST_CYCLES_VMEM_WR
+Description:	The number of cycles needed to send addr and cmd data for VMEM write instructions. This value is returned on a per-SE (aggregate of values in SIMDs in the SE) basis with units in quad-cycles(4 cycles).
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INST_LEVEL_LDS
+Description:	Number of in-flight LDS instructions. This value represents the number of instructions each wave spends executing instructions accessing the local data store (data shared between SIMDs on the same CU). Set next counter to ACCUM_PREV and divide by INSTS_LDS for average latency. Includes FLAT instructions. This value is returned on a per-SE (aggregate of values in SIMDs in the SE) basis.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INST_LEVEL_SMEM
+Description:	Number of in-flight SMEM instructions (*2 load/store; *2 atomic; *2 memtime; *4 wb/inv). Set next counter to ACCUM_PREV and divide by INSTS_SMEM for average latency per smem request. Falls slightly short of total request latency because some fetches are divided into two requests that may finish at different times and this counter collects the average latency of the two. This value is returned on a per-SE (aggregate of values in SIMDs in the SE) basis.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_INST_LEVEL_VMEM
+Description:	Number of in-flight VMEM instructions. Set next counter to ACCUM_PREV and divide by INSTS_VMEM for average latency. Includes FLAT instructions. This value is returned on a per-SE (aggregate of values in SIMDs in the SE) basis.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_ITEMS
+Description:	Number of valid items per wave. This value is returned on a per-SE (aggregate of values in SIMDs in the SE) basis.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_LDS_ADDR_CONFLICT
+Description:	Number of cycles LDS (local data store) is stalled by address conflicts. This value is returned on a per-SE (aggregate of values in SIMDs in the SE) basis.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_LDS_ATOMIC_RETURN
+Description:	The number of atomic return cycles in LDS (local data store). This value is returned on a per-SE (aggregate of values in SIMDs in the SE) basis.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_LDS_BANK_CONFLICT
+Description:	The number of cycles LDS (local data store) is stalled by bank conflicts. This value is returned on a per-SE (aggregate of values in SIMDs in the SE) basis.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_LDS_IDX_ACTIVE
+Description:	Number of cycles LDS (local data store) is used for indexed (non-direct,non-interpolation) operations. This value is returned on a per-SE (aggregate of values in SIMDs in the SE) basis.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_LDS_MEM_VIOLATIONS
+Description:	Number of threads that have a memory violation in the LDS (local data store). This value is returned on a per-SE (aggregate of values in SIMDs in the SE) basis.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_LDS_UNALIGNED_STALL
+Description:	Number of cycles LDS (local data store) is stalled processing flat unaligned load/store ops. This value is returned on a per-SE (aggregate of values in SIMDs in the SE) basis.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_LEVEL_WAVES
+Description:	Track the number of waves. Set ACCUM_PREV for the next counter to use this. This value is returned on a per-SIMD basis.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_THREAD_CYCLES_VALU
+Description:	Number of thread-cycles used to execute VALU operations (similar to INST_CYCLES_VALU but multiplied by # of active threads). (per-simd)
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_VALU_MFMA_BUSY_CYCLES
+Description:	Number of cycles the MFMA (Matrixed-Fused-Multiply-Add) ALU is busy. This value is returned on a per-SIMD basis.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_WAIT_ANY
+Description:	Number of wave-cycles spent waiting for anything (per-simd, nondeterministic). Units in quad-cycles(4 cycles)
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_WAIT_INST_ANY
+Description:	Number of wave-cycles spent waiting for any instruction issue. Units in quad-cycles(4 cycles).
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_WAIT_INST_LDS
+Description:	Number of wave-cycles spent waiting for LDS instruction issue. In units of 4 cycles. (per-simd, nondeterministic)
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_WAVES
+Description:	Count number of waves sent to distributed sequencers (SQs). This value represents the number of waves that are sent to each SQ. This only counts new waves sent since the start of collection (for dispatch profiling this is the timeframe of kernel execution, for agent profiling it is the timeframe between start_context and read counter data). A sum of all SQ_WAVES values will give the total number of waves started by the application during the collection timeframe. Returns one value per-SE (aggregates of SIMD values).
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_WAVES_EQ_64
+Description:	Count number of waves with exactly 64 active threads sent to SQs. This value represents the number of waves that an each individual SIMD has enqueued during the collection timeframe (for dispatch profiling this is the timeframe of kernel execution, for agent profiling it is the timeframe between start_context and read counter data) with exactly 64 threads. A sum of all SQ_WAVES_EQ_64 values will give the total number of waves with 64 threads enqueued during the collection timeframe by the application. Returns one value per-SE (aggregates of SIMD values). Useful for checking for wavefront occupancy.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_WAVES_LT_16
+Description:	Count number of waves sent <16 active threads sent to SQs. (per-simd, emulated, global). This value represents the number of waves that an each individual SIMD has enqueued during the collection timeframe (for dispatch profiling this is the timeframe of kernel execution, for agent profiling it is the timeframe between start_context and read counter data) with less than 16 threads. A sum of all SQ_WAVES_LT_16 values will give the total number of waves with 16 threads enqueued during the collection timeframe by the application. Returns one value per-SE (aggregates of SIMD values). Useful for checking for wavefront occupancy.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_WAVES_LT_32
+Description:	Count number of waves sent <32 active threads sent to SQs. This value represents the number of waves that an each individual SIMD has enqueued during the collection timeframe (for dispatch profiling this is the timeframe of kernel execution, for agent profiling it is the timeframe between start_context and read counter data) with less than 32 threads. A sum of all SQ_WAVES_LT_32 values will give the total number of waves with 32 threads enqueued during the collection timeframe by the application. Returns one value per-SE (aggregates of SIMD values). Useful for checking for wavefront occupancy.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_WAVES_LT_48
+Description:	Count number of waves with <48 active threads sent to SQs. This value represents the number of waves that an each individual SIMD has enqueued during the collection timeframe (for dispatch profiling this is the timeframe of kernel execution, for agent profiling it is the timeframe between start_context and read counter data) with less than 48 threads. A sum of all SQ_WAVES_LT_48 values will give the total number of waves with 48 threads enqueued during the collection timeframe by the application. Returns one value per-SE (aggregates of SIMD values). Useful for checking for wavefront occupancy.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_WAVES_LT_64
+Description:	Count number of waves with <64 active threads sent to SQs. This value represents the number of waves that an each individual SIMD has enqueued during the collection timeframe (for dispatch profiling this is the timeframe of kernel execution, for agent profiling it is the timeframe between start_context and read counter data) with less than 64 threads. A sum of all SQ_WAVES_LT_64 values will give the total number of waves with 64 threads enqueued during the collection timeframe by the application. Returns one value per-SE (aggregates of SIMD values). Useful for checking for wavefront occupancy.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_WAVES_RESTORED
+Description:	Count number of context-restored waves sent to SQs. This value represents the number of waves whos current register state has been restored from a register bank during the collection timeframe (for dispatch profiling this is the timeframe of kernel execution, for agent profiling it is the timeframe between start_context and read counter data). Context saving/restoring is a slow operation and should be limited. High values can also indicate that stalling may be taking place (waiting for free register space). Returns one value per-SE (aggregates of SIMD values).
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_WAVES_SAVED
+Description:	Count number of context-saved waves sent to SQs. This value represents the number of waves whos current register state has been saved to a register bank during the collection timeframe (for dispatch profiling this is the timeframe of kernel execution, for agent profiling it is the timeframe between start_context and read counter data) . Context saving/restoring is a slow operation and should be limited. High values can also indicate that stalling may be taking place (waiting for free register space). Returns one value per-SE (aggregates of SIMD values).
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	SQ_WAVE_CYCLES
+Description:	The cycles spent executing waves in the CUs. This value is reported per-SE (aggregates of SIMD values) and is nondeterministic. Units are in quad-cycles (4 cycles). Useful for determining how much time is spent executing wave code vs overhead/waiting. Low cycle count relative to actual number of cycles processed by the CU can indicate that the CU is stalling or is overloaded.
+Block:	SQ
+Dimensions:	DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TA_ADDR_STALLED_BY_TC_CYCLES
+Description:	Number of cycles addr path stalled by TC. Perf_Windowing not supported for this counter.
+Block:	TA
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TA_ADDR_STALLED_BY_TD_CYCLES
+Description:	Number of cycles addr path stalled by TD. Perf_Windowing not supported for this counter.
+Block:	TA
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TA_BUFFER_ATOMIC_WAVEFRONTS
+Description:	Number of buffer atomic wavefronts processed by TA.
+Block:	TA
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TA_BUFFER_COALESCED_READ_CYCLES
+Description:	Number of buffer coalesced read cycles issued to TC.
+Block:	TA
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TA_BUFFER_COALESCED_WRITE_CYCLES
+Description:	Number of buffer coalesced write cycles issued to TC.
+Block:	TA
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TA_BUFFER_READ_WAVEFRONTS
+Description:	Number of buffer read wavefronts processed by TA.
+Block:	TA
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TA_BUFFER_TOTAL_CYCLES
+Description:	Number of buffer cycles issued to TC.
+Block:	TA
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TA_BUFFER_WAVEFRONTS
+Description:	Number of buffer wavefronts processed by TA.
+Block:	TA
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TA_BUFFER_WRITE_WAVEFRONTS
+Description:	Number of buffer write wavefronts processed by TA.
+Block:	TA
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TA_DATA_STALLED_BY_TC_CYCLES
+Description:	Number of cycles data path stalled by TC. Perf_Windowing not supported for this counter.
+Block:	TA
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TA_FLAT_ATOMIC_WAVEFRONTS
+Description:	Number of flat opcode atomics processed by the TA.
+Block:	TA
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TA_FLAT_READ_WAVEFRONTS
+Description:	Number of flat opcode reads processed by the TA.
+Block:	TA
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TA_FLAT_WAVEFRONTS
+Description:	Number of flat opcode wavfronts processed by the TA.
+Block:	TA
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TA_FLAT_WRITE_WAVEFRONTS
+Description:	Number of flat opcode writes processed by the TA.
+Block:	TA
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TA_TA_BUSY
+Description:	TA block is busy. Perf_Windowing not supported for this counter.
+Block:	TA
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TA_TOTAL_WAVEFRONTS
+Description:	Total number of wavefronts processed by TA.
+Block:	TA
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCA_BUSY
+Description:	Number of cycles we have a request pending. Not windowable.
+Block:	TCA
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCA_CYCLE
+Description:	Number of cycles. Not windowable.
+Block:	TCA
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_ALL_TC_OP_INV_EVICT
+Description:	Number of evictions due to all TC_OP invalidate requests.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_ALL_TC_OP_WB_WRITEBACK
+Description:	Number of writebacks due to all TC_OP writeback requests.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_ATOMIC
+Description:	Number of atomic requests of all types.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_BUSY
+Description:	Number of cycles we have a request pending. Not windowable.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_CC_REQ
+Description:	The number of coherently cached requests. This is measured at the tag block.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_CYCLE
+Description:	Number of cycles. Not windowable.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_EA_ATOMIC
+Description:	Number of transactions going over the TC_EA_wrreq interface that are actually atomic requests.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_EA_ATOMIC_LEVEL
+Description:	The sum of the number of EA atomics in flight. This is primarily meant for measure average EA atomic latency. Average atomic latency = TCC_PERF_SEL_EA_WRREQ_ATOMIC_LEVEL/TCC_PERF_SEL_EA_WRREQ_ATOMIC.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_EA_RDREQ
+Description:	Number of TCC/EA read requests (either 32-byte or 64-byte)
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_EA_RDREQ_32B
+Description:	Number of 32-byte TCC/EA read requests
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_EA_RDREQ_DRAM
+Description:	Number of TCC/EA read requests (either 32-byte or 64-byte) destined for DRAM (MC).
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_EA_RDREQ_DRAM_CREDIT_STALL
+Description:	Number of cycles there was a stall because the read request interface was out of DRAM credits. Stalls occur regardless of whether a read needed to be performed or not.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_EA_RDREQ_GMI_CREDIT_STALL
+Description:	Number of cycles there was a stall because the read request interface was out of GMI credits. Stalls occur regardless of whether a read needed to be performed or not.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_EA_RDREQ_IO_CREDIT_STALL
+Description:	Number of cycles there was a stall because the read request interface was out of IO credits. Stalls occur regardless of whether a read needed to be performed or not.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_EA_RDREQ_LEVEL
+Description:	The sum of the number of TCC/EA read requests in flight. This is primarily meant for measure average EA read latency. Average read latency = TCC_PERF_SEL_EA_RDREQ_LEVEL/TCC_PERF_SEL_EA_RDREQ.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_EA_RD_UNCACHED_32B
+Description:	Number of 32-byte TCC/EA read due to uncached traffic. A 64-byte request will be counted as 2
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_EA_WRREQ
+Description:	Number of transactions (either 32-byte or 64-byte) going over the TC_EA_wrreq interface. Atomics may travel over the same interface and are generally classified as write requests. This does not include probe commands.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_EA_WRREQ_64B
+Description:	Number of 64-byte transactions going (64-byte write or CMPSWAP) over the TC_EA_wrreq interface.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_EA_WRREQ_DRAM
+Description:	Number of TCC/EA write requests (either 32-byte of 64-byte) destined for DRAM (MC).
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_EA_WRREQ_DRAM_CREDIT_STALL
+Description:	Number of cycles a EA write request was stalled because the interface was out of DRAM credits.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_EA_WRREQ_GMI_CREDIT_STALL
+Description:	Number of cycles a EA write request was stalled because the interface was out of GMI credits.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_EA_WRREQ_IO_CREDIT_STALL
+Description:	Number of cycles a EA write request was stalled because the interface was out of IO credits.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_EA_WRREQ_LEVEL
+Description:	The sum of the number of EA write requests in flight. This is primarily meant for measure average EA write latency. Average write latency = TCC_PERF_SEL_EA_WRREQ_LEVEL/TCC_PERF_SEL_EA_WRREQ.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_EA_WRREQ_STALL
+Description:	Number of cycles a write request was stalled.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_EA_WR_UNCACHED_32B
+Description:	Number of 32-byte write/atomic going over the TC_EA_wrreq interface due to uncached traffic. Note that CC mtypes can produce uncached requests, and those are included in this. A 64-byte request will be counted as 2
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_HIT
+Description:	Number of cache hits.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_MISS
+Description:	Number of cache misses. UC reads count as misses.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_NC_REQ
+Description:	The number of noncoherently cached requests. This is measured at the tag block.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_NORMAL_EVICT
+Description:	Number of evictions due to requests that are not invalidate or probe requests.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_NORMAL_WRITEBACK
+Description:	Number of writebacks due to requests that are not writeback requests.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_PROBE
+Description:	Number of probe requests. Not windowable.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_PROBE_ALL
+Description:	Number of external probe requests with with EA_TCC_preq_all== 1. Not windowable.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_READ
+Description:	Number of read requests. Compressed reads are included in this, but metadata reads are not included.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_REQ
+Description:	Number of requests of all types. This is measured at the tag block. This may be more than the number of requests arriving at the TCC, but it is a good indication of the total amount of work that needs to be performed.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_RW_REQ
+Description:	The number of RW requests. This is measured at the tag block.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_STREAMING_REQ
+Description:	Number of streaming requests. This is measured at the tag block.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_TAG_STALL
+Description:	Number of cycles the normal request pipeline in the tag was stalled for any reason. Normally, stalls of this nature are measured exactly from one point the pipeline, but that is not the case for this counter. Probes can stall the pipeline at a variety of places, and there is no single point that can reasonably measure the total stalls accurately.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_TOO_MANY_EA_WRREQS_STALL
+Description:	Number of cycles the TCC could not send a EA write request because it already reached its maximum number of pending EA write requests.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_UC_REQ
+Description:	The number of uncached requests. This is measured at the tag block.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_WRITE
+Description:	Number of write requests.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCC_WRITEBACK
+Description:	Number of lines written back to main memory. This includes writebacks of dirty lines and uncached write/atomic requests.
+Block:	TCC
+Dimensions:	DIMENSION_INSTANCE[0:31]
+
+gpu-agent4:	TCP_ATOMIC_TAGCONFLICT_STALL_CYCLES
+Description:	Tagram conflict stall on an atomic
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_GATE_EN1
+Description:	TCP interface clocks are turned on. Not Windowed.
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_GATE_EN2
+Description:	TCP core clocks are turned on. Not Windowed.
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_PENDING_STALL_CYCLES
+Description:	Stall due to data pending from L2
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_READ_TAGCONFLICT_STALL_CYCLES
+Description:	Tagram conflict stall on a read
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TA_TCP_STATE_READ
+Description:	Number of state reads
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TCC_ATOMIC_WITHOUT_RET_REQ
+Description:	Total atomic without return requests from TCP to all TCCs
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TCC_ATOMIC_WITH_RET_REQ
+Description:	Total atomic with return requests from TCP to all TCCs
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TCC_CC_ATOMIC_REQ
+Description:	Total atomic requests with CC mtype from this TCP to all TCCs
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TCC_CC_READ_REQ
+Description:	Total write requests with CC mtype from this TCP to all TCCs
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TCC_CC_WRITE_REQ
+Description:	Total write requests with CC mtype from this TCP to all TCCs
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TCC_NC_ATOMIC_REQ
+Description:	Total atomic requests with NC mtype from this TCP to all TCCs
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TCC_NC_READ_REQ
+Description:	Total read requests with NC mtype from this TCP to all TCCs
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TCC_NC_WRITE_REQ
+Description:	Total write requests with NC mtype from this TCP to all TCCs
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TCC_READ_REQ
+Description:	Total read requests from TCP to all TCCs
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TCC_READ_REQ_LATENCY
+Description:	Total TCP->TCC request latency for reads and atomics with return. Not Windowed.
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TCC_RW_ATOMIC_REQ
+Description:	Total atomic requests with RW mtype from this TCP to all TCCs
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TCC_RW_READ_REQ
+Description:	Total write requests with RW mtype from this TCP to all TCCs
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TCC_RW_WRITE_REQ
+Description:	Total write requests with RW mtype from this TCP to all TCCs
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TCC_UC_ATOMIC_REQ
+Description:	Total atomic requests with UC mtype from this TCP to all TCCs
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TCC_UC_READ_REQ
+Description:	Total read requests with UC mtype from this TCP to all TCCs
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TCC_UC_WRITE_REQ
+Description:	Total write requests with UC mtype from this TCP to all TCCs
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TCC_WRITE_REQ
+Description:	Total write requests from TCP to all TCCs
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TCC_WRITE_REQ_LATENCY
+Description:	Total TCP->TCC request latency for writes and atomics without return. Not Windowed.
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TCP_LATENCY
+Description:	Total TCP wave latency (from first clock of wave entering to first clock of wave leaving), divide by TA_TCP_STATE_READ to avg wave latency
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TCP_TA_DATA_STALL_CYCLES
+Description:	TCP stalls TA data interface. Now Windowed.
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TCR_TCP_STALL_CYCLES
+Description:	TCR stalls TCP_TCR_req interface
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TD_TCP_STALL_CYCLES
+Description:	TD stalls TCP
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TOTAL_ACCESSES
+Description:	Total number of pixels/buffers from TA. Equals TCP_PERF_SEL_TOTAL_READ+TCP_PERF_SEL_TOTAL_NONREAD
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TOTAL_ATOMIC_WITHOUT_RET
+Description:	Total number of atomic without return pixels/buffers from TA
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TOTAL_ATOMIC_WITH_RET
+Description:	Total number of atomic with return pixels/buffers from TA
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TOTAL_CACHE_ACCESSES
+Description:	Count of total cache line (tag) accesses (includes hits and misses).
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TOTAL_READ
+Description:	Total number of read pixels/buffers from TA. Equals TCP_PERF_SEL_TOTAL_HIT_LRU_READ + TCP_PERF_SEL_TOTAL_MISS_LRU_READ + TCP_PERF_SEL_TOTAL_MISS_EVICT_READ
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TOTAL_WRITE
+Description:	Total number of local write pixels/buffers from TA. Equals TCP_PERF_SEL_TOTAL_MISS_LRU_WRITE+ TCP_PERF_SEL_TOTAL_MISS_EVICT_WRITE
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_TOTAL_WRITEBACK_INVALIDATES
+Description:	Total number of cache invalidates. Equals TCP_PERF_SEL_TOTAL_WBINVL1+ TCP_PERF_SEL_TOTAL_WBINVL1_VOL+ TCP_PERF_SEL_CP_TCP_INVALIDATE+ TCP_PERF_SEL_SQ_TCP_INVALIDATE_VOL. Not Windowed.
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_UTCL1_PERMISSION_MISS
+Description:	Total utcl1 permission misses
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_UTCL1_REQUEST
+Description:	Total CLIENT_UTCL1 NORMAL requests
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_UTCL1_TRANSLATION_HIT
+Description:	Total utcl1 translation hits
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_UTCL1_TRANSLATION_MISS
+Description:	Total utcl1 translation misses
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_VOLATILE
+Description:	Total number of L1 volatile pixels/buffers from TA
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TCP_WRITE_TAGCONFLICT_STALL_CYCLES
+Description:	Tagram conflict stall on a write
+Block:	TCP
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TD_ATOMIC_WAVEFRONT
+Description:	Count the wavefronts with opcode = atomic.
+Block:	TD
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TD_COALESCABLE_WAVEFRONT
+Description:	Count wavefronts that TA finds coalescable.
+Block:	TD
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TD_LOAD_WAVEFRONT
+Description:	Count the wavefronts with opcode = load, include atomics and store.
+Block:	TD
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TD_SPI_STALL
+Description:	TD is stalled SPI vinit
+Block:	TD
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TD_STORE_WAVEFRONT
+Description:	Count the wavefronts with opcode = store.
+Block:	TD
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TD_TC_STALL
+Description:	TD is stalled waiting for TC data.
+Block:	TD
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TD_TD_BUSY
+Description:	TD is processing or waiting for data. Perf_Windowing not supported for this counter.
+Block:	TD
+Dimensions:	DIMENSION_INSTANCE[0:15]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	ALUStalledByLDS
+Description: The percentage of GPUTime ALU units are stalled by the LDS input queue being full or the output queue being not ready. If there are LDS bank conflicts, reduce them. Otherwise, try reducing the number of LDS accesses if possible. Value range: 0% (optimal) to 100% (bad).
+Expression: 400*reduce(SQ_WAIT_INST_LDS,sum)/reduce(SQ_WAVES,sum)/reduce(GRBM_GUI_ACTIVE,max)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	AggSysCycles
+Description: Unit: cycles
+Expression: reduce(GRBM_GUI_ACTIVE,max)*CU_NUM
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	AvgNumActiveThreads
+Description: Unit: percent
+Expression: reduce(SQ_THREAD_CYCLES_VALU,sum)/reduce(SQ_ACTIVE_INST_VALU,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	CU_NUM
+Description: CU_NUM
+Expression: simd_count/simd_per_cu
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	SIMD_NUM
+Description: SIMD Number
+Expression: simd_count
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	CpUtil
+Description: Unit: percent
+Expression: 100*reduce(GRBM_CP_BUSY,max)/reduce(GRBM_GUI_ACTIVE,max)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	EaAtomicLatency
+Description: Unit: cycles
+Expression: TCC_EA_ATOMIC_LEVEL_sum/TCC_EA_ATOMIC_sum
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	EaRdDramStallRate
+Description: Unit: percent
+Expression: 100*TCC_EA_RDREQ_DRAM_CREDIT_STALL_sum/TCC_BUSY_sum
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	EaRdGmiStallRate
+Description: Unit: percent
+Expression: 100*TCC_EA_RDREQ_GMI_CREDIT_STALL_sum/TCC_BUSY_sum
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	EaRdIoStallRate
+Description: Unit: percent
+Expression: 100*TCC_EA_RDREQ_IO_CREDIT_STALL_sum/TCC_BUSY_sum
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	EaRdLatency
+Description: Unit: cycles
+Expression: TCC_EA_RDREQ_LEVEL_sum/TCC_EA_RDREQ_sum
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	EaUtil
+Description: Unit: percent
+Expression: 100*reduce(GRBM_EA_BUSY,max)/reduce(GRBM_GUI_ACTIVE,max)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	EaWrDramStallRate
+Description: Unit: percent
+Expression: 100*TCC_EA_WRREQ_DRAM_CREDIT_STALL_sum/TCC_BUSY_sum
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	EaWrGmiStallRate
+Description: Unit: percent
+Expression: 100*TCC_EA_WRREQ_GMI_CREDIT_STALL_sum/TCC_BUSY_sum
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	EaWrIoStallRate
+Description: Unit: percent
+Expression: 100*TCC_EA_WRREQ_IO_CREDIT_STALL_sum/TCC_BUSY_sum
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	EaWrLatency
+Description: Unit: cycles
+Expression: TCC_EA_WRREQ_LEVEL_sum/TCC_EA_WRREQ_sum
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	EaWrStarveRate
+Description: Unit: percent
+Expression: 100*TCC_TOO_MANY_EA_WRREQS_STALL_sum/TCC_BUSY_sum
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	FETCH_SIZE
+Description: The total kilobytes fetched from the video memory. This is measured with all extra fetches and any cache or memory effects taken into account.
+Expression: (TCC_EA_RDREQ_32B_sum*32+(TCC_EA_RDREQ_sum-TCC_EA_RDREQ_32B_sum)*64)/1024
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	BANDWIDTH_EA
+Description: Memory Bandwidth measured at the TCC_EA interface. In units of bytes/cycle.
+Expression: 1024*(WRITE_SIZE+FETCH_SIZE)/reduce(GRBM_GUI_ACTIVE,max)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	FetchSize
+Description: The total kilobytes fetched from the video memory. This is measured with all extra fetches and any cache or memory effects taken into account.
+Expression: FETCH_SIZE
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	FlatLDSInsts
+Description: The average number of FLAT instructions that read or write to LDS executed per work item (affected by flow control).
+Expression: reduce(SQ_INSTS_FLAT_LDS_ONLY,sum)/reduce(SQ_WAVES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	FlatVMemInsts
+Description: The average number of FLAT instructions that read from or write to the video memory executed per work item (affected by flow control). Includes FLAT instructions that read from or write to scratch.
+Expression: (reduce(SQ_INSTS_FLAT,sum)-reduce(SQ_INSTS_FLAT_LDS_ONLY,sum))/reduce(SQ_WAVES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	GDSInsts
+Description: The average number of GDS read or GDS write instructions executed per work item (affected by flow control).
+Expression: reduce(SQ_INSTS_GDS,sum)/reduce(SQ_WAVES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	GPUBusy
+Description: The percentage of time GPU was busy.
+Expression: 100*reduce(GRBM_GUI_ACTIVE,max)/reduce(GRBM_COUNT,max)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	GPU_UTIL
+Description: Percentage of the time that GUI is active
+Expression: 100*reduce(GRBM_GUI_ACTIVE,max)/reduce(GRBM_COUNT,max)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	GpuUtil
+Description: Unit: percent
+Expression: 100*reduce(GRBM_GUI_ACTIVE,max)/reduce(GRBM_COUNT,max)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	InstrFetchLatency
+Description: Unit: cycles
+Expression: reduce(accumulate(SQ_IFETCH_LEVEL, HIGH_RES),sum)/reduce(SQ_IFETCH,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	L1iCacheHitRate
+Description: Unit: percent
+Expression: 100*reduce(SQC_ICACHE_HITS,sum)/reduce(SQC_ICACHE_REQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	L2CacheHit
+Description: The percentage of fetch, write, atomic, and other instructions that hit the data in L2 cache. Value range: 0% (no hit) to 100% (optimal).
+Expression: 100*reduce(TCC_HIT,sum)/(reduce(TCC_HIT,sum)+reduce(TCC_MISS,sum))
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	L2CacheTagRamStallRate
+Description: Unit: percent
+Expression: 100*TCC_TAG_STALL_sum/TCC_BUSY_sum
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	LDSBankConflict
+Description: The percentage of GPUTime LDS is stalled by bank conflicts. Value range: 0% (optimal) to 100% (bad).
+Expression: 100*reduce(SQ_LDS_BANK_CONFLICT,sum)/reduce(GRBM_GUI_ACTIVE,max)/CU_NUM
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	LDSInsts
+Description: The average number of LDS read or LDS write instructions executed per work item (affected by flow control).  Excludes FLAT instructions that read from or write to LDS.
+Expression: (reduce(SQ_INSTS_LDS,sum)-reduce(SQ_INSTS_FLAT_LDS_ONLY,sum))/reduce(SQ_WAVES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	LdsBankConflict
+Description: Unit: conflicts/access
+Expression: reduce(SQ_LDS_BANK_CONFLICT,sum)/(reduce(SQ_LDS_IDX_ACTIVE,sum)-reduce(SQ_LDS_BANK_CONFLICT,sum))
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	LdsLatency
+Description: Unit: cycles
+Expression: reduce(accumulate(SQ_INST_LEVEL_LDS, HIGH_RES),sum)/reduce(SQ_INSTS_LDS,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	LdsPipeIssueUtil
+Description: Unit: percent
+Expression: 400*reduce(SQ_ACTIVE_INST_LDS,sum)/(reduce(GRBM_GUI_ACTIVE,max)*CU_NUM*2)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	LdsUtil
+Description: Unit: percent
+Expression: 100*reduce(SQ_LDS_IDX_ACTIVE,sum)/(reduce(GRBM_GUI_ACTIVE,max)*CU_NUM)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	MAX_WAVE_SIZE
+Description: Max wave size constant
+Expression: wave_front_size
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	MeanOccupancyPerActiveCU
+Description: Mean occupancy per active compute unit.
+Expression: reduce(accumulate(SQ_LEVEL_WAVES, LOW_RES),sum)/reduce(SQ_BUSY_CU_CYCLES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	MeanOccupancyPerCU
+Description: Mean occupancy per compute unit.
+Expression: reduce(accumulate(SQ_LEVEL_WAVES, HIGH_RES),sum)/reduce(GRBM_GUI_ACTIVE,max)/CU_NUM
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	OccupancyPercent
+Description: GPU Occupancy as % of maximum.
+Expression: 400*reduce(SQ_WAVE_CYCLES,sum)/reduce(GRBM_GUI_ACTIVE,max)/CU_NUM/32
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	MemUnitBusy
+Description: The percentage of GPUTime the memory unit is active. The result includes the stall time (MemUnitStalled). This is measured with all extra fetches and writes and any cache or memory effects taken into account. Value range: 0% to 100% (fetch-bound).
+Expression: 100*reduce(TA_TA_BUSY,max)/reduce(GRBM_GUI_ACTIVE,max)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	MemUnitStalled
+Description: The percentage of GPUTime the memory unit is stalled. Try reducing the number or size of fetches and writes if possible. Value range: 0% (optimal) to 100% (bad).
+Expression: 100*TCP_TCP_TA_DATA_STALL_CYCLES_max/reduce(GRBM_GUI_ACTIVE,max)/SE_NUM
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	MemWrites32B
+Description: The total number of effective 32B write transactions to the memory
+Expression: WRITE_REQ_32B
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	MfmaFlops
+Description: Unit: FLOP
+Expression: (SQ_INSTS_VALU_MFMA_MOPS_F16+SQ_INSTS_VALU_MFMA_MOPS_BF16+SQ_INSTS_VALU_MFMA_MOPS_F32+SQ_INSTS_VALU_MFMA_MOPS_F64)*512
+Dimensions: DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	MfmaFlopsBF16
+Description: Unit: FLOP
+Expression: SQ_INSTS_VALU_MFMA_MOPS_BF16*512
+Dimensions: DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	MfmaFlopsF16
+Description: Unit: FLOP
+Expression: SQ_INSTS_VALU_MFMA_MOPS_F16*512
+Dimensions: DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	MfmaFlopsF32
+Description: Unit: FLOP
+Expression: SQ_INSTS_VALU_MFMA_MOPS_F32*512
+Dimensions: DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	MfmaFlopsF64
+Description: Unit: IOP
+Expression: SQ_INSTS_VALU_MFMA_MOPS_F64*512
+Dimensions: DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	MfmaUtil
+Description: Unit: percent
+Expression: 100*reduce(SQ_VALU_MFMA_BUSY_CYCLES,sum)/(reduce(GRBM_GUI_ACTIVE,max)*CU_NUM)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	SALUBusy
+Description: The percentage of GPUTime scalar ALU instructions are processed. Value range: 0% (bad) to 100% (optimal).
+Expression: 100*reduce(SQ_INST_CYCLES_SALU,sum)/CU_NUM/reduce(GRBM_GUI_ACTIVE,max)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	SALUInsts
+Description: The average number of scalar ALU instructions executed per work-item (affected by flow control).
+Expression: reduce(SQ_INSTS_SALU,sum)/reduce(SQ_WAVES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	SE_NUM
+Description: SE_NUM
+Expression: array_count/simd_arrays_per_engine
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	SFetchInsts
+Description: The average number of scalar fetch instructions from the video memory executed per work-item (affected by flow control).
+Expression: reduce(SQ_INSTS_SMEM,sum)/reduce(SQ_WAVES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	SQ_WAVES_sum
+Description: Gives the total number of waves currently enqueued by the application during the collection timeframe (for dispatch profiling this is the timeframe of kernel execution, for agent profiling it is the timeframe between start_context and read counter data). See SQ_WAVES for more details.
+Expression: reduce(SQ_WAVES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	ScaPipeIssueUtil
+Description: Unit: percent
+Expression: 100*reduce(SQ_ACTIVE_INST_SCA,sum)/(reduce(GRBM_GUI_ACTIVE,max)*CU_NUM)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	SmemLatency
+Description: Unit: cycles
+Expression: reduce(accumulate(SQ_INST_LEVEL_SMEM, HIGH_RES),sum)/reduce(SQ_INSTS_SMEM_NORM,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	SpiUtil
+Description: Unit: percent
+Expression: 100*reduce(GRBM_SPI_BUSY,max)/reduce(GRBM_GUI_ACTIVE,max)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TA_ADDR_STALLED_BY_TC_CYCLES_sum
+Description: Number of cycles addr path stalled by TC. Perf_Windowing not supported for this counter. Sum over TA instances.
+Expression: reduce(TA_ADDR_STALLED_BY_TC_CYCLES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TA_ADDR_STALLED_BY_TD_CYCLES_sum
+Description: Number of cycles addr path stalled by TD. Perf_Windowing not supported for this counter. Sum over TA instances.
+Expression: reduce(TA_ADDR_STALLED_BY_TD_CYCLES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TA_BUFFER_ATOMIC_WAVEFRONTS_sum
+Description: Number of buffer atomic wavefronts processed by TA. Sum over TA instances.
+Expression: reduce(TA_BUFFER_ATOMIC_WAVEFRONTS,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TA_BUFFER_COALESCED_READ_CYCLES_sum
+Description: Number of buffer coalesced read cycles issued to TC. Sum over TA instances.
+Expression: reduce(TA_BUFFER_COALESCED_READ_CYCLES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TA_BUFFER_COALESCED_WRITE_CYCLES_sum
+Description: Number of buffer coalesced write cycles issued to TC. Sum over TA instances.
+Expression: reduce(TA_BUFFER_COALESCED_WRITE_CYCLES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TA_BUFFER_READ_WAVEFRONTS_sum
+Description: Number of buffer read wavefronts processed by TA. Sum over TA instances.
+Expression: reduce(TA_BUFFER_READ_WAVEFRONTS,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TA_BUFFER_TOTAL_CYCLES_sum
+Description: Number of buffer cycles issued to TC. Sum over TA instances.
+Expression: reduce(TA_BUFFER_TOTAL_CYCLES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TA_BUFFER_WAVEFRONTS_sum
+Description: Number of buffer wavefronts processed by TA. Sum over TA instances.
+Expression: reduce(TA_BUFFER_WAVEFRONTS,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TA_BUFFER_WRITE_WAVEFRONTS_sum
+Description: Number of buffer write wavefronts processed by TA. Sum over TA instances.
+Expression: reduce(TA_BUFFER_WRITE_WAVEFRONTS,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TA_BUSY_avr
+Description: TA block is busy. Average over TA instances.
+Expression: reduce(TA_TA_BUSY,avr)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TA_BUSY_max
+Description: TA block is busy. Max over TA instances.
+Expression: reduce(TA_TA_BUSY,max)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TA_BUSY_min
+Description: TA block is busy. Min over TA instances.
+Expression: reduce(TA_TA_BUSY,min)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TA_DATA_STALLED_BY_TC_CYCLES_sum
+Description: Number of cycles data path stalled by TC. Perf_Windowing not supported for this counter. Sum over TA instances.
+Expression: reduce(TA_DATA_STALLED_BY_TC_CYCLES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TA_FLAT_ATOMIC_WAVEFRONTS_sum
+Description: Number of flat opcode atomics processed by the TA. Sum over TA instances.
+Expression: reduce(TA_FLAT_ATOMIC_WAVEFRONTS,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TA_FLAT_READ_WAVEFRONTS_sum
+Description: Number of flat opcode reads processed by the TA. Sum over TA instances.
+Expression: reduce(TA_FLAT_READ_WAVEFRONTS,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TA_FLAT_WAVEFRONTS_sum
+Description: Number of flat opcode wavfronts processed by the TA. Sum over TA instances.
+Expression: reduce(TA_FLAT_WAVEFRONTS,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TA_FLAT_WRITE_WAVEFRONTS_sum
+Description: Number of flat opcode writes processed by the TA. Sum over TA instances.
+Expression: reduce(TA_FLAT_WRITE_WAVEFRONTS,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TA_TA_BUSY_sum
+Description: TA block is busy. Perf_Windowing not supported for this counter. Sum over TA instances.
+Expression: reduce(TA_TA_BUSY,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TA_TOTAL_WAVEFRONTS_sum
+Description: Total number of wavefronts processed by TA. Sum over TA instances.
+Expression: reduce(TA_TOTAL_WAVEFRONTS,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCA_BUSY_sum
+Description: Number of cycles we have a request pending. Sum over all TCA instances.
+Expression: reduce(TCA_BUSY,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCA_CYCLE_sum
+Description: Number of cycles. Sum over all TCA instances 
+Expression: reduce(TCA_CYCLE,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_ALL_TC_OP_INV_EVICT_sum
+Description: Number of evictions due to all TC_OP invalidate requests. Sum over TCC instances.
+Expression: reduce(TCC_ALL_TC_OP_INV_EVICT,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_ALL_TC_OP_WB_WRITEBACK_sum
+Description: Number of writebacks due to all TC_OP writeback requests. Sum over TCC instances.
+Expression: reduce(TCC_ALL_TC_OP_WB_WRITEBACK,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_ATOMIC_sum
+Description: Number of atomic requests of all types. Sum over TCC instances.
+Expression: reduce(TCC_ATOMIC,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_BUSY_avr
+Description: TCC_BUSY avr over all memory channels.
+Expression: reduce(TCC_BUSY,avr)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_BUSY_sum
+Description: Number of cycles we have a request pending. Not windowable. Sum over TCC instances.
+Expression: reduce(TCC_BUSY,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_CC_REQ_sum
+Description: The number of coherently cached requests. This is measured at the tag block. Sum over TCC instances.
+Expression: reduce(TCC_CC_REQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_CYCLE_sum
+Description: Number of cycles. Not windowable. Sum over TCC instances.
+Expression: reduce(TCC_CYCLE,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_EA_ATOMIC_LEVEL_sum
+Description: The sum of the number of EA atomics in flight. This is primarily meant for measure average EA atomic latency. Average atomic latency = TCC_PERF_SEL_EA_WRREQ_ATOMIC_LEVEL/TCC_PERF_SEL_EA_WRREQ_ATOMIC. Sum over TCC instances.
+Expression: reduce(TCC_EA_ATOMIC_LEVEL,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_EA_ATOMIC_sum
+Description: Number of transactions going over the TC_EA_wrreq interface that are actually atomic requests. Sum over TCC instances.
+Expression: reduce(TCC_EA_ATOMIC,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_EA_RDREQ_32B_sum
+Description: Number of 32-byte TCC/EA read requests. Sum over TCC instances.
+Expression: reduce(TCC_EA_RDREQ_32B,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_EA_RDREQ_DRAM_CREDIT_STALL_sum
+Description: Number of cycles there was a stall because the read request interface was out of DRAM credits. Stalls occur regardless of whether a read needed to be performed or not. Sum over TCC instances.
+Expression: reduce(TCC_EA_RDREQ_DRAM_CREDIT_STALL,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_EA_RDREQ_DRAM_sum
+Description: Number of TCC/EA read requests (either 32-byte or 64-byte) destined for DRAM (MC). Sum over TCC instances.
+Expression: reduce(TCC_EA_RDREQ_DRAM,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_EA_RDREQ_GMI_CREDIT_STALL_sum
+Description: Number of cycles there was a stall because the read request interface was out of GMI credits. Stalls occur regardless of whether a read needed to be performed or not. Sum over TCC instances.
+Expression: reduce(TCC_EA_RDREQ_GMI_CREDIT_STALL,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_EA_RDREQ_IO_CREDIT_STALL_sum
+Description: Number of cycles there was a stall because the read request interface was out of IO credits. Stalls occur regardless of whether a read needed to be performed or not. Sum over TCC instances.
+Expression: reduce(TCC_EA_RDREQ_IO_CREDIT_STALL,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_EA_RDREQ_LEVEL_sum
+Description: The sum of the number of TCC/EA read requests in flight. This is primarily meant for measure average EA read latency. Average read latency = TCC_PERF_SEL_EA_RDREQ_LEVEL/TCC_PERF_SEL_EA_RDREQ. Sum over TCC instances.
+Expression: reduce(TCC_EA_RDREQ_LEVEL,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_EA_RDREQ_sum
+Description: Number of TCC/EA read requests (either 32-byte or 64-byte). Sum over TCC instances.
+Expression: reduce(TCC_EA_RDREQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_EA_RD_UNCACHED_32B_sum
+Description: Number of 32-byte TCC/EA read due to uncached traffic. A 64-byte request will be counted as 2 Sum over TCC instances.
+Expression: reduce(TCC_EA_RD_UNCACHED_32B,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_EA_WRREQ_64B_sum
+Description: Number of 64-byte transactions going (64-byte write or CMPSWAP) over the TC_EA_wrreq interface. Sum over TCC instances.
+Expression: reduce(TCC_EA_WRREQ_64B,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_EA_WRREQ_DRAM_CREDIT_STALL_sum
+Description: Number of cycles a EA write request was stalled because the interface was out of DRAM credits. Sum over TCC instances.
+Expression: reduce(TCC_EA_WRREQ_DRAM_CREDIT_STALL,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_EA_WRREQ_DRAM_sum
+Description: Number of TCC/EA write requests (either 32-byte of 64-byte) destined for DRAM (MC). Sum over TCC instances.
+Expression: reduce(TCC_EA_WRREQ_DRAM,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_EA_WRREQ_GMI_CREDIT_STALL_sum
+Description: Number of cycles a EA write request was stalled because the interface was out of GMI credits. Sum over TCC instances.
+Expression: reduce(TCC_EA_WRREQ_GMI_CREDIT_STALL,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_EA_WRREQ_IO_CREDIT_STALL_sum
+Description: Number of cycles a EA write request was stalled because the interface was out of IO credits. Sum over TCC instances.
+Expression: reduce(TCC_EA_WRREQ_IO_CREDIT_STALL,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_EA_WRREQ_LEVEL_sum
+Description: The sum of the number of EA write requests in flight. This is primarily meant for measure average EA write latency. Average write latency = TCC_PERF_SEL_EA_WRREQ_LEVEL/TCC_PERF_SEL_EA_WRREQ. Sum over TCC instances.
+Expression: reduce(TCC_EA_WRREQ_LEVEL,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_EA_WRREQ_STALL_sum
+Description: Number of cycles a write request was stalled. Sum over TCC instances.
+Expression: reduce(TCC_EA_WRREQ_STALL,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_EA_WRREQ_sum
+Description: Number of transactions (either 32-byte or 64-byte) going over the TC_EA_wrreq interface. Sum over TCC instances.
+Expression: reduce(TCC_EA_WRREQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_EA_WR_UNCACHED_32B_sum
+Description: Number of 32-byte write/atomic going over the TC_EA_wrreq interface due to uncached traffic. Note that CC mtypes can produce uncached requests, and those are included in this. A 64-byte request will be counted as 2. Sum over TCC instances.
+Expression: reduce(TCC_EA_WR_UNCACHED_32B,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_HIT_sum
+Description: Number of cache hits. Sum over TCC instances.
+Expression: reduce(TCC_HIT,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_MISS_sum
+Description: Number of cache misses. UC reads count as misses. Sum over TCC instances.
+Expression: reduce(TCC_MISS,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_NC_REQ_sum
+Description: The number of noncoherently cached requests. This is measured at the tag block. Sum over TCC instances.
+Expression: reduce(TCC_NC_REQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_NORMAL_EVICT_sum
+Description: Number of evictions due to requests that are not invalidate or probe requests. Sum over TCC instances.
+Expression: reduce(TCC_NORMAL_EVICT,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_NORMAL_WRITEBACK_sum
+Description: Number of writebacks due to requests that are not writeback requests. Sum over TCC instances.
+Expression: reduce(TCC_NORMAL_WRITEBACK,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_PROBE_ALL_sum
+Description: Number of external probe requests with with EA_TCC_preq_all== 1. Not windowable. Sum over TCC instances.
+Expression: reduce(TCC_PROBE_ALL,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_PROBE_sum
+Description: Number of probe requests. Not windowable. Sum over TCC instances.
+Expression: reduce(TCC_PROBE,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_READ_sum
+Description: Number of read requests. Compressed reads are included in this, but metadata reads are not included. Sum over TCC instances.
+Expression: reduce(TCC_READ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_REQ_sum
+Description: Number of requests of all types. This is measured at the tag block. This may be more than the number of requests arriving at the TCC, but it is a good indication of the total amount of work that needs to be performed. Sum over TCC instances.
+Expression: reduce(TCC_REQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_RW_REQ_sum
+Description: The number of RW requests. This is measured at the tag block. Sum over TCC instances.
+Expression: reduce(TCC_RW_REQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_STREAMING_REQ_sum
+Description: Number of streaming requests. This is measured at the tag block. Sum over TCC instances.
+Expression: reduce(TCC_STREAMING_REQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_TAG_STALL_sum
+Description: Total number of cycles the normal request pipeline in the tag is stalled for any reason.
+Expression: reduce(TCC_TAG_STALL,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_TOO_MANY_EA_WRREQS_STALL_sum
+Description: Number of cycles the TCC could not send a EA write request because it already reached its maximum number of pending EA write requests. Sum over TCC instances.
+Expression: reduce(TCC_TOO_MANY_EA_WRREQS_STALL,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_UC_REQ_sum
+Description: The number of uncached requests. This is measured at the tag block. Sum over TCC instances.
+Expression: reduce(TCC_UC_REQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_WRITEBACK_sum
+Description: Number of lines written back to main memory. This includes writebacks of dirty lines and uncached write/atomic requests. Sum over TCC instances.
+Expression: reduce(TCC_WRITEBACK,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_WRITE_sum
+Description: Number of write requests. Sum over TCC instances.
+Expression: reduce(TCC_WRITE,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCC_WRREQ_STALL_max
+Description: Number of cycles a write request was stalled. Max over TCC instances.
+Expression: reduce(TCC_EA_WRREQ_STALL,max)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_ATOMIC_TAGCONFLICT_STALL_CYCLES_sum
+Description: Tagram conflict stall on an atomic. Sum over TCP instances.
+Expression: reduce(TCP_ATOMIC_TAGCONFLICT_STALL_CYCLES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_GATE_EN1_sum
+Description: TCP interface clocks are turned on. Not Windowed. Sum over TCP instances.
+Expression: reduce(TCP_GATE_EN1,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_GATE_EN2_sum
+Description: TCP core clocks are turned on. Not Windowed. Sum over TCP instances.
+Expression: reduce(TCP_GATE_EN2,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_PENDING_STALL_CYCLES_sum
+Description: Stall due to data pending from L2. Sum over TCP instances.
+Expression: reduce(TCP_PENDING_STALL_CYCLES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_READ_TAGCONFLICT_STALL_CYCLES_sum
+Description: Tagram conflict stall on a read. Sum over TCP instances.
+Expression: reduce(TCP_READ_TAGCONFLICT_STALL_CYCLES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TA_TCP_STATE_READ_sum
+Description: Number of state reads Sum over TCP instances.
+Expression: reduce(TCP_TA_TCP_STATE_READ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TCC_ATOMIC_WITHOUT_RET_REQ_sum
+Description: Total atomic without return requests from TCP to all TCCs Sum over TCP instances.
+Expression: reduce(TCP_TCC_ATOMIC_WITHOUT_RET_REQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TCC_ATOMIC_WITH_RET_REQ_sum
+Description: Total atomic with return requests from TCP to all TCCs Sum over TCP instances.
+Expression: reduce(TCP_TCC_ATOMIC_WITH_RET_REQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TCC_CC_ATOMIC_REQ_sum
+Description: Total atomic requests with CC mtype from this TCP to all TCCs Sum over TCP instances.
+Expression: reduce(TCP_TCC_CC_ATOMIC_REQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TCC_CC_READ_REQ_sum
+Description: Total write requests with CC mtype from this TCP to all TCCs Sum over TCP instances.
+Expression: reduce(TCP_TCC_CC_READ_REQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TCC_CC_WRITE_REQ_sum
+Description: Total write requests with CC mtype from this TCP to all TCCs Sum over TCP instances.
+Expression: reduce(TCP_TCC_CC_WRITE_REQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TCC_NC_ATOMIC_REQ_sum
+Description: Total atomic requests with NC mtype from this TCP to all TCCs Sum over TCP instances.
+Expression: reduce(TCP_TCC_NC_ATOMIC_REQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TCC_NC_READ_REQ_sum
+Description: Total read requests with NC mtype from this TCP to all TCCs Sum over TCP instances.
+Expression: reduce(TCP_TCC_NC_READ_REQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TCC_NC_WRITE_REQ_sum
+Description: Total write requests with NC mtype from this TCP to all TCCs Sum over TCP instances.
+Expression: reduce(TCP_TCC_NC_WRITE_REQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TCC_READ_REQ_LATENCY_sum
+Description: Total TCP->TCC request latency for reads and atomics with return. Not Windowed. Sum over TCP instances.
+Expression: reduce(TCP_TCC_READ_REQ_LATENCY,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TCC_READ_REQ_sum
+Description: Total read requests from TCP to all TCCs Sum over TCP instances.
+Expression: reduce(TCP_TCC_READ_REQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TCC_RW_ATOMIC_REQ_sum
+Description: Total atomic requests with RW mtype from this TCP to all TCCs. Sum over TCP instances.
+Expression: reduce(TCP_TCC_RW_ATOMIC_REQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TCC_RW_READ_REQ_sum
+Description: Total write requests with RW mtype from this TCP to all TCCs. Sum over TCP instances.
+Expression: reduce(TCP_TCC_RW_READ_REQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TCC_RW_WRITE_REQ_sum
+Description: Total write requests with RW mtype from this TCP to all TCCs. Sum over TCP instances.
+Expression: reduce(TCP_TCC_RW_WRITE_REQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TCC_UC_ATOMIC_REQ_sum
+Description: Total atomic requests with UC mtype from this TCP to all TCCs Sum over TCP instances.
+Expression: reduce(TCP_TCC_UC_ATOMIC_REQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TCC_UC_READ_REQ_sum
+Description: Total read requests with UC mtype from this TCP to all TCCs Sum over TCP instances.
+Expression: reduce(TCP_TCC_UC_READ_REQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TCC_UC_WRITE_REQ_sum
+Description: Total write requests with UC mtype from this TCP to all TCCs Sum over TCP instances.
+Expression: reduce(TCP_TCC_UC_WRITE_REQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TCC_WRITE_REQ_LATENCY_sum
+Description: Total TCP->TCC request latency for writes and atomics without return. Not Windowed. Sum over TCP instances.
+Expression: reduce(TCP_TCC_WRITE_REQ_LATENCY,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TCC_WRITE_REQ_sum
+Description: Total write requests from TCP to all TCCs Sum over TCP instances.
+Expression: reduce(TCP_TCC_WRITE_REQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TCP_LATENCY_sum
+Description: Total TCP wave latency (from first clock of wave entering to first clock of wave leaving), divide by TA_TCP_STATE_READ to avg wave latency Sum over TCP instances.
+Expression: reduce(TCP_TCP_LATENCY,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TCP_TA_DATA_STALL_CYCLES_max
+Description: Maximum number of TCP stalls TA data interface.
+Expression: reduce(TCP_TCP_TA_DATA_STALL_CYCLES,max)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TCP_TA_DATA_STALL_CYCLES_sum
+Description: Total number of TCP stalls TA data interface.
+Expression: reduce(TCP_TCP_TA_DATA_STALL_CYCLES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TCR_TCP_STALL_CYCLES_sum
+Description: TCR stalls TCP_TCR_req interface. Sum over TCP instances.
+Expression: reduce(TCP_TCR_TCP_STALL_CYCLES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TD_TCP_STALL_CYCLES_sum
+Description: TD stalls TCP. Sum over TCP instances.
+Expression: reduce(TCP_TD_TCP_STALL_CYCLES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TOTAL_ACCESSES_sum
+Description: Total number of pixels/buffers from TA. Equals TCP_PERF_SEL_TOTAL_READ+TCP_PERF_SEL_TOTAL_NONREAD. Sum over TCP instances.
+Expression: reduce(TCP_TOTAL_ACCESSES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TOTAL_ATOMIC_WITHOUT_RET_sum
+Description: Total number of atomic without return pixels/buffers from TA Sum over TCP instances.
+Expression: reduce(TCP_TOTAL_ATOMIC_WITHOUT_RET,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TOTAL_ATOMIC_WITH_RET_sum
+Description: Total number of atomic with return pixels/buffers from TA. Sum over TCP instances.
+Expression: reduce(TCP_TOTAL_ATOMIC_WITH_RET,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TOTAL_CACHE_ACCESSES_sum
+Description: Count of total cache line (tag) accesses (includes hits and misses). Sum over TCP instances.
+Expression: reduce(TCP_TOTAL_CACHE_ACCESSES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TOTAL_READ_sum
+Description: Total number of read pixels/buffers from TA. Equals TCP_PERF_SEL_TOTAL_HIT_LRU_READ + TCP_PERF_SEL_TOTAL_MISS_LRU_READ + TCP_PERF_SEL_TOTAL_MISS_EVICT_READ. Sum over TCP instances.
+Expression: reduce(TCP_TOTAL_READ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TOTAL_WRITEBACK_INVALIDATES_sum
+Description: Total number of cache invalidates. Equals TCP_PERF_SEL_TOTAL_WBINVL1+ TCP_PERF_SEL_TOTAL_WBINVL1_VOL+ TCP_PERF_SEL_CP_TCP_INVALIDATE+ TCP_PERF_SEL_SQ_TCP_INVALIDATE_VOL. Not Windowed. Sum over TCP instances.
+Expression: reduce(TCP_TOTAL_WRITEBACK_INVALIDATES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_TOTAL_WRITE_sum
+Description: Total number of local write pixels/buffers from TA. Equals TCP_PERF_SEL_TOTAL_MISS_LRU_WRITE+ TCP_PERF_SEL_TOTAL_MISS_EVICT_WRITE. Sum over TCP instances.
+Expression: reduce(TCP_TOTAL_WRITE,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_UTCL1_PERMISSION_MISS_sum
+Description: Total utcl1 permission misses Sum over TCP instances.
+Expression: reduce(TCP_UTCL1_PERMISSION_MISS,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_UTCL1_REQUEST_sum
+Description: Total CLIENT_UTCL1 NORMAL requests Sum over TCP instances.
+Expression: reduce(TCP_UTCL1_REQUEST,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_UTCL1_TRANSLATION_HIT_sum
+Description: Total utcl1 translation hits Sum over TCP instances.
+Expression: reduce(TCP_UTCL1_TRANSLATION_HIT,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_UTCL1_TRANSLATION_MISS_sum
+Description: Total utcl1 translation misses Sum over TCP instances.
+Expression: reduce(TCP_UTCL1_TRANSLATION_MISS,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_VOLATILE_sum
+Description: Total number of L1 volatile pixels/buffers from TA. Sum over TCP instances.
+Expression: reduce(TCP_VOLATILE,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TCP_WRITE_TAGCONFLICT_STALL_CYCLES_sum
+Description: Tagram conflict stall on a write. Sum over TCP instances.
+Expression: reduce(TCP_WRITE_TAGCONFLICT_STALL_CYCLES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TD_ATOMIC_WAVEFRONT_sum
+Description: Count the wavefronts with opcode = atomic. Sum over TD instances.
+Expression: reduce(TD_ATOMIC_WAVEFRONT,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TD_COALESCABLE_WAVEFRONT_sum
+Description: Count wavefronts that TA finds coalescable. Sum over TD instances.
+Expression: reduce(TD_COALESCABLE_WAVEFRONT,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TD_LOAD_WAVEFRONT_sum
+Description: Count the wavefronts with opcode = load, include atomics and store. Sum over TD instances.
+Expression: reduce(TD_LOAD_WAVEFRONT,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TD_SPI_STALL_sum
+Description: TD is stalled SPI vinit, sum of TCP instances
+Expression: reduce(TD_SPI_STALL,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TD_STORE_WAVEFRONT_sum
+Description: Count the wavefronts with opcode = store. Sum over TD instances.
+Expression: reduce(TD_STORE_WAVEFRONT,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TD_TC_STALL_sum
+Description: TD is stalled waiting for TC data. Sum over TD instances.
+Expression: reduce(TD_TC_STALL,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TD_TD_BUSY_sum
+Description: TD is processing or waiting for data. Perf_Windowing not supported for this counter. Sum over TD instances.
+Expression: reduce(TD_TD_BUSY,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TOTAL_16_OPS
+Description: The number of 16 bits OPS executed
+Expression: (SQ_INSTS_VALU_FMA_F16*2+SQ_INSTS_VALU_ADD_F16+SQ_INSTS_VALU_MUL_F16+SQ_INSTS_VALU_TRANS_F16)*64+((SQ_INSTS_VALU_MFMA_MOPS_F16+SQ_INSTS_VALU_MFMA_MOPS_BF16)*512)
+Dimensions: DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TOTAL_32_OPS
+Description: The number of 32 bits OPS executed
+Expression: (SQ_INSTS_VALU_FMA_F32*2+SQ_INSTS_VALU_INT32+SQ_INSTS_VALU_ADD_F32+SQ_INSTS_VALU_MUL_F32+SQ_INSTS_VALU_TRANS_F32)*64+(SQ_INSTS_VALU_MFMA_MOPS_F32*512)
+Dimensions: DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TOTAL_64_OPS
+Description: The number of 64 bits OPS executed
+Expression: (SQ_INSTS_VALU_FMA_F64*2+SQ_INSTS_VALU_INT64+SQ_INSTS_VALU_ADD_F64+SQ_INSTS_VALU_MUL_F64)*64+(SQ_INSTS_VALU_MFMA_MOPS_F64*512)
+Dimensions: DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	TaUtil
+Description: Unit: percent
+Expression: 100*reduce(GRBM_TA_BUSY,max)/reduce(GRBM_GUI_ACTIVE,max)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	TcUtil
+Description: Unit: percent
+Expression: 100*reduce(GRBM_TC_BUSY,max)/reduce(GRBM_GUI_ACTIVE,max)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	VALUBusy
+Description: The percentage of GPUTime vector ALU instructions are processed. Value range: 0% (bad) to 100% (optimal).
+Expression: 100*reduce(SQ_ACTIVE_INST_VALU,sum)/CU_NUM/reduce(GRBM_GUI_ACTIVE,max)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	VALUInsts
+Description: The average number of vector ALU instructions executed per work-item (affected by flow control).
+Expression: reduce(SQ_INSTS_VALU,sum)/reduce(SQ_WAVES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	VALUUtilization
+Description: The percentage of active vector ALU threads in a wave. A lower number can mean either more thread divergence in a wave or that the work-group size is not a multiple of 64. Value range: 0% (bad), 100% (ideal - no thread divergence).
+Expression: 100*reduce(SQ_THREAD_CYCLES_VALU,sum)/(reduce(SQ_ACTIVE_INST_VALU,sum)*MAX_WAVE_SIZE)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	VFetchInsts
+Description: The average number of vector fetch instructions from the video memory executed per work-item (affected by flow control). Excludes FLAT instructions that fetch from video memory.
+Expression: (reduce(SQ_INSTS_VMEM_RD,sum)-TA_FLAT_READ_WAVEFRONTS_sum)/reduce(SQ_WAVES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	VWriteInsts
+Description: The average number of vector write instructions to the video memory executed per work-item (affected by flow control). Excludes FLAT instructions that write to video memory.
+Expression: (reduce(SQ_INSTS_VMEM_WR,sum)-TA_FLAT_WRITE_WAVEFRONTS_sum)/reduce(SQ_WAVES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	ValuIops
+Description: Unit: IOP
+Expression: (SQ_INSTS_VALU_INT32+SQ_INSTS_VALU_INT64)*64
+Dimensions: DIMENSION_INSTANCE[0:0]	DIMENSION_SHADER_ENGINE[0:7]
+
+gpu-agent4:	ValuPipeIssueUtil
+Description: Unit: percent
+Expression: 100*reduce(SQ_ACTIVE_INST_VALU,sum)/(reduce(GRBM_GUI_ACTIVE,max)*CU_NUM)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	VmemLatency
+Description: Unit: cycles
+Expression: reduce(accumulate(SQ_INST_LEVEL_VMEM, HIGH_RES),sum)/reduce(SQ_INSTS_VMEM,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	VmemPipeIssueUtil
+Description: Unit: percent
+Expression: 400*(reduce(SQ_ACTIVE_INST_VMEM,sum)+reduce(SQ_ACTIVE_INST_FLAT,sum))/(reduce(GRBM_GUI_ACTIVE,max)*CU_NUM)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	WRITE_REQ_32B
+Description: The total number of 32-byte effective memory writes.
+Expression: TCC_EA_WRREQ_64B_sum*2+(TCC_EA_WRREQ_sum-TCC_EA_WRREQ_64B_sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	WRITE_SIZE
+Description: The total kilobytes written to the video memory. This is measured with all extra fetches and any cache or memory effects taken into account.
+Expression: ((TCC_EA_WRREQ_sum-TCC_EA_WRREQ_64B_sum)*32+TCC_EA_WRREQ_64B_sum*64)/1024
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	WaveDepWait
+Description: Unit: percent
+Expression: 100*reduce(SQ_WAIT_ANY,sum)/reduce(SQ_WAVE_CYCLES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	WaveDuration
+Description: Unit: cycles
+Expression: 4*reduce(SQ_WAVE_CYCLES,sum)/reduce(SQ_WAVES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	WaveExec
+Description: Unit: percent
+Expression: 100*reduce(SQ_ACTIVE_INST_ANY,sum)/reduce(SQ_WAVE_CYCLES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	WaveIssueWait
+Description: Unit: percent
+Expression: 100*reduce(SQ_WAIT_INST_ANY,sum)/reduce(SQ_WAVE_CYCLES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	Wavefronts
+Description: Total wavefronts.
+Expression: reduce(SQ_WAVES,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	WriteSize
+Description: The total kilobytes written to the video memory. This is measured with all extra fetches and any cache or memory effects taken into account.
+Expression: WRITE_SIZE
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	WriteUnitStalled
+Description: The percentage of GPUTime the Write unit is stalled. Value range: 0% to 100% (bad).
+Expression: 100*TCC_WRREQ_STALL_max/reduce(GRBM_GUI_ACTIVE,max)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	sL1dCacheHitRate
+Description: Unit: percent
+Expression: 100*reduce(SQC_DCACHE_HITS,sum)/reduce(SQC_DCACHE_REQ,sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	vL1dAtomicTagConfStallRate
+Description: Unit: percent
+Expression: 100*TCP_ATOMIC_TAGCONFLICT_STALL_CYCLES_sum/TCP_GATE_EN2_sum
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	vL1dBufCoalesceRate
+Description: Unit: percent
+Expression: 6400*TA_TOTAL_WAVEFRONTS_sum/(TCP_TOTAL_ACCESSES_sum*4)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	vL1dCacheTcbHitRate
+Description: Unit: percent
+Expression: 100*TCP_UTCL1_TRANSLATION_HIT_sum/TCP_UTCL1_REQUEST_sum
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	vL1dCacheUtil
+Description: Unit: percent
+Expression: 100*TCP_GATE_EN2_sum/TCP_GATE_EN1_sum
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	vL1dCacheWaveLatency
+Description: Unit: cycles
+Expression: TCP_TCP_LATENCY_sum/TCP_TA_TCP_STATE_READ_sum
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	vL1dDataPendRate
+Description: Unit: percent
+Expression: 100*TCP_PENDING_STALL_CYCLES_sum/TCP_GATE_EN2_sum
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	vL1dDataRetStallRate
+Description: Unit: percent
+Expression: 100*TD_TC_STALL_sum/TD_TD_BUSY_sum
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	vL1dMissReqStallRate
+Description: Unit: percent
+Expression: 100*TCP_TCR_TCP_STALL_CYCLES_sum/TCP_GATE_EN2_sum
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	vL1dRdTagConfStallRate
+Description: Unit: percent
+Expression: 100*TCP_READ_TAGCONFLICT_STALL_CYCLES_sum/TCP_GATE_EN2_sum
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	vL1dReadFromL2Latency
+Description: Unit: cycles
+Expression: TCP_TCC_READ_REQ_LATENCY_sum/(TCP_TCC_READ_REQ_sum+TCP_TCC_ATOMIC_WITH_RET_REQ_sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	vL1dWrTagConfStallRate
+Description: Unit: percent
+Expression: 100*TCP_WRITE_TAGCONFLICT_STALL_CYCLES_sum/TCP_GATE_EN2_sum
+Dimensions: DIMENSION_INSTANCE[0:0]
+
+gpu-agent4:	vL1dWriteToL2Latency
+Description: Unit: cycles
+Expression: TCP_TCC_WRITE_REQ_LATENCY_sum/(TCP_TCC_WRITE_REQ_sum+TCP_TCC_ATOMIC_WITHOUT_RET_REQ_sum)
+Dimensions: DIMENSION_INSTANCE[0:0]
+
