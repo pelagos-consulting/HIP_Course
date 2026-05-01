@@ -1,0 +1,77 @@
+{
+ "rocprofsys": {
+  "instrumented_module_functions": {
+   "module_functions": [
+    {
+     "cereal_class_version": 0,
+     "start_address": "0x20d200",
+     "address_range": 4916,
+     "num_instructions": 1108,
+     "module": "/scratch/pawsey0007/tpotter/HIP_Course/course_material/common/hip_helper.cpp",
+     "function": "h_run_kernel",
+     "signature": {
+      "cereal_class_version": 0,
+      "loop": false,
+      "info_beg": true,
+      "info_end": false,
+      "row": {
+       "first": 405,
+       "second": 0
+      },
+      "col": {
+       "first": 0,
+       "second": 0
+      },
+      "return": "float",
+      "name": "h_run_kernel",
+      "params": "(const void *, void * *, dim3, dim3, size_t *, hipStream_t, prep_kernel_function, void * *)",
+      "file": "hip_helper.cpp",
+      "signature": "h_run_kernel"
+     },
+     "linkage": "unknown",
+     "visibility": "unknown",
+     "num_basic_blocks": 266,
+     "num_outer_loops": 0,
+     "heuristics": {
+      "should_instrument": true,
+      "should_coverage_instrument": true,
+      "is_instrumentable": true,
+      "can_instrument_entry": true,
+      "can_instrument_exit": true,
+      "contains_dynamic_callsites": true,
+      "is_internal_constrained": false,
+      "is_module_constrained": false,
+      "is_routine_constrained": false,
+      "is_user_restricted": false,
+      "is_user_included": false,
+      "contains_user_callsite": false,
+      "is_user_excluded": false,
+      "is_overlapping_constrained": false,
+      "is_entry_trap_constrained": false,
+      "is_exit_trap_constrained": false,
+      "is_dynamic_callsite_forced": false,
+      "is_linkage_constrained": false,
+      "is_visibility_constrained": false,
+      "is_address_range_constrained": false,
+      "is_num_instructions_constrained": false,
+      "is_instruction_constrained": false,
+      "is_loop_address_range_constrained": false,
+      "is_loop_num_instructions_constrained": false
+     },
+     "instruction_breakdown": {
+      "function_call": 119,
+      "return": 1,
+      "branch": 119,
+      "compare": 80,
+      "prefetch": 0,
+      "sys_enter": 0,
+      "sys_call": 0,
+      "vector": 65,
+      "gpu_kernel_exit": 0,
+      "no_category": 724
+     }
+    }
+   ]
+  }
+ }
+}
