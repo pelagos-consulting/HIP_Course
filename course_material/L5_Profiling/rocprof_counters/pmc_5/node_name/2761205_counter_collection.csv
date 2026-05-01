@@ -1,0 +1,3 @@
+"Correlation_Id","Dispatch_Id","Agent_Id","Queue_Id","Process_Id","Thread_Id","Grid_Size","Kernel_Id","Kernel_Name","Workgroup_Size","LDS_Block_Size","Scratch_Size","VGPR_Count","SGPR_Count","Counter_Name","Counter_Value","Start_Timestamp","End_Timestamp"
+1,1,4,1,2761205,2761205,536640,16,"mat_mult(float*, float*, float*, unsigned long, unsigned long, unsigned long)",64,0,0,12,16,"SALUInsts",776.000000,2073125859322068,2073125859661268
+1,1,4,1,2761205,2761205,536640,16,"mat_mult(float*, float*, float*, unsigned long, unsigned long, unsigned long)",64,0,0,12,16,"VALUInsts",1312.000000,2073125859322068,2073125859661268
