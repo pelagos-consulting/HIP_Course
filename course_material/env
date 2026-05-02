@@ -29,7 +29,7 @@ then
         # Install the environment
         python -m venv $PYTHON_ENV_DIR
         source $PYTHON_ENV_DIR/bin/activate
-        pip install -r $ROCM_PATH/libexec/rocprofiler-compute/requirements.txt
+        pip install --no-cache-dir -r $ROCM_PATH/libexec/rocprofiler-compute/requirements.txt
     fi
 
 elif [[ $HOSTNAME =~ "workshop" ]]
