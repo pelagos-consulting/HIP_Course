@@ -22,6 +22,16 @@ then
     # Location of Python environment for rocprof-compute
     export PYTHON_ENV_DIR=$MYSCRATCH/python-environments/rocprof-compute
 
+    if [ -f "$PYTHON_ENV_DIR/bin/activate" ]; then
+        # Source the environment
+        source $PYTHON_ENV_DIR/bin/activate
+    else
+        # Install the environment
+        python -m venv $PYTHON_ENV_DIR
+        source $PYTHON_ENV_DIR/bin/activate
+        pip install -r $ROCM_PATH/libexec/rocprofiler-compute/requirements.txt
+    fi
+
 elif [[ $HOSTNAME =~ "workshop" ]]
 then
     # Using the workshop server
