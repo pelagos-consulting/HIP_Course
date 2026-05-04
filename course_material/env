@@ -53,6 +53,14 @@ then
     export HIP_PLATFORM=amd
     export GPU_ARCH="gfx1035"
 
+    # Location of Python environment for rocprof-compute
+    export PYTHON_ENV_DIR=/opt/python_pelagos
+
+    if [ -f "$PYTHON_ENV_DIR/bin/activate" ]; then
+        # Source the environment
+        source $PYTHON_ENV_DIR/bin/activate
+    fi
+
 else
     # Locations for ROCM and CUDA
     export ROCM_PATH=/opt/rocm
