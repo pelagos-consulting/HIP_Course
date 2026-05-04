@@ -35,12 +35,20 @@ then
 elif [[ $HOSTNAME =~ "workshop" ]]
 then
     # Using the workshop server
-    module load gcc rocm openmpi 
+    module load gcc rocm cuda mpich hipblas/6.4.2_nvidia  
 
     # We are using the AMD backend
-    export HIP_PLATFORM=amd
+    export HIP_PLATFORM=nvidia
     # HIP architectures to support
-    export GPU_ARCH="gfx906"
+    export GPU_ARCH="86"
+
+    # Location of Python environment for rocprof-compute
+    export PYTHON_ENV_DIR=/opt/python_pelagos
+
+    if [ -f "$PYTHON_ENV_DIR/bin/activate" ]; then
+        # Source the environment
+        source $PYTHON_ENV_DIR/bin/activate
+    fi
 
 elif [[ $HOSTNAME =~ "fullcircle" ]]
 then
