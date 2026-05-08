@@ -12,9 +12,6 @@ export OMP_NUM_THREADS=8   #To define the number of OpenMP threads available per
 export OMP_PLACES=cores     #To bind to cores 
 export OMP_PROC_BIND=close  #To bind (fix) threads (allocating them as close as possible). This option works together with the "places" indicated above, then: allocates threads in closest cores.
 
-# Temporal workaround for avoiding Slingshot issues on shared nodes:
-export FI_CXI_DEFAULT_VNI=$(od -vAn -N4 -tu < /dev/urandom)
-
 # Build the application
 build mat_mult_profiling_mpi.exe
 
