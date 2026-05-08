@@ -188,10 +188,10 @@ int main(int argc, char** argv) {
         // Only change what is necessary in copy_parms
         copy_parms.srcPtr.ptr = U_ds[n%nscratch];
             
-        // Z positions equal to 1 don't seem to work on AMD platforms?!?!
+        // Z positions for the copy
         copy_parms.dstPos.z = n;
         
-        if (n!=1) {
+        if (n>=0) {
         
             // Copy memory asynchronously
             H_ERRCHK(
