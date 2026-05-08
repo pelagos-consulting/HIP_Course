@@ -14,9 +14,6 @@ export MPICH_GPU_SUPPORT_ENABLED=1 # Enable GPU-aware MPI communication
 export OMP_NUM_THREADS=8    # Set the number of OpenMP threads per task
 export OMP_PLACES=cores     # To bind OpenMP threads to cores 
 export OMP_PROC_BIND=close  # To bind (fix) threads (allocating them as close as possible). This option works together with the "places" indicated above, then: allocates threads in closest cores.
- 
-# Temporal workaround for avoiding Slingshot issues on shared nodes:
-export FI_CXI_DEFAULT_VNI=$(od -vAn -N4 -tu < /dev/urandom)
 
 # Compile the software using the build script in install/bin
 build hello_jobstep.exe
