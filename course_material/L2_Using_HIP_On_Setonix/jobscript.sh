@@ -7,6 +7,7 @@
 #SBATCH --exclusive                # Use this to request all the resources on a node
 #SBATCH --time=00:05:00
 
+# Make sure the right modules are loaded
 source ../env
 
 export MPICH_GPU_SUPPORT_ENABLED=1 # Enable GPU-aware MPI communication
@@ -17,7 +18,7 @@ export OMP_PROC_BIND=close  # To bind (fix) threads (allocating them as close as
 # Temporal workaround for avoiding Slingshot issues on shared nodes:
 export FI_CXI_DEFAULT_VNI=$(od -vAn -N4 -tu < /dev/urandom)
 
-# Compile the software
+# Compile the software using the build script in install/bin
 build hello_jobstep.exe
 
 # Run a job with task placement and $BIND_OPTIONS
