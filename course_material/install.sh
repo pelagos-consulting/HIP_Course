@@ -44,10 +44,13 @@ run_script=${RUN_DIR}/run
 # Make a run script
 cat << EOF > ${run_script}
 #!/bin/bash --login
+
+set -e
+
 source ${env_script}
 # Run all arguments passed to the script
 #echo "running: \$*"
-eval "\$*"
+exec bash --login -c "set -e; timeout 60s \$*"
 EOF
 
 # Change permissions
