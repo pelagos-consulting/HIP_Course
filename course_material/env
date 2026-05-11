@@ -53,7 +53,7 @@ then
 elif [[ $HOSTNAME =~ "fullcircle" ]]
 then
     # Using the NVIDIA card
-    #module load gcc rocm cuda mpich hipblas/6.4.2_nvidia
+    # module load gcc rocm cuda mpich hipblas/6.4.2_nvidia
     #export HIP_PLATFORM=nvidia
     #export GPU_ARCH="86"
 

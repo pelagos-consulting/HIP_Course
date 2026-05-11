@@ -46,7 +46,8 @@ cat << EOF > ${run_script}
 #!/bin/bash --login
 source ${env_script}
 # Run all arguments passed to the script
-\$@
+#echo "running: \$*"
+eval "\$*"
 EOF
 
 # Change permissions
