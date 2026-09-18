@@ -3,6 +3,7 @@
 #SBATCH --account=<account>-gpu    # your account
 #SBATCH --partition=gpu            # Using the gpu partition
 #SBATCH --nodes=1                  # Total number of nodes
+#SBATCH --ntasks=8                 # nodes * allocation_packs_per_node / gpus_per_task
 #SBATCH --gres=gpu:8               # The number of GPU's (and associated allocation packs) per node
 #SBATCH --exclusive                # Use this to request all the resources on a node
 #SBATCH --time=00:05:00
