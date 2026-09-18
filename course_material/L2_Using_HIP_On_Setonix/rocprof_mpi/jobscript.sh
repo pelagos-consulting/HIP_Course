@@ -3,6 +3,7 @@
 #SBATCH --account=<account>-gpu    # your account
 #SBATCH --partition=gpu-dev        # Using the gpu-dev partition
 #SBATCH --nodes=1                  # Total number of nodes
+#SBATCH --ntasks=2                 # Nodes * allocation_packs_per_node / gpus_per_tas
 #SBATCH --gres=gpu:2               # Number of GPU's per node
 #SBATCH --time=01:00:00
 
