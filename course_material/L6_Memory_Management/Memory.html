@@ -7975,7 +7975,8 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span>mat_mult_pinned_mem.exe<span class="p">;</span><span class="w"> </span>mat_mult_pinned_mem.exe
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span><span class="s1">'mat_mult_pinned_mem.exe'</span>
+<span class="o">!</span>run<span class="w"> </span><span class="s1">'mat_mult_pinned_mem.exe'</span>
 </pre></div>
 </div>
 </div>
@@ -7988,23 +7989,21 @@ $$</p>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre><span class="ansi-magenta-intense-fg ansi-bold">Consolidate compiler generated dependencies of target hip_helper</span>
-[ 50%] Built target hip_helper
-<span class="ansi-magenta-intense-fg ansi-bold">Consolidate compiler generated dependencies of target mat_mult_pinned_mem.exe</span>
+<pre>[ 33%] Built target hip_helper
 [100%] Built target mat_mult_pinned_mem.exe
 <span class="ansi-cyan-fg">Install the project...</span>
 -- Install configuration: "RELEASE"
 Device id: 0
-	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
-	global memory size:                      6219 MB
+	name:                                    AMD Radeon Graphics
+	global memory size:                      16434 MB
 	available registers per block:           65536 
-	max threads per SM or CU:                1536 
-	maximum shared memory size per block:    49 KB
-	maximum shared memory size per SM or CU: 0 KB
+	max threads per SM or CU:                2048 
+	maximum shared memory size per block:    65 KB
+	maximum shared memory size per SM or CU: 65 KB
 	maximum pitch size for memory copies:    2147 MB
-	max block size:                          (1024,1024,64)
+	max block size:                          (1024,1024,1024)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,65535,65535)
+	max Grid size:                           (2147483647,65536,65536)
 Maximum error (infinity norm) is: 1.14441e-05
 </pre>
 </div>
@@ -8127,7 +8126,8 @@ Maximum error (infinity norm) is: 1.14441e-05
 <div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span>mat_mult_managed_mem.exe<span class="p">;</span><span class="w"> </span>mat_mult_managed_mem.exe
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span><span class="s1">'mat_mult_managed_mem.exe'</span>
+<span class="o">!</span>run<span class="w"> </span><span class="s1">'mat_mult_managed_mem.exe'</span>
 </pre></div>
 </div>
 </div>
@@ -8140,22 +8140,21 @@ Maximum error (infinity norm) is: 1.14441e-05
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>[ 50%] Built target hip_helper
-<span class="ansi-magenta-intense-fg ansi-bold">Consolidate compiler generated dependencies of target mat_mult_managed_mem.exe</span>
+<pre>[ 33%] Built target hip_helper
 [100%] Built target mat_mult_managed_mem.exe
 <span class="ansi-cyan-fg">Install the project...</span>
 -- Install configuration: "RELEASE"
 Device id: 0
-	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
-	global memory size:                      6219 MB
+	name:                                    AMD Radeon Graphics
+	global memory size:                      16434 MB
 	available registers per block:           65536 
-	max threads per SM or CU:                1536 
-	maximum shared memory size per block:    49 KB
-	maximum shared memory size per SM or CU: 0 KB
+	max threads per SM or CU:                2048 
+	maximum shared memory size per block:    65 KB
+	maximum shared memory size per SM or CU: 65 KB
 	maximum pitch size for memory copies:    2147 MB
-	max block size:                          (1024,1024,64)
+	max block size:                          (1024,1024,1024)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,65535,65535)
+	max Grid size:                           (2147483647,65536,65536)
 Maximum error (infinity norm) is: 1.14441e-05
 </pre>
 </div>
@@ -8420,7 +8419,8 @@ Maximum error (infinity norm) is: 1.14441e-05
 <div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span>mat_mult_pitched_mem.exe<span class="p">;</span><span class="w"> </span>mat_mult_pitched_mem.exe
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span><span class="s1">'mat_mult_pitched_mem.exe'</span>
+<span class="o">!</span>run<span class="w"> </span><span class="s1">'mat_mult_pitched_mem.exe'</span>
 </pre></div>
 </div>
 </div>
@@ -8434,21 +8434,20 @@ Maximum error (infinity norm) is: 1.14441e-05
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>[ 50%] Built target hip_helper
-<span class="ansi-magenta-intense-fg ansi-bold">Consolidate compiler generated dependencies of target mat_mult_pitched_mem.exe</span>
 [100%] Built target mat_mult_pitched_mem.exe
 <span class="ansi-cyan-fg">Install the project...</span>
 -- Install configuration: "RELEASE"
 Device id: 0
-	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
-	global memory size:                      6219 MB
+	name:                                    AMD Radeon Graphics
+	global memory size:                      16434 MB
 	available registers per block:           65536 
-	max threads per SM or CU:                1536 
-	maximum shared memory size per block:    49 KB
-	maximum shared memory size per SM or CU: 0 KB
+	max threads per SM or CU:                2048 
+	maximum shared memory size per block:    65 KB
+	maximum shared memory size per SM or CU: 65 KB
 	maximum pitch size for memory copies:    2147 MB
-	max block size:                          (1024,1024,64)
+	max block size:                          (1024,1024,1024)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,65535,65535)
+	max Grid size:                           (2147483647,65536,65536)
 Maximum error (infinity norm) is: 1.14441e-05
 </pre>
 </div>
@@ -8725,7 +8724,8 @@ Maximum error (infinity norm) is: 1.14441e-05
 <div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span>mat_mult_shared.exe<span class="p">;</span><span class="w"> </span>mat_mult_shared.exe
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span><span class="s1">'mat_mult_shared.exe'</span>
+<span class="o">!</span>run<span class="w"> </span><span class="s1">'mat_mult_shared.exe'</span>
 </pre></div>
 </div>
 </div>
@@ -8738,22 +8738,21 @@ Maximum error (infinity norm) is: 1.14441e-05
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>[ 50%] Built target hip_helper
-<span class="ansi-magenta-intense-fg ansi-bold">Consolidate compiler generated dependencies of target mat_mult_shared.exe</span>
+<pre>[ 33%] Built target hip_helper
 [100%] Built target mat_mult_shared.exe
 <span class="ansi-cyan-fg">Install the project...</span>
 -- Install configuration: "RELEASE"
 Device id: 0
-	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
-	global memory size:                      6219 MB
+	name:                                    AMD Radeon Graphics
+	global memory size:                      16434 MB
 	available registers per block:           65536 
-	max threads per SM or CU:                1536 
-	maximum shared memory size per block:    49 KB
-	maximum shared memory size per SM or CU: 0 KB
+	max threads per SM or CU:                2048 
+	maximum shared memory size per block:    65 KB
+	maximum shared memory size per SM or CU: 65 KB
 	maximum pitch size for memory copies:    2147 MB
-	max block size:                          (1024,1024,64)
+	max block size:                          (1024,1024,1024)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,65535,65535)
+	max Grid size:                           (2147483647,65536,65536)
 Maximum error (infinity norm) is: 1.14441e-05
 </pre>
 </div>
@@ -8832,7 +8831,8 @@ Maximum error (infinity norm) is: 1.14441e-05
 <div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span>mat_mult_shared_faulty.exe<span class="p">;</span><span class="w"> </span>mat_mult_shared_faulty.exe
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span><span class="s1">'mat_mult_shared_faulty.exe'</span>
+<span class="o">!</span>run<span class="w"> </span><span class="s1">'mat_mult_shared_faulty.exe'</span>
 </pre></div>
 </div>
 </div>
@@ -8845,22 +8845,21 @@ Maximum error (infinity norm) is: 1.14441e-05
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>[ 50%] Built target hip_helper
-<span class="ansi-magenta-intense-fg ansi-bold">Consolidate compiler generated dependencies of target mat_mult_shared_faulty.exe</span>
+<pre>[ 33%] Built target hip_helper
 [100%] Built target mat_mult_shared_faulty.exe
 <span class="ansi-cyan-fg">Install the project...</span>
 -- Install configuration: "RELEASE"
 Device id: 0
-	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
-	global memory size:                      6219 MB
+	name:                                    AMD Radeon Graphics
+	global memory size:                      16434 MB
 	available registers per block:           65536 
-	max threads per SM or CU:                1536 
-	maximum shared memory size per block:    49 KB
-	maximum shared memory size per SM or CU: 0 KB
+	max threads per SM or CU:                2048 
+	maximum shared memory size per block:    65 KB
+	maximum shared memory size per SM or CU: 65 KB
 	maximum pitch size for memory copies:    2147 MB
-	max block size:                          (1024,1024,64)
+	max block size:                          (1024,1024,1024)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,65535,65535)
+	max Grid size:                           (2147483647,65536,65536)
 Error, HIP call failed at /home/toby/Pelagos/Projects/HIP_Course/course_material/L6_Memory_Management/mat_mult_shared_faulty.cpp:233, error string is: invalid argument
 </pre>
 </div>
@@ -8983,7 +8982,8 @@ Error, HIP call failed at /home/toby/Pelagos/Projects/HIP_Course/course_material
 <div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span>vector_types.exe<span class="p">;</span><span class="w"> </span>vector_types.exe
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span><span class="s1">'vector_types.exe'</span>
+<span class="o">!</span>run<span class="w"> </span><span class="s1">'vector_types.exe'</span>
 </pre></div>
 </div>
 </div>
@@ -8996,8 +8996,7 @@ Error, HIP call failed at /home/toby/Pelagos/Projects/HIP_Course/course_material
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>[ 50%] Built target hip_helper
-<span class="ansi-magenta-intense-fg ansi-bold">Consolidate compiler generated dependencies of target vector_types.exe</span>
+<pre>[ 33%] Built target hip_helper
 [100%] Built target vector_types.exe
 <span class="ansi-cyan-fg">Install the project...</span>
 -- Install configuration: "RELEASE"
@@ -9187,7 +9186,8 @@ temp.w is 3.000000
 <div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span>mat_mult_shared_vector.exe<span class="p">;</span><span class="w"> </span>mat_mult_shared_vector.exe
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span><span class="s1">'mat_mult_shared_vector.exe'</span>
+<span class="o">!</span>run<span class="w"> </span><span class="s1">'mat_mult_shared_vector.exe'</span>
 </pre></div>
 </div>
 </div>
@@ -9200,22 +9200,21 @@ temp.w is 3.000000
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>[ 50%] Built target hip_helper
-<span class="ansi-magenta-intense-fg ansi-bold">Consolidate compiler generated dependencies of target mat_mult_shared_vector.exe</span>
+<pre>[ 33%] Built target hip_helper
 [100%] Built target mat_mult_shared_vector.exe
 <span class="ansi-cyan-fg">Install the project...</span>
 -- Install configuration: "RELEASE"
 Device id: 0
-	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
-	global memory size:                      6219 MB
+	name:                                    AMD Radeon Graphics
+	global memory size:                      16434 MB
 	available registers per block:           65536 
-	max threads per SM or CU:                1536 
-	maximum shared memory size per block:    49 KB
-	maximum shared memory size per SM or CU: 0 KB
+	max threads per SM or CU:                2048 
+	maximum shared memory size per block:    65 KB
+	maximum shared memory size per SM or CU: 65 KB
 	maximum pitch size for memory copies:    2147 MB
-	max block size:                          (1024,1024,64)
+	max block size:                          (1024,1024,1024)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,65535,65535)
+	max Grid size:                           (2147483647,65536,65536)
 Maximum error (infinity norm) is: 2.67029e-05
 </pre>
 </div>
@@ -9282,7 +9281,8 @@ Maximum error (infinity norm) is: 2.67029e-05
 <div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span>atomics.exe<span class="p">;</span><span class="w"> </span>atomics.exe
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span><span class="s1">'atomics.exe'</span>
+<span class="o">!</span>run<span class="w"> </span><span class="s1">'atomics.exe'</span>
 </pre></div>
 </div>
 </div>
@@ -9295,22 +9295,21 @@ Maximum error (infinity norm) is: 2.67029e-05
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>[ 66%] Built target hip_helper
-<span class="ansi-magenta-intense-fg ansi-bold">Consolidate compiler generated dependencies of target atomics.exe</span>
+<pre>[ 50%] Built target hip_helper
 [100%] Built target atomics.exe
 <span class="ansi-cyan-fg">Install the project...</span>
 -- Install configuration: "RELEASE"
 Device id: 0
-	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
-	global memory size:                      6219 MB
+	name:                                    AMD Radeon Graphics
+	global memory size:                      16434 MB
 	available registers per block:           65536 
-	max threads per SM or CU:                1536 
-	maximum shared memory size per block:    49 KB
-	maximum shared memory size per SM or CU: 0 KB
+	max threads per SM or CU:                2048 
+	maximum shared memory size per block:    65 KB
+	maximum shared memory size per SM or CU: 65 KB
 	maximum pitch size for memory copies:    2147 MB
-	max block size:                          (1024,1024,64)
+	max block size:                          (1024,1024,1024)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,65535,65535)
+	max Grid size:                           (2147483647,65536,65536)
 Counter has been incremented 65536 out of 65536 times
 </pre>
 </div>

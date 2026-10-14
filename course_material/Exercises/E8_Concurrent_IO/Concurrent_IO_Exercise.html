@@ -7517,8 +7517,7 @@ a.anchor-link {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="Exercise---building-a-layer-cake">Exercise - building a layer cake<a class="anchor-link" href="#Exercise---building-a-layer-cake">¶</a></h1><p>In this exercise the goal is to optimise an iterative code so that copies are performed concurrently with compute. The code <a href="exercise_layer_cake.cpp">exercise_layer_cake.cpp</a> is a synchronous application where at each iteration <strong>n</strong> a simple kernel called <strong>fill_plane</strong> fills an on-device allocation in <strong>U_ds</strong> with <strong>n</strong>.</p>
-<p>After the kernel completes, <strong>hipMemcpy3D</strong> is employed to copy the plane to <strong>out_h</strong>, a 3D array of output planes. We avoid copying plane 1 to work around a bug in the AMD implementation of <strong>hipMemcpy3D</strong>. This bug has been fixed in later versions of ROCM (not working in 5.7.3 on Setonix, but known to work in 6.0.2+).</p>
-<p>If we make and run the application we can see that it correctly copies all planes other than plane 1.</p>
+<p>After the kernel completes, <strong>hipMemcpy3D</strong> is employed to copy the plane to <strong>out_h</strong>, a 3D array of output planes. If we make and run the application we can see that it correctly copies all planes.</p>
 </div>
 </div>
 </div>
@@ -7570,7 +7569,8 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span>exercise_layer_cake.exe<span class="p">;</span><span class="w"> </span>exercise_layer_cake.exe
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span><span class="s1">'exercise_layer_cake.exe'</span>
+<span class="o">!</span>run<span class="w"> </span><span class="s1">'exercise_layer_cake.exe'</span>
 </pre></div>
 </div>
 </div>
@@ -7583,22 +7583,22 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>[ 50%] Built target hip_helper
+<pre>[ 33%] Built target hip_helper
 [100%] Built target exercise_layer_cake.exe
 <span class="ansi-cyan-fg">Install the project...</span>
 -- Install configuration: "RELEASE"
 Device id: 0
-	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
-	global memory size:                      6219 MB
+	name:                                    AMD Radeon Graphics
+	global memory size:                      16434 MB
 	available registers per block:           65536 
-	max threads per SM or CU:                1536 
-	maximum shared memory size per block:    49 KB
-	maximum shared memory size per SM or CU: 0 KB
+	max threads per SM or CU:                2048 
+	maximum shared memory size per block:    65 KB
+	maximum shared memory size per SM or CU: 65 KB
 	maximum pitch size for memory copies:    2147 MB
-	max block size:                          (1024,1024,64)
+	max block size:                          (1024,1024,1024)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,65535,65535)
-The synchronous calculation took 0.217000 milliseconds.
+	max Grid size:                           (2147483647,65536,65536)
+The synchronous calculation took 1.068000 milliseconds.
 ----
 |  0.00e+00  0.00e+00  0.00e+00  0.00e+00 |
 |  0.00e+00  0.00e+00  0.00e+00  0.00e+00 |
@@ -7606,10 +7606,10 @@ The synchronous calculation took 0.217000 milliseconds.
 |  0.00e+00  0.00e+00  0.00e+00  0.00e+00 |
 ----
 ----
-|  0.00e+00  0.00e+00  0.00e+00  0.00e+00 |
-|  0.00e+00  0.00e+00  0.00e+00  0.00e+00 |
-|  0.00e+00  0.00e+00  0.00e+00  0.00e+00 |
-|  0.00e+00  0.00e+00  0.00e+00  0.00e+00 |
+|  1.00e+00  1.00e+00  1.00e+00  1.00e+00 |
+|  1.00e+00  1.00e+00  1.00e+00  1.00e+00 |
+|  1.00e+00  1.00e+00  1.00e+00  1.00e+00 |
+|  1.00e+00  1.00e+00  1.00e+00  1.00e+00 |
 ----
 ----
 |  2.00e+00  2.00e+00  2.00e+00  2.00e+00 |
@@ -7694,7 +7694,8 @@ The synchronous calculation took 0.217000 milliseconds.
 <div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span>exercise_layer_cake_answers.exe<span class="p">;</span><span class="w"> </span>exercise_layer_cake_answers.exe
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span><span class="s1">'exercise_layer_cake_answers.exe'</span>
+<span class="o">!</span>run<span class="w"> </span><span class="s1">'exercise_layer_cake_answers.exe'</span>
 </pre></div>
 </div>
 </div>
@@ -7712,17 +7713,17 @@ The synchronous calculation took 0.217000 milliseconds.
 <span class="ansi-cyan-fg">Install the project...</span>
 -- Install configuration: "RELEASE"
 Device id: 0
-	name:                                    NVIDIA GeForce RTX 3060 Laptop GPU
-	global memory size:                      6219 MB
+	name:                                    AMD Radeon Graphics
+	global memory size:                      16434 MB
 	available registers per block:           65536 
-	max threads per SM or CU:                1536 
-	maximum shared memory size per block:    49 KB
-	maximum shared memory size per SM or CU: 0 KB
+	max threads per SM or CU:                2048 
+	maximum shared memory size per block:    65 KB
+	maximum shared memory size per SM or CU: 65 KB
 	maximum pitch size for memory copies:    2147 MB
-	max block size:                          (1024,1024,64)
+	max block size:                          (1024,1024,1024)
 	max threads in a block:                  1024
-	max Grid size:                           (2147483647,65535,65535)
-The asynchronous calculation took 0.132000 milliseconds.
+	max Grid size:                           (2147483647,65536,65536)
+The asynchronous calculation took 1.129000 milliseconds.
 Layer - 0
 :----
 |  0.00e+00  0.00e+00  0.00e+00  0.00e+00 |
@@ -7732,10 +7733,10 @@ Layer - 0
 ----
 Layer - 1
 :----
-|  0.00e+00  0.00e+00  0.00e+00  0.00e+00 |
-|  0.00e+00  0.00e+00  0.00e+00  0.00e+00 |
-|  0.00e+00  0.00e+00  0.00e+00  0.00e+00 |
-|  0.00e+00  0.00e+00  0.00e+00  0.00e+00 |
+|  1.00e+00  1.00e+00  1.00e+00  1.00e+00 |
+|  1.00e+00  1.00e+00  1.00e+00  1.00e+00 |
+|  1.00e+00  1.00e+00  1.00e+00  1.00e+00 |
+|  1.00e+00  1.00e+00  1.00e+00  1.00e+00 |
 ----
 Layer - 2
 :----
@@ -7794,20 +7795,6 @@ Layer - 9
 |  9.00e+00  9.00e+00  9.00e+00  9.00e+00 |
 ----
 </pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=faffa6e3-e891-4311-8f9d-76434e4c0000">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span> 
-</pre></div>
 </div>
 </div>
 </div>
