@@ -1,0 +1,2 @@
+  StartAddress   AddressRange  #Instructions  Ratio Linkage Visibility  Module                                                                                   Function     FunctionSignature
+      0x204f10          17861           4233   4.22   global    default /home/toby/Pelagos/Projects/HIP_Course/course_material/L5_Profiling/mat_mult_...         main         main        
