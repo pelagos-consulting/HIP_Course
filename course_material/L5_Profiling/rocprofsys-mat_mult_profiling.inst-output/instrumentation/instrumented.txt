@@ -1,2 +1,0 @@
-  StartAddress   AddressRange  #Instructions  Ratio Linkage Visibility  Module                                                                               Function             FunctionSignature   
-      0x20d2c0           4825           1154   4.18  unknown    unknown /home/toby/Pelagos/Projects/HIP_Course/course_material/common/hip_helper.cpp         h_run_kernel         h_run_kernel        
