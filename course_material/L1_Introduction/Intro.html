@@ -7571,8 +7571,7 @@ a.anchor-link {
 <h2 id="Is-HIP-right-for-your-project?">Is HIP right for your project?<a class="anchor-link" href="#Is-HIP-right-for-your-project?">¶</a></h2><p>In supercomputing there is a welcome change in diversity among available hardware options. Ideally this means software must be adaptable to run on compute devices from different vendors. HIP is an ideal choice for when performance and portability is required across AMD, NVIDIA, (and possibly even Intel) devices. It provides much of the benefits of using CUDA, including:</p>
 <ul>
 <li>Similar/identical programming environment to CUDA, with the opportunity to inherit best practices and useful tips from CUDA literature and experience.</li>
-<li>Can make use of a CUDA backend and all the nice NVIDIA development tools that go with it.</li>
-<li>Can make use of an AMD backend and all the nice AMD development tools that go with it.</li>
+<li>Can make use of a vendor's backend and all the nice development tools that go with it.</li>
 <li>Easy to port code from CUDA to HIP due to similar function calls.</li>
 <li>Easy to write code that works across AMD and NVIDIA backends.</li>
 <li>The opportunity to get optimal performance whatever backend is in use.</li>
@@ -7581,7 +7580,7 @@ a.anchor-link {
 </ul>
 <p>Some challenges include:</p>
 <ul>
-<li>The number of devices that are officially supported in ROCm is quite low. Many more AMD devices work unofficially with ROCm, but it is difficult to get issues addressed on unsupported hardware.</li>
+<li>The number of devices that are officially supported in ROCm has been historically low but now increasing, see this <a href="https://rocm.docs.amd.com/en/latest/reference/gpu-specs.html">table</a> for currently supported devices. Many more AMD devices work unofficially with ROCm, but it is difficult to get issues addressed on unsupported hardware.</li>
 <li>ROCm on AMD is still stabilising, and you may encounter bugs, undefined behaviour, and frustration with features that don't work properly.</li>
 <li>Very few Linux distributions or AMD graphics cards are offically supported. The rest have unknown or unreported levels of support or compatibility with HIP.</li>
 <li>HIP functions are at the mercy of CUDA API changes (portability can be fragile). In order to keep portability the HIP library needs to keep up with API changes in CUDA. For example I installed CUDA 12 and it was not compatible with HIP on ROCM 5.4.1. I had to use CUDA 11.8 instead.</li>
@@ -7774,7 +7773,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Getting-help-for-HIP">Getting help for HIP<a class="anchor-link" href="#Getting-help-for-HIP">¶</a></h2><h3 id="API-Documentation">API Documentation<a class="anchor-link" href="#API-Documentation">¶</a></h3><p>Documentation for HIP is growing, at the time of writing there are few books on the subject. The book <a href="https://amzn.asia/d/3OcHFGU"><strong>Accelerated Computing with HIP</strong></a> has been a helpful resource, and there is an accompanying series of YouTube videos by the author <a href="https://youtube.com/playlist?list=PLB1fSi1mbw6IKbZSPz9a2r2DbnHWnLbF-&amp;si=Tl-twyh-u_ejhrSg">here</a>. The AMD documentation portal <a href="https://rocm.docs.amd.com/">rocm.docs.amd.com</a> is the best resource for documenation on HIP versions 5.0 and above. Some specific documentation on the HIP API is <a href="https://docs.amd.com/en/latest/index.html#">here</a>.</p>
+<h2 id="Getting-help-for-HIP">Getting help for HIP<a class="anchor-link" href="#Getting-help-for-HIP">¶</a></h2><h3 id="API-Documentation">API Documentation<a class="anchor-link" href="#API-Documentation">¶</a></h3><p>Documentation for HIP is growing, at the time of writing there are few books on the subject. The book <a href="https://amzn.asia/d/3OcHFGU"><strong>Accelerated Computing with HIP</strong></a> has been a helpful resource, and there is an accompanying series of YouTube videos by the author <a href="https://youtube.com/playlist?list=PLB1fSi1mbw6IKbZSPz9a2r2DbnHWnLbF-&amp;si=Tl-twyh-u_ejhrSg">here</a>. The AMD documentation portal <a href="https://rocm.docs.amd.com/">rocm.docs.amd.com</a> is the best resource for documenation on HIP versions 5.0 and above. Some specific documentation on the HIP API is <a href="https://rocm.docs.amd.com/projects/HIP/en/latest/">here</a>.</p>
 <p>The Doxygen-generated documentation within the ROCm distribution itself is also a good resource if available. It can usually be found at the location <code>share/doc/hip</code> within the ROCm installation directory (i.e /opt/rocm).</p>
 <h3 id="Simple-examples">Simple examples<a class="anchor-link" href="#Simple-examples">¶</a></h3><p>Some simple examples for using HIP are located in the <code>share/hip/samples</code> directory of a ROCm installation. This is a go to resource if you need to see a quick example of something basic in HIP. You can also find this resource on Github at the following location.</p>
 <p><a href="https://github.com/ROCm-Developer-Tools/HIP/tree/main/samples">https://github.com/ROCm-Developer-Tools/HIP/tree/main/samples</a></p>
@@ -7819,11 +7818,11 @@ When the NVIDIA backend has had a recent major version change, it is advisable t
 </blockquote>
 <h3 id="Building-cross-platform-applications-with-CMake">Building cross-platform applications with CMake<a class="anchor-link" href="#Building-cross-platform-applications-with-CMake">¶</a></h3><p>Until CMake 3.28, there hasn't been any support for building cross-platform HIP applications using the builtin HIP language. In <a href="../CMakeLists.txt"></a>CMakeLists.txt is a functioning workaround. The secret is to process device code (kernels) as <code>HIP</code> sources when using an AMD backend, and process device code as <code>CUDA</code> source when using an NVIDIA backend. In specific, the following points are relevant.</p>
 <ul>
-<li>Export <code>HIP_PLATFORM</code> as an environment variable prior to building. Either <code>HIP_PLATFORM=amd</code> for an AMD backend or <code>HIP_PLATFORM=nvidia</code> for NVIDIA.</li>
+<li>Export <code>HIP_PLATFORM</code> as an environment variable prior to building. Set either <code>HIP_PLATFORM=amd</code> for an AMD backend or <code>HIP_PLATFORM=nvidia</code> for NVIDIA.</li>
 <li>There is no need to set the CXX compiler as <code>hipcc</code>. In fact it will mess things up because <code>hipcc</code> has very different behaviour depending on the value in <code>HIP_PLATFORM</code>. Instead set CXX to your chosen (real) C++ compiler.</li>
 <li>Compile defines act as switches in <code>hip/hip_runtime.h</code> when selecting the backend to use. Use <code>add_definitions</code> to define  <code>__HIP_PLATFORM_HCC__</code> and <code>__HIP_PLATFORM_AMD__</code> on an AMD backend, and <code>__HIP_PLATFORM_NVCC__</code> <code>__HIP_PLATFORM_NVIDIA__</code> on an NVIDIA backend.</li>
 <li>Make sure that kernel sources are being compiled as the <code>HIP</code> language for AMD, and <code>CUDA</code> for NVIDIA. Use <code>set_source_files_properties</code> on kernel sources to do this.</li>
-<li>Set either <code>CMAKE_HIP_ARCHITECTURES</code> (on AMD) or <code>CMAKE_CUDA_ARCHITECTURES</code> (on NVIDIA) as a semicolon-separted list of vendor-specific GPU's that you'd like to support, e.g <code>CMAKE_HIP_ARCHITECTURES=gfx906;gfx90a</code> for AMD, and <code>CMAKE_HIP_ARCHITECTURES=75;86;90</code> for NVIDIA.</li>
+<li>In <code>CMakeLists.txt</code> set either <code>CMAKE_HIP_ARCHITECTURES</code> (on AMD) or <code>CMAKE_CUDA_ARCHITECTURES</code> (on NVIDIA) as a semicolon-separted list of vendor-specific GPU's that you'd like to support, e.g <code>CMAKE_HIP_ARCHITECTURES=gfx906;gfx90a</code> for AMD, and <code>CMAKE_HIP_ARCHITECTURES=75;86;90</code> for NVIDIA. For this build system you set export the environment variable <code>GPU_ARCH</code> with this list of architectures and in <code>CMakeLists.txt</code> it uses this to set <code>CMAKE_CUDA_ARCHITECTURES</code> or <code>CMAKE_HIP_ARCHITECTURES</code> accordingly.</li>
 </ul>
 <h3 id="Using-the-CMake-build-system">Using the CMake build system<a class="anchor-link" href="#Using-the-CMake-build-system">¶</a></h3><p>Once the material is unpacked, you can edit <code>course_material/env</code> to make sure all modules are loaded and paths are set. Then run the install script to install</p>
 <div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>course_material
@@ -7927,7 +7926,7 @@ When the NVIDIA backend has had a recent major version change, it is advisable t
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>run<span class="w"> </span><span class="s1">'hello_devices.exe'</span>
