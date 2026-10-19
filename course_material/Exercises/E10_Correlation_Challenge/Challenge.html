@@ -7798,7 +7798,7 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Python image processing rate is 127.05 images/s
+<pre>Python image processing rate is 140.72 images/s
 </pre>
 </div>
 </div>
@@ -8061,7 +8061,7 @@ Image out - HIP
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>run<span class="w"> </span><span class="s1">'rocm-smi'</span>
@@ -8084,7 +8084,7 @@ Image out - HIP
 Device  Node  IDs              Temp    Power     Partitions          SCLK  MCLK     Fan  Perf  PwrCap  VRAM%  GPU%  
               (DID,     GUID)  (Edge)  (Socket)  (Mem, Compute, ID)                                                 
 ====================================================================================================================
-0       1     0x1681,   6433   42.0°C  14.157W   N/A, N/A, 0         N/A   2400Mhz  0%   auto  N/A     89%    0%    
+0       1     0x1681,   33421  41.0°C  15.172W   N/A, N/A, 0         N/A   2400Mhz  0%   auto  N/A     85%    0%    
 ====================================================================================================================
 =============================================== End of ROCm SMI Log ================================================
 </pre>
@@ -8099,7 +8099,7 @@ Device  Node  IDs              Temp    Power     Partitions          SCLK  MCLK 
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Compile-and-run-the-exerciser_xcorr-program">Compile and run the exerciser_xcorr program<a class="anchor-link" href="#Compile-and-run-the-exerciser_xcorr-program">¶</a></h3><p>In the initial configuration the code doesn't produce any meaningful results.</p>
+<h3 id="Compile-and-run-the-exercise_xcorr-program">Compile and run the exercise_xcorr program<a class="anchor-link" href="#Compile-and-run-the-exercise_xcorr-program">¶</a></h3><p>In the initial configuration the code doesn't produce any meaningful results.</p>
 </div>
 </div>
 </div>
@@ -8108,7 +8108,7 @@ Device  Node  IDs              Temp    Power     Partitions          SCLK  MCLK 
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span><span class="s1">'exercise_xcorr.exe'</span>
@@ -8142,7 +8142,7 @@ Device id: 0
 	max Grid size:                           (2147483647,65536,65536)
 Processing iteration 1 of 1
 Device 0 processed 100 of 100 images (100.00%)
-Overall processing rate 9897.29 images/s
+Overall processing rate 131500.57 images/s
 </pre>
 </div>
 </div>
@@ -8164,7 +8164,7 @@ Overall processing rate 9897.29 images/s
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">check_solution</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">proof_images</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"Greys_r"</span><span class="p">):</span>
@@ -8257,7 +8257,7 @@ Overall processing rate 9897.29 images/s
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span><span class="s1">'exercise_xcorr_answers.exe'</span>
@@ -8291,7 +8291,7 @@ Device id: 0
 	max Grid size:                           (2147483647,65536,65536)
 Processing iteration 1 of 1
 Device 0 processed 100 of 100 images (100.00%)
-Overall processing rate 808.61 images/s
+Overall processing rate 781.93 images/s
 </pre>
 </div>
 </div>
@@ -8302,7 +8302,7 @@ Overall processing rate 808.61 images/s
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Read images from file</span>

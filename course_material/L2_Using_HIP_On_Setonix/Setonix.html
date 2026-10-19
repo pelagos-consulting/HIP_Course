@@ -7763,7 +7763,7 @@ chmod<span class="w"> </span>-R<span class="w"> </span><span class="m">0400</spa
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Interactive-jobs-on-GPU-nodes">Interactive jobs on GPU nodes<a class="anchor-link" href="#Interactive-jobs-on-GPU-nodes">¶</a></h2><p>When compiling software or running test jobs on Setonix it is sometimes helpful to have interactive access to a gpu node.  Allocations for the <strong>gpu</strong> queue on Setonix need a separate allocation. The following command reserves an <code>allocation-pack</code> consisting of a GPU, a connected chiplet of 8 cores, and one eighth of the available memory on a node, for interactive use. You can use this to compile software and run interactive jobs on a gpu node of Setonix, but for the workshop you might need to use the <code>salloc</code> command in the welcome letter.</p>
+<h2 id="Interactive-jobs-on-GPU-nodes">Interactive jobs on GPU nodes<a class="anchor-link" href="#Interactive-jobs-on-GPU-nodes">¶</a></h2><p>When compiling software or running test jobs on Setonix it is sometimes helpful to have interactive access to a gpu node.  Allocations for the <strong>gpu</strong> queue on Setonix need a separate allocation. The following command reserves an <code>allocation-pack</code> consisting of a GPU, a connected chiplet of 8 cores, and one eighth of the available memory on a node, for interactive use. You can use this to compile software and run interactive jobs on a gpu node of Setonix, but for the workshop you might need to use the <code>salloc</code> command in the welcome letter, which will have an extra <code>reservation</code> option.</p>
 <div class="highlight"><pre><span></span>salloc<span class="w"> </span>--account<span class="o">=</span><span class="si">${</span><span class="nv">PAWSEY_PROJECT</span><span class="si">}</span>-gpu<span class="w"> </span>--nodes<span class="o">=</span><span class="m">1</span><span class="w"> </span>--ntasks<span class="o">=</span><span class="m">1</span><span class="w"> </span>--time<span class="o">=</span><span class="m">2</span>:00:00<span class="w"> </span>--gres<span class="o">=</span>gpu:1<span class="w"> </span>--partition<span class="o">=</span>gpu-dev
 </pre></div>
 <p>As per this <a href="https://pawsey.atlassian.net/wiki/spaces/US/pages/51928618/Setonix+GPU+Partition+Quick+Start">documentation</a> the number of tasks per node should be equal to the number of GPU's requested in <code>--gres=gpu</code>.</p>
@@ -7843,10 +7843,13 @@ chmod<span class="w"> </span>-R<span class="w"> </span><span class="m">0400</spa
 <p>then set this environment variable to enable GPU support with MPI.</p>
 <div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">MPICH_GPU_SUPPORT_ENABLED</span><span class="o">=</span><span class="m">1</span>
 </pre></div>
-<h4 id="ROCM-libraries">ROCM libraries<a class="anchor-link" href="#ROCM-libraries">¶</a></h4><p>Finally, in order to have ROCM software (such as hipcc and rocgdb) and libraries available you need to load a ROCm module. The default version of ROCm on Setonix is 6.3.0 and is considered the production version of ROCm on Setonix. You can load it with this command:</p>
-<div class="highlight"><pre><span></span>module<span class="w"> </span>load<span class="w"> </span>rocm/6.4.1
+<h4 id="ROCM-libraries">ROCM libraries<a class="anchor-link" href="#ROCM-libraries">¶</a></h4><p>Finally, in order to have ROCM software (such as hipcc and rocgdb) and libraries available you need to load a ROCm module. The default version of ROCm on Setonix is considered the production version of ROCm on Setonix. You can load it with this command:</p>
+<div class="highlight"><pre><span></span>module<span class="w"> </span>avail<span class="w"> </span>rocm
 </pre></div>
-<p>There are newer versions such as <code>rocm/7.2.4</code>, but you need to enable loading of unsupported modules:</p>
+<p>and then something like</p>
+<pre><code>module load rocm/6.4.1
+</code></pre>
+<p>There are newer versions, such as from the ROCm 7.x branch, but you need to enable loading of unsupported modules:</p>
 <div class="highlight"><pre><span></span>module<span class="w"> </span>use<span class="w"> </span>/software/setonix/unsupported
 module<span class="w"> </span>load<span class="w"> </span>rocm/7.2.4
 </pre></div>
@@ -7899,8 +7902,8 @@ module<span class="w"> </span>load<span class="w"> </span>rocm/7.2.4
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Compiling-software-with-HIP-and-MPI-support">Compiling software with HIP and MPI support<a class="anchor-link" href="#Compiling-software-with-HIP-and-MPI-support">¶</a></h3><p>According to this <a href="https://pawsey.atlassian.net/wiki/spaces/US/pages/51929070/Compiling+Code+on+Setonix">documentation</a>, the AMD compiler wrapper <strong>hipcc</strong> can be used for compiling C/C++ and HIP source files and is the suggested linker for program objects. The Cray C++ compiler <strong>also</strong> has the ability to compile HIP source code through adding the compiler option <code>-x hip</code> to CC, but you need to have the <strong>PrgEnv-cray</strong> environment loaded in order fo this to work.</p>
-<p>In order provide the best chance of reducing compiler issues it is <strong>best practice to compile from a gpu node</strong>, either from a batch or interactive job. If you use <strong>hipcc</strong> to compile HIP source, then you can use another compiler to compile other sources and then use <strong>hipcc</strong> to link them. Note that for Setonix you need to pass the <code>--offload-arch=gfx90a</code> flag to <code>hipcc</code>.</p>
+<h3 id="Compiling-software-with-HIP-and-MPI-support">Compiling software with HIP and MPI support<a class="anchor-link" href="#Compiling-software-with-HIP-and-MPI-support">¶</a></h3><p>According to this <a href="https://pawsey.atlassian.net/wiki/spaces/US/pages/51929070/Compiling+Code+on+Setonix">documentation</a>, the AMD compiler wrapper <strong>hipcc</strong> can be used for compiling C/C++ and HIP source files and is the suggested linker for program objects. The Cray C++ compiler <strong>also</strong> has the ability to compile HIP source code through adding the compiler option <code>-x hip</code> to CC, but you need to have the <strong>PrgEnv-cray</strong> environment loaded in order for this to work.</p>
+<p>In order provide the best chance of reducing compiler issues it is <strong>best practice to compile from a gpu node</strong>, either from a batch or interactive job using <code>salloc</code>. If you use <strong>hipcc</strong> to compile HIP source, then you can use another compiler to compile other sources and then use <strong>hipcc</strong> to link them. Note that for Setonix you need to pass the <code>--offload-arch=gfx90a</code> flag to <code>hipcc</code>.</p>
 </div>
 </div>
 </div>
@@ -8065,7 +8068,7 @@ srun<span class="w"> </span>-N<span class="w"> </span><span class="m">1</span><s
 <h4 id="Task-6.-Compile-and-run-hello_jobstep">Task 6. Compile and run hello_jobstep<a class="anchor-link" href="#Task-6.-Compile-and-run-hello_jobstep">¶</a></h4><p>The file <code>hello_jobstep.cpp</code>, is adapted from a <a href="https://code.ornl.gov/olcf/hello_jobstep">program</a> by Thomas Papatheodore from ORNL. It is an application to print the OpenMP thread ID, Hardware Thread ID, GPU Bus ID and NUMA ID. We compile the application in one go using <code>hipcc</code> and <code>-fopenmp</code>:</p>
 <div class="highlight"><pre><span></span>hipcc<span class="w"> </span>-fopenmp<span class="w"> </span>-I<span class="si">${</span><span class="nv">MPICH_DIR</span><span class="si">}</span>/include<span class="w"> </span>--offload-arch<span class="o">=</span>gfx90a<span class="w"> </span>hello_jobstep.cpp<span class="w"> </span>-o<span class="w"> </span>hello_jobstep.exe<span class="w"> </span>-L<span class="si">${</span><span class="nv">MPICH_DIR</span><span class="si">}</span>/lib<span class="w"> </span>-lmpi<span class="w"> </span>-L<span class="si">${</span><span class="nv">CRAY_MPICH_ROOTDIR</span><span class="si">}</span>/gtl/lib<span class="w"> </span>-lmpi_gtl_hsa
 </pre></div>
-<p>Now try changing the number of allocation packs in your request for resources for the interactive job from 1 to 2.</p>
+<p>Now try changing the number of allocation packs in your request for resources for the interactive job from 1 to 2. Don't forget to reload the modules!</p>
 <pre><code>salloc --account=${PAWSEY_PROJECT}-gpu --nodes=1 --time=2:00:00 --ntasks=2 --gres=gpu:2 --partition=gpu-dev
 </code></pre>
 <p>Use this command to run <code>hello_jobstep.exe</code> with 2 MPI tasks.</p>
