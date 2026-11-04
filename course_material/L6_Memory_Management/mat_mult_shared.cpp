@@ -17,8 +17,6 @@ Written by Dr Toby M. Potter
 // Bring in helper header to manage boilerplate code
 #include "hip_helper.hpp"
 
-typedef float float_type;
-
 // Number of coefficients to define
 #define NCOEFFS 3
 

@@ -18,16 +18,16 @@ Written by Dr Toby M. Potter
 
 // standard matrix multiply kernel 
 __global__ void mat_mult (
-        float* A, 
-        float* B, 
-        float* C,
+        float_type* A, 
+        float_type* B, 
+        float_type* C,
         size_t pitch_A, // The pitch of A (in bytes)
         size_t N1_A, 
         size_t N0_C,
         size_t N1_C) { 
     
     // pitch_A_N is the pitch of A in elements
-    size_t pitch_A_N = pitch_A/sizeof(float);
+    size_t pitch_A_N = pitch_A/sizeof(float_type);
     
     // A is of size (N0_C, N1_A) with a pitch of pitch_A
     // B is of size (N1_A, N1_C)
@@ -40,7 +40,7 @@ __global__ void mat_mult (
     size_t i1 = blockIdx.x * blockDim.x + threadIdx.x;
     
     // Scratch variable
-    float temp=0.0f; 
+    float_type temp=0.0f; 
 
     // Guard mechanism to make sure we do not go
     // outside the boundaries of matrix C 
@@ -96,14 +96,14 @@ int main(int argc, char** argv) {
     //// and fill them with random numbers ////
     
     // Number of bytes in each array
-    size_t nbytes_A = N0_C*N1_A*sizeof(float);
-    size_t nbytes_B = N1_A*N1_C*sizeof(float);
-    size_t nbytes_C = N0_C*N1_C*sizeof(float);
+    size_t nbytes_A = N0_C*N1_A*sizeof(float_type);
+    size_t nbytes_B = N1_A*N1_C*sizeof(float_type);
+    size_t nbytes_C = N0_C*N1_C*sizeof(float_type);
 
     // Allocate memory for the host arrays
-    float* A_h = (float*)h_alloc(nbytes_A);
-    float* B_h = (float*)h_alloc(nbytes_B);
-    float* C_h = (float*)h_alloc(nbytes_C);
+    float_type* A_h = (float_type*)h_alloc(nbytes_A);
+    float_type* B_h = (float_type*)h_alloc(nbytes_B);
+    float_type* C_h = (float_type*)h_alloc(nbytes_C);
 
     // Fill the host arrays with random numbers 
     // using the matrix helper library
@@ -113,7 +113,7 @@ int main(int argc, char** argv) {
     //// Step 4. Allocate memory for arrays //// 
     //// A_d, B_d, and C_d on the compute device ////
 
-    float *A_d, *B_d, *C_d;
+    float_type *A_d, *B_d, *C_d;
     size_t pitch_A;
     
     // Allocate A using pitched memory
@@ -121,7 +121,7 @@ int main(int argc, char** argv) {
         hipMallocPitch(
             (void**)&A_d,
             &pitch_A, // actual given width of pencils
-            N1_A*sizeof(float), // requested pencil width (bytes)
+            N1_A*sizeof(float_type), // requested pencil width (bytes)
             N0_C // Height is the number of pencils to allocate for
         )
     );
@@ -146,8 +146,8 @@ int main(int argc, char** argv) {
             A_d, // destination pointer
             pitch_A, // destination pitch
             A_h, // source pointer
-            N1_A*sizeof(float), // source pitch
-            N1_A*sizeof(float), // bytes along a pencil to transfer
+            N1_A*sizeof(float_type), // source pitch
+            N1_A*sizeof(float_type), // bytes along a pencil to transfer
             N0_C, // height (number of pencils to transfer)
             hipMemcpyHostToDevice // copy flag
         )
@@ -205,32 +205,32 @@ int main(int argc, char** argv) {
     // For the host
     hipPitchedPtr C_h_ptr = make_hipPitchedPtr(
         C_h, // pointer 
-        N1_C*sizeof(float), // pitch - actual pencil width (bytes) 
+        N1_C*sizeof(float_type), // pitch - actual pencil width (bytes) 
         N1_C, // requested pencil width (elements)
         N0_C // number of pencils in a plane (elements)
     );
     // For the device
     hipPitchedPtr C_d_ptr = make_hipPitchedPtr(
         C_d, // pointer
-        N1_C*sizeof(float), // pitch - actual pencil width (bytes) 
+        N1_C*sizeof(float_type), // pitch - actual pencil width (bytes) 
         N1_C, // requested pencil width (elements)
         N0_C // number of pencils in a plane (elements)
     );
     // Position within the host array
     hipPos C_h_pos = make_hipPos(
-        0*sizeof(float), // byte position along a pencil (bytes)
+        0*sizeof(float_type), // byte position along a pencil (bytes)
         0, // starting pencil index (elements)
         0 // start pencil plane index (elements)
     );
     // Position within the device array
     hipPos C_d_pos = make_hipPos(
-        0*sizeof(float), // byte position along a pencil (bytes)
+        0*sizeof(float_type), // byte position along a pencil (bytes)
         0, // starting pencil index (elements)
         0 // starting pencil plane index (elements)
     );
     // Choose the region to copy
     hipExtent extent = make_hipExtent(
-        N1_C*sizeof(float), // width of pencil region to copy (bytes)
+        N1_C*sizeof(float_type), // width of pencil region to copy (bytes)
         N0_C, // number of pencils to copy the region from
         1 // number of pencil planes
     );
@@ -249,14 +249,14 @@ int main(int argc, char** argv) {
     //// Step 8. Test the computed matrix **C_h** against a known answer
     
     // Compute the serial solution using the matrix helper library
-    float* C_answer_h = (float*)calloc(nbytes_C, 1);
+    float_type* C_answer_h = (float_type*)calloc(nbytes_C, 1);
     m_mat_mult(A_h, B_h, C_answer_h, N1_A, N0_C, N1_C);
     
     // Uncomment this to check against elementwise matrix multiplication
     // m_hadamard(A_h, B_h, C_answer_h, N0_C, N1_C);
 
     // Print the maximum error between matrices
-    float max_err = m_max_error(C_h, C_answer_h, N0_C, N1_C);
+    float_type max_err = m_max_error(C_h, C_answer_h, N0_C, N1_C);
     
     //// Step 9. Write the contents of matrices 
     //// A_h, B_h, and C_h to disk
