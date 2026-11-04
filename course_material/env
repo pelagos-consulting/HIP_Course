@@ -23,7 +23,7 @@ then
     export CPATH=${CPATH}:${CRAY_MPICH_DIR}/include
 
     # Location of Python environment for rocprof-compute
-    export PYTHON_ENV_DIR=$MYSCRATCH/python-environments/rocprof-compute-6.4.1
+    export PYTHON_ENV_DIR=$MYSCRATCH/python-environments/rocprof-compute-7.0.1
 
     if [ -f "$PYTHON_ENV_DIR/bin/activate" ]; then
         # Source the environment
