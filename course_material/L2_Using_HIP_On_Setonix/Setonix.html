@@ -7847,9 +7847,9 @@ chmod<span class="w"> </span>-R<span class="w"> </span><span class="m">0400</spa
 <div class="highlight"><pre><span></span>module<span class="w"> </span>avail<span class="w"> </span>rocm
 </pre></div>
 <p>and then something like</p>
-<pre><code>module load rocm/6.4.1
+<pre><code>module load rocm/7.0.1
 </code></pre>
-<p>There are newer versions, such as from the ROCm 7.x branch, but you need to enable loading of unsupported modules:</p>
+<p>There are newer versions of ROCm available, but you need to enable loading of unsupported modules:</p>
 <div class="highlight"><pre><span></span>module<span class="w"> </span>use<span class="w"> </span>/software/setonix/unsupported
 module<span class="w"> </span>load<span class="w"> </span>rocm/7.2.4
 </pre></div>
@@ -8023,7 +8023,7 @@ module<span class="w"> </span>load<span class="w"> </span>rocm/7.2.4
 <li>Swap out the <strong>PrgEnv-gnu</strong> module for the <strong>PrgEnv-cray</strong> module</li>
 </ul>
 <div class="highlight"><pre><span></span>module<span class="w"> </span>swap<span class="w"> </span>PrgEnv-gnu<span class="w"> </span>PrgEnv-cray
-module<span class="w"> </span>load<span class="w"> </span>rocm/6.4.1
+module<span class="w"> </span>load<span class="w"> </span>rocm/7.0.1
 module<span class="w"> </span>load<span class="w"> </span>craype-accel-amd-gfx90a
 <span class="nb">cd</span><span class="w"> </span>course_material/L2_Using_HIP_On_Setonix
 </pre></div>
@@ -8048,7 +8048,7 @@ module<span class="w"> </span>load<span class="w"> </span>craype-accel-amd-gfx90
 <div class="highlight"><pre><span></span>hipcc<span class="w"> </span>-I<span class="si">${</span><span class="nv">MPICH_DIR</span><span class="si">}</span>/include<span class="w"> </span>--offload-arch<span class="o">=</span>gfx90a<span class="w"> </span>hello_devices_mpi_onefile.cpp<span class="w"> </span>-o<span class="w"> </span>hello_devices_mpi_onefile_hipcc.exe<span class="w"> </span>-L<span class="si">${</span><span class="nv">MPICH_DIR</span><span class="si">}</span>/lib<span class="w"> </span>-lmpi<span class="w"> </span>-L<span class="si">${</span><span class="nv">CRAY_MPICH_ROOTDIR</span><span class="si">}</span>/gtl/lib<span class="w"> </span>-lmpi_gtl_hsa
 </pre></div>
 <h4 id="Task-4.-Compile-the-combined-file-in-one-go-using-CC">Task 4. Compile the combined file in one go using <strong>CC</strong><a class="anchor-link" href="#Task-4.-Compile-the-combined-file-in-one-go-using-CC">¶</a></h4><p>This only works with the <strong>PrgEnv-cray</strong> environment.</p>
-<div class="highlight"><pre><span></span>CC<span class="w"> </span>-D__HIP_ROCclr__<span class="w"> </span>-D__HIP_ARCH_GFX90A__<span class="o">=</span><span class="m">1</span><span class="w"> </span>--offload-arch<span class="o">=</span>gfx90a<span class="w"> </span>-x<span class="w"> </span>hip<span class="w"> </span>hello_devices_mpi_onefile.cpp<span class="w"> </span>-o<span class="w"> </span>hello_devices_mpi_onefile_CC.exe<span class="w"> </span>-L<span class="si">${</span><span class="nv">ROCM_PATH</span><span class="si">}</span>/lib<span class="w"> </span>-lamdhip64
+<div class="highlight"><pre><span></span>CC<span class="w"> </span>-D__HIP_ROCclr__<span class="w"> </span>-D__HIP_ARCH_GFX90A__<span class="o">=</span><span class="m">1</span><span class="w"> </span>--offload-arch<span class="o">=</span>gfx90a<span class="w"> </span>-x<span class="w"> </span>hip<span class="w"> </span>hello_devices_mpi_onefile.cpp<span class="w"> </span>-o<span class="w"> </span>hello_devices_mpi_onefile_CC.exe<span class="w"> </span>-L<span class="si">${</span><span class="nv">ROCM_PATH</span><span class="si">}</span>/lib<span class="w"> </span>-lamdhip64<span class="w"> </span>-lmpi_gtl_hsa
 </pre></div>
 </div>
 </div>
@@ -8086,7 +8086,7 @@ srun<span class="w"> </span>-N<span class="w"> </span><span class="m">1</span><s
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h3 id="Makefile-solution">Makefile solution<a class="anchor-link" href="#Makefile-solution">¶</a></h3><p>If you get stuck, the example <a href="Makefile">Makefile</a> contains the above compilation steps. Assuming you loaded the Cray programming environment, the make command is run as follows:</p>
 <div class="highlight"><pre><span></span>module<span class="w"> </span>swap<span class="w"> </span>PrgEnv-gnu<span class="w"> </span>PrgEnv-cray
-module<span class="w"> </span>load<span class="w"> </span>rocm/6.4.1
+module<span class="w"> </span>load<span class="w"> </span>rocm/7.0.1
 module<span class="w"> </span>load<span class="w"> </span>craype-accel-amd-gfx90a
 <span class="nb">cd</span><span class="w"> </span>course_material/L2_Using_HIP_On_Setonix
 make<span class="w"> </span>clean<span class="p">;</span><span class="w"> </span>make
@@ -8106,6 +8106,31 @@ make<span class="w"> </span>clean<span class="p">;</span><span class="w"> </span
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h3 id="CMake-solution">CMake solution<a class="anchor-link" href="#CMake-solution">¶</a></h3><p>The CMake build system should have built the files in this exercise. If you source the script <code>../env</code> then these programs are in the <code>$PATH</code> and available in the <code>$RUN_DIR</code> directory.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=88017815-54d8-4956-b6c6-223cf6758cc4">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Compiling-software-that-uses-Managed-Memory">Compiling software that uses Managed Memory<a class="anchor-link" href="#Compiling-software-that-uses-Managed-Memory">¶</a></h3><p>XNACK (eXternal Not-ACKnowledged) allows page faults to be handled in a graceful way instead of triggering an error. This is particularly important for applications that use Managed memory. On Setonix XNACK is not enabled by default for maximum performance, however it can be enabled with this environment flag:</p>
+<div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">HSA_XNACK</span><span class="o">=</span><span class="m">1</span>
+</pre></div>
+<p>and using the architecture <code>gfx90a:xnack+</code> instead of <code>gfx90a</code>. For example, build the file in one go would be:</p>
+<div class="highlight"><pre><span></span>hipcc<span class="w"> </span>-I<span class="si">${</span><span class="nv">MPICH_DIR</span><span class="si">}</span>/include<span class="w"> </span>--offload-arch<span class="o">=</span><span class="s2">"gfx90a:xnack+"</span><span class="w"> </span>hello_devices_mpi_onefile.cpp<span class="w"> </span>-o<span class="w"> </span>hello_devices_mpi_onefile_hipcc.exe<span class="w"> </span>-L<span class="si">${</span><span class="nv">MPICH_DIR</span><span class="si">}</span>/lib<span class="w"> </span>-lmpi<span class="w"> </span>-L<span class="si">${</span><span class="nv">CRAY_MPICH_ROOTDIR</span><span class="si">}</span>/gtl/lib<span class="w"> </span>-lmpi_gtl_hsa
+</pre></div>
+<p>in the CMAKE build system for the software we set the environment variable <code>GPU_ARCH</code> to</p>
+<div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">GPU_ARCH</span><span class="o">=</span><span class="s2">"gfx90a:xnack+"</span>
+</pre></div>
+<p>You can check on the command line if XNACK is enabled using this command:</p>
+<div class="highlight"><pre><span></span>rocminfo<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>XNACK
+</pre></div>
+<p>and you should see something with an <code>xnack+</code>, like this:</p>
+<div class="highlight"><pre><span></span>XNACK<span class="w"> </span>enabled:<span class="w">           </span>YES
+</pre></div>
 </div>
 </div>
 </div>
