@@ -7591,7 +7591,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -7954,7 +7954,7 @@ $$</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -7972,7 +7972,7 @@ $$</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span><span class="s1">'mat_mult_pinned_mem.exe'</span>
@@ -8015,7 +8015,7 @@ Maximum error (infinity norm) is: 1.14441e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">mat_mul</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
@@ -8049,7 +8049,7 @@ Maximum error (infinity norm) is: 1.14441e-05
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="Managed-memory.">Managed memory.<a class="anchor-link" href="#Managed-memory.">¶</a></h4><p>Managed memory is another form of allocating memory that is accessible from <strong>both the host and the compute device</strong>. Managed memory leaves it to the runtime to <code>manage</code> or cache pages of memory on either the host or the compute device, and shuffle memory between host and device as required. Since pointers to managed memory are meaningful in both host and device memory spaces, just <strong>one pointer</strong> can be used for both modes of access. This mode of memory access will be slower than an allocation on the device in almost all cases, until we use a computing architecture where both CPU and GPU use the same pool of memory.</p>
+<h4 id="Managed-memory.">Managed memory.<a class="anchor-link" href="#Managed-memory.">¶</a></h4><p>Managed memory is another form of allocating memory that is accessible from <strong>both the host and the compute device</strong>. Managed memory leaves it to the runtime (if <a href="https://rocm.docs.amd.com/projects/HIP/en/latest/how-to/hip_runtime_api/memory_management/unified_memory.html">XNACK</a> is enabled on the device and in the environment) to <code>manage</code> or cache pages of memory on either the host or the compute device, and shuffle memory between host and device as required. If XNACK is not enabled on the device or environment, the fallback is to used pinned memory. Since pointers to managed memory are meaningful in both host and device memory spaces, just <strong>one pointer</strong> can be used for both modes of access. This mode of memory access will be slower than an allocation on the device in almost all cases, until we use a computing architecture where both CPU and GPU use the same pool of memory.</p>
 <p>In the program <a href="mat_mult_managed_mem.cpp">mat_mult_managed_mem.cpp</a> we use managed memory to store matrices <strong>A</strong>, <strong>B</strong>, and <strong>C</strong>. Not every HIP device has support for managed memory, and we check for managed memory support with the following call to <strong>h_check_managed</strong> in <a href="../common/hip_helper.cpp"></a>hip_helper.cpp.</p>
 <div class="highlight"><pre><span></span><span class="c1">// Check to make sure managed memory can be allocated</span>
 <span class="w">    </span><span class="n">h_check_managed_mem</span><span class="p">(</span><span class="n">dev_index</span><span class="p">);</span>
@@ -8123,7 +8123,7 @@ Maximum error (infinity norm) is: 1.14441e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span><span class="s1">'mat_mult_managed_mem.exe'</span>
@@ -8166,7 +8166,7 @@ Maximum error (infinity norm) is: 1.14441e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">mat_mul</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
@@ -8416,7 +8416,7 @@ Maximum error (infinity norm) is: 1.14441e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span><span class="s1">'mat_mult_pitched_mem.exe'</span>
@@ -8459,7 +8459,7 @@ Maximum error (infinity norm) is: 1.14441e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">mat_mul</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
@@ -8721,7 +8721,7 @@ Maximum error (infinity norm) is: 1.14441e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span><span class="s1">'mat_mult_shared.exe'</span>
@@ -8764,7 +8764,7 @@ Maximum error (infinity norm) is: 1.14441e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">mat_mul</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
@@ -8828,7 +8828,7 @@ Maximum error (infinity norm) is: 1.14441e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span><span class="s1">'mat_mult_shared_faulty.exe'</span>
@@ -8979,7 +8979,7 @@ Error, HIP call failed at /home/toby/Pelagos/Projects/HIP_Course/course_material
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span><span class="s1">'vector_types.exe'</span>
@@ -9183,7 +9183,7 @@ temp.w is 3.000000
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span><span class="s1">'mat_mult_shared_vector.exe'</span>
@@ -9226,7 +9226,7 @@ Maximum error (infinity norm) is: 2.67029e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">mat_mul</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
@@ -9278,7 +9278,7 @@ Maximum error (infinity norm) is: 2.67029e-05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>build<span class="w"> </span><span class="s1">'atomics.exe'</span>
