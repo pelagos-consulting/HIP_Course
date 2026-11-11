@@ -8097,7 +8097,7 @@ Maximum error (infinity norm) is: 1.14441e-05
 <span class="w">    </span><span class="p">);</span>
 </pre></div>
 <p>Two different flags are used here during a call to <strong>hipMallocManaged</strong>. The flag <strong>hipMemAttachGlobal</strong> means the memory can be accessed by any stream on any device. The flag <strong>hipMemAttachHost</strong> appears to mean that the memory is initially allocated on the host. No flag means <strong>hipMemAttachGlobal</strong>, which is the default.</p>
-<p>The function <strong>hipMemAdvise</strong> can provide the HIP runtime hints as to how managed memory (and only managed memory) will be used. This information can help optimise performance with managed memory.</p>
+<p>The function <strong>hipMemAdvise</strong> can provide the HIP runtime hints as to how managed memory (and only managed memory) will be used. This information can help optimise performance with managed memory. Furthermore, the functions <strong>hipMemPrefetchAsync</strong> and <strong>hipMemPrefetchAsync_v2</strong> can use a stream to asynchronously prefetch memory to where you need it to be beforehand.</p>
 <p>After allocation memory we need no additional steps to use the memory from within a kernel. Deallocation of managed memory is performed with a call to <strong>hipFree</strong>.</p>
 <div class="highlight"><pre><span></span><span class="c1">// Clean up managed memory on the host   </span>
 <span class="w">    </span><span class="n">H_ERRCHK</span><span class="p">(</span><span class="n">hipFree</span><span class="p">(</span><span class="n">A_m</span><span class="p">));</span>
